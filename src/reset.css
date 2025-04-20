@@ -1,0 +1,13 @@
+/**
+ * 기본 스타일 초기화 (브라우저 기본 스타일을 리셋)
+ *
+ * @format
+ */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
