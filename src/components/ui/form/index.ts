@@ -6,6 +6,6 @@ export * from "./input";
 export * from "./label";
 export * from "./select";
 export * from "./checkbox";
-// export * from "./textarea";
+export * from "./textarea";
 // export * from "./form-drawer";
-// export * from "./switch";
+export * from "./radio";

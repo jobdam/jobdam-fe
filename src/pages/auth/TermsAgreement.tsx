@@ -5,7 +5,6 @@ import * as React from "react";
 import { type } from "../../store/index";
 import { termsSchema } from "@/lib/auth";
 import { Checkbox } from "@/components/ui/form/checkbox";
-import { CheckedState } from "@radix-ui/react-checkbox";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { Link } from "@/components/ui/link";
@@ -59,37 +58,44 @@ const TermsAgreement = () => {
       {/* // 전체 동의하기 체크박스 상태를 관리 return ( */}
       {/* <> */}
 
-      <div className=" flex  flex-col gap-[10px]">
-        <Checkbox
-          label="전체 동의하기"
-          checked={allChecked}
-          onCheckedChange={(checked) => setAllChecked(Boolean(checked))}
-        ></Checkbox>
-        <div className="w-[540px] min-h-[150px] border-box overflow-y-auto p-4 text-sm bg-[#D9D9D9]"></div>
-        <Checkbox
-          label="개인정보 약관"
-          onCheckedChange={(checked) => setAgreeTerms(Boolean(checked))}
-          checked={agreeTerms}
+      <div className=" flex  flex-col gap-[15px]">
+        <div>
+          <Checkbox
+            label="전체 동의하기"
+            checked={allChecked}
+            onCheckedChange={(checked) => setAllChecked(Boolean(checked))}
+          ></Checkbox>
+          <div className="w-[540px] min-h-[150px] border-box overflow-y-auto p-4 text-sm bg-[#D9D9D9]"></div>
+        </div>
 
-          // disabled={formState.errors["agreeTerms"] ? true : false}
-        ></Checkbox>
-        <PrivacyContents></PrivacyContents>
-        <Checkbox
-          label="서비스이용 약관"
-          onCheckedChange={(checked) => setAgreePrivacy(Boolean(checked))}
-          checked={agreePrivacy}
-          // disabled={formState.errors["agreePrivacy"] ? true : false}
-        ></Checkbox>
-        <TermsContents></TermsContents>
+        <div>
+          <Checkbox
+            label="개인정보 약관"
+            onCheckedChange={(checked) => setAgreeTerms(Boolean(checked))}
+            checked={agreeTerms}
+
+            // disabled={formState.errors["agreeTerms"] ? true : false}
+          ></Checkbox>
+          <PrivacyContents></PrivacyContents>
+        </div>
+        <div>
+          <Checkbox
+            label="서비스이용 약관"
+            onCheckedChange={(checked) => setAgreePrivacy(Boolean(checked))}
+            checked={agreePrivacy}
+            // disabled={formState.errors["agreePrivacy"] ? true : false}
+          ></Checkbox>
+          <TermsContents></TermsContents>
+        </div>
       </div>
-      <div className="flex gap-[130px] w-full justify-center items-center mb-[30px]">
+      <div className="flex gap-[130px] w-full">
         {/* Button 컴포넌트의 disabled 속성 조건을 올바르게 작성 */}
         <Button
-          className="w-full"
+          className="w-full min-h-[75px] flex justify-center items-center text-2xl text-center text-black bg-[#D9D9D9]"
           onClick={handleSubmit}
           disabled={!(agreeTerms && agreePrivacy)}
         >
-          약관 동의
+          약관에 동의했어요
         </Button>
       </div>
     </div>

@@ -35,4 +35,9 @@ export const paths = {
       path: "/termsAgreement",
     },
   },
+  interview: {
+    main: {
+      path: "/main",
+    },
+  },
 };

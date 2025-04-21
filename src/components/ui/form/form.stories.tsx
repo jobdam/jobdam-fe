@@ -60,20 +60,3 @@ type Story = StoryObj<typeof MyForm>;
 export const Default: Story = {
   render: () => <MyForm />,
 };
-
-export const AsFormDrawer: Story = {
-  render: () => (
-    <FormDrawer
-      triggerButton={<Button>Open Form</Button>}
-      isDone={true}
-      title="My Form"
-      submitButton={
-        <Button form="my-form" type="submit">
-          Submit
-        </Button>
-      }
-    >
-      <MyForm hideSubmit />
-    </FormDrawer>
-  ),
-};

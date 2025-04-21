@@ -17,9 +17,7 @@ const LoggedOutHeader = () => {
   return (
     <header className="flex items-center justify-center sticky top-0 h-[70px] z-[100] bg-[#D9D9D9]">
       <div className="flex justify-between items-center max-w-full min-w-[1300px] mx-auto">
-        <Link to="/">
-          <Logo></Logo>
-        </Link>
+        <Logo></Logo>
         <nav className="relative flex gap-10 items-center  h-full text-sm font-medium text-gray-800">
           <Link to="/" className="cursor-pointer h-[20px] ">
             잡담 소개
