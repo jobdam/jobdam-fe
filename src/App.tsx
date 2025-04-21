@@ -1,7 +1,7 @@
 /** @format */
 
 import { useState } from "react";
-import { Flex, Text, Button } from "@radix-ui/themes";
+import { Flex, Text, Button, DropdownMenu } from "@radix-ui/themes";
 import {
   BrowserRouter,
   Link,
@@ -9,21 +9,9 @@ import {
   Routes,
   useNavigate,
 } from "react-router-dom";
-
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-import { Form, FormField, FormLabel } from "./components/ui/form/form";
-import {
-  ControllerRenderProps,
-  FieldValues,
-  ControllerFieldState,
-  UseFormStateReturn,
-  UseFormReturn,
-} from "react-hook-form";
-import { SignIn } from "./pages/auth/SignIn";
 import { Select } from "./components/ui/form/select";
 import LoggedOutHeader from "./components/common/header/LoggedOutHeader";
+import { RadioGroup, Textarea } from "./components/ui/form/index";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -53,6 +41,31 @@ function App() {
         <Link to="/termsAgreement">이용약관</Link>
       </Button>
       <Select options={["개발", "디자인", "기획"]} defaultValue="개발"></Select>
+      <div>
+        <RadioGroup
+          // className={}
+          options={[
+            { label: "남성", value: "male" },
+            { label: "여성", value: "female" },
+            { label: "기타", value: "other" },
+            { label: "선택 안 함", value: "none" },
+          ]}
+        ></RadioGroup>
+      </div>
+
+      <RadioGroup
+        className="bg-[#D9D9D9] w-[216px] h-[156px] mr-[30px] flex justify-center pb-[40px] items-end"
+        options={[
+          { label: "인성", value: "personality" },
+          { label: "직무", value: "female" },
+          { label: "기타", value: "other" },
+          { label: "선택 안 함", value: "none" },
+        ]}
+      ></RadioGroup>
+      <Textarea
+        className="bg-[#D9D9D9] rounded-none h-[164px] border-none"
+        label="입력해주세요"
+      ></Textarea>
     </div>
   );
 }

@@ -44,6 +44,11 @@ const createAppRouter = (queryClient: QueryClient) => {
           convert(queryClient)
         ),
     },
+    {
+      path: paths.interview.main.path,
+      lazy: () =>
+        import("@/app/routes/app/interview/index").then(convert(queryClient)),
+    },
   ]);
 };
 export const AppRouter = () => {
