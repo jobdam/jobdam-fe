@@ -9,6 +9,18 @@ export type SpinnerProps = {
   className?: string;
 };
 
+export const InterviewSpinner = () => {
+  return (
+    <img
+      style={{ animationDuration: "5s" }}
+      src="/Layer_1.svg"
+      alt="loading spinner"
+      width={100}
+      height={100}
+      className="w-24 h-24 animate-spin"
+    />
+  );
+};
 export const Spinner = ({
   size = "md",
   variant = "primary",

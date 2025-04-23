@@ -28,6 +28,11 @@ const createAppRouter = (queryClient: QueryClient) => {
       lazy: () => import("@/App").then(convert(queryClient)),
     },
     {
+      path: paths.auth.register.path,
+      lazy: () =>
+        import("@/app/routes/app/auth/signup").then(convert(queryClient)),
+    },
+    {
       path: paths.auth.login.path,
       lazy: () =>
         import("@/app/routes/app/auth/signin").then(convert(queryClient)),
@@ -48,6 +53,11 @@ const createAppRouter = (queryClient: QueryClient) => {
       path: paths.interview.main.path,
       lazy: () =>
         import("@/app/routes/app/interview/index").then(convert(queryClient)),
+    },
+    {
+      path: paths.chatroom.main.path,
+      lazy: () =>
+        import("@/app/routes/app/chatroom/chatroom").then(convert(queryClient)),
     },
   ]);
 };

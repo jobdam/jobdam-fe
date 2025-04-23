@@ -32,9 +32,9 @@ export const AppProvider = ({ children }: AppProviderProps) => {
             <div className="flex h-screen w-screen items-center justify-center">
               <Spinner size="xl" />
             </div>
-          )}
-        > */}
-        {children}
+          )} */}
+        >
+          {children}
         {/* </AuthLoader> */}
       </QueryClientProvider>
     </React.Suspense>

@@ -25,7 +25,7 @@ export const InterviewLayout = ({
             </h2>
             <div>
               <span className="text-[32px] font-semibold text-gray-900 ">
-                모의면접 488명 이용중!
+                488명 모의 면접 이용중
               </span>
             </div>
           </div>

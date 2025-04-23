@@ -1,5 +1,5 @@
 /** @format */
-
+import { AuthResponse, User } from "@/types/api";
 import { configureAuth } from "react-query-auth";
 import { Navigate, useLocation } from "react-router";
 import { z } from "zod";
@@ -23,34 +23,27 @@ const getUser = async (): Promise<User> => {
 const logout = (): Promise<void> => {
   return api.post("/auth/logout");
 };
-
+//로그인
 export type LoginInput = z.infer<typeof loginInputSchema>;
 const loginWithEmailAndPassword = (data: LoginInput): Promise<AuthResponse> => {
   return api.post("/auth/login", data);
 };
 
-export const registerInputSchema = z
-  .object({
-    email: z.string().min(1, "Required"),
-    firstName: z.string().min(1, "Required"),
-    lastName: z.string().min(1, "Required"),
-    password: z.string().min(5, "Required"),
-  })
-  .and(
-    z
-      .object({
-        teamId: z.string().min(1, "Required"),
-        teamName: z.null().default(null),
-      })
-      .or(
-        z.object({
-          teamName: z.string().min(1, "Required"),
-          teamId: z.null().default(null),
-        })
-      )
-  );
+//회원가입할때 핸드폰 번호, 이메일, 핸드폰번호
+export const registerInputSchema = z.object({
+  email: z.string().min(1, "Required"),
+  passwordCheck: z.string().min(5, "required"),
+  password: z.string().min(5, "Required"),
+  phone: z
+    .string()
+    .trim()
+    .regex(/^01[0|1|6|7|8|9][0-9]{7,8}$/, {
+      message: "유효한 휴대폰 번호를 입력해주세요.",
+    }),
+});
 
 export type RegisterInput = z.infer<typeof registerInputSchema>;
+
 const registerWithEmailAndPassword = (
   data: RegisterInput
 ): Promise<AuthResponse> => {
@@ -63,7 +56,7 @@ export const authConfig = {
     const response = await loginWithEmailAndPassword(data);
     return response.user;
   },
-  registerFn: async (data: registerInput) => {
+  registerFn: async (data: RegisterInput) => {
     const response = await registerWithEmailAndPassword(data);
     return response.user;
   },
