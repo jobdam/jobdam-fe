@@ -9,7 +9,7 @@ import { Error } from "./error";
 import { Label } from "./label";
 import { Link } from "@/components/ui/link";
 
-type FieldWrapperProps = {
+export type FieldWrapperProps = {
   label?: string;
   className?: string;
   children: React.ReactNode;

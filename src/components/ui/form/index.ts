@@ -9,3 +9,4 @@ export * from "./checkbox";
 export * from "./textarea";
 // export * from "./form-drawer";
 export * from "./radio";
+export * from "./tooltip";

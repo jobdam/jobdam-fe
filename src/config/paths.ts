@@ -40,4 +40,9 @@ export const paths = {
       path: "/main",
     },
   },
+  chatroom: {
+    main: {
+      path: "/chatroom",
+    },
+  },
 };
