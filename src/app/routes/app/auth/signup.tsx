@@ -15,7 +15,7 @@ const SignInRoute = () => {
   return (
     <AuthLayout
       title="회원 가입"
-      className="bg-white"
+      className="bg-white min-h-[100vh] min-w-[550px] pl-[5px] pr-[33px]"
       subtitle="잡담 가입하고 모의면접 연습해서 최종합격률 높여봐요!"
     >
       <SignUp
