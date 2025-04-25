@@ -50,9 +50,11 @@ const createAppRouter = (queryClient: QueryClient) => {
         ),
     },
     {
-      path: paths.interview.main.path,
+      path: paths.interview.register.path,
       lazy: () =>
-        import("@/app/routes/app/interview/index").then(convert(queryClient)),
+        import("@/app/routes/app/interview/register").then(
+          convert(queryClient)
+        ),
     },
     {
       path: paths.chatroom.main.path,

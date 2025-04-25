@@ -30,16 +30,6 @@ export const InterviewLayout = ({
             </div>
           </div>
 
-          {showIcon ? (
-            <div className="flex items-start mb-[10px]">
-              <Check></Check>
-              <span className=" text-[16px] pl-3 font-[600] leading-7">
-                프로필 설정 불러오기
-              </span>
-            </div>
-          ) : (
-            ""
-          )}
           {children}
           {/* </div> */}
         </div>

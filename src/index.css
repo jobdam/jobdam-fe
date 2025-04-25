@@ -3,12 +3,6 @@
 @import "tailwindcss/utilities";
 @config "../tailwind.config.js";
 
-:root {
-  --violet9: #5e4b8b; /* Radix Violet */
-  --mauve12: #4a3f3a; /* Radix Mauve */
-  --red11: #f44336; /* Radix Red */
-}
-
 body {
   margin: 0;
   padding: 0;

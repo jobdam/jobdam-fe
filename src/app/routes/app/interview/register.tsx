@@ -6,9 +6,9 @@ import { AuthLayout } from "@/components/layout/auth-layout";
 import { paths } from "@/config/paths";
 import { SignIn } from "@/pages/auth/SignIn";
 import { InterviewLayout } from "@/components/layout/interview-layout";
-import Interview from "@/pages/Interview/main";
+import Interview from "@/pages/interview/main";
 
-const InterviewRoute = () => {
+const InterviewRegisterRoute = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
@@ -29,4 +29,4 @@ const InterviewRoute = () => {
   );
 };
 
-export default InterviewRoute;
+export default InterviewRegisterRoute;
