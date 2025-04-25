@@ -13,15 +13,18 @@ import LoggedOutHeader from "./components/common/header/LoggedOutHeader";
 import { Checkbox, Radio, Textarea } from "./components/ui/form/index";
 import { InterviewSpinner, Spinner } from "./components/ui/spinner";
 import Avatars from "./components/ui/avatar/avatars";
-import TooltipDemo from "./components/ui/form/tooltip";
-// import TooltipDemo from "./components/ui/form/tooltip";
 import { Input } from "@/components/ui/form";
 import { SendHorizontal } from "lucide-react";
 import { Plus } from "lucide-react";
 import { type } from "./store/index";
-function App() {
-  const [count, setCount] = React.useState(0);
 
+import { mauve, violet, red, blackA, gray } from "@radix-ui/colors"; // 예시
+
+import AlertDialog from "./components/ui/alertdialog/alertdialog";
+import PrivacyContents from "./constants/privacyContents";
+function Apps() {
+  const [count, setCount] = React.useState(0);
+  mauve.mauve1;
   const [seconds, setSeconds] = React.useState(0);
 
   React.useEffect(() => {
@@ -53,7 +56,6 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
       <Link to="/chatRoom">채팅방</Link>
-
       <Button>
         <Link to="/login">로그인페이지</Link>
       </Button>
@@ -75,7 +77,6 @@ function App() {
           ]}
         ></Radio>
       </div>
-
       <Radio
         className="bg-[#D9D9D9] w-[216px] h-[156px] mr-[30px] flex justify-center pb-[40px] items-end"
         options={[
@@ -94,9 +95,7 @@ function App() {
       <Checkbox></Checkbox>
       <Checkbox checked={true} interview={true} label="신청 완료"></Checkbox>
       <Checkbox checked={true} interview={true} label="면접 준비"></Checkbox>
-
       <Checkbox></Checkbox>
-
       <Avatars
         users={[
           {
@@ -209,7 +208,13 @@ function App() {
       <div>
         <Text>🕒 면접 시작 까지... {formatTime(seconds)}</Text>
       </div>
+      <AlertDialog
+        title={"개인정보 이용약관"}
+        contents={<PrivacyContents></PrivacyContents>}
+      >
+        자세히
+      </AlertDialog>
     </div>
   );
 }
-export default App;
+export default Apps;

@@ -25,7 +25,7 @@ const createAppRouter = (queryClient: QueryClient) => {
   return createBrowserRouter([
     {
       path: paths.home.path,
-      lazy: () => import("@/App").then(convert(queryClient)),
+      lazy: () => import("@/Apps").then(convert(queryClient)),
     },
     {
       path: paths.auth.register.path,
