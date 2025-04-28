@@ -1,36 +1,65 @@
 /** @format */
+import * as React from "react";
+import { useNavigate } from "react-router";
 
 import ContentsBox from "@/components/layout/contentsBox";
-import { Checkbox, Radio, Select } from "@/components/ui/form";
+import { Checkbox, Form, Radio, Select, Textarea } from "@/components/ui/form";
+import { Controller } from "react-hook-form";
+import FieldsSelect from "./components/fieldsSelect";
+import People from "./components/people";
+import { Button } from "@/components/ui/button";
+import { type } from "../../types/api";
+import { useDispatch } from "react-redux";
+import { setStep } from "@/store/slices/progress";
 
-import React from "react";
 const Interview = () => {
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(setStep(1));
+  }, []);
+
+  const navigate = useNavigate();
+  const handleOnSubmit = () => {
+    navigate("/interview/matching");
+  };
+
   return (
-    <>
-      <ContentsBox title="직무 분야를 선택해주세요.">
-        <Radio
-          className="  mr-[30px] flex justify-center pb-[9px] items-end"
-          options={[
-            { label: "신입", value: "fresh" },
-            { label: "경력", value: "experienced" },
-          ]}
-        ></Radio>
-        <div className=" flex items-center justify-center flex-row gap-[8px]">
-          <Select
-            options={["개발", "디자인", "기획"]}
-            defaultValue="개발"
-          ></Select>
-          <Select
-            options={["개발", "디자인", "기획"]}
-            defaultValue="개발"
-          ></Select>
-          <div className=" flex flex-row items-center justify-center">
-            <span>다른 분야여도 상관없어요</span>
-            <Checkbox checked={true} interview={true}></Checkbox>
-          </div>
-        </div>
-      </ContentsBox>
-    </>
+    <Form
+      onSubmit={(values) => {
+        console.log("매칭정보를 등록한다.:", values);
+      }}
+    >
+      {({ control, getValues, watch }) => {
+        const jobTypeValue = watch("jobType");
+        console.log(jobTypeValue);
+
+        return (
+          <>
+            <FieldsSelect control={control}></FieldsSelect>
+            <People control={control}></People>
+            <ContentsBox title="자신을 소개해주세요">
+              <Textarea placeholder="ex) 데이터보다 사람 마음을 읽는 마케터를 꿈꿔요"></Textarea>
+            </ContentsBox>
+            <ContentsBox title="어떤종류이 면접을 준비하시나요?">
+              <Button>인성</Button>
+              <Button>직무</Button>
+
+              <Button>기술</Button>
+            </ContentsBox>
+            <div className=" relative bottom-[-150px] left-[100px] flex justify-center items-center">
+              <button
+                onClick={handleOnSubmit}
+                className="bg-[#E4E4E4] h-[70px] w-[480px] cursor-pointer rounded-[10px] "
+                type="submit"
+              >
+                입력 완료
+              </button>
+            </div>
+          </>
+        );
+      }}
+    </Form>
   );
 };
 

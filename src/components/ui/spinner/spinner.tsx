@@ -15,9 +15,9 @@ export const InterviewSpinner = () => {
       style={{ animationDuration: "5s" }}
       src="/Layer_1.svg"
       alt="loading spinner"
-      width={100}
-      height={100}
-      className="w-24 h-24 animate-spin"
+      width={437}
+      height={437}
+      className="animate-spin"
     />
   );
 };
