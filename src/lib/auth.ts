@@ -12,21 +12,24 @@ import { z } from "zod";
 // import { AuthResponse, User } from '@/types/api';
 
 import { api } from "./api-client";
+import { paths } from "@/config/paths";
 
-const getUser = async (): Promise<User> => {
-  const response = await api.get("/auth/me");
+//데이터를 가져올땐 userId를 가져온다.
+const getUser = async (userId: number): Promise<User> => {
+  console.log(userId, "userId");
+  const response = await api.get(`/users/${userId}`);
 
   return response.data;
 };
 
 //로그아웃
 const logout = (): Promise<void> => {
-  return api.post("/auth/logout");
+  return api.post("/logout");
 };
 //로그인
 export type LoginInput = z.infer<typeof loginInputSchema>;
 const loginWithEmailAndPassword = (data: LoginInput): Promise<AuthResponse> => {
-  return api.post("/auth/login", data);
+  return api.post("/login", data);
 };
 
 //회원가입할때 핸드폰 번호, 이메일, 핸드폰번호
@@ -57,13 +60,23 @@ export type RegisterInput = z.infer<typeof registerInputSchema>;
 const registerWithEmailAndPassword = (
   data: RegisterInput
 ): Promise<AuthResponse> => {
-  return api.post("/auth/register", data);
+  return api.post("/sign-up", data);
 };
 
+//로그인을 하면 jwttoken을 가져온다.
 export const authConfig = {
-  userFn: getUser,
+  userFn: async (data: User) => {
+    //userId를 가져오는 방법
+    const response = await getUser(data.id);
+    console.log(data);
+    return response;
+  },
   loginFn: async (data: LoginInput) => {
     const response = await loginWithEmailAndPassword(data);
+    console.log(response);
+    //localstorage에 로그인
+    localStorage.setItem("accessToken", JSON.stringify(response.user));
+
     return response.user;
   },
   registerFn: async (data: RegisterInput) => {
@@ -90,14 +103,14 @@ export const loginInputSchema = z.object({
     .min(8, "비밀번호는 최소 8자 이상이어야 합니다.")
     .max(15, "비밀번호는 최대 15자까지 가능합니다.")
     .regex(
-      /^(?=.*[A-Za-z])(?=.*[!@#$%^&*()_\-+=\[\]{};':"\\|,.<>/?]).*$/,
+      /^(?=.*[A-Za-z])(?=.*[!@#$%^&*()_\-+=[\]{};':"\\|,.<>/?]).*$/,
       "영문자와 특수문자를 모두 포함해야 합니다."
     ),
 });
 
 //Oauth 유효성검사
 export const oauthLoginSchema = z.object({
-  provider: z.enum(["kakao", "naver", "google"]), // 혹은 z.literal("kakao") 등
+  provider: z.enum(["kakao", "google"]), // 혹은 z.literal("kakao") 등
   accessToken: z.string().min(1, "토큰이 유효하지 않습니다."),
 });
 
@@ -111,3 +124,15 @@ export const termsSchema = z.object({
   }),
   AllCheck: z.boolean().optional(), // UI용 (검사 대상 아님)
 });
+// export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+//   const user = useUser();
+//   const location = useLocation();
+
+//   if (!user.data) {
+//     return (
+//       <Navigate to={paths.auth.login.getHref(location.pathname)} replace />
+//     );
+//   }
+
+//   return children;
+// };

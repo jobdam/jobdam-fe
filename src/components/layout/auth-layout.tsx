@@ -22,11 +22,19 @@ export const AuthLayout = ({
   subtitle,
   className,
 }: LayoutProps) => {
-  const user = useUser();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
 
   const navigate = useNavigate();
+  // const user = useUser();
+
+  // useEffect(() => {
+  //   if (user.data) {
+  //     navigate(redirectTo ? redirectTo : paths.home.getHref(), {
+  //       replace: true,
+  //     });
+  //   }
+  // }, [user.data, navigate, redirectTo]);
 
   // console.log(user);
   //   useEffect(() => {

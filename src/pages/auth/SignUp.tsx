@@ -7,12 +7,27 @@ import { paths } from "@/config/paths";
 import { registerInputSchema, useRegister } from "@/lib/auth";
 import { Check } from "lucide-react";
 import * as React from "react";
+import { useCheckEmail } from "./api/get-checkemail";
+import { useForm } from "react-hook-form";
 
 type RegisterFormProps = {
   onSuccess: () => void;
 };
 
 const SignUp = ({ onSuccess }: RegisterFormProps) => {
+  //email verify하기
+
+  const { register, getValues } = useForm({
+    defaultValues: {
+      email: "", // 이메일 필드의 초기값 설정
+    },
+  });
+
+  //
+  const { refetch, data } = useCheckEmail(getValues("email"));
+
+  console.log(data);
+
   const [allChecked, setAllChecked] = React.useState(false);
 
   const [agreeTerms, setAgreeTerms] = React.useState(false);
@@ -36,14 +51,11 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
 
   const registering = useRegister({ onSuccess });
 
-  const onSubmit = (data) => {
-    console.log(data.email); // 입력된 email 값
-  };
-  console.log(registering);
   return (
     <Form
       onSubmit={(values) => {
         console.log("Submit:", values);
+
         registering.mutate(values);
       }}
       schema={registerInputSchema}
@@ -52,11 +64,7 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
         const email = watch("email");
         console.log(email);
 
-        const handleCheckEmail = () => {
-          const emailValue = getValues("email");
-          console.log("중복확인 이메일:", emailValue);
-          // 여기에 axios or react-query mutation으로 중복 확인 요청
-        };
+        // 여기에 axios or react-query mutation으로 중복 확인 요청
 
         return (
           <>
@@ -70,12 +78,12 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
                   error={formState.errors["email"]}
                   registration={register("email")}
                 />
-                <div
-                  onClick={handleCheckEmail}
+                <button
+                  onClick={refetch}
                   className="whitespace-nowrap underline px-4 shadow-none bg-white cursor-pointer"
                 >
                   중복확인
-                </div>
+                </button>
                 <div className="flex min-w-[100px] relative right-50">
                   <Check className="mt-[2px]" strokeWidth="1"></Check>
                   <span className=" text-[16px] text-[rgba(0,0,0,0.50)] leading-[30px] font-medium ">

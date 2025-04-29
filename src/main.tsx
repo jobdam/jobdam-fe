@@ -12,11 +12,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { App } from "@/app";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    {/* <Theme> */}
     <Provider store={store}>
       <App />
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </Provider>
-    {/* </Theme> */}
   </StrictMode>
 );
