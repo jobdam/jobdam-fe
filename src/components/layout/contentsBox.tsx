@@ -18,11 +18,15 @@ import { Label } from "../ui/form";
 type BoxProps = {
   label?: string;
   children: React.ReactNode;
+  title?: string;
 };
-const ContentsBox = ({ children, label }: BoxProps) => {
+const ContentsBox = ({ children, title }: BoxProps) => {
   return (
-    <div className=" flex max-h-[400px] flex-col min-w-full p-6 items-start justify-center bg-[#F5F5F5]  ">
-      <Label className="pl-2">{label}</Label>
+    <div className=" flex max-h-[1000px] flex-col min-w-full p-6 items-start justify-start   ">
+      <div className="flex items-start mb-[28px]">
+        <span className=" text-[18px] font-[600] leading-[150%]">{title}</span>
+      </div>
+
       {children}
     </div>
   );

@@ -41,31 +41,31 @@ export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
       options.find((option) => option.value === selected)?.label ?? selected;
 
     return (
-      <FieldWrapper label={label} error={error}>
-        <div className={cn("relative w-[200px]", className)} ref={ref}>
-          <div
-            className="flex items-center justify-between w-full h-[50px] px-4 rounded-md bg-white border border-gray-300 cursor-pointer"
-            onClick={() => setIsOpen((prev) => !prev)}
-          >
-            <span className="text-sm text-gray-700">{selectedLabel}</span>
-            <ChevronDown className="w-4 h-4 text-black" />
-          </div>
-
-          {isOpen && (
-            <div className="absolute left-0 top-full mt-1 w-full rounded-md bg-white border border-gray-300 shadow-md z-10">
-              {options.map((option) => (
-                <div
-                  key={option.value}
-                  className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleSelect(option.value)}
-                >
-                  {option.label}
-                </div>
-              ))}
-            </div>
-          )}
+      // <FieldWrapper label={label} error={error}>
+      <div className={cn("w-[200px]", className)} ref={ref}>
+        <div
+          className="flex items-center justify-between w-full h-[50px] px-4 rounded-md bg-white border border-gray-300 cursor-pointer"
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
+          <span className="text-sm text-gray-700">{selectedLabel}</span>
+          <ChevronDown className="w-4 h-4 text-black" />
         </div>
-      </FieldWrapper>
+
+        {isOpen && (
+          <div className="absolute left-0 top-full mt-1 w-full rounded-md bg-white border border-gray-300 shadow-md z-10">
+            {options.map((option, index) => (
+              <div
+                key={index}
+                className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                onClick={() => handleSelect(option.value)}
+              >
+                {option.label}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      // </FieldWrapper>
     );
   }
 );

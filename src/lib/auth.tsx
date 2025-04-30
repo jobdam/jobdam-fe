@@ -30,17 +30,27 @@ const loginWithEmailAndPassword = (data: LoginInput): Promise<AuthResponse> => {
 };
 
 //회원가입할때 핸드폰 번호, 이메일, 핸드폰번호
-export const registerInputSchema = z.object({
-  email: z.string().min(1, "Required"),
-  passwordCheck: z.string().min(5, "required"),
-  password: z.string().min(5, "Required"),
-  phone: z
-    .string()
-    .trim()
-    .regex(/^01[0|1|6|7|8|9][0-9]{7,8}$/, {
-      message: "유효한 휴대폰 번호를 입력해주세요.",
-    }),
-});
+export const registerInputSchema = z
+  .object({
+    email: z
+      .string()
+      .min(1, "잘못된 이메일 형식이에요")
+      .email("잘못된 이메일 형식이에요"),
+    password: z
+      .string()
+      .nonempty("비밀번호를 입력해주세요.") // ✅ 먼저 입력 여부 체크
+      .min(8, "비밀번호는 최소 8자 이상이어야 합니다.")
+      .max(15, "비밀번호는 최대 15자까지 가능합니다.")
+      .regex(
+        /^(?=.*[A-Za-z])(?=.*[!@#$%^&*()_\-+=\[\]{};':"\\|,.<>/?]).*$/,
+        "영문자와 특수문자를 모두 포함해야 합니다."
+      ),
+    passwordConfirm: z.string().nonempty("비밀번호 확인을 입력해주세요."),
+  })
+  .refine((data) => data.password === data.passwordConfirm, {
+    path: ["passwordConfirm"],
+    message: "비밀번호가 일치하지 않습니다.",
+  });
 
 export type RegisterInput = z.infer<typeof registerInputSchema>;
 

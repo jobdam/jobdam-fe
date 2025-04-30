@@ -36,8 +36,12 @@ export const paths = {
     },
   },
   interview: {
-    main: {
-      path: "/main",
+    register: {
+      path: "interview/register",
+    },
+    matching: { path: "interview/matching" },
+    waiting: {
+      path: "interview/waiting",
     },
   },
   chatroom: {

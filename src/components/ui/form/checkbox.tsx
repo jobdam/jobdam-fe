@@ -30,6 +30,8 @@ interface CombinedCheckboxProps
     FieldWrapperPassThroughProps {
   interview?: boolean;
   terms?: boolean;
+  interview2?: boolean;
+  progress?: boolean;
   // onSubmit: () => void;
 }
 
@@ -42,7 +44,9 @@ export const Checkbox = React.forwardRef<
       className,
       interview = false,
       label,
+      progress = false,
       checked,
+      interview2 = false,
       onCheckedChange,
       error,
       terms = false,
@@ -54,25 +58,28 @@ export const Checkbox = React.forwardRef<
     return (
       <div
         className={cn(
-          "flex gap-2 items-start mb-[10px]",
-          interview &&
-            "flex flex-col w-[60px] gap-2 items-center justify-center mb-[10px]"
+          "flex gap-2 items-start ",
+          interview && "flex w-[150px] items-center justify-center ",
+          progress && "flex w-[150px] items-center justify-start "
         )}
       >
         <CheckBoxPrimitive.Root
           className={cn(
-            "flex size-[25px] transition-color appearance-none items-center justify-center  bg-[#D9D9D9] rounded-full shadow-blackA4 outline-none hover:bg-violet3 ",
+            "flex size-[25px] transition-color appearance-none items-center justify-center  bg-[#D9D9D9] rounded-full shadow-blackA4 outline-none",
             interview &&
               "flex size-[25px] transition-color appearance-none items-center justify-center rounded-none  bg-black outline-none  ",
             className
           )}
-          disabled={interview}
+          disabled={interview2}
+          // disabled={interview}
           onCheckedChange={onCheckedChange}
           checked={checked}
           required
         >
+          {/* <div className="w-[1px] bg-black h-[80px]"></div> */}
+
           <CheckBoxPrimitive.Indicator className="text-violet11">
-            <Check className={cn(interview && "text-white")} />
+            <Check className={cn(interview || (progress && "text-white"))} />
           </CheckBoxPrimitive.Indicator>
         </CheckBoxPrimitive.Root>
         <Label>{label}</Label>

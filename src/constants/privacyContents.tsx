@@ -4,7 +4,7 @@ import React from "react";
 
 const PrivacyContents = () => {
   return (
-    <div className="max-h-[100px] border-box overflow-y-auto p-4 text-sm mb-[9px] bg-[#D9D9D9]">
+    <div className=" border-box p-4 text-sm mb-[9px]">
       <h2 className="text-base font-semibold mb-2">개인정보 처리방침</h2>
       <p>
         본 서비스는 사용자의 개인정보를 중요시하며, 「개인정보 보호법」을

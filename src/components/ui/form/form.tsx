@@ -153,7 +153,6 @@ const Form = <
     ...options,
     resolver: zodResolver(schema),
   });
-  console.log(id, "form");
 
   return (
     <FormProvider {...form}>

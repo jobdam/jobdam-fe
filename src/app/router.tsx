@@ -25,7 +25,7 @@ const createAppRouter = (queryClient: QueryClient) => {
   return createBrowserRouter([
     {
       path: paths.home.path,
-      lazy: () => import("@/App").then(convert(queryClient)),
+      lazy: () => import("@/Apps").then(convert(queryClient)),
     },
     {
       path: paths.auth.register.path,
@@ -50,9 +50,18 @@ const createAppRouter = (queryClient: QueryClient) => {
         ),
     },
     {
-      path: paths.interview.main.path,
+      path: paths.interview.register.path,
       lazy: () =>
-        import("@/app/routes/app/interview/index").then(convert(queryClient)),
+        import("@/app/routes/app/interview/register").then(
+          convert(queryClient)
+        ),
+    },
+    {
+      path: paths.interview.matching.path,
+      lazy: () =>
+        import("@/app/routes/app/interview/matching").then(
+          convert(queryClient)
+        ),
     },
     {
       path: paths.chatroom.main.path,

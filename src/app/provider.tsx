@@ -33,8 +33,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
               <Spinner size="xl" />
             </div>
           )} */}
-        >
-          {children}
+        {children}
         {/* </AuthLoader> */}
       </QueryClientProvider>
     </React.Suspense>
