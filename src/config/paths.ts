@@ -1,7 +1,5 @@
 /** @format */
 
-import { TermsAgreementLayout } from "@/components/layout/termsAgreement-layout";
-
 //각종 api 주소가 들어있음.
 
 //getHref = 사용자가 접근하면 안되는곳에 접근할때 redirect 하도록 만드는것.
@@ -38,6 +36,7 @@ export const paths = {
   interview: {
     register: {
       path: "interview/register",
+      getHref: "interview/register",
     },
     matching: { path: "interview/matching" },
     waiting: {

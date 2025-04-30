@@ -11,10 +11,13 @@ export type Entity<T> = {
 } & BaseEntity;
 
 export type User = Entity<{
+  id: number;
   email: string;
-  role: "ME" | "USER";
-  teamId: string;
-  bio: string;
+  name: string;
+  birthday?: string;
+  profileImageUrl?: string;
+  jobCode?: string;
+  targetCompanySize?: string;
 }>;
 
 export type AuthResponse = {
