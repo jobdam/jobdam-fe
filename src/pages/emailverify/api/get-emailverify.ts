@@ -18,9 +18,8 @@ export const getVerifyEmailQuery = () => {
   return queryOptions({
     queryKey: ["verify"],
     queryFn: () => getVerifyEmail(),
-    staleTime: 0, // 바로바로 요청
+    // 바로바로 요청
     enabled: false,
-    gcTime: 0, // 캐시 유지 안 함
   });
 };
 

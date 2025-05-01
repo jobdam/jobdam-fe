@@ -57,4 +57,13 @@ export const paths = {
       path: "verify-email-check",
     },
   },
+
+  mypage: {
+    postdata: {
+      path: "post-profile",
+    },
+    editdata: {
+      path: "",
+    },
+  },
 };

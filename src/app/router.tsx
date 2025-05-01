@@ -80,6 +80,13 @@ const createAppRouter = (queryClient: QueryClient) => {
       lazy: () =>
         import("@/app/routes/app/emailverify/check").then(convert(queryClient)),
     },
+    {
+      path: paths.mypage.postdata.path,
+      lazy: () =>
+        import("@/app/routes/app/mypage/postprofile").then(
+          convert(queryClient)
+        ),
+    },
   ]);
 };
 export const AppRouter = () => {

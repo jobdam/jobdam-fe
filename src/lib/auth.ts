@@ -72,9 +72,11 @@ export const authConfig = {
   },
   loginFn: async (data: LoginInput) => {
     const response = await loginWithEmailAndPassword(data);
+    // const token = response.jwt;
+
     console.log(response);
     //localstorage에 로그인
-    localStorage.setItem("accessToken", JSON.stringify(response.user));
+    localStorage.setItem("accessToken", JSON.stringify(token));
 
     return response.user;
   },
