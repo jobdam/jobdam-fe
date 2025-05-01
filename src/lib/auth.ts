@@ -72,9 +72,8 @@ export const authConfig = {
   },
   loginFn: async (data: LoginInput) => {
     const response = await loginWithEmailAndPassword(data);
-    // const token = response.jwt;
-
-    console.log(response);
+    const token = response.headers["authorization"].replace("Bearer ", "");
+    console.log(token);
     //localstorage에 로그인
     localStorage.setItem("accessToken", JSON.stringify(token));
 

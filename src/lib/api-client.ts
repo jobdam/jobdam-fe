@@ -30,7 +30,7 @@ api.interceptors.request.use(authRequestInterceptor);
 //respose 요청을 가로챈다.
 api.interceptors.response.use(
   (response) => {
-    console.log(response.headers["Authorization"]);
+    console.log(response);
     //데이터는 바로 반환해준다.
     return response;
   },
