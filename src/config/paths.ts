@@ -34,13 +34,14 @@ export const paths = {
     },
   },
   interview: {
+    main: { path: "/main", getHref: "/main" },
     register: {
-      path: "interview/register",
-      getHref: "interview/register",
+      path: "/interview/register",
+      getHref: "/interview/register",
     },
-    matching: { path: "interview/matching" },
+    matching: { path: "/interview/matching" },
     waiting: {
-      path: "interview/waiting",
+      path: "/interview/waiting",
     },
   },
   chatroom: {
@@ -51,19 +52,24 @@ export const paths = {
 
   emailverify: {
     pending: {
-      path: "verify-email-pending",
+      path: "/verify-email-pending",
     },
     verifycheck: {
-      path: "verify-email-check",
+      path: "/verify-email-check",
     },
   },
 
   mypage: {
     postdata: {
-      path: "post-profile",
+      path: "/post-profile",
     },
     editdata: {
       path: "",
+    },
+  },
+  videochat: {
+    main: {
+      path: "/videochat",
     },
   },
 };
