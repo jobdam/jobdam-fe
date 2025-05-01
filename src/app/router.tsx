@@ -87,6 +87,16 @@ const createAppRouter = (queryClient: QueryClient) => {
           convert(queryClient)
         ),
     },
+    {
+      path: paths.interview.main.path,
+      lazy: () =>
+        import("@/app/routes/app/interview/main").then(convert(queryClient)),
+    },
+    {
+      path: paths.videochat.main.path,
+      lazy: () =>
+        import("@/app/routes/app/videochat/index").then(convert(queryClient)),
+    },
   ]);
 };
 export const AppRouter = () => {
