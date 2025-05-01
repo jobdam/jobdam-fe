@@ -68,6 +68,18 @@ const createAppRouter = (queryClient: QueryClient) => {
       lazy: () =>
         import("@/app/routes/app/chatroom/chatroom").then(convert(queryClient)),
     },
+    {
+      path: paths.emailverify.pending.path,
+      lazy: () =>
+        import("@/app/routes/app/emailverify/pending").then(
+          convert(queryClient)
+        ),
+    },
+    {
+      path: paths.emailverify.verifycheck.path,
+      lazy: () =>
+        import("@/app/routes/app/emailverify/check").then(convert(queryClient)),
+    },
   ]);
 };
 export const AppRouter = () => {

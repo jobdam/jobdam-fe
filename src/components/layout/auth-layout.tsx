@@ -25,6 +25,7 @@ export const AuthLayout = ({
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
 
+//auth 에서 useUser를 하면 내정보를 불러오고, 
   const navigate = useNavigate();
   // const user = useUser();
 

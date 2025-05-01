@@ -6,6 +6,9 @@ import { RootState } from "@/store";
 import { dismissNotification } from "@/store/slices/notifications";
 
 export const Notifications = () => {
+
+
+    
   const notifications = useSelector(
     (state: RootState) => state.notifications.notifications
   );
