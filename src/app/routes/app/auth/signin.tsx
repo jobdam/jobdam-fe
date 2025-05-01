@@ -14,11 +14,11 @@ const SignInRoute = () => {
   return (
     <AuthLayout title="회원 로그인">
       <SignIn
-        onSuccess={() => {
-          navigate(`${redirectTo ? `${redirectTo}` : paths.home.getHref()}`, {
-            replace: true,
-          });
-        }}
+      // onSuccess={() => {
+      //   navigate(`${redirectTo ? `${redirectTo}` : paths.home.getHref()}`, {
+      //     replace: true,
+      //   });
+      // }}
       />
     </AuthLayout>
   );

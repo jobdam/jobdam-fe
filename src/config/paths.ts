@@ -48,4 +48,22 @@ export const paths = {
       path: "/chatroom",
     },
   },
+
+  emailverify: {
+    pending: {
+      path: "verify-email-pending",
+    },
+    verifycheck: {
+      path: "verify-email-check",
+    },
+  },
+
+  mypage: {
+    postdata: {
+      path: "post-profile",
+    },
+    editdata: {
+      path: "",
+    },
+  },
 };

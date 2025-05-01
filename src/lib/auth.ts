@@ -1,7 +1,6 @@
 /** @format */
 import { AuthResponse, User } from "@/types/api";
 import { configureAuth } from "react-query-auth";
-import { Navigate, useLocation } from "react-router";
 import { z } from "zod";
 //react-query-auth useAuth 훅을 통해 전역에서 로그인/로그아웃을관리
 //react-query를 사용해서 api '유저' 데이터 관리
@@ -73,18 +72,26 @@ export const authConfig = {
   },
   loginFn: async (data: LoginInput) => {
     const response = await loginWithEmailAndPassword(data);
-    console.log(response);
+    const token = response.headers["authorization"].replace("Bearer ", "");
+    console.log(token);
     //localstorage에 로그인
-    localStorage.setItem("accessToken", JSON.stringify(response.user));
+    localStorage.setItem("accessToken", JSON.stringify(token));
 
     return response.user;
   },
   registerFn: async (data: RegisterInput) => {
+    //로그인에 성공했을때. 이메일 인증 보내기
     const response = await registerWithEmailAndPassword(data);
+    await api.post("/email-verification", { email: data.email });
+
     return response.user;
   },
   logoutFn: logout,
 };
+
+//로그인에 성공했을때 이메일 인증을 보낸다.
+//  const verify = api.post("/email-verification", { email: data.email });
+//이메일 인증을 보내는것에 성공하면, 이메일 인증 페이지로 이동한다.
 
 export const { useUser, useLogin, useLogout, useRegister, AuthLoader } =
   configureAuth(authConfig);

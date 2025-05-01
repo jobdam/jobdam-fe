@@ -13,16 +13,12 @@ const apiUrl = import.meta.env.VITE_API_URL;
 function authRequestInterceptor(config: InternalAxiosRequestConfig) {
   //요청 가로채기할때 항상 토큰을 사용, 로그인이 필요 없는 영역도 존재
 
-  const token = getAccessToken(); // localStorage에서 accessToken 가져오기
-  //토큰이 있는경우 토큰을 보낸다.
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
   if (config.headers) {
     config.headers.Accept = "application/json";
   }
   //쿠키 자동포함
+  // console.log(config.headers.Authorization);
+
   config.withCredentials = true;
   return config;
 }
@@ -34,8 +30,9 @@ api.interceptors.request.use(authRequestInterceptor);
 //respose 요청을 가로챈다.
 api.interceptors.response.use(
   (response) => {
+    console.log(response);
     //데이터는 바로 반환해준다.
-    return response.data;
+    return response;
   },
 
   //에러 반환

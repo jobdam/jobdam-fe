@@ -8,7 +8,6 @@ import { Controller } from "react-hook-form";
 import FieldsSelect from "./components/fieldsSelect";
 import People from "./components/people";
 import { Button } from "@/components/ui/button";
-import { type } from "../../types/api";
 import { useDispatch } from "react-redux";
 import { setStep } from "@/store/slices/progress";
 
