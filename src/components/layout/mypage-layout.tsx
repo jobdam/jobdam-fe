@@ -9,6 +9,7 @@ interface MypageLayoutProps {
   children: ReactNode;
   title: string;
   button?: boolean;
+  subtitle?: string;
 }
 
 const data = [
@@ -21,6 +22,7 @@ const MypageLayout = ({
   children,
   title,
   button = false,
+  subtitle,
 }: MypageLayoutProps) => {
   return (
     <div className="flex min-h-screen w-[1920px] flex-row justify-center items-center">
@@ -52,9 +54,18 @@ const MypageLayout = ({
 
         {/* 본문 영역 */}
         <div className="flex flex-col gap-y-[47px]">
-          <div>
-            <div className="text-[32px] font-semibold leading-[150%]">
-              {title}
+          <div className="flex flex-row">
+            <div className="flex flex-col">
+              <h2 className="text-[32px] font-semibold leading-[150%]">
+                {title}
+              </h2>
+              {subtitle ? (
+                <span className="text-[20px] mt-[5px] font-semibold leading-[150%]">
+                  {subtitle}
+                </span>
+              ) : (
+                <></>
+              )}
             </div>
             {button && <Link to={paths.mypage.editdata.path}>수정하기</Link>}
           </div>
