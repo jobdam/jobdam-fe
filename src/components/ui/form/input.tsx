@@ -11,7 +11,7 @@ import { FieldWrapper, FieldWrapperPassThroughProps } from "./field-wrapper";
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &
   FieldWrapperPassThroughProps & {
     className?: string;
-    registration: Partial<UseFormRegisterReturn>;
+    registration?: Partial<UseFormRegisterReturn>;
   };
 //className -> 스타일, showLink -> Link 컴포넌트 보여주기 여부
 //type 은 input의 타입 type=password 같은것 label은 label 컴포넌트에 들어갈 요소
@@ -44,7 +44,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <input
           type={type}
           className={cn(
-            "placeholder:text-gray placeholder:font-[400] flex mt-2 h-[50px] font-[500] bg-white w-full rounded-md  text-[14px]  px-4 transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring  disabled:cursor-not-allowed disabled:opacity-50",
+            " placeholder:text-gray placeholder:font-[400] flex  h-[50px] font-[500] bg-white w-full rounded-md border-[1px]  text-[14px]  px-4 transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring  disabled:cursor-not-allowed disabled:opacity-50",
 
             className
           )}

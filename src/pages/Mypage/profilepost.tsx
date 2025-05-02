@@ -1,11 +1,14 @@
 /** @format */
 
-import { Input, Radio, Select, Form } from "@/components/ui/form";
-import {
-  experienceOptions,
-  jobCategoryOptions,
-} from "@/constants/mainContents";
+import { Input, Radio, Select, Form, Label } from "@/components/ui/form";
+
 import { Camera } from "lucide-react";
+import {
+  educationOptions,
+  stateOptions,
+  experienceOptions,
+} from "../../constants/mainContents";
+import { Button } from "@radix-ui/themes";
 
 const ProfilePost = () => {
   //이미지 클릭하면 넣을수 있게 urldb
@@ -23,7 +26,7 @@ const ProfilePost = () => {
             <Camera className="absolute text-black right-0" />
           </div>
 
-          <div>
+          <div className="flex flex-row items-center gap-x-[10px]">
             <div>
               <span>이름</span>
             </div>
@@ -37,25 +40,41 @@ const ProfilePost = () => {
             ></Input>
           </div>
 
-          <div>
-            <div>
-              <span>직무</span>
-            </div>
-            job
-            <Select options={jobCategoryOptions}></Select>
+          <div className="flex flex-row items-center gap-x-[10px]">
+            <div>직무</div>
+            <Select></Select>
             <Select></Select>
           </div>
 
-          <div>
+          <div className="flex flex-row items-center gap-x-[10px]">
+            <Label>경력</Label>
             <Radio options={experienceOptions}></Radio>
           </div>
-          <div>
-            <Select></Select>
-            <Select></Select>
+
+          <div className="flex items-center flex-row gap-x-[10px]">
+            <Label className="w-[143px]">학력</Label>
+            <Select
+              className="w-[169px]"
+              registration={register("edu")}
+              options={educationOptions}
+            ></Select>
+            <Select
+              options={stateOptions}
+              registration={register("state")}
+            ></Select>
+            <div className="flex flex-row justify-center gap-x-[10px]">
+              <Input className="w-[142px]  "></Input>
+              <Input className="w-[142px] "></Input>
+            </div>
+          </div>
+
+          <div className=" items-baseline mt-[140px] flex flex-row ">
+            <Label className="w-[143px]">희망기업</Label>
+            <Input></Input>
           </div>
 
           <div>
-            <Select></Select>
+            <Button></Button>
           </div>
         </>
       )}

@@ -31,7 +31,11 @@ export const FieldWrapper = (props: FieldWrapperProps) => {
         <div className="mt-1 ">{children}</div>
       </Label>
       <div className="flex justify-between">
-        <Error errorMessage={error?.message || "⠀"} />
+        {error?.message ? (
+          <Error errorMessage={error?.message || "⠀"} />
+        ) : (
+          <div /> // 또는 <span />로 공간 차지하지 않게
+        )}
         {showLink && (
           <Link className="pt-[5px] text-[10px] underline" to="forgot-password">
             비밀번호 찾기

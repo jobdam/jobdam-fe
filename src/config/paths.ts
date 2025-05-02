@@ -60,11 +60,20 @@ export const paths = {
   },
 
   mypage: {
+    me: {
+      path: "/mypage",
+    },
     postdata: {
       path: "/post-profile",
     },
     editdata: {
       path: "",
+    },
+    feedback: {
+      path: "/mypage/feedback",
+    },
+    resume: {
+      path: "/mypage/resume",
     },
   },
   videochat: {
