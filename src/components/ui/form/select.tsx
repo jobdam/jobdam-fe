@@ -8,7 +8,7 @@ import { cn } from "@/utils/cn";
 import { FieldWrapper, FieldWrapperPassThroughProps } from "./field-wrapper";
 
 type Option = {
-  label: React.ReactNode;
+  label: React.ReactNode | string;
   value: string | number;
 };
 
@@ -42,7 +42,13 @@ export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
 
     return (
       // <FieldWrapper label={label} error={error}>
-      <div className={cn("w-[200px]", className)} ref={ref}>
+      <div
+        className={cn(
+          "w-[200px] flex items-center justify-center relative",
+          className
+        )}
+        ref={ref}
+      >
         <div
           className="flex items-center justify-between w-full h-[50px] px-4 rounded-md bg-white border border-gray-300 cursor-pointer"
           onClick={() => setIsOpen((prev) => !prev)}
