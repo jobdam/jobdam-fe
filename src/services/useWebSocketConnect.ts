@@ -33,11 +33,11 @@ export const useWebSocketConnect = (connect: boolean) => {
       //연결이 안되어 있으면 연결시도.
       const accessToken = localStorage.getItem("accessToken");
       const sockjs = new SockJS(`${apiUrl}/ws`);
-
+      console.log(accessToken);
       const client = new Client({
         webSocketFactory: () => sockjs,
         connectHeaders: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6IkFDQ0VTU19UT0tFTiIsInVzZXJJZCI6NSwiaWF0IjoxNzQ2MTU3NTI3LCJleHAiOjE3NDYyNDM5Mjd9.rYbJBrmwauk87Ni7jHkyLPbKyyjxhWj2p_xUcdS44hs`,
+          Authorization: `Bearer ${accessToken}`,
         },
         reconnectDelay: 0,
         onConnect: () => {
