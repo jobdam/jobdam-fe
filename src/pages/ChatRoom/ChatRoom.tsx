@@ -1,6 +1,12 @@
 /** @format */
-import React from "react";
+import React, { useEffect } from "react";
 import { Send } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { AppDispatch } from "@/store";
+import { setDestination } from "@/store/slices/websockets";
+import { paths } from "@/config/paths";
+import { useWebSocketConnect } from "@/services/useWebSocketConnect";
 
 const ChatRoom = () => {
   const messages = [
@@ -19,8 +25,30 @@ const ChatRoom = () => {
       isMe: true,
     },
   ];
+
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
+  const enterSignalRoom = (roomId: number) => {
+    // ① purpose 를 'signal' 로 바꾸고
+    dispatch(setDestination(`/user/queue/signal/${roomId}`));
+    // ③ /video/방번호 로 페이지 전환
+    navigate(paths.videochat.main.getHref(roomId));
+  };
+
   return (
     <div className="flex flex-col h-screen">
+      <div className="flex gap-2">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <button
+            key={i}
+            className="px-4 py-2 bg-blue-500 text-white rounded"
+            onClick={() => enterSignalRoom(i)}
+          >
+            방 {i} 입장
+          </button>
+        ))}
+      </div>
       {/* 헤더 */}
       <header className="h-16 bg-gray-800 text-white flex items-center px-4 shadow-md">
         <h1 className="text-lg font-semibold">채팅방</h1>

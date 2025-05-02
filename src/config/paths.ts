@@ -69,7 +69,11 @@ export const paths = {
   },
   videochat: {
     main: {
-      path: "/videochat",
+      path: "/videoChat/:roomId",
+      getHref: (roomId?: string | number) =>
+        roomId != null
+          ? `/videoChat/${encodeURIComponent(roomId.toString())}`
+          : "/",
     },
   },
 };
