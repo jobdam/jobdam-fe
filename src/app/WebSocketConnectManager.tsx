@@ -1,4 +1,5 @@
-import { useWebSocketConnect } from "@/services/useWebSocketConnect";
+/** @format */
+import { useWebSocketConnect } from "@/services/webSockect/useWebSocketConnect";
 import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router";
 

@@ -1,12 +1,14 @@
 /** @format */
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Send } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { AppDispatch } from "@/store";
 import { setDestination } from "@/store/slices/websockets";
 import { paths } from "@/config/paths";
-import { useWebSocketConnect } from "@/services/useWebSocketConnect";
+import { useWebSocketConnect } from "@/services/webSockect/useWebSocketConnect";
+import { useWebSocketSubscribe } from "@/services/webSockect/useWebSocketSubscribe";
+import { IMessage } from "@stomp/stompjs";
 
 const ChatRoom = () => {
   const messages = [
@@ -26,15 +28,23 @@ const ChatRoom = () => {
     },
   ];
 
-  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   const enterSignalRoom = (roomId: number) => {
-    // ① purpose 를 'signal' 로 바꾸고
-    dispatch(setDestination(`/user/queue/signal/${roomId}`));
-    // ③ /video/방번호 로 페이지 전환
     navigate(paths.videochat.main.getHref(roomId));
   };
+
+  const handleMessage = useCallback((msg: IMessage) => {
+    const data = JSON.parse(msg.body);
+    console.log("📩 수신된 채팅 메시지:", data);
+
+    // TODO: 상태로 추가하거나 Redux dispatch 가능
+  }, []);
+
+  useWebSocketSubscribe({
+    destination: `/topic/chat/1`,
+    onMessage: handleMessage,
+  });
 
   return (
     <div className="flex flex-col h-screen">
