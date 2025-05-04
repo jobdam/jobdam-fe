@@ -11,7 +11,7 @@ import { cn } from "@/utils/cn";
 
 type LayoutProps = {
   children: React.ReactNode;
-  title: string;
+  title?: string;
   subtitle?: string;
   className?: React.ReactNode;
 };
@@ -25,7 +25,7 @@ export const AuthLayout = ({
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
 
-//auth 에서 useUser를 하면 내정보를 불러오고, 
+  //auth 에서 useUser를 하면 내정보를 불러오고,
   const navigate = useNavigate();
   // const user = useUser();
 
@@ -51,7 +51,7 @@ export const AuthLayout = ({
       <div className="flex min-h-screen justify-center items-center">
         <div
           className={cn(
-            "w-[588px] h-[600px]  shadow rounded px-16 py-[40px]",
+            "w-[588px] h-[600px] rounded px-16 py-[40px]",
             className
           )}
         >

@@ -9,6 +9,7 @@ import { setConnected } from "@/store/slices/websockets";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
+//클라이언트 연결정보 참조
 let globalClientRef: Client | null = null;
 export const getWebSocketClient = () => globalClientRef;
 

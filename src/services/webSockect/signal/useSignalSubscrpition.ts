@@ -10,7 +10,6 @@ import { useSignalPublisher } from "./useSignalPublisher";
 // 시그널 메시지 타입
 export type SignalMessage =
   | { signalType: "JOIN_LIST"; userIdList: number[] }
-  | { signalType: "JOIN_ONE"; userId: number }
   | { signalType: "OFFER" | "ANSWER"; senderId: number; sdp: string }
   | {
       signalType: "CANDIDATE";

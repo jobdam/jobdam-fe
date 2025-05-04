@@ -1,6 +1,7 @@
 /** @format */
 
 import { usePeerMap } from "@/services/webSockect/signal/usePeerMap";
+import { useSignalHandler } from "@/services/webSockect/signal/useSignalHandler";
 import { useSignalPublisher } from "@/services/webSockect/signal/useSignalPublisher";
 import {
   SignalMessage,
@@ -16,6 +17,18 @@ const Videomain = () => {
   const { createPeerConnection, clearAll } = usePeerMap();
   //시그널 전송 훅훅
   const { sendSignal } = useSignalPublisher();
+  //시그널 받을때 핸들
+  const { handleOffer, handleAnswer, handleCandidate } = useSignalHandler(
+    (to: number, answer: RTCSessionDescriptionInit) => {
+      sendSignal({
+        //offer를 받았을때만 answer콜백으로 응답한다.
+        signalType: "ANSWER",
+        receiverId: to,
+        roomId: roomId!,
+        signal: { sdp: answer.sdp! },
+      });
+    }
+  );
   useEffect(() => {
     if (!roomId) {
       navigate(-1);
@@ -66,36 +79,31 @@ const Videomain = () => {
       },
     });
   };
-
+  //////////////////////////////////
   //구독시 시그널서버로 peer정보주고 받는곳
   const handleSignal = useCallback(async (data: SignalMessage) => {
     switch (data.signalType) {
-      case "JOIN_ONE": //여긴offer를보내는곳
-        await createPeerAndSendOffer(data.userId);
-        break;
       case "JOIN_LIST": //여긴offer를보내는곳
+        console.log("Adfadfad");
         for (const userId of data.userIdList) {
           await createPeerAndSendOffer(userId);
         }
         break;
       case "OFFER": //offer를받는다면
-        const senderId = data.senderId;
-        const sdp = data.signal?.sdp;
-        if (!sdp) return;
-        await handleOffer({ type: "offer", sdp }, senderId);
+        await handleOffer({ sdp: data.sdp, type: "offer" }, data.senderId);
         break;
       case "ANSWER": //answer를받는다면
-        const senderId = data.senderId;
-        const sdp = data.signal?.sdp;
-        if (!sdp) return;
-        await handleAnswer({ type: "answer", sdp }, senderId);
+        await handleAnswer({ sdp: data.sdp, type: "answer" }, data.senderId);
         break;
       case "CANDIDATE": //candidate를받는다면
-        const senderId = data.senderId;
-        const candidateData = data.signal;
-        if (!candidateData) return;
-
-        await handleCandidate(candidateData, senderId);
+        await handleCandidate(
+          {
+            candidate: data.candidate,
+            sdpMLineIndex: data.sdpMLineIndex,
+            sdpMid: data.sdpMid,
+          },
+          data.senderId
+        );
         break;
     }
   }, []);
