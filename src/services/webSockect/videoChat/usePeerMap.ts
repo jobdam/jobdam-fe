@@ -1,7 +1,10 @@
 /** @format */
 import { useRef, useCallback } from "react";
 
-export const usePeerMap = () => {
+export const usePeerMap = (
+  addRemoteStream: (id: number, stream: MediaStream) => void,
+  removeRemoteStream: (id: number) => void
+) => {
   const peerMapRef = useRef<Map<number, RTCPeerConnection>>(new Map());
 
   // peerConnection 생성 및 저장
@@ -42,9 +45,18 @@ export const usePeerMap = () => {
         if (["disconnected", "failed", "closed"].includes(pc.connectionState)) {
           pc.close();
           peerMapRef.current.delete(targetUserId);
+          removeRemoteStream(targetUserId);
         }
       };
 
+      //화면송출을 위한 트랙설정.(훅에저장)
+      pc.ontrack = (event) => {
+        const [remoteStream] = event.streams;
+        if (remoteStream) {
+          addRemoteStream(targetUserId, remoteStream);
+        }
+      };
+      console.log("peer생성후 저장?", targetUserId, pc);
       peerMapRef.current.set(targetUserId, pc);
       return pc;
     },
