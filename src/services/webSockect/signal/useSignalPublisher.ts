@@ -2,22 +2,19 @@
 
 import { getWebSocketClient } from "../useWebSocketConnect";
 
-export type SignalType = "OFFER" | "ANSWER" | "CANDIDATE";
-
 interface BasePayload {
-  type: SignalType;
   receiverId: number;
   roomId: string | number;
 }
 interface SdpSignalPayload extends BasePayload {
-  type: "OFFER" | "ANSWER";
+  signalType: "OFFER" | "ANSWER";
   signal: {
     sdp: string;
   };
 }
 
 interface CandidateSignalPayload extends BasePayload {
-  type: "CANDIDATE";
+  signalType: "CANDIDATE";
   signal: {
     candidate: string;
     sdpMid: string;
@@ -56,12 +53,12 @@ export const useSignalPublisher = () => {
       return;
     }
 
-    const { type, receiverId, roomId, signal } = payload;
+    const { signalType, receiverId, roomId, signal } = payload;
 
-    const destination = `/app/signal/${type.toLowerCase()}/${roomId}`;
+    const destination = `/app/signal/${signalType.toLowerCase()}/${roomId}`;
 
     const message = {
-      signalType: type,
+      signalType: signalType,
       receiverId: receiverId,
       ...signal,
     };

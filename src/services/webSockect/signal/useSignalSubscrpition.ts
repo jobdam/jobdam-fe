@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { IMessage } from "@stomp/stompjs";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { getWebSocketClient } from "../useWebSocketConnect";
 import { useSignalPublisher } from "./useSignalPublisher";
