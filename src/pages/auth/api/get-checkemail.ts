@@ -5,16 +5,16 @@ import { useQuery, queryOptions } from "@tanstack/react-query";
 import { User } from "@/types/api";
 import { QueryConfig } from "@/lib/react-query";
 
-export const getcheckemail = async (email) => {
-  return api.get("/email-check", { params: { email } });
+export const getcheckemail = (email: string) => {
+  return api.get("/check-email", { params: { email } });
 };
 
 export const getCheckEmailQuery = (email: string) => {
   return queryOptions({
-    queryKey: ["email-check", email],
+    queryKey: ["check-email", email],
     queryFn: () => getcheckemail(email),
-    staleTime: 0, // 바로바로 요청
     enabled: false,
+    staleTime: 0, // 바로바로 요청
     gcTime: 0, // 캐시 유지 안 함
   });
 };
@@ -26,7 +26,8 @@ type useCheckOptions = {
 
 export const useCheckEmail = ({ email, queryConfig }: useCheckOptions) => {
   return useQuery({
-    ...getCheckEmailQuery(email),
     ...queryConfig,
+
+    ...getCheckEmailQuery(email),
   });
 };

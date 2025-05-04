@@ -8,72 +8,94 @@ import { registerInputSchema, useRegister } from "@/lib/auth";
 import { Check } from "lucide-react";
 import * as React from "react";
 import { useCheckEmail } from "./api/get-checkemail";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext, useWatch } from "react-hook-form";
 import { useVerifyEmail } from "../emailverify/api/get-emailverify";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type RegisterFormProps = {
   onSuccess: () => void;
 };
 
 const SignUp = ({ onSuccess }: RegisterFormProps) => {
-  const { getValues } = useForm({
+  const form = useForm({
+    resolver: zodResolver(registerInputSchema),
+
     defaultValues: {
-      email: "", // 이메일 필드의 초기값 설정
+      email: "",
+      password: "",
+      agreeAll: false,
+      agreeTerms: false,
+      agreePrivacy: false,
+      agreeAge: false,
+      agreeJobDam: false,
     },
   });
 
   //email verify하기
 
-  console.log(data?.data.isDuplicate);
+  const email = form.watch("email");
 
-  const [allChecked, setAllChecked] = React.useState(false);
-
-  const [agreeTerms, setAgreeTerms] = React.useState(false);
-  const [agreePrivacy, setAgreePrivacy] = React.useState(false);
-  const [agreeAge, setAgreeAge] = React.useState(false);
-  const [agreeJobDam, setAgreeJobDam] = React.useState(false);
+  const agreeAll = form.watch("agreeAll");
+  const agreeTerms = form.watch("agreeTerms");
+  const agreePrivacy = form.watch("agreePrivacy");
+  const agreeAge = form.watch("agreeAge");
+  const agreeJobDam = form.watch("agreeJobDam");
 
   React.useEffect(() => {
-    if (allChecked) {
-      setAgreeTerms(true);
-      setAgreePrivacy(true);
-      setAgreeAge(true);
-      setAgreeJobDam(true);
+    if (agreeTerms && agreePrivacy && agreeAge) {
+      form.setValue("agreeAll", true, { shouldValidate: true }); // 전체동의 체크
     } else {
-      setAgreeTerms(false);
-      setAgreePrivacy(false);
-      setAgreeAge(false);
-      setAgreeJobDam(false);
+      form.setValue("agreeAll", false); // 하나라도 체크되지 않으면 전체동의 해제
     }
-  }, [allChecked]);
+  }, [agreeTerms, agreePrivacy, agreeAge]);
 
-  
-  const { refetch, data } = useCheckEmail({getValues("email")});
+  const {
+    refetch,
+    data,
+    isError: checkError,
+    isFetching,
+    isFetched,
+  } = useCheckEmail({ email: email, queryConfig: { enabled: false } });
+  console.log(data?.data.isDuplicate, checkError, isFetched);
 
   const registering = useRegister({ onSuccess });
-  const { refetch: verifyRefetch } = useVerifyEmail({});
+  const { refetch: verifyRefetch, isError } = useVerifyEmail({});
 
   return (
     <Form
       onSubmit={(values) => {
-
         //회원가입 db에 넣기
-        registering.mutate(values);
-        //이메일 인증을 가입할때 곱바로 시행한다.
-        verifyRefetch();
-      }}
-      schema={registerInputSchema}
-      options={{
-        shouldUnregister: true,
-      }}
-    >
-      {({ register, formState }) => {
-        // 여기에 axios or react-query mutation으로 중복 확인 요청
+        console.log(email);
+        values.email, values.password;
 
+        //agreeTerms,agreePrivacy,agreeAgre
+        //회원가입 완료는 모든 것이 체크되어있어야하며, 중복확인이 완료된 상태여야한다.
+        if (agreeAll && data?.data.isDuplicate) {
+          console.log("실행되면안돼");
+          registering.mutate({
+            email: values.email,
+            password: values.password,
+          });
+          //이메일 인증을 가입할때 곱바로 시행한다.
+
+          // verifyRefetch();
+        }
+      }}
+      form={form}
+      // schema={
+      // options={{
+      //   shouldUnregister: true,
+      // }}
+    >
+      {({ register, formState, watch }) => {
+        // 여기에 axios or react-query mutation으로 중복 확인 요청
+        // console.log(watch("email"));
+
+        console.log(agreeAll, "agreeall");
         return (
           <>
             <div className="flex flex-col mb-[10px] text-left">
-              <div className="flex items-center">
+              <div className="flex items-center ">
                 <Input
                   type="email"
                   label="이메일"
@@ -82,22 +104,36 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
                   error={formState.errors["email"]}
                   registration={register("email")}
                 />
-                <button
-onClick={async () => refetch()}                
-className="whitespace-nowrap underline px-4 shadow-none bg-white cursor-pointer"
-                >
-                  중복확인
-                </button>
-                {data?.data.isDuplicate ? (
-                  <div className="flex min-w-[100px] relative right-50">
-                    <Check className="mt-[2px]" strokeWidth="1"></Check>
-                    <span className=" text-[16px] text-[rgba(0,0,0,0.50)] leading-[30px] font-medium ">
-                      사용 가능
-                    </span>
-                  </div>
-                ) : (
-                  ""
-                )}
+                <div className="mt-[23px] ">
+                  {/* gap-y-[10px] */}
+                  <button
+                    type="button"
+                    onClick={() => refetch()}
+                    className="whitespace-nowrap underline px-4 shadow-none bg-white cursor-pointer"
+                  >
+                    중복확인
+                  </button>
+                </div>
+                {/* //ifetched가 true일때만 보이도록 */}
+                {isFetched &&
+                  (!data?.data.isDuplicate ? (
+                    <div className="flex min-w-[100px]  relative right-50">
+                      <Check className="mt-[2px]" strokeWidth="1"></Check>
+                      <span className=" text-[16px] text-[rgba(0,0,0,0.50)] leading-[30px] font-medium ">
+                        사용 가능
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex min-w-[100px] relative right-50">
+                      <Check
+                        className="mt-[2px] text-[red]"
+                        strokeWidth="1"
+                      ></Check>
+                      <span className=" text-[16px] text-[red] leading-[30px] font-medium ">
+                        사용 불가
+                      </span>
+                    </div>
+                  ))}
               </div>
 
               <Input
@@ -119,26 +155,45 @@ className="whitespace-nowrap underline px-4 shadow-none bg-white cursor-pointer"
               <div className="flex  mt-[40px] gap-[15px] flex-col">
                 <div className="flex flex-row">
                   <Checkbox
-                    checked={allChecked}
-                    onCheckedChange={(checked) =>
-                      setAllChecked(Boolean(checked))
-                    }
+                    label="전체동의"
+                    error={formState.errors["agreeAll"]}
+                    checked={agreeAll}
+                    onCheckedChange={(checked) => {
+                      const value = Boolean(checked);
+
+                      // form.setValue("agreeAll", value, {
+                      //   shouldValidate: true,
+                      // }); // ✅ 이거 빠지면 에러 안 사라짐
+
+                      form.setValue("agreeTerms", value, {
+                        shouldValidate: true,
+                      });
+                      form.setValue("agreePrivacy", value, {
+                        shouldValidate: true,
+                      });
+                      form.setValue("agreeAge", value, {
+                        shouldValidate: true,
+                      });
+                      form.setValue("agreeJobDam", value); // 선택 항목은 검증 X
+                    }}
                     className=" rounded-[5px] border-[1px] bg-[rgba(0,0,0,0.05)] border-[rgba(0,0,0,0.30)]"
                   ></Checkbox>
-                  <div className="flex flex-col gap-[5px]">
-                    <Label className="text-[16px] text-[black] font-medium">
-                      전체 동의
-                    </Label>
+                  {/* <div className="flex flex-col">
+                   
                     <span className="text-[#B2B2B2] text-[14px] font-normal">
                       위치기반 서비스 이용약관(선택), 마케팅 정보 수신
                       동의(이메일,SMS/MMS)(선택) 동의를 포함합니다.
                     </span>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="flex flex-row">
                   <Checkbox
                     checked={agreeAge}
-                    onCheckedChange={(checked) => setAgreeAge(Boolean(checked))}
+                    onCheckedChange={(checked) =>
+                      form.setValue("agreeAge", Boolean(checked), {
+                        shouldValidate: true,
+                      })
+                    }
                     className=" rounded-[5px] border-[1px] bg-[rgba(0,0,0,0.05)] border-[rgba(0,0,0,0.30)]"
                   ></Checkbox>
                   <Label className="text-[14px] text-[black] font-medium">
@@ -149,7 +204,9 @@ className="whitespace-nowrap underline px-4 shadow-none bg-white cursor-pointer"
                   <Checkbox
                     checked={agreeTerms}
                     onCheckedChange={(checked) =>
-                      setAgreeTerms(Boolean(checked))
+                      form.setValue("agreeTerms", Boolean(checked), {
+                        shouldValidate: true,
+                      })
                     }
                     className=" rounded-[5px] border-[1px] bg-[rgba(0,0,0,0.05)] border-[rgba(0,0,0,0.30)]"
                   ></Checkbox>
@@ -164,7 +221,9 @@ className="whitespace-nowrap underline px-4 shadow-none bg-white cursor-pointer"
                   <Checkbox
                     checked={agreePrivacy}
                     onCheckedChange={(checked) =>
-                      setAgreePrivacy(Boolean(checked))
+                      form.setValue("agreePrivacy", Boolean(checked), {
+                        shouldValidate: true,
+                      })
                     }
                     className=" rounded-[5px] border-[1px] bg-[rgba(0,0,0,0.05)] border-[rgba(0,0,0,0.30)]"
                   ></Checkbox>
@@ -180,7 +239,7 @@ className="whitespace-nowrap underline px-4 shadow-none bg-white cursor-pointer"
                   <Checkbox
                     checked={agreeJobDam}
                     onCheckedChange={(checked) =>
-                      setAgreeJobDam(Boolean(checked))
+                      form.setValue("agreeJobDam", Boolean(checked))
                     }
                     className=" rounded-[5px] border-[1px] bg-[rgba(0,0,0,0.05)] border-[rgba(0,0,0,0.30)]"
                   ></Checkbox>

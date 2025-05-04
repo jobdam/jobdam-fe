@@ -12,7 +12,11 @@ const apiUrl = import.meta.env.VITE_API_URL;
 // api 요청을 할때 interceptor 요청을 가로채기하여 이과정을 먼저 수행해서 통과되어야 한다.
 function authRequestInterceptor(config: InternalAxiosRequestConfig) {
   //요청 가로채기할때 항상 토큰을 사용, 로그인이 필요 없는 영역도 존재
+  const token = getAccessToken();
 
+  if (token) {
+    config.headers.Authorization = token;
+  }
   if (config.headers) {
     config.headers.Accept = "application/json";
   }
