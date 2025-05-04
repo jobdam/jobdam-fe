@@ -5,11 +5,12 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import progressReducer from "./slices/progress";
 import notificationReducer from "./slices/notifications";
-
+import selectReducer from "./slices/select";
 export const store = configureStore({
   reducer: {
     progress: progressReducer,
     notifications: notificationReducer,
+    selects: selectReducer,
   },
 });
 

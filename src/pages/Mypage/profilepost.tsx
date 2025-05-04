@@ -2,6 +2,7 @@
 
 import { Input, Radio, Select, Form, Label } from "@/components/ui/form";
 
+import * as React from "react";
 import { Camera } from "lucide-react";
 import {
   educationOptions,
@@ -11,18 +12,58 @@ import {
 import { Button } from "@radix-ui/themes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useJobCategory } from "./api/get-jobcategory";
+import { Controller } from "react-hook-form";
+import { useSelector } from "react-redux";
 
 const ProfilePost = () => {
   //이미지 클릭하면 넣을수 있게 urldb
-
+  const code = useSelector((state: RootState) => state.selects.selected); // Redux에서 selected 값 가져오기
+  const { data } = useJobCategory({});
+  const jobGroups = data?.data ?? [];
   const form = useForm({
     resolver: zodResolver({}),
-
     defaultValues: {
-      email: "",
-      password: "",
+      jobCode: "",
+      jobDetailCode: "",
     },
   });
+  const jobCode = form.watch("jobCode");
+
+  React.useEffect(() => {
+    if (jobGroups.length > 0) {
+      form.reset({
+        jobCode: jobGroups[0].jobCode,
+        jobDetailCode: jobGroups[0].details?.[0]?.jobDetailCode ?? "",
+        // 다른 필드도 필요 시 설정
+      });
+    }
+  }, [jobGroups]);
+
+  React.useEffect(() => {
+    if (!jobCode) return;
+
+    const selectedGroup = jobGroups.find((group) => group.jobCode === jobCode);
+
+    const firstDetailCode = selectedGroup?.details?.[0]?.jobDetailCode;
+    const firstJobCode = jobGroups[0].jobCode;
+    if (firstDetailCode) {
+      form.setValue("jobDetailCode", firstDetailCode);
+    } else {
+      form.setValue("jobDetailCode", ""); // 해당 그룹에 detail이 없는 경우 초기화
+    }
+    if (firstJobCode) {
+      form.setValue("jobCode", firstJobCode);
+    } else {
+      form.setValue("jobCode", "");
+    }
+  }, [jobCode, jobGroups]);
+
+  const jobGroup = jobGroups.find((group) => group.jobCode === jobCode);
+  const jobDetails = jobGroup?.details ?? [];
+
+  //데이터정리 jobGroup에서 시작하고 jobgroup에 해당하는 디테일이
+  //옆 select에 뜨도록
   return (
     <Form
       form={form}
@@ -30,7 +71,7 @@ const ProfilePost = () => {
         console.log(value);
       }}
     >
-      {({ register, formState }) => (
+      {({ register, formState, control }) => (
         <>
           <div>
             <div className="relative w-[170px] rounded-full h-[170px] bg-[#D9D9D9]"></div>
@@ -53,8 +94,31 @@ const ProfilePost = () => {
 
           <div className="flex flex-row items-center gap-x-[10px]">
             <div>직무</div>
-            <Select></Select>
-            <Select></Select>
+            <Controller
+              name="jobCode"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  labelkey="jobCode"
+                  valuekey="jobGroup"
+                  onChange={field.onChange}
+                  options={jobGroups}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="jobDetailCode"
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  options={jobDetails}
+                  labelkey="jobDetailCode"
+                  valuekey="jobDetail"
+                />
+              )}
+            />{" "}
           </div>
 
           <div className="flex flex-row items-center gap-x-[10px]">
@@ -64,15 +128,30 @@ const ProfilePost = () => {
 
           <div className="flex items-center flex-row gap-x-[10px]">
             <Label className="w-[143px]">학력</Label>
-            <Select
-              className="w-[169px]"
-              registration={register("edu")}
-              options={educationOptions}
-            ></Select>
-            <Select
-              options={stateOptions}
-              registration={register("state")}
-            ></Select>
+            <Controller
+              name="edu"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  className="w-[169px]"
+                  value={field.value}
+                  onChange={field.onChange}
+                  options={educationOptions}
+                />
+              )}
+            />
+
+            <Controller
+              name="state"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onChange={field.onChange}
+                  options={stateOptions}
+                />
+              )}
+            />
             <Input className="w-[142px]  "></Input>
             <Input className="w-[142px] "></Input>
           </div>

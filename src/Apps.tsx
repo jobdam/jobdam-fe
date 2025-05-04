@@ -8,6 +8,7 @@ import {
   Routes,
   useNavigate,
 } from "react-router-dom";
+
 import { Select } from "./components/ui/form/select";
 import LoggedOutHeader from "./components/common/header/LoggedOutHeader";
 import { Checkbox, Radio, Textarea } from "./components/ui/form/index";
@@ -66,7 +67,6 @@ function Apps() {
       <Button>
         <Link to="/termsAgreement">이용약관</Link>
       </Button>
-      <Select options={["개발", "디자인", "기획"]} defaultValue="개발"></Select>
       <div>
         <Radio
           // className={}

@@ -15,13 +15,12 @@ function authRequestInterceptor(config: InternalAxiosRequestConfig) {
   const token = getAccessToken();
 
   if (token) {
-    config.headers.Authorization = token;
+    config.headers.Authorization = `Bearer ${token}`;
   }
   if (config.headers) {
     config.headers.Accept = "application/json";
   }
   //쿠키 자동포함
-  // console.log(config.headers.Authorization);
 
   config.withCredentials = true;
   return config;
@@ -34,7 +33,6 @@ api.interceptors.request.use(authRequestInterceptor);
 //respose 요청을 가로챈다.
 api.interceptors.response.use(
   (response) => {
-    console.log(response);
     //데이터는 바로 반환해준다.
     return response;
   },

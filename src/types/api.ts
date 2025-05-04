@@ -13,7 +13,7 @@ export type Entity<T> = {
 export type User = Entity<{
   id: number;
   email: string;
-  name: string;
+  name?: string;
   birthday?: string;
   profileImageUrl?: string;
   jobCode?: string;
