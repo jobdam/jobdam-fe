@@ -14,6 +14,12 @@ export const educationOptions = [
   { label: 4, value: "고등학교" },
 ];
 
+export const targetCompany = [
+  { label: 1, value: "대기업" },
+  { label: 2, value: "중소기업" },
+  { label: 3, value: "스타트업" },
+];
+
 export const stateOptions = [
   { label: 1, value: "졸업" },
   { label: 2, value: "입학" },

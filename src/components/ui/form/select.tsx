@@ -47,21 +47,14 @@ export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
     //   defaultValue ?? options[0]?.[labelkey] ?? ""
     // );
 
-    console.log(value, "쇼윈도에 걸친 셔츠를보면", options);
     const handleSelect = (value: string | number) => {
       onChange?.(value); // 상태는 바깥에서 관리
       setIsOpen(false);
     };
-
-    // console.log(
-    //   options.find((option) => {
-    //     console.log(option.jobCode);
-    //     return option[valuekey];
-    //   })
-    // );
     const selectedLabel =
       options.find((option) => option[labelkey] === value)?.[valuekey] ?? value;
 
+    console.log(labelkey, options);
     return (
       // <FieldWrapper label={label} error={error}>
       <div
@@ -77,7 +70,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
         </div>
 
         {isOpen && (
-          <div className="absolute left-0 top-full mt-1 w-full rounded-md bg-white border border-gray-300 shadow-md z-10">
+          <div className="absolute left-0 top-full mt-1 overflow-y-auto w-full max-h-[200px] rounded-md bg-white border border-gray-300 shadow-md z-10">
             {options.map((option, index) => (
               <div
                 defaultValue={value}

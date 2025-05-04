@@ -8,6 +8,7 @@ import {
   educationOptions,
   stateOptions,
   experienceOptions,
+  targetCompany,
 } from "../../constants/mainContents";
 import { Button } from "@radix-ui/themes";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,51 +27,46 @@ const ProfilePost = () => {
     defaultValues: {
       jobCode: "",
       jobDetailCode: "",
+      edu: "대학교(4년제)",
+      state: "졸업",
+      company: "대기업",
+      experience: "신입",
     },
   });
   const jobCode = form.watch("jobCode");
+  const jobDetailCode = form.watch("jobDetailCode");
 
   React.useEffect(() => {
     if (jobGroups.length > 0) {
       form.reset({
-        jobCode: jobGroups[0].jobCode,
+        jobCode: jobGroups[0].jobGroup,
         jobDetailCode: jobGroups[0].details?.[0]?.jobDetailCode ?? "",
         // 다른 필드도 필요 시 설정
       });
     }
   }, [jobGroups]);
 
+  // jobcode를 선택햇을때 jobdetail의 1번째 요소를 자동으로 지정해준다.
   React.useEffect(() => {
     if (!jobCode) return;
 
-    const selectedGroup = jobGroups.find((group) => group.jobCode === jobCode);
+    const selectedGroup = jobGroups.find((group) => group.jobGroup === jobCode);
+    const firstDetailCode = selectedGroup?.details[0].jobDetail;
+    console.log(firstDetailCode);
 
-    const firstDetailCode = selectedGroup?.details?.[0]?.jobDetailCode;
-    const firstJobCode = jobGroups[0].jobCode;
-    if (firstDetailCode) {
-      form.setValue("jobDetailCode", firstDetailCode);
-    } else {
-      form.setValue("jobDetailCode", ""); // 해당 그룹에 detail이 없는 경우 초기화
-    }
-    if (firstJobCode) {
-      form.setValue("jobCode", firstJobCode);
-    } else {
-      form.setValue("jobCode", "");
-    }
+    form.setValue("jobDetailCode", firstDetailCode ?? "");
   }, [jobCode, jobGroups]);
 
-  const jobGroup = jobGroups.find((group) => group.jobCode === jobCode);
+  console.log(jobCode);
+  const jobGroup = jobGroups.find((group) => group.jobGroup === jobCode);
   const jobDetails = jobGroup?.details ?? [];
+
+  console.log(jobDetails, jobGroups);
 
   //데이터정리 jobGroup에서 시작하고 jobgroup에 해당하는 디테일이
   //옆 select에 뜨도록
   return (
-    <Form
-      form={form}
-      onSubmit={(value) => {
-        console.log(value);
-      }}
-    >
+    <Form form={form} onSubmit={(value) => {}}>
       {({ register, formState, control }) => (
         <>
           <div>
@@ -113,9 +109,10 @@ const ProfilePost = () => {
               render={({ field }) => (
                 <Select
                   value={field.value}
-                  options={jobDetails}
                   labelkey="jobDetailCode"
                   valuekey="jobDetail"
+                  onChange={field.onChange}
+                  options={jobDetails}
                 />
               )}
             />{" "}
@@ -123,7 +120,17 @@ const ProfilePost = () => {
 
           <div className="flex flex-row items-center gap-x-[10px]">
             <Label>경력</Label>
-            <Radio options={experienceOptions}></Radio>
+            <Controller
+              name="experience"
+              control={control}
+              render={({ field }) => (
+                <Radio
+                  options={experienceOptions}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                />
+              )}
+            />
           </div>
 
           <div className="flex items-center flex-row gap-x-[10px]">
@@ -158,7 +165,17 @@ const ProfilePost = () => {
 
           <div className=" items-baseline mt-[140px] flex flex-row ">
             <Label className="w-[143px]">희망기업</Label>
-            <Input></Input>
+            <Controller
+              name="company"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onChange={field.onChange}
+                  options={targetCompany}
+                />
+              )}
+            />
           </div>
 
           <div>
