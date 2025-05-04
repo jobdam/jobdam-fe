@@ -14,6 +14,7 @@ import PrivacyContents from "@/constants/privacyContents";
 
 //약관동의는 로컬에서 확인만하고 넘어간다. 만약 db에 같이 넘기고싶다면 추가적인 방법 필요.
 const TermsAgreement = () => {
+  console.log("tersmagree");
   // 전체 동의 체크 시 나머지 체크박스도 true로
   const navigate = useNavigate(); // 페이지 전환을 위한 useNavigate 훅 사용
   const [agreeTerms, setAgreeTerms] = React.useState(false);

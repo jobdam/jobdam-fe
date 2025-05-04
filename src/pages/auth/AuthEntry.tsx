@@ -4,16 +4,21 @@ import { CustomImage } from "@/components/common/image/image";
 import { Form } from "@/components/ui/form";
 import { Link } from "@/components/ui/link";
 import { oauthLoginSchema } from "@/lib/auth";
-import { UseFormReturn } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, UseFormReturn } from "react-hook-form";
 
 export const AuthEntry = () => {
   //네이버 로그인(이미지), 카카오 로그인,(이미지) 이메일 로그인
+  const form = useForm({
+    resolver: zodResolver(oauthLoginSchema),
+  });
 
   //onSubmit Oauth
 
   return (
     <>
       <Form
+        form={form}
         onSubmit={(values) => {
           console.log("Oauth");
         }}

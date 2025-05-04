@@ -34,6 +34,34 @@ const loginWithEmailAndPassword = (data: LoginInput): Promise<AuthResponse> => {
 //회원가입할때 핸드폰 번호, 이메일, 핸드폰번호
 export const registerInputSchema = z
   .object({
+    agreeTerms: z
+      .boolean()
+      .default(false)
+      .refine((val) => val === true, {
+        message: "필수 약관에 동의해주세요",
+      }),
+    agreePrivacy: z
+      .boolean()
+      .default(false)
+      .refine((val) => val === true, {
+        message: "필수 약관에 동의해주세요",
+      }),
+    agreeAge: z
+      .boolean()
+      .default(false)
+      .refine((val) => val === true, {
+        message: "필수 약관에 동의해주세요",
+      }),
+    agreeAll: z
+      .boolean()
+      .default(false)
+      .refine((val) => val === true, {
+        message: "필수 약관에 동의해주세요",
+      }),
+
+    // 선택 항목은 optional (검증 X)
+    agreeJobDam: z.boolean().optional(),
+
     email: z
       .string()
       .min(1, "잘못된 이메일 형식이에요")

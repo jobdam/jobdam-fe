@@ -9,12 +9,23 @@ import {
   experienceOptions,
 } from "../../constants/mainContents";
 import { Button } from "@radix-ui/themes";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 const ProfilePost = () => {
   //이미지 클릭하면 넣을수 있게 urldb
 
+  const form = useForm({
+    resolver: zodResolver({}),
+
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
   return (
     <Form
+      form={form}
       onSubmit={(value) => {
         console.log(value);
       }}
@@ -62,10 +73,8 @@ const ProfilePost = () => {
               options={stateOptions}
               registration={register("state")}
             ></Select>
-            <div className="flex flex-row justify-center gap-x-[10px]">
-              <Input className="w-[142px]  "></Input>
-              <Input className="w-[142px] "></Input>
-            </div>
+            <Input className="w-[142px]  "></Input>
+            <Input className="w-[142px] "></Input>
           </div>
 
           <div className=" items-baseline mt-[140px] flex flex-row ">
