@@ -7,7 +7,7 @@ import {
   SignalMessage,
   useSignalSubscription,
 } from "@/services/webSockect/signal/useSignalSubscrpition";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router";
 
 const Videomain = () => {
@@ -29,11 +29,30 @@ const Videomain = () => {
       });
     }
   );
+
+  //비디오
+  const localVideoRef = useRef<HTMLVideoElement | null>(null);
   useEffect(() => {
     if (!roomId) {
       navigate(-1);
       return;
     }
+
+    const startCamera = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        });
+        if (localVideoRef.current) {
+          localVideoRef.current.srcObject = stream;
+        }
+      } catch (err) {
+        console.error("카메라 접근 실패:", err);
+      }
+    };
+    startCamera();
+
     return () => {
       clearAll(); //언마운트시 전부제거
     };
@@ -84,7 +103,6 @@ const Videomain = () => {
   const handleSignal = useCallback(async (data: SignalMessage) => {
     switch (data.signalType) {
       case "JOIN_LIST": //여긴offer를보내는곳
-        console.log("Adfadfad");
         for (const userId of data.userIdList) {
           await createPeerAndSendOffer(userId);
         }
@@ -114,7 +132,27 @@ const Videomain = () => {
     onSignal: handleSignal,
   });
 
-  return <div>여기는 비디오 메인입니다.</div>;
+  //////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////
+  ///////////////시그널 완료/////////////////////////////////////
+
+  return (
+    <div
+      style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}
+    >
+      <video
+        ref={localVideoRef}
+        autoPlay
+        playsInline
+        style={{
+          width: "320px",
+          height: "240px",
+          backgroundColor: "black",
+          borderRadius: "12px",
+        }}
+      />
+    </div>
+  );
 };
 
 export default Videomain;
