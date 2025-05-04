@@ -36,7 +36,8 @@ import { cn } from "@/utils/cn";
 // 예를 들어, TFieldValues가 { email: string, password: string }라면 TName은 email 또는 password와 같은 값을 가질 수 있습니다.
 export type FormProps<TFormValues extends FieldValues, Schema> = {
   onSubmit: SubmitHandler<TFormValues>;
-  schema: Schema;
+  form: UseFormReturn<TFormValues>;
+  schema?: Schema;
   className?: string;
   children: (methods: UseFormReturn<TFormValues>) => React.ReactNode;
   options?: UseFormProps<TFormValues>;
@@ -145,16 +146,11 @@ const Form = <
   onSubmit,
   children,
   className,
+  form,
   options,
   id,
   schema,
 }: FormProps<TFormValues, Schema>) => {
-  const form = useForm({
-    ...options,
-    resolver: zodResolver(schema),
-  });
-  console.log(id, "form");
-
   return (
     <FormProvider {...form}>
       <form

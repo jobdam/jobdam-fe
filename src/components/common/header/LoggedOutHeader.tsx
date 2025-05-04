@@ -31,6 +31,9 @@ const LoggedOutHeader = () => {
           >
             로그인
           </Link>
+          <Link className="cursor-pointer h-[20px]" to="/mypage">
+            마이페이지
+          </Link>
         </nav>
       </div>
     </header>

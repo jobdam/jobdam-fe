@@ -1,7 +1,5 @@
 /** @format */
 
-import { TermsAgreementLayout } from "@/components/layout/termsAgreement-layout";
-
 //각종 api 주소가 들어있음.
 
 //getHref = 사용자가 접근하면 안되는곳에 접근할때 redirect 하도록 만드는것.
@@ -36,8 +34,51 @@ export const paths = {
     },
   },
   interview: {
+    main: { path: "/main", getHref: "/main" },
+    register: {
+      path: "/interview/register",
+      getHref: "/interview/register",
+    },
+    matching: { path: "/interview/matching" },
+    waiting: {
+      path: "/interview/waiting",
+    },
+  },
+  chatroom: {
     main: {
-      path: "/main",
+      path: "/chatroom",
+    },
+  },
+
+  emailverify: {
+    pending: {
+      path: "/verify-email-pending",
+    },
+    verifycheck: {
+      path: "/verify-email-check",
+    },
+  },
+
+  mypage: {
+    me: {
+      path: "/mypage",
+    },
+    postdata: {
+      path: "/post-profile",
+    },
+    editdata: {
+      path: "",
+    },
+    feedback: {
+      path: "/mypage/feedback",
+    },
+    resume: {
+      path: "/mypage/resume",
+    },
+  },
+  videochat: {
+    main: {
+      path: "/videochat",
     },
   },
 };

@@ -3,13 +3,15 @@
 import { useSearchParams } from "react-router";
 
 // import { Button } from '@/components/ui/button';
-import { Form, Input, Text } from "@/components/ui/form";
+import { Form, Input } from "@/components/ui/form";
 import { paths } from "@/config/paths";
 
 import { useLogin } from "@/lib/auth";
 import { Link } from "@/components/ui/link";
 import { loginInputSchema } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 type LoginFormProps = {
   onSuccess: () => void;
 };
@@ -21,16 +23,24 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
 
+  const form = useForm({
+    resolver: zodResolver(loginInputSchema),
+
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
   return (
     <>
       <Form
+        form={form}
         onSubmit={(values) => {
-          console.log(values);
           login.mutate(values);
         }}
-        schema={loginInputSchema}
       >
-        {({ register, formState, watch }) => (
+        {({ register, formState }) => (
           <>
             {/* <h2 className="m-[80px] text-center text-3xl font-semibold ">
               회원 로그인

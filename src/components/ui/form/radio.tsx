@@ -5,39 +5,63 @@ import * as RadioPrimitive from "@radix-ui/react-radio-group";
 
 import { cn } from "@/utils/cn";
 import { cva } from "class-variance-authority";
-const RadioGroup = ({ options, className }) => {
-  const [value, setValue] = React.useState(() => options[0]?.value || "");
-  const variance = cva(
-    "h-[45px] w-[120px] border-[1px] border-[#000] shrink-0 data-[state=checked]:border-blue-500 data-[state=checked]:bg-blue-500 transition"
-  );
+import { Label } from "./label";
 
-  return (
-    <>
-      <RadioPrimitive.Root
-        className="flex flex-col gap-2.5"
-        // defaultValue={value}
-        value={value}
-        onValueChange={(val) => setValue(val)}
-        aria-label="View density"
-      >
-        <div className="flex items-center">
-          {options.map((option) => (
-            <div className="flex items-center" key={option.value}>
-              <RadioPrimitive.Item
-                className={cn(variance(), className)}
-                value={option.value}
-                id={option.value}
-              >
-                <label htmlFor={option.value} className="text-gray-800">
-                  {option.label}
-                </label>
-              </RadioPrimitive.Item>
-            </div>
-          ))}
-        </div>
-      </RadioPrimitive.Root>
-    </>
-  );
+type Option = {
+  label: string;
+  value: string;
 };
 
-export { RadioGroup };
+interface RadioGroupProps
+  extends React.ComponentPropsWithoutRef<typeof RadioPrimitive.Root> {
+  options: Option[];
+  className?: string;
+}
+
+// 글자 진하게, 테두리 있는 버튼 스타일
+const variance = cva(
+  "h-[60px] w-[150px] text-[rgba(0,0,0,0.50)] border-[1px] border-[rgba(0,0,0,0.30)] shrink-0 data-[state=checked]:border-[#000] data-[state=checked]:font-semibold  data-[state=checked]:text-[black] transition"
+);
+
+const Radio = React.forwardRef<
+  React.ComponentRef<typeof RadioPrimitive.Root>,
+  RadioGroupProps
+>(({ options, className, ...props }, ref) => {
+  const [value, setValue] = React.useState(() => options[0]?.value || "");
+
+  return (
+    <RadioPrimitive.Root
+      className={cn("flex flex-col", className)}
+      value={value}
+      onValueChange={(val) => setValue(val)}
+      ref={ref}
+      {...props}
+    >
+      <div className="flex items-center">
+        {options.map((option, index) => {
+          const isFirst = index === 0;
+          const isLast = index === options.length - 1;
+
+          return (
+            <RadioPrimitive.Item
+              key={option.value}
+              className={cn(
+                variance(),
+                isFirst && "rounded-l-[10px]",
+                isLast && "rounded-r-[10px]"
+              )}
+              value={option.value}
+              id={option.value}
+            >
+              <Label>{option.label}</Label>
+            </RadioPrimitive.Item>
+          );
+        })}
+      </div>
+    </RadioPrimitive.Root>
+  );
+});
+
+Radio.displayName = "Radio";
+
+export { Radio };
