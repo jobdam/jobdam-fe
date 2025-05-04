@@ -30,7 +30,7 @@ export const FieldWrapper = (props: FieldWrapperProps) => {
         {label}
         <div className="mt-1 ">{children}</div>
       </Label>
-      <div className="flex justify-between">
+      <div className="flex min-h-[30px] justify-between">
         {error?.message ? (
           <Error errorMessage={error?.message || "⠀"} />
         ) : (

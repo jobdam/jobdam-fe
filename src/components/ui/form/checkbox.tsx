@@ -56,34 +56,36 @@ export const Checkbox = React.forwardRef<
     ref
   ) => {
     return (
-      <div
-        className={cn(
-          "flex gap-2 items-start ",
-          interview && "flex w-[150px] items-center justify-center ",
-          progress && "flex w-[150px] items-center justify-start "
-        )}
-      >
-        <CheckBoxPrimitive.Root
+      <FieldWrapper error={error}>
+        <div
           className={cn(
-            "flex size-[25px] transition-color appearance-none items-center justify-center  bg-[#D9D9D9] rounded-full shadow-blackA4 outline-none",
-            interview &&
-              "flex size-[25px] transition-color appearance-none items-center justify-center rounded-none  bg-black outline-none  ",
-            className
+            "flex gap-2 items-start ",
+            interview && "flex w-[150px] items-center justify-center ",
+            progress && "flex w-[150px] items-center justify-start "
           )}
-          disabled={interview2}
-          // disabled={interview}
-          onCheckedChange={onCheckedChange}
-          checked={checked}
-          required
         >
-          {/* <div className="w-[1px] bg-black h-[80px]"></div> */}
+          <CheckBoxPrimitive.Root
+            className={cn(
+              "flex size-[25px] transition-color appearance-none items-center justify-center  bg-[#D9D9D9] rounded-full shadow-blackA4 outline-none",
+              interview &&
+                "flex size-[25px] transition-color appearance-none items-center justify-center rounded-none  bg-black outline-none  ",
+              className
+            )}
+            disabled={interview2}
+            // disabled={interview}
+            onCheckedChange={onCheckedChange}
+            checked={checked}
+            required
+          >
+            {/* <div className="w-[1px] bg-black h-[80px]"></div> */}
 
-          <CheckBoxPrimitive.Indicator className="text-violet11">
-            <Check className={cn(interview || (progress && "text-white"))} />
-          </CheckBoxPrimitive.Indicator>
-        </CheckBoxPrimitive.Root>
-        <Label>{label}</Label>
-      </div>
+            <CheckBoxPrimitive.Indicator className="text-violet11">
+              <Check className={cn(interview || (progress && "text-white"))} />
+            </CheckBoxPrimitive.Indicator>
+          </CheckBoxPrimitive.Root>
+          <Label>{label}</Label>
+        </div>
+      </FieldWrapper>
     );
   }
 );

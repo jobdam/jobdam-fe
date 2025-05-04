@@ -10,6 +10,8 @@ import { useLogin } from "@/lib/auth";
 import { Link } from "@/components/ui/link";
 import { loginInputSchema } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 type LoginFormProps = {
   onSuccess: () => void;
 };
@@ -21,13 +23,22 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
 
+  const form = useForm({
+    resolver: zodResolver(loginInputSchema),
+
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
   return (
     <>
       <Form
+        form={form}
         onSubmit={(values) => {
           login.mutate(values);
         }}
-        schema={loginInputSchema}
       >
         {({ register, formState }) => (
           <>
