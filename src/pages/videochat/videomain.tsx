@@ -144,6 +144,7 @@ const Videomain = () => {
         ref={localVideoRef}
         autoPlay
         playsInline
+        muted
         style={{
           width: "320px",
           height: "240px",

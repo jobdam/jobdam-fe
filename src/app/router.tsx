@@ -99,6 +99,25 @@ const createAppRouter = (queryClient: QueryClient) => {
             ),
         },
         {
+          path: paths.mypage.me.path,
+          lazy: () =>
+            import("@/app/routes/app/mypage/profile").then(
+              convert(queryClient)
+            ),
+        },
+        {
+          path: paths.mypage.resume.path,
+          lazy: () =>
+            import("@/app/routes/app/mypage/resume").then(convert(queryClient)),
+        },
+        {
+          path: paths.mypage.feedback.path,
+          lazy: () =>
+            import("@/app/routes/app/mypage/feedback").then(
+              convert(queryClient)
+            ),
+        },
+        {
           path: paths.interview.main.path,
           lazy: () =>
             import("@/app/routes/app/interview/main").then(
