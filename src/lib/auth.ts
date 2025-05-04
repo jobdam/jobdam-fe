@@ -103,7 +103,7 @@ export const authConfig = {
     const token = response.headers["authorization"].replace("Bearer ", "");
     console.log(token);
     //localstorage에 로그인
-    localStorage.setItem("accessToken", JSON.stringify(token));
+    localStorage.setItem("accessToken", token);
 
     return response.user;
   },

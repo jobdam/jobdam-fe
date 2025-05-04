@@ -7,8 +7,9 @@ const Main = () => {
   return (
     <>
       <Link to={paths.interview.register.path}>매칭 페이지</Link>
+      <br />
+      <br />
       <Link to={paths.chatroom.main.path}>채팅방</Link>
-      <Link to={paths.videochat.main.path}>비디오챗</Link>
     </>
   );
 };
