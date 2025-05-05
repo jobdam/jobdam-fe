@@ -18,27 +18,23 @@ const Videomain = () => {
 
   //내 미디어관련
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
-  //화면공유인지 상태태체크!
-  const [activeStream, setActiveStream] = useState<MediaStream | null>(null);
   //다른사람 스트림정보
-  const {
-    remoteStreams,
-    addRemoteStream,
-    removeRemoteStream,
-    clearRemoteStreams,
-  } = useRemoteStreamMap();
+  const { remoteStreams, addRemoteStream, removeRemoteStream } =
+    useRemoteStreamMap();
   //peer관리 훅
   const peerMap = usePeerMap(addRemoteStream, removeRemoteStream);
   //미디어 관련 훅
   const {
     stream,
-    screenStream,
-    toggleMic,
-    toggleCamera,
-    toggleScreenShare,
+    micTrack,
+    cameraTrack,
+    screenTrack,
     isMicOn,
     isCameraOn,
     isScreenSharing,
+    toggleMic,
+    toggleCamera,
+    toggleScreenShare,
   } = useLocalMediaStream();
 
   //시그널 전송 훅
@@ -69,18 +65,32 @@ const Videomain = () => {
   }, [roomId, navigate]);
   /////////////////////////////
 
-  // 비디오 DOM에 스트림 연결
-  //화면공유 상태체크하고
+  // 로컬 스트림을 비디오에 연결
   useEffect(() => {
-    const selected = isScreenSharing ? screenStream : stream;
-    setActiveStream(selected);
-  }, [stream, screenStream, isScreenSharing]);
-  //화면공유상태 바뀔때마다 비디오송출하는곳에 화면바꿔줌.
-  useEffect(() => {
-    if (localVideoRef.current && activeStream) {
-      localVideoRef.current.srcObject = activeStream;
+    if (localVideoRef.current) {
+      localVideoRef.current.srcObject = stream;
     }
-  }, [activeStream]);
+  }, [stream]);
+
+  // 화면 공유 또는 카메라 트랙 변경 시 replaceTrack
+  useEffect(() => {
+    const newTrack = isScreenSharing ? screenTrack : cameraTrack;
+    if (!newTrack) return;
+
+    peerMap.getAll().forEach((pc, userId) => {
+      const sender = pc.getSenders().find((s) => s.track?.kind === "video");
+      if (sender) {
+        sender
+          .replaceTrack(newTrack)
+          .then(() => {
+            console.log(`[replaceTrack][${userId}] 화면 전환 완료`);
+          })
+          .catch((err) => {
+            console.error(`[replaceTrack][${userId}] 실패`, err);
+          });
+      }
+    });
+  }, [cameraTrack, screenTrack, isScreenSharing]);
 
   //peerConnect를 만들고 상대방에게 offer를 보내는 함수
   const createPeerAndSendOffer = async (targetUserId: number) => {
@@ -108,8 +118,8 @@ const Videomain = () => {
       }
     );
     // 무조건 offer전에 스트림을 넣어줘야 sdp에 적용된다.
-    activeStream?.getTracks().forEach((track) => {
-      pc.addTrack(track, activeStream);
+    stream?.getTracks().forEach((track) => {
+      pc.addTrack(track, stream);
     });
 
     // 2. offer 생성
@@ -140,7 +150,7 @@ const Videomain = () => {
           await handleOffer(
             { sdp: data.sdp, type: "offer" },
             data.senderId,
-            activeStream!
+            stream!
           );
           break;
         case "ANSWER": //answer를받는다면
@@ -158,7 +168,7 @@ const Videomain = () => {
           break;
       }
     },
-    [activeStream]
+    [stream]
   );
 
   //구독하기
@@ -166,7 +176,7 @@ const Videomain = () => {
   useSignalSubscription({
     roomId: roomId as string,
     onSignal: handleSignal,
-    enabled: !!activeStream,
+    enabled: !!stream,
   });
   //////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////

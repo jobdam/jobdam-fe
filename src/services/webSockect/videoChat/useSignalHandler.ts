@@ -17,7 +17,6 @@ export const useSignalHandler = (
     //스트림을 추가한다(화면송출용)
     localStream.getTracks().forEach((track) => {
       pc.addTrack(track, localStream);
-      console.log("✅ B가 addTrack 완료", track);
     });
 
     //상대방에게서 온 정보를수락한다.(연결방식을 저장!)
@@ -33,9 +32,7 @@ export const useSignalHandler = (
     answer: RTCSessionDescriptionInit,
     senderId: number
   ) => {
-    console.log("✅ A setRemoteDescription(ANSWER) 완료", senderId);
     const pc = getPeer(senderId);
-    console.log("pc", pc);
     if (!pc) return;
     await pc.setRemoteDescription(new RTCSessionDescription(answer));
   };

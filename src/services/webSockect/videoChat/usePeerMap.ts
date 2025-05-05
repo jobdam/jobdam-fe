@@ -49,14 +49,15 @@ export const usePeerMap = (
         }
       };
 
-      //화면송출을 위한 트랙설정.(훅에저장)
+      //화면송출을 위한 트랙설정.(훅에저장) a가offer받을떄, answer를b가받을때실행
       pc.ontrack = (event) => {
         const [remoteStream] = event.streams;
+        console.log("asdff", event.streams);
         if (remoteStream) {
           addRemoteStream(targetUserId, remoteStream);
         }
       };
-      console.log("peer생성후 저장?", targetUserId, pc);
+
       peerMapRef.current.set(targetUserId, pc);
       return pc;
     },
@@ -65,6 +66,10 @@ export const usePeerMap = (
 
   const getPeer = useCallback((userId: number) => {
     return peerMapRef.current.get(userId) || null;
+  }, []);
+
+  const getAll = useCallback(() => {
+    return peerMapRef.current;
   }, []);
 
   const removePeer = useCallback((userId: number) => {
@@ -82,6 +87,7 @@ export const usePeerMap = (
 
   return {
     getPeer,
+    getAll,
     createPeerConnection,
     removePeer,
     clearAll,
