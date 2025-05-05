@@ -67,7 +67,7 @@ export const paths = {
       path: "/post-profile",
     },
     editdata: {
-      path: "",
+      path: "/mypage/edit",
     },
     feedback: {
       path: "/mypage/feedback",

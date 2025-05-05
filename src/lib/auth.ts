@@ -12,6 +12,7 @@ import { z } from "zod";
 
 import { api } from "./api-client";
 import { paths } from "@/config/paths";
+import { saveTokens } from "./authSerivices";
 
 //데이터를 가져올땐 userId를 가져온다.
 const getUser = async (userId: number): Promise<User> => {
@@ -103,7 +104,8 @@ export const authConfig = {
     const token = response.headers["authorization"].replace("Bearer ", "");
     console.log(token);
     //localstorage에 로그인
-    localStorage.setItem("accessToken", token);
+
+    saveTokens(token);
 
     return response.user;
   },

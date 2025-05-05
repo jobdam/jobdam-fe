@@ -6,8 +6,8 @@ import { QueryConfig } from "@/lib/react-query";
 import { queryConfig } from "@/lib/react-query";
 
 //직무 설정을 위한 데이터
-export const getJobCategory = async () => {
-  return await api.get("/");
+export const getJobCategory = () => {
+  return api.get("/jobs");
 };
 //카테고리가 쓰이는곳은(매칭 잡을때 , 프로필 설정 및 수정할때)
 //

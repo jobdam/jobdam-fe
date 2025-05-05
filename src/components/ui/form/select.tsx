@@ -6,47 +6,59 @@ import { ChevronDown } from "lucide-react"; // lucide 아이콘 또는 이미지
 import { cn } from "@/utils/cn";
 
 import { FieldWrapper, FieldWrapperPassThroughProps } from "./field-wrapper";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { setSelected } from "@/store/slices/select";
 
-type Option = {
-  label: React.ReactNode | string;
-  value: string | number;
-};
+type Option = Record<string, string>; //어떤 구조든 상관이 없음
 
 interface SelectFieldProps extends FieldWrapperPassThroughProps {
   options: Option[];
+  labelkey?: string;
+  value?: string | number; // 👈 이걸 추가
+
+  valuekey?: string;
   defaultValue?: string | number;
   className?: string;
+  onChange?: (value: string | number) => void;
+
   registration?: Partial<UseFormRegisterReturn>;
 }
 
+//여기서 선택된게 다른 select에도 영향을 준다.
 export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
   (
-    { label, options = [], defaultValue, error, className, registration },
+    {
+      label,
+      value,
+      options = [],
+      labelkey = "label",
+      valuekey = "value",
+      defaultValue,
+      onChange,
+      error,
+      className,
+      registration,
+    },
     ref
   ) => {
     const [isOpen, setIsOpen] = React.useState(false);
-    const [selected, setSelected] = React.useState<string | number>(
-      defaultValue ?? options[0]?.value ?? ""
-    );
+    // const [selected, setSelected] = React.useState<string | number>(
+    //   defaultValue ?? options[0]?.[labelkey] ?? ""
+    // );
 
     const handleSelect = (value: string | number) => {
-      setSelected(value);
+      onChange?.(value); // 상태는 바깥에서 관리
       setIsOpen(false);
-
-      // react-hook-form onChange 수동 호출
-      registration?.onChange?.({ target: { value, name: registration?.name } });
     };
-
     const selectedLabel =
-      options.find((option) => option.value === selected)?.label ?? selected;
+      options.find((option) => option[labelkey] === value)?.[valuekey] ?? value;
 
+    console.log(labelkey, options);
     return (
       // <FieldWrapper label={label} error={error}>
       <div
-        className={cn(
-          "w-[200px] flex items-center justify-center relative",
-          className
-        )}
+        className={cn("w-[200px] flex items-center relative", className)}
         ref={ref}
       >
         <div
@@ -58,14 +70,15 @@ export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
         </div>
 
         {isOpen && (
-          <div className="absolute left-0 top-full mt-1 w-full rounded-md bg-white border border-gray-300 shadow-md z-10">
+          <div className="absolute left-0 top-full mt-1 overflow-y-auto w-full max-h-[200px] rounded-md bg-white border border-gray-300 shadow-md z-10">
             {options.map((option, index) => (
               <div
-                key={index}
+                defaultValue={value}
+                key={Number(option[labelkey])}
                 className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
-                onClick={() => handleSelect(option.value)}
+                onClick={() => handleSelect(option[valuekey])}
               >
-                {option.label}
+                {option[valuekey]}
               </div>
             ))}
           </div>

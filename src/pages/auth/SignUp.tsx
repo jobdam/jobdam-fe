@@ -23,11 +23,11 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
     defaultValues: {
       email: "",
       password: "",
-      agreeAll: false,
-      agreeTerms: false,
-      agreePrivacy: false,
-      agreeAge: false,
-      agreeJobDam: false,
+      // agreeAll: false,
+      // agreeTerms: false,
+      // agreePrivacy: false,
+      // agreeAge: false,
+      // agreeJobDam: false,
     },
   });
 
