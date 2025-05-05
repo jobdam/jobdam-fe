@@ -7,6 +7,7 @@ import progressReducer from "./slices/progress";
 import notificationReducer from "./slices/notifications";
 import selectReducer from "./slices/select";
 import websocketReducer from "./slices/websockets";
+import uiReducer from "./slices/uistate";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     notifications: notificationReducer,
     selects: selectReducer,
     websocket: websocketReducer,
+    ui: uiReducer,
   },
 });
 
