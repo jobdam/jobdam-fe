@@ -104,7 +104,9 @@ export const authConfig = {
     const token = response.headers["authorization"].replace("Bearer ", "");
     console.log(token);
     //localstorage에 로그인
+
     saveTokens(token);
+
     return response.user;
   },
   registerFn: async (data: RegisterInput) => {
