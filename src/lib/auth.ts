@@ -12,7 +12,7 @@ import { z } from "zod";
 
 import { api } from "./api-client";
 import { paths } from "@/config/paths";
-import { saveTokens } from "./authSerivices";
+import { clearTokens, saveTokens } from "./authSerivices";
 
 //데이터를 가져올땐 userId를 가져온다.
 const getUser = async (userId: number): Promise<User> => {
@@ -22,7 +22,7 @@ const getUser = async (userId: number): Promise<User> => {
   return response.data;
 };
 
-//로그아웃
+//로그아웃 할때 로컬제거, 쿠키 제거
 const logout = (): Promise<void> => {
   return api.post("/logout");
 };
@@ -116,7 +116,14 @@ export const authConfig = {
 
     return response.user;
   },
-  logoutFn: logout,
+  logoutFn: async () => {
+    await logout();
+    //로그아웃에 성공하면 token제거,
+
+    clearTokens();
+
+    window.location.href = "/login";
+  },
 };
 
 //로그인에 성공했을때 이메일 인증을 보낸다.
