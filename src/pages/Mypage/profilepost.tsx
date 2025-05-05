@@ -7,8 +7,8 @@ import { Camera } from "lucide-react";
 import {
   educationOptions,
   stateOptions,
-  experienceOptions,
   targetCompany,
+  experienceOptions,
 } from "../../constants/mainContents";
 import { Button } from "@radix-ui/themes";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,6 +16,9 @@ import { useForm } from "react-hook-form";
 import { useJobCategory } from "./api/get-jobcategory";
 import { Controller } from "react-hook-form";
 import { useSelector } from "react-redux";
+import ProfileUpload from "./components/profilupload";
+import AlertDialog from "@/components/ui/alertdialog/alertdialog";
+import ProfilePreview from "./components/profilepreview";
 
 const ProfilePost = () => {
   //이미지 클릭하면 넣을수 있게 urldb
@@ -30,7 +33,6 @@ const ProfilePost = () => {
       edu: "대학교(4년제)",
       state: "졸업",
       company: "대기업",
-      experience: "신입",
     },
   });
   const jobCode = form.watch("jobCode");
@@ -69,11 +71,7 @@ const ProfilePost = () => {
     <Form form={form} onSubmit={(value) => {}}>
       {({ register, formState, control }) => (
         <>
-          <div>
-            <div className="relative w-[170px] rounded-full h-[170px] bg-[#D9D9D9]"></div>
-            <Camera className="absolute text-black right-0" />
-          </div>
-
+          <ProfileUpload></ProfileUpload>
           <div className="flex flex-row items-center gap-x-[10px]">
             <div>
               <span>이름</span>
@@ -120,17 +118,7 @@ const ProfilePost = () => {
 
           <div className="flex flex-row items-center gap-x-[10px]">
             <Label>경력</Label>
-            <Controller
-              name="experience"
-              control={control}
-              render={({ field }) => (
-                <Radio
-                  options={experienceOptions}
-                  value={field.value}
-                  onValueChange={field.onChange}
-                />
-              )}
-            />
+            <Radio options={experienceOptions}></Radio>
           </div>
 
           <div className="flex items-center flex-row gap-x-[10px]">
