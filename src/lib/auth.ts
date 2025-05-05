@@ -154,7 +154,7 @@ export const loginInputSchema = z.object({
 
 //Oauth 유효성검사
 export const oauthLoginSchema = z.object({
-  provider: z.enum(["kakao", "google"]), // 혹은 z.literal("kakao") 등
+  provider: z.enum(["naver", "google"]), // 혹은 z.literal("kakao") 등
   accessToken: z.string().min(1, "토큰이 유효하지 않습니다."),
 });
 

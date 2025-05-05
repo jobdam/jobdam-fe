@@ -6,9 +6,11 @@ import { Link } from "@/components/ui/link";
 import { oauthLoginSchema } from "@/lib/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, UseFormReturn } from "react-hook-form";
+import GoogleSignin from "./components/googlesignin";
+import NaverSignin from "./components/naversignin";
 
 export const AuthEntry = () => {
-  //네이버 로그인(이미지), 카카오 로그인,(이미지) 이메일 로그인
+  //네이버 카카오 Auth로그인
   const form = useForm({
     resolver: zodResolver(oauthLoginSchema),
   });
@@ -40,15 +42,9 @@ export const AuthEntry = () => {
             </div>
 
             <div className="mt-[50px] space-y-3">
-              <CustomImage
-                className="cursor-pointer"
-                src="/카카오 시작하기.png"
-              ></CustomImage>
+              <GoogleSignin></GoogleSignin>
 
-              <CustomImage
-                className="cursor-pointer"
-                src="/네이버 시작하기.png"
-              ></CustomImage>
+              <NaverSignin></NaverSignin>
             </div>
 
             <div className="mt-[80px] text-sm flex justify-center items-center">
