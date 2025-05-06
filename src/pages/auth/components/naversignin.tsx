@@ -1,12 +1,15 @@
 /** @format */
 
 import { CustomImage } from "@/components/common/image/image";
+import { api } from "@/lib/api-client";
 import { googleOauth, naverOauth } from "@/utils/Oauth";
-
+import axios from "axios";
+const naverRedirect = import.meta.env.VITE_NAVER_REDIRECT;
 const NaverSignin = () => {
-  const naverLogin = () => {
-    console.log("눌럿는지ㅗ학인ㄴ");
-    window.location.href = naverOauth;
+  const naverLogin = async () => {
+    console.log("시작");
+
+    window.location.href = naverRedirect;
   };
 
   return (

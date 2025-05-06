@@ -131,6 +131,13 @@ const createAppRouter = (queryClient: QueryClient) => {
               convert(queryClient)
             ),
         },
+        {
+          path: paths.auth.oauth.path,
+          lazy: () =>
+            import("@/app/routes/app/auth/oauth-callback").then(
+              convert(queryClient)
+            ),
+        },
       ],
     },
   ]);

@@ -15,9 +15,8 @@ import { paths } from "@/config/paths";
 import { clearTokens, saveTokens } from "./authSerivices";
 
 //데이터를 가져올땐 userId를 가져온다.
-const getUser = async (userId: number): Promise<User> => {
-  console.log(userId, "userId");
-  const response = await api.get(`/users/${userId}`);
+const getUser = async (email): Promise<User> => {
+  const response = await api.post(`/users/profile`, { email: email });
 
   return response.data;
 };
