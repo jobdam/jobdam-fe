@@ -46,6 +46,7 @@ export const paths = {
     waiting: {
       path: "/interview/waiting",
     },
+    finish: { path: "/interview" },
   },
   chatroom: {
     main: {
