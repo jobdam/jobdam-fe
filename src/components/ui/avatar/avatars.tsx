@@ -37,30 +37,8 @@ const avatarVariants = cva(
   }
 );
 
-const users = [
-  {
-    name: "Colm Tuite",
-    image:
-      "https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?&w=128&h=128&dpr=2&q=80",
-  },
-  {
-    name: "Jane Doe",
-    initials: "JD",
-    image:
-      "https://images.unsplash.com/photo-1511485977113-f34c92461ad9?ixlib=rb-1.2.1&w=128&h=128&dpr=2&q=80",
-    size: "45px",
-    rounded: true,
-  },
-  {
-    name: "Pedro Duarte",
-    initials: "PD",
-    image: "",
-    size: "45px",
-    rounded: true,
-  },
-];
 //이름이 필요할때 쓸수있도록 만들어놓기
-const Avatars = ({ users = [], className, size, showName }: AvatarsProps) => (
+const Avatars = ({ users = [], className, size }: AvatarsProps) => (
   <div className="flex gap-3">
     {users.map((user, index) => (
       <>

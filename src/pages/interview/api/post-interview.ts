@@ -1,7 +1,9 @@
 /** @format */
 
-import { api } from "@/lib/api-client";
+// import { api } from "@/lib/api-client";
 
-const PostInterview = (data) => {
-  return api.post("/match", data);
-};
+// //zod까지
+
+// const PostInterview = (data) => {
+//   return api.post("/match", data);
+// };

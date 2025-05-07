@@ -10,9 +10,11 @@ export const ErrorBoundary = () => {
 
 const AppRoot = () => {
   return (
-    <LoggedOutHeader>
+    <>
+      <LoggedOutHeader></LoggedOutHeader>
+
       <Outlet />
-    </LoggedOutHeader>
+    </>
   );
 };
 

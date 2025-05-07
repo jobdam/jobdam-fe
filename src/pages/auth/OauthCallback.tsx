@@ -2,16 +2,15 @@
 
 import { api } from "@/lib/api-client";
 import { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const OauthCallback = () => {
   const email = "test1@gmail.com";
 
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   console.log(searchParams.get("state"), searchParams.get("code"));
   //구글 네이버 분기를 해야한다.
-  const state = searchParams.get("state");
+  //   const state = searchParams.get("state");
 
   useEffect(() => {
     // if (state === "google") {

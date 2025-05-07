@@ -24,13 +24,13 @@ const FeedbackContents = () => {
             {/* 잘한점 */}
             <div className=" flex flex-row gap-x-[10px]">
               <div>잘한 점</div>
-              {el.merits.map((el, index) => {
+              {el.merits.map((el) => {
                 return <div>{el}</div>;
               })}
             </div>
             <div className=" flex flex-row gap-x-[10px]">
               <div>개선할 점</div>
-              {el.improvements.map((el, index) => {
+              {el.improvements.map((el) => {
                 return <div>{el}</div>;
               })}
             </div>

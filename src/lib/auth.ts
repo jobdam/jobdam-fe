@@ -13,7 +13,6 @@ import { z } from "zod";
 
 import { api } from "./api-client";
 import { clearTokens, saveTokens } from "./authSerivices";
-import { Navigate, useLocation } from "react-router-dom";
 
 const getUser = async (): Promise<User> => {
   const response = await api.get(`/user/profile`);
@@ -72,7 +71,7 @@ export const registerInputSchema = z
       .min(8, "비밀번호는 최소 8자 이상이어야 합니다.")
       .max(15, "비밀번호는 최대 15자까지 가능합니다.")
       .regex(
-        /^(?=.*[A-Za-z])(?=.*[!@#$%^&*()_\-+=\[\]{};':"\\|,.<>/?]).*$/,
+        /^(?=.*[A-Za-z])(?=.*[!@#$%^&*()_\-+=[\]{};':"\\|,.<>/?]).*$/,
         "영문자와 특수문자를 모두 포함해야 합니다."
       ),
     passwordConfirm: z.string().nonempty("비밀번호 확인을 입력해주세요."),

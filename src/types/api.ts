@@ -21,6 +21,7 @@ export type User = Entity<{
 }>;
 
 export type AuthResponse = {
+  headers: any;
   jwt: string;
   user: User;
 };

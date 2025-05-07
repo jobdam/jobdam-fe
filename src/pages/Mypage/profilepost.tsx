@@ -10,20 +10,23 @@ import {
   experienceOptions,
 } from "../../constants/mainContents";
 import { Button } from "@radix-ui/themes";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useJobCategory } from "./api/get-jobcategory";
 import { Controller } from "react-hook-form";
-import { useSelector } from "react-redux";
 import ProfileUpload from "./components/profilupload";
 
+// type FormData = {
+//   jobCode: string;
+//   jobDetailCode: string;
+//   edu: string;
+//   state: string;
+//   company: string;
+// };
+
 const ProfilePost = () => {
-  //이미지 클릭하면 넣을수 있게 urldb
-  const code = useSelector((state: RootState) => state.selects.selected); // Redux에서 selected 값 가져오기
   const { data } = useJobCategory({});
   const jobGroups = data?.data ?? [];
-  const form = useForm({
-    resolver: zodResolver({}),
+  const form = useForm<any>({
     defaultValues: {
       jobCode: "",
       jobDetailCode: "",
@@ -56,17 +59,22 @@ const ProfilePost = () => {
     form.setValue("jobDetailCode", firstDetailCode ?? "");
   }, [jobCode, jobGroups]);
 
-  console.log(jobCode);
+  console.log(jobCode, jobDetailCode);
   const jobGroup = jobGroups.find((group) => group.jobGroup === jobCode);
   const jobDetails = jobGroup?.details ?? [];
 
-  console.log(jobDetails, jobGroups);
+  //mutation에서
 
   //데이터정리 jobGroup에서 시작하고 jobgroup에 해당하는 디테일이
   //옆 select에 뜨도록
   return (
-    <Form form={form} onSubmit={(value) => {}}>
-      {({ register, formState, control }) => (
+    <Form
+      form={form}
+      onSubmit={(value) => {
+        console.log(value);
+      }}
+    >
+      {({ register, control }) => (
         <>
           <ProfileUpload></ProfileUpload>
           <div className="flex flex-row items-center gap-x-[10px]">
@@ -155,9 +163,9 @@ const ProfilePost = () => {
               control={control}
               render={({ field }) => (
                 <Select
+                  options={targetCompany}
                   value={field.value}
                   onChange={field.onChange}
-                  options={targetCompany}
                 />
               )}
             />

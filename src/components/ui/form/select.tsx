@@ -7,7 +7,10 @@ import { cn } from "@/utils/cn";
 
 import { FieldWrapperPassThroughProps } from "./field-wrapper";
 
-type Option = Record<string, string>; //어떤 구조든 상관이 없음
+interface Option {
+  value: string | number; // 예시: value는 문자열
+  label: string | number; // 예시: label은 문자열
+} //어떤 구조든 상관이 없음
 
 interface SelectFieldProps extends FieldWrapperPassThroughProps {
   options: Option[];

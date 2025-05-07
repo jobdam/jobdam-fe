@@ -1,18 +1,6 @@
 /** @format */
 
 import { useUser } from "@/lib/auth";
-
-const data = [
-  {
-    name: "김잡담",
-    phone: "010-2222-3333",
-    email: "jobdam0415@naver.com",
-    birth: "2001 / 12 /07",
-    job: "개발 / 전체",
-    targetCompany: "대기업",
-  },
-];
-
 const labelMap: Record<string, string> = {
   name: "이름",
   phone: "전화번호",
@@ -21,10 +9,9 @@ const labelMap: Record<string, string> = {
   job: "직무",
   targetCompany: "목표 기업",
 };
-
 const MyProfile = () => {
-  const user = useUser();
-  const profile = data[0];
+  const profile = useUser();
+  //   const profile = data[0];
   //user데이터가 있으면 그대로 사용가능
 
   return (
