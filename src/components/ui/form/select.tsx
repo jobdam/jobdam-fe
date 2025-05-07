@@ -5,12 +5,12 @@ import { UseFormRegisterReturn } from "react-hook-form";
 import { ChevronDown } from "lucide-react"; // lucide 아이콘 또는 이미지로 대체 가능
 import { cn } from "@/utils/cn";
 
-import { FieldWrapper, FieldWrapperPassThroughProps } from "./field-wrapper";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store";
-import { setSelected } from "@/store/slices/select";
+import { FieldWrapperPassThroughProps } from "./field-wrapper";
 
-type Option = Record<string, string>; //어떤 구조든 상관이 없음
+interface Option {
+  value: string | number; // 예시: value는 문자열
+  label: string | number; // 예시: label은 문자열
+} //어떤 구조든 상관이 없음
 
 interface SelectFieldProps extends FieldWrapperPassThroughProps {
   options: Option[];
@@ -29,16 +29,12 @@ interface SelectFieldProps extends FieldWrapperPassThroughProps {
 export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
   (
     {
-      label,
       value,
       options = [],
       labelkey = "label",
       valuekey = "value",
-      defaultValue,
       onChange,
-      error,
       className,
-      registration,
     },
     ref
   ) => {
@@ -71,7 +67,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
 
         {isOpen && (
           <div className="absolute left-0 top-full mt-1 overflow-y-auto w-full max-h-[200px] rounded-md bg-white border border-gray-300 shadow-md z-10">
-            {options.map((option, index) => (
+            {options.map((option) => (
               <div
                 defaultValue={value}
                 key={Number(option[labelkey])}

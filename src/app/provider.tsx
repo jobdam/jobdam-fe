@@ -6,10 +6,10 @@ import { queryConfig } from "@/lib/react-query";
 import * as React from "react";
 import { Spinner } from "@/components/ui/spinner";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { AuthLoader } from "@/lib/auth";
-import { Notifications } from "@/components/ui/notification";
-import { MainErrorFallback } from "@/components/errors/ main";
-import { ErrorBoundary } from "./routes/app/root";
+// import { AuthLoader } from "@/lib/auth";
+// import { Notifications } from "@/components/ui/notification";
+// import { MainErrorFallback } from "@/components/errors/ main";
+// import { ErrorBoundary } from "./routes/app/root";
 
 type AppProviderProps = {
   children: React.ReactNode;

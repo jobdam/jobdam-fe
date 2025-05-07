@@ -12,6 +12,7 @@ import { loginInputSchema } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { getFieldError } from "./SignUp";
 type LoginFormProps = {
   onSuccess: () => void;
 };
@@ -53,7 +54,7 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
                 label="이메일"
                 className=" font-medium text-left text-black"
                 placeholder="jodbdam0415@gmail.com"
-                error={formState.errors["email"]}
+                error={getFieldError(formState.errors["email"])}
                 registration={register("email")}
               />
 
@@ -62,7 +63,7 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
                 label="비밀번호"
                 placeholder="비밀번호를 입력하세요."
                 className=" font-medium text-left text-black"
-                error={formState.errors["password"]}
+                error={getFieldError(formState.errors["password"])}
                 registration={register("password")}
               />
 

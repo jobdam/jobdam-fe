@@ -1,11 +1,7 @@
 /** @format */
 
-import React, { Children } from "react";
+import { Variant } from "../ui/form";
 
-import { Check } from "lucide-react";
-import { Checkbox, Variant } from "../ui/form";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
 import { cn } from "@/utils/cn";
 import InterviewSidebar from "./components/interview-sidebar";
 export type LayoutProps = {
@@ -20,7 +16,6 @@ const InterviewLayout = ({
   title,
   children,
   matching = false,
-  showIcon = false,
 }: LayoutProps) => {
   return (
     <div className="flex min-h-screen w-full justify-center p-[50px]">

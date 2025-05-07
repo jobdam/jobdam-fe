@@ -1,11 +1,7 @@
 /** @format */
 
-import * as React from "react";
-import { CustomImage } from "../image/image";
 import { paths } from "@/config/paths";
 import { Link } from "@/components/ui/link";
-import { Button } from "@/components/ui/button";
-import { path } from "node:path";
 import { useLogout } from "@/lib/auth";
 const Logo = () => {
   return (

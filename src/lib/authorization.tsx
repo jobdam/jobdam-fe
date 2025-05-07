@@ -5,6 +5,4 @@ export enum ROLES {
   USER = "USER",
 }
 
-type RoleTypes = keyof typeof ROLES;
-
 export const useAuthorization = () => {};

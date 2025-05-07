@@ -1,9 +1,5 @@
 /** @format */
 
-import { Link } from "@/components/ui/link";
-import { useUser } from "@/lib/auth";
-import { useCheckEmail } from "@/pages/auth/api/get-checkemail";
-import * as React from "react";
 import { useVerifyEmail } from "../api/get-emailverify";
 import { Button } from "@/components/ui/button";
 

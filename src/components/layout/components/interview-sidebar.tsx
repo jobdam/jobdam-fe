@@ -2,7 +2,6 @@
 
 import { Checkbox, Variant } from "@/components/ui/form";
 import { RootState } from "@/store";
-import { cn } from "@/utils/cn";
 import { useSelector } from "react-redux";
 
 export type LayoutProps = {
