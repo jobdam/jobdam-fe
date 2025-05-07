@@ -4,14 +4,19 @@ import { useNavigate } from "react-router";
 
 import ContentsBox from "@/components/layout/contentsBox";
 import { Checkbox, Form, Radio, Select, Textarea } from "@/components/ui/form";
-import { Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import FieldsSelect from "./components/fieldsSelect";
 import People from "./components/people";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
 import { setStep } from "@/store/slices/progress";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const Interview = () => {
+  const form = useForm({
+    resolver: zodResolver({}),
+  });
+
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -25,6 +30,7 @@ const Interview = () => {
 
   return (
     <Form
+      form={form}
       onSubmit={(values) => {
         console.log("매칭정보를 등록한다.:", values);
       }}

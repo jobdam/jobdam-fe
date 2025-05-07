@@ -71,6 +71,13 @@ const createAppRouter = (queryClient: QueryClient) => {
             ),
         },
         {
+          path: paths.interview.waiting.path,
+          lazy: () =>
+            import("@/app/routes/app/interview/waiting").then(
+              convert(queryClient)
+            ),
+        },
+        {
           path: paths.chatroom.main.path,
           lazy: () =>
             import("@/app/routes/app/chatroom/chatroom").then(
@@ -128,6 +135,13 @@ const createAppRouter = (queryClient: QueryClient) => {
           path: paths.videochat.main.path,
           lazy: () =>
             import("@/app/routes/app/videochat/index").then(
+              convert(queryClient)
+            ),
+        },
+        {
+          path: paths.auth.oauth.path,
+          lazy: () =>
+            import("@/app/routes/app/auth/oauth-callback").then(
               convert(queryClient)
             ),
         },
