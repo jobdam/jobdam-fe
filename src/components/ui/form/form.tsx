@@ -3,8 +3,6 @@
 //react-hook-form ⬅️ 연결 ⬅️ @hookform/resolvers/zod ⬅️ zod
 //React Hook Form과 Zod를 연결해주는 브릿지 라이브러리
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
 import {
@@ -16,11 +14,8 @@ import {
   SubmitHandler,
   UseFormProps,
   UseFormReturn,
-  useForm,
   useFormContext,
 } from "react-hook-form";
-
-import { Label } from "./label";
 
 import { ZodType, z } from "zod";
 import { cn } from "@/utils/cn";
@@ -147,9 +142,9 @@ const Form = <
   children,
   className,
   form,
-  options,
+  // options,
   id,
-  schema,
+  // schema,
 }: FormProps<TFormValues, Schema>) => {
   return (
     <FormProvider {...form}>

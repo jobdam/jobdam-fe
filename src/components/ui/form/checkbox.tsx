@@ -1,15 +1,15 @@
 /** @format */
 
 import * as React from "react";
-import { type UseFormRegisterReturn } from "react-hook-form";
+// import { type UseFormRegisterReturn } from "react-hook-form";
 
 import { cn } from "@/utils/cn";
 import { Check } from "lucide-react";
 import { FieldWrapper, FieldWrapperPassThroughProps } from "./field-wrapper";
 
 import { Checkbox as CheckBoxPrimitive } from "radix-ui";
-import { CheckIcon } from "@radix-ui/react-icons";
-import { CheckedState, CheckboxProps } from "@radix-ui/react-checkbox";
+// import { CheckIcon } from "@radix-ui/react-icons";
+import { CheckboxProps } from "@radix-ui/react-checkbox";
 import { Label } from "./label";
 // export type CheckboxProps = React.InputHTMLAttributes<HTMLInputElement> &
 //   FieldWrapperPassThroughProps & {
@@ -49,11 +49,11 @@ export const Checkbox = React.forwardRef<
       interview2 = false,
       onCheckedChange,
       error,
-      terms = false,
-      registration,
-      ...props
-    },
-    ref
+      // terms = false,
+      // registration,
+      // ...props
+    }
+    // ref
   ) => {
     return (
       <FieldWrapper error={error}>
