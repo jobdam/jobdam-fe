@@ -12,16 +12,16 @@ import { z } from "zod";
 
 import { api } from "./api-client";
 import { paths } from "@/config/paths";
+import { clearTokens, saveTokens } from "./authSerivices";
 
 //데이터를 가져올땐 userId를 가져온다.
-const getUser = async (userId: number): Promise<User> => {
-  console.log(userId, "userId");
-  const response = await api.get(`/users/${userId}`);
+const getUser = async (email): Promise<User> => {
+  const response = await api.post(`/users/profile`, { email: email });
 
   return response.data;
 };
 
-//로그아웃
+//로그아웃 할때 로컬제거, 쿠키 제거
 const logout = (): Promise<void> => {
   return api.post("/logout");
 };
@@ -103,7 +103,8 @@ export const authConfig = {
     const token = response.headers["authorization"].replace("Bearer ", "");
     console.log(token);
     //localstorage에 로그인
-    localStorage.setItem("accessToken", token);
+
+    saveTokens(token);
 
     return response.user;
   },
@@ -114,7 +115,14 @@ export const authConfig = {
 
     return response.user;
   },
-  logoutFn: logout,
+  logoutFn: async () => {
+    await logout();
+    //로그아웃에 성공하면 token제거,
+
+    clearTokens();
+
+    window.location.href = "/login";
+  },
 };
 
 //로그인에 성공했을때 이메일 인증을 보낸다.
@@ -145,7 +153,7 @@ export const loginInputSchema = z.object({
 
 //Oauth 유효성검사
 export const oauthLoginSchema = z.object({
-  provider: z.enum(["kakao", "google"]), // 혹은 z.literal("kakao") 등
+  provider: z.enum(["naver", "google"]), // 혹은 z.literal("kakao") 등
   accessToken: z.string().min(1, "토큰이 유효하지 않습니다."),
 });
 
