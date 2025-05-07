@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from "react-router";
 import { AuthLayout } from "@/components/layout/auth-layout";
 import { paths } from "@/config/paths";
 import { SignIn } from "@/pages/auth/SignIn";
-import { useUser } from "@/lib/auth";
+// import { useUser } from "@/lib/auth";
 
 const SignInRoute = () => {
   const navigate = useNavigate();

@@ -104,9 +104,9 @@ const FieldsSelect = ({ control, form }: FieldsSelectProps) => {
                 <Select
                   labelkey="jobDetailCode"
                   valuekey="jobDetail"
-                  value={field.value}
                   {...field}
                   options={jobDetails}
+                  value={field.value}
                 />
               )}
             />
@@ -120,7 +120,7 @@ const FieldsSelect = ({ control, form }: FieldsSelectProps) => {
                 <Checkbox
                   variant="interview"
                   {...field} // Checkbox에 value와 onChange를 전달
-                  checked={field.value ?? false} // Checkbox의 상태 관리
+                  checked={field.value} // Checkbox의 상태 관리
                   onCheckedChange={(checked) => field.onChange(checked)} // Checkbox 상태 변경 시 값 변경
                 />
               )}

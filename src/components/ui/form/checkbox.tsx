@@ -8,22 +8,8 @@ import { Check } from "lucide-react";
 import { FieldWrapper, FieldWrapperPassThroughProps } from "./field-wrapper";
 
 import { Checkbox as CheckBoxPrimitive } from "radix-ui";
-import { CheckIcon } from "@radix-ui/react-icons";
-import { CheckedState, CheckboxProps } from "@radix-ui/react-checkbox";
+import { CheckedState } from "@radix-ui/react-checkbox";
 import { Label } from "./label";
-// export type CheckboxProps = React.InputHTMLAttributes<HTMLInputElement> &
-//   FieldWrapperPassThroughProps & {
-//     onCheckedChange?: (checked: boolean) => void;
-//     checked?:
-//     className?: string;
-//   };
-// export interface CheckboxProps
-//   extends React.ComponentPropsWithoutRef<typeof CheckBoxPrimitive.Root> {
-//   label?: string;
-//   registration?: Partial<UseFormRegisterReturn>;
-//   onCheckedChange?(checked: CheckedState): void;
-
-// }
 
 export type Variant = "default" | "interview" | "progress";
 
@@ -43,20 +29,17 @@ export const Checkbox = React.forwardRef<
   HTMLInputElement,
   CombinedCheckboxProps
 >(
-  (
-    {
-      className,
-      label,
-      variant = "default",
+  ({
+    className,
+    label,
+    variant = "default",
 
-      checked,
-      onCheckedChange,
-      error,
-      registration,
-      ...props
-    },
-    ref
-  ) => {
+    checked,
+    onCheckedChange,
+    error,
+    registration,
+    ...props
+  }) => {
     //checkbox는 다양하게 쓰인다 1. interview sidebar에 쓰인다. -> interview
     // 2. 그냥 checkbox 그자체로의 역할
     //checkbox의 크기나 모양을 변하기 쉽게 만들자.

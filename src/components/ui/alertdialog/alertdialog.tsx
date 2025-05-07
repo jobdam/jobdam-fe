@@ -1,12 +1,9 @@
 /** @format */
 
-import * as React from "react";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
-import PrivacyContents from "@/constants/privacyContents";
 import { cn } from "@/utils/cn";
 
 const AlertDialog = ({ children, title, contents, className }) => {
-  console.log("ㄴ");
   return (
     <AlertDialogPrimitive.Root>
       <AlertDialogPrimitive.Trigger asChild>

@@ -14,8 +14,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import InterviewMatching from "@/pages/interview/matching";
 import { InterviewSpinner } from "@/components/ui/spinner";
+import { RootState } from "@/store";
 const InterviewMatchingRoute = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
   const progressStep = useSelector((state: RootState) => state.progress.step);
