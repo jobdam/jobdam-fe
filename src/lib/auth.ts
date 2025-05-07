@@ -11,7 +11,6 @@ import { z } from "zod";
 // import { AuthResponse, User } from '@/types/api';
 
 import { api } from "./api-client";
-import { paths } from "@/config/paths";
 import { clearTokens, saveTokens } from "./authSerivices";
 
 //데이터를 가져올땐 userId를 가져온다.

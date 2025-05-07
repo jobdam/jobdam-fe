@@ -1,8 +1,7 @@
 /** @format */
 
-import * as React from "react";
 import ContentsBox from "@/components/layout/contentsBox";
-import { Checkbox, Form, Radio, Select, Textarea } from "@/components/ui/form";
+import { Select } from "@/components/ui/form";
 import { Controller } from "react-hook-form";
 
 const People = ({ control }) => {

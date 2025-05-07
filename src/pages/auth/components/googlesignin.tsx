@@ -1,7 +1,6 @@
 /** @format */
 
 import { CustomImage } from "@/components/common/image/image";
-import { googleOauth } from "@/utils/Oauth";
 const googleRedirect = import.meta.env.VITE_GOOGLE_REDIRECT;
 
 const GoogleSignin = () => {

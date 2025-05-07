@@ -3,8 +3,8 @@ import * as React from "react";
 import { useNavigate } from "react-router";
 
 import ContentsBox from "@/components/layout/contentsBox";
-import { Checkbox, Form, Radio, Select, Textarea } from "@/components/ui/form";
-import { Controller, useForm } from "react-hook-form";
+import { Form, Textarea } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
 import FieldsSelect from "./components/fieldsSelect";
 import People from "./components/people";
 import { Button } from "@/components/ui/button";

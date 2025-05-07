@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import ContentsBox from "@/components/layout/contentsBox";
-import { Checkbox, Form, Radio, Select } from "@/components/ui/form";
+import { Checkbox, Radio, Select } from "@/components/ui/form";
 import { Controller } from "react-hook-form";
 
 const FieldsSelect = ({ control }) => {
