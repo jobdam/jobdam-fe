@@ -22,9 +22,14 @@ export type SignalMessage =
 interface Props {
   roomId: string | number;
   onSignal: (data: SignalMessage) => void;
+  enabled: boolean;
 }
 
-export const useSignalSubscription = ({ roomId, onSignal }: Props) => {
+export const useSignalSubscription = ({
+  roomId,
+  onSignal,
+  enabled = true,
+}: Props) => {
   const isConnected = useSelector(
     (state: RootState) => state.websocket.isConnected
   );
@@ -32,6 +37,7 @@ export const useSignalSubscription = ({ roomId, onSignal }: Props) => {
   const { sendJoin } = useSignalPublisher();
 
   useEffect(() => {
+    if (!enabled) return;
     if (!isConnected) return;
 
     const client = getWebSocketClient();

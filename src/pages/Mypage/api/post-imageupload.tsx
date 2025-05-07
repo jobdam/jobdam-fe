@@ -1,16 +1,8 @@
 /** @format */
 
 import { api } from "@/lib/api-client";
-import {
-  useQuery,
-  queryOptions,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
-import { User } from "@/types/api";
-import { QueryConfig } from "@/lib/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MutationConfig } from "@/lib/react-query";
-import { useUser } from "@/lib/auth";
 
 export const postProfileImage = (file) => {
   const formData = new FormData();

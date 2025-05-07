@@ -12,7 +12,6 @@ import { z } from "zod";
 // import { AuthResponse, User } from '@/types/api';
 
 import { api } from "./api-client";
-import { paths } from "@/config/paths";
 import { clearTokens, saveTokens } from "./authSerivices";
 import { Navigate, useLocation } from "react-router-dom";
 

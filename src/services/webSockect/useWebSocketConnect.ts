@@ -1,9 +1,9 @@
 /** @format */
 
 import { AppDispatch, RootState } from "@/store";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import SockJS from "sockjs-client";
-import { Client, Frame, StompSubscription } from "@stomp/stompjs";
+import { Client } from "@stomp/stompjs";
 import { useDispatch, useSelector } from "react-redux";
 import { setConnected } from "@/store/slices/websockets";
 import { getAccessToken } from "@/lib/authSerivices";
@@ -63,7 +63,10 @@ export const useWebSocketConnect = (connect: boolean) => {
         },
 
         onStompError: (frame) => {
-          console.error("웹소켓연결에러 차후에 refresh토큰발급등에 사용해야함");
+          console.error(
+            "웹소켓연결에러 차후에 refresh토큰발급등에 사용해야함",
+            frame
+          );
           disConnectHandler();
         },
       });

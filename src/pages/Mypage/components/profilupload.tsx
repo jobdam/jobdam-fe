@@ -1,13 +1,5 @@
 /** @format */
-
-import { openProfilePreview } from "@/store/slices/uistate";
-import { Camera } from "lucide-react";
-
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
 import ProfilePreview from "./profilepreview";
-import { RootState } from "@/store";
 
 type FormValues = {
   profileImage: File | null;

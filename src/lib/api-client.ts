@@ -1,13 +1,12 @@
 /** @format */
 
-import { useNotifications } from "@/components/ui/notification";
-import { paths } from "@/config/paths";
 import { getAccessToken, refreshAccessToken } from "@/lib/authSerivices";
 import { store } from "@/store";
 import { addNotification } from "@/store/slices/notifications";
 import Axios, { InternalAxiosRequestConfig } from "axios";
-import { useDispatch } from "react-redux";
 import { useLogout } from "./auth";
+import { paths } from "@/config/paths";
+
 let isRefreshing = false; // 토큰 갱신 상태 추적
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -90,7 +89,6 @@ api.interceptors.response.use(
         const redirectTo =
           searchParams.get("redirectTo") || window.location.pathname;
         window.location.href = paths.auth.login.getHref(redirectTo);
-
         return Promise.reject(error);
       } finally {
         isRefreshing = false; // 토큰 갱신 완료

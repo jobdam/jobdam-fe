@@ -2,12 +2,12 @@
 
 import { InterviewSpinner } from "@/components/ui/spinner";
 import * as React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { setProgressStep } from "@/store/slices/uistate";
 //인터뷰 매칭에서는 적절한 대상을 찾아 매칭을 하는 단계
 //일정인원수가 매칭이되면 다음 단계로 넘어간다.
-//
+//여기서부터 web
 const InterviewMatching = () => {
   const dispatch = useDispatch();
 

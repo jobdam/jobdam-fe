@@ -1,10 +1,8 @@
 /** @format */
 
 import AlertDialog from "@/components/ui/alertdialog/alertdialog";
-import { useSelector } from "react-redux";
 import React, { useState } from "react";
 
-import { Camera } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 type FormValues = {

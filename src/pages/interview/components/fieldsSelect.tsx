@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import ContentsBox from "@/components/layout/contentsBox";
-import { Checkbox, Form, Radio, Select } from "@/components/ui/form";
+import { Checkbox, Radio, Select } from "@/components/ui/form";
+
 import { useJobCategory } from "../../Mypage/api/get-jobcategory";
 
 import { Control, Controller, UseFormReturn } from "react-hook-form";

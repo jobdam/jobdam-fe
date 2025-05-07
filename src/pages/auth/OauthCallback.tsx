@@ -1,7 +1,6 @@
 /** @format */
 
 import { api } from "@/lib/api-client";
-import { getAccessToken } from "@/lib/authSerivices";
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
