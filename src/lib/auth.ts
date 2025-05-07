@@ -1,5 +1,6 @@
 /** @format */
 import { AuthResponse, User } from "@/types/api";
+
 import { configureAuth } from "react-query-auth";
 import { z } from "zod";
 //react-query-auth useAuth 훅을 통해 전역에서 로그인/로그아웃을관리
@@ -13,6 +14,7 @@ import { z } from "zod";
 import { api } from "./api-client";
 import { paths } from "@/config/paths";
 import { clearTokens, saveTokens } from "./authSerivices";
+import { Navigate, useLocation } from "react-router-dom";
 
 const getUser = async (): Promise<User> => {
   const response = await api.get(`/user/profile`);
@@ -166,15 +168,3 @@ export const termsSchema = z.object({
   }),
   AllCheck: z.boolean().optional(), // UI용 (검사 대상 아님)
 });
-// export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-//   const user = useUser();
-//   const location = useLocation();
-
-//   if (!user.data) {
-//     return (
-//       <Navigate to={paths.auth.login.getHref(location.pathname)} replace />
-//     );
-//   }
-
-//   return children;
-// };
