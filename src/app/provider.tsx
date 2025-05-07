@@ -5,7 +5,7 @@ import { queryConfig } from "@/lib/react-query";
 
 import * as React from "react";
 import { Spinner } from "@/components/ui/spinner";
-import { AuthLoader } from "@/lib/auth";
+// import { AuthLoader } from "@/lib/auth";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 type AppProviderProps = {

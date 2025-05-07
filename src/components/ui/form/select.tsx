@@ -5,7 +5,7 @@ import { UseFormRegisterReturn } from "react-hook-form";
 import { ChevronDown } from "lucide-react"; // lucide 아이콘 또는 이미지로 대체 가능
 import { cn } from "@/utils/cn";
 
-import { FieldWrapper, FieldWrapperPassThroughProps } from "./field-wrapper";
+import { FieldWrapperPassThroughProps } from "./field-wrapper";
 
 type Option = {
   label: React.ReactNode | string;
@@ -21,7 +21,7 @@ interface SelectFieldProps extends FieldWrapperPassThroughProps {
 
 export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
   (
-    { label, options = [], defaultValue, error, className, registration },
+    { options = [], defaultValue, /*error,label,*/ className, registration },
     ref
   ) => {
     const [isOpen, setIsOpen] = React.useState(false);
