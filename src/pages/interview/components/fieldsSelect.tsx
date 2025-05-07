@@ -6,18 +6,18 @@ import { Checkbox, Radio, Select } from "@/components/ui/form";
 
 import { useJobCategory } from "../../Mypage/api/get-jobcategory";
 
-import { Control, Controller, UseFormReturn } from "react-hook-form";
+import { Controller } from "react-hook-form";
 
-type FormValues = {
-  expType: "신입" | "경력";
-  jobCode: string;
-  jobDetailCode: string;
-  otherField: boolean;
-};
+// type FormValues = {
+//   expType: "신입" | "경력";
+//   jobCode: string;
+//   jobDetailCode: string;
+//   otherField: boolean;
+// };
 
 type FieldsSelectProps = {
-  control: Control<FormValues>;
-  form: UseFormReturn<FormValues>;
+  control: any;
+  form: any;
 };
 
 const FieldsSelect = ({ control, form }: FieldsSelectProps) => {
@@ -119,8 +119,8 @@ const FieldsSelect = ({ control, form }: FieldsSelectProps) => {
               render={({ field }) => (
                 <Checkbox
                   variant="interview"
-                  {...field} // Checkbox에 value와 onChange를 전달
                   checked={field.value} // Checkbox의 상태 관리
+                  {...field} // Checkbox에 value와 onChange를 전달
                   onCheckedChange={(checked) => field.onChange(checked)} // Checkbox 상태 변경 시 값 변경
                 />
               )}

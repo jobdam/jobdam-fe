@@ -22,11 +22,11 @@ export const AuthEntry = () => {
       <Form
         form={form}
         onSubmit={(values) => {
-          console.log("Oauth");
+          console.log(values);
         }}
         schema={oauthLoginSchema}
       >
-        {({ register, formState }) => (
+        {() => (
           <>
             <div className="mt-[50px] flex flex-col items-center justify-center space-y-4">
               <CustomImage

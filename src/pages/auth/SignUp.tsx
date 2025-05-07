@@ -51,13 +51,12 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
     refetch,
     data,
     isError: checkError,
-    isFetching,
     isFetched,
   } = useCheckEmail({ email: email, queryConfig: { enabled: false } });
   console.log(data?.data.isDuplicate, checkError, isFetched);
 
-  const registering = useRegister({ onSuccess });
-  const { refetch: verifyRefetch, isError } = useVerifyEmail({});
+  // const registering = useRegister({ onSuccess });
+  // const { refetch: verifyRefetch, isError } = useVerifyEmail({});
 
   return (
     <Form
@@ -82,7 +81,7 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
       //   shouldUnregister: true,
       // }}
     >
-      {({ register, formState, watch }) => {
+      {({ register, formState }) => {
         // 여기에 axios or react-query mutation으로 중복 확인 요청
         // console.log(watch("email"));
 
