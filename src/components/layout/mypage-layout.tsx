@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 import { paths } from "@/config/paths";
 import { Link } from "../ui/link";
+import { cn } from "@/utils/cn";
 
 interface MypageLayoutProps {
   children: ReactNode;

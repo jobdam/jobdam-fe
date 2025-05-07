@@ -1,10 +1,10 @@
 /** @format */
 
-// import * as React from "react";
-// import { CustomImage } from "../image/image";
+import * as React from "react";
+import { CustomImage } from "../image/image";
 import { paths } from "@/config/paths";
 import { Link } from "@/components/ui/link";
-// import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 const Logo = () => {
   return (
     <Link className="flex items-center text-white" to={paths.home.getHref()}>

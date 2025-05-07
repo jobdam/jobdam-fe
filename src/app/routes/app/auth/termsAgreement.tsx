@@ -1,17 +1,17 @@
 /** @format */
 
-// import { useNavigate, useSearchParams } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 
-// import { AuthLayout } from "@/components/layout/auth-layout";
-// import { paths } from "@/config/paths";
-// import { SignIn } from "@/pages/auth/SignIn";
+import { AuthLayout } from "@/components/layout/auth-layout";
+import { paths } from "@/config/paths";
+import { SignIn } from "@/pages/auth/SignIn";
 import { TermsAgreementLayout } from "@/components/layout/termsAgreement-layout";
 import TermsAgreement from "@/pages/auth/TermsAgreement";
 
 const TermsAgreementRoute = () => {
-  // const navigate = useNavigate();
-  // const [searchParams] = useSearchParams();
-  // const redirectTo = searchParams.get("redirectTo");
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo");
 
   return (
     <TermsAgreementLayout
@@ -23,7 +23,7 @@ const TermsAgreementRoute = () => {
         </>
       }
     >
-      <TermsAgreement />
+      <TermsAgreement onSuccess={() => {}} />
     </TermsAgreementLayout>
   );
 };

@@ -1,5 +1,7 @@
 /** @format */
 
+import { Link } from "../link";
+
 export type ErrorProps = {
   errorMessage?: string | null;
 };
