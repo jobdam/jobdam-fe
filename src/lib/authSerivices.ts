@@ -16,10 +16,11 @@ export function clearTokens() {
 }
 
 //refresh로 access 재발급 하는 코드
-export const refreshAccessToken = async (): Promise => {
+export const refreshAccessToken = async (): Promise<string | void> => {
   try {
     const response = await api.post("/reissue");
 
+    console.log(response);
     //accessToken 서버에서 받은거 불러오기
     const { accessToken } = response.data;
 
@@ -32,6 +33,6 @@ export const refreshAccessToken = async (): Promise => {
     //refreshToken이 만료된경우라면 로그아웃 처리한다.
     clearTokens();
 
-    throw error;
+    throw new Error("Refresh token has expired or is invalid");
   }
 };

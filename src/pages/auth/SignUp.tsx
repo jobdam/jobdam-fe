@@ -1,5 +1,7 @@
 /** @format */
+
 import { Checkbox, Form, Input, Label } from "@/components/ui/form";
+
 import { registerInputSchema, useRegister } from "@/lib/auth";
 import { Check } from "lucide-react";
 import * as React from "react";
@@ -61,19 +63,16 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
     <Form
       onSubmit={(values) => {
         //회원가입 db에 넣기
-        console.log(email);
-        values.email, values.password;
+        console.log(values.email);
 
         //agreeTerms,agreePrivacy,agreeAgre
         //회원가입 완료는 모든 것이 체크되어있어야하며, 중복확인이 완료된 상태여야한다.
         if (agreeAll && data?.data.isDuplicate) {
-          console.log("실행되면안돼");
-          registering.mutate({
-            email: values.email,
-            password: values.password,
-          });
+          // registering.mutate({
+          //   email: values.email,
+          //   password: values.password,
+          // });
           //이메일 인증을 가입할때 곱바로 시행한다.
-
           // verifyRefetch();
         }
       }}

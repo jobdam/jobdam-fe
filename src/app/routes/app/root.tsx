@@ -11,7 +11,6 @@ export const ErrorBoundary = () => {
 const AppRoot = () => {
   return (
     <LoggedOutHeader>
-      ==
       <Outlet />
     </LoggedOutHeader>
   );

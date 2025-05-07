@@ -1,5 +1,6 @@
 /** @format */
 import { AuthResponse, User } from "@/types/api";
+
 import { configureAuth } from "react-query-auth";
 import { z } from "zod";
 //react-query-auth useAuth 훅을 통해 전역에서 로그인/로그아웃을관리
@@ -12,10 +13,10 @@ import { z } from "zod";
 
 import { api } from "./api-client";
 import { clearTokens, saveTokens } from "./authSerivices";
+import { Navigate, useLocation } from "react-router-dom";
 
-//데이터를 가져올땐 userId를 가져온다.
-const getUser = async (email): Promise<User> => {
-  const response = await api.post(`/users/profile`, { email: email });
+const getUser = async (): Promise<User> => {
+  const response = await api.get(`/user/profile`);
 
   return response.data;
 };
@@ -91,10 +92,10 @@ const registerWithEmailAndPassword = (
 
 //로그인을 하면 jwttoken을 가져온다.
 export const authConfig = {
-  userFn: async (data: User) => {
+  userFn: async () => {
     //userId를 가져오는 방법
-    const response = await getUser(data.id);
-    console.log(data);
+    const response = await getUser();
+    console.log(response);
     return response;
   },
   loginFn: async (data: LoginInput) => {
@@ -166,15 +167,3 @@ export const termsSchema = z.object({
   }),
   AllCheck: z.boolean().optional(), // UI용 (검사 대상 아님)
 });
-// export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-//   const user = useUser();
-//   const location = useLocation();
-
-//   if (!user.data) {
-//     return (
-//       <Navigate to={paths.auth.login.getHref(location.pathname)} replace />
-//     );
-//   }
-
-//   return children;
-// };

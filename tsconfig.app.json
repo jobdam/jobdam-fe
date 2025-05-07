@@ -22,6 +22,8 @@
 
     /* Linting */
     "strict": true,
+    "noImplicitAny": false, // any 사용 허용
+
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,

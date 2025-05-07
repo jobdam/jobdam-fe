@@ -11,10 +11,25 @@ import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
 import { setStep } from "@/store/slices/progress";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
+const formSchema = z.object({
+  expType: z.string().default("신입"), // 기본값을 설정
+  jobCode: z.string().default(""), // 기본값을 설정
+  jobDetailCode: z.string().default(""), // 기본값을 설정
+  otherField: z.boolean().default(false), // 기본값을 설정
+  introduce: z.string().default(""),
+});
 const Interview = () => {
   const form = useForm({
-    resolver: zodResolver({}),
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      expType: "신입",
+      jobCode: "",
+      jobDetailCode: "",
+      otherField: false,
+      introduce: "소개",
+    },
   });
 
   const dispatch = useDispatch();
@@ -35,16 +50,16 @@ const Interview = () => {
         console.log("매칭정보를 등록한다.:", values);
       }}
     >
-      {({ control, getValues, watch }) => {
-        const jobTypeValue = watch("jobType");
-        console.log(jobTypeValue);
-
+      {({ control, register }) => {
         return (
           <>
-            <FieldsSelect control={control}></FieldsSelect>
+            <FieldsSelect form={form} control={control}></FieldsSelect>
             <People control={control}></People>
             <ContentsBox title="자신을 소개해주세요">
-              <Textarea placeholder="ex) 데이터보다 사람 마음을 읽는 마케터를 꿈꿔요"></Textarea>
+              <Textarea
+                registration={register("introduce")}
+                placeholder="ex) 데이터보다 사람 마음을 읽는 마케터를 꿈꿔요"
+              ></Textarea>
             </ContentsBox>
             <ContentsBox title="어떤종류이 면접을 준비하시나요?">
               <Button>인성</Button>

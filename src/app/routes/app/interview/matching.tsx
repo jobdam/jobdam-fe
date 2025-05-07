@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthLayout } from "@/components/layout/auth-layout";
 import { paths } from "@/config/paths";
 import { SignIn } from "@/pages/auth/SignIn";
-import { InterviewLayout } from "@/components/layout/interview-layout";
+import InterviewLayout from "@/components/layout/interview-layout";
 import Interview from "@/pages/interview/main";
 import { Link } from "@/components/ui/link";
 import { Button } from "@/components/ui/button";
