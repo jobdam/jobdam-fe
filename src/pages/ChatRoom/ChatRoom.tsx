@@ -1,12 +1,8 @@
 /** @format */
-import React, { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { Send } from "lucide-react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-import { AppDispatch } from "@/store";
-import { setDestination } from "@/store/slices/websockets";
 import { paths } from "@/config/paths";
-import { useWebSocketConnect } from "@/services/webSockect/useWebSocketConnect";
 import { useWebSocketSubscribe } from "@/services/webSockect/useWebSocketSubscribe";
 import { IMessage } from "@stomp/stompjs";
 

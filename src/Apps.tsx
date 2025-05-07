@@ -1,45 +1,22 @@
 /** @format */
 import * as React from "react";
-import { Flex, Text, Button, DropdownMenu } from "@radix-ui/themes";
-import {
-  BrowserRouter,
-  Link,
-  Route,
-  Routes,
-  useNavigate,
-} from "react-router-dom";
+import { Button } from "@radix-ui/themes";
 
-import { Select } from "./components/ui/form/select";
 import LoggedOutHeader from "./components/common/header/LoggedOutHeader";
 import { Checkbox, Radio, Textarea } from "./components/ui/form/index";
 import { InterviewSpinner, Spinner } from "./components/ui/spinner";
 import Avatars from "./components/ui/avatar/avatars";
-import { Input } from "@/components/ui/form";
 import { SendHorizontal } from "lucide-react";
 import { Plus } from "lucide-react";
-import { type } from "./store/index";
 
-import { mauve, violet, red, blackA, gray } from "@radix-ui/colors"; // 예시
-
-import AlertDialog from "./components/ui/alertdialog/alertdialog";
-import PrivacyContents from "./constants/privacyContents";
+import { useUser } from "@/lib/auth";
+import { Link } from "react-router";
 function Apps() {
+  const user = useUser();
+
+  console.log(user.data);
+
   const [count, setCount] = React.useState(0);
-  mauve.mauve1;
-  const [seconds, setSeconds] = React.useState(0);
-
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setSeconds((prev) => prev + 1);
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const formatTime = (secs: number) => {
-    const minutes = Math.floor(secs / 60);
-    const seconds = secs % 60;
-    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-  };
 
   return (
     <div className=" min-h-[100vh] min-w-[1440px]">
@@ -94,8 +71,8 @@ function Apps() {
       <Spinner size="xl" variant="primary"></Spinner>
       <InterviewSpinner></InterviewSpinner>
       <Checkbox></Checkbox>
-      <Checkbox checked={true} interview={true} label="신청 완료"></Checkbox>
-      <Checkbox checked={true} interview={true} label="면접 준비"></Checkbox>
+      <Checkbox checked={true} label="신청 완료"></Checkbox>
+      <Checkbox checked={true} label="면접 준비"></Checkbox>
       <Checkbox></Checkbox>
       <Avatars
         users={[
@@ -206,15 +183,7 @@ function Apps() {
           </div>
         </div>
       </div>
-      <div>
-        <Text>🕒 면접 시작 까지... {formatTime(seconds)}</Text>
-      </div>
-      <AlertDialog
-        title={"개인정보 이용약관"}
-        contents={<PrivacyContents></PrivacyContents>}
-      >
-        자세히
-      </AlertDialog>
+      <div>{/* <Text>🕒 면접 시작 까지... {formatTime(seconds)}</Text> */}</div>
     </div>
   );
 }

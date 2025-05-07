@@ -9,7 +9,7 @@ import { UseFormRegisterReturn } from "react-hook-form";
 export type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> &
   FieldWrapperPassThroughProps & {
     className?: string;
-    registration: Partial<UseFormRegisterReturn>;
+    registration?: Partial<UseFormRegisterReturn>;
   };
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, label, error, registration, ...props }, ref) => {

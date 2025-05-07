@@ -1,11 +1,12 @@
 /** @format */
 
 import { AppDispatch, RootState } from "@/store";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import SockJS from "sockjs-client";
-import { Client, Frame, StompSubscription } from "@stomp/stompjs";
+import { Client } from "@stomp/stompjs";
 import { useDispatch, useSelector } from "react-redux";
 import { setConnected } from "@/store/slices/websockets";
+import { getAccessToken } from "@/lib/authSerivices";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -40,7 +41,7 @@ export const useWebSocketConnect = (connect: boolean) => {
       }
 
       //연결이 안되어 있으면 연결시도.
-      const accessToken = localStorage.getItem("accessToken");
+      const accessToken = getAccessToken();
       const sockjs = new SockJS(`${apiUrl}/ws`);
       console.log(accessToken);
       const client = new Client({
@@ -62,7 +63,10 @@ export const useWebSocketConnect = (connect: boolean) => {
         },
 
         onStompError: (frame) => {
-          console.error("웹소켓연결에러 차후에 refresh토큰발급등에 사용해야함");
+          console.error(
+            "웹소켓연결에러 차후에 refresh토큰발급등에 사용해야함",
+            frame
+          );
           disConnectHandler();
         },
       });

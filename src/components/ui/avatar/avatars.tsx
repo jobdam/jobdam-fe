@@ -4,7 +4,6 @@ import * as React from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/utils/cn";
-import { Label } from "../form";
 //이미지는 저장해놓은걸 불러온다. db
 
 type User = {

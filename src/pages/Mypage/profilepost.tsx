@@ -3,7 +3,6 @@
 import { Input, Radio, Select, Form, Label } from "@/components/ui/form";
 
 import * as React from "react";
-import { Camera } from "lucide-react";
 import {
   educationOptions,
   stateOptions,
@@ -17,8 +16,6 @@ import { useJobCategory } from "./api/get-jobcategory";
 import { Controller } from "react-hook-form";
 import { useSelector } from "react-redux";
 import ProfileUpload from "./components/profilupload";
-import AlertDialog from "@/components/ui/alertdialog/alertdialog";
-import ProfilePreview from "./components/profilepreview";
 
 const ProfilePost = () => {
   //이미지 클릭하면 넣을수 있게 urldb

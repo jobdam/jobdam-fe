@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthLayout } from "@/components/layout/auth-layout";
 import { paths } from "@/config/paths";
 import { SignIn } from "@/pages/auth/SignIn";
-import { InterviewLayout } from "@/components/layout/interview-layout";
+import InterviewLayout from "@/components/layout/interview-layout";
 import Interview from "@/pages/interview/main";
 import { Link } from "@/components/ui/link";
 import { Button } from "@/components/ui/button";
@@ -14,8 +14,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import InterviewMatching from "@/pages/interview/matching";
 import { InterviewSpinner } from "@/components/ui/spinner";
+import { RootState } from "@/store";
 const InterviewMatchingRoute = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
   const progressStep = useSelector((state: RootState) => state.progress.step);

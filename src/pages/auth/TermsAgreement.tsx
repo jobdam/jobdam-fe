@@ -1,13 +1,8 @@
 /** @format */
 
-import { Form, Input } from "@/components/ui/form";
 import * as React from "react";
-import { type } from "../../store/index";
-import { termsSchema } from "@/lib/auth";
 import { Checkbox } from "@/components/ui/form/checkbox";
 import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
-import { Link } from "@/components/ui/link";
 import { useNavigate } from "react-router";
 import TermsContents from "@/constants/termsContents";
 import PrivacyContents from "@/constants/privacyContents";
