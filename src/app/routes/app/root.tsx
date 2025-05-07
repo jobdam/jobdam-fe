@@ -2,8 +2,8 @@
 
 import { Outlet } from "react-router";
 
-// import { DashboardLayout } from "@/components/layout";
-// import LoggedOutHeader from "@/components/common/header/LoggedOutHeader";
+import { DashboardLayout } from "@/components/layout";
+import LoggedOutHeader from "@/components/common/header/LoggedOutHeader";
 
 export const ErrorBoundary = () => {
   return <div>Something went wrong!</div>;
@@ -11,9 +11,9 @@ export const ErrorBoundary = () => {
 
 const AppRoot = () => {
   return (
-    // <LoggedOutHeader>
-    <Outlet />
-    // </LoggedOutHeader>
+    <LoggedOutHeader>
+      <Outlet />
+    </LoggedOutHeader>
   );
 };
 

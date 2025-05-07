@@ -1,8 +1,8 @@
 /** @format */
 
-import React /*{ Children } */ from "react";
+import React, { Children } from "react";
 
-// import { Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { Checkbox } from "../ui/form";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
@@ -18,9 +18,9 @@ export type LayoutProps = {
 export const InterviewLayout = ({
   children,
   title,
-  // className,
+  className,
   matching,
-  // showIcon = false,
+  showIcon = false,
 }: LayoutProps) => {
   const progressStep = useSelector((state: RootState) => state.progress.step);
   // const [progressStep, setProgressStep] = useState(1);

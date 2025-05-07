@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { Children } from "react";
 
 type LayoutProps = {
   children: React.ReactNode;
