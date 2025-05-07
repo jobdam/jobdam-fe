@@ -3,11 +3,23 @@
 import * as React from "react";
 import ContentsBox from "@/components/layout/contentsBox";
 import { Checkbox, Form, Radio, Select } from "@/components/ui/form";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useJobCategory } from "../../Mypage/api/get-jobcategory";
 
-const FieldsSelect = ({ control, form }) => {
+import { Control, Controller, UseFormReturn } from "react-hook-form";
+
+type FormValues = {
+  expType: "신입" | "경력";
+  jobCode: string;
+  jobDetailCode: string;
+  otherField: boolean;
+};
+
+type FieldsSelectProps = {
+  control: Control<FormValues>;
+  form: UseFormReturn<FormValues>;
+};
+
+const FieldsSelect = ({ control, form }: FieldsSelectProps) => {
   React.useEffect(() => {
     form.setValue("expType", "신입");
   }, []);

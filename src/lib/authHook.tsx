@@ -5,11 +5,14 @@ import { authConfig, useUser } from "./auth";
 import { Navigate, useLocation } from "react-router";
 import { paths } from "@/config/paths";
 
-export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const user = useUser();
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
+  const { data: user, isLoading, isError } = useUser();
 
-  if (!user.data) {
+  if (isLoading) {
+    return <></>;
+  }
+  if (!user) {
     return (
       <Navigate to={paths.auth.login.getHref(location.pathname)} replace />
     );
@@ -17,3 +20,5 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   return children;
 };
+
+export default ProtectedRoute;
