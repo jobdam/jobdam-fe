@@ -17,9 +17,11 @@ function authRequestInterceptor(config: InternalAxiosRequestConfig) {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  //파일 들어오고 이미지 업로드를우해선 추가적인 설정이 필요
   if (config.headers) {
     config.headers.Accept = "application/json";
   }
+
   //쿠키 자동포함
 
   config.withCredentials = true;

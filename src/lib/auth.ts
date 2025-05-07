@@ -14,9 +14,8 @@ import { api } from "./api-client";
 import { paths } from "@/config/paths";
 import { clearTokens, saveTokens } from "./authSerivices";
 
-//데이터를 가져올땐 userId를 가져온다.
-const getUser = async (email): Promise<User> => {
-  const response = await api.post(`/users/profile`, { email: email });
+const getUser = async (): Promise<User> => {
+  const response = await api.get(`/user/profile`);
 
   return response.data;
 };
@@ -92,10 +91,10 @@ const registerWithEmailAndPassword = (
 
 //로그인을 하면 jwttoken을 가져온다.
 export const authConfig = {
-  userFn: async (data: User) => {
+  userFn: async () => {
     //userId를 가져오는 방법
-    const response = await getUser(data.id);
-    console.log(data);
+    const response = await getUser();
+    console.log(response);
     return response;
   },
   loginFn: async (data: LoginInput) => {

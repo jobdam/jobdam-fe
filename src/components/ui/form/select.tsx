@@ -14,10 +14,10 @@ type Option = Record<string, string>; //어떤 구조든 상관이 없음
 
 interface SelectFieldProps extends FieldWrapperPassThroughProps {
   options: Option[];
-  labelkey?: string;
+  labelkey?: string | number;
   value?: string | number; // 👈 이걸 추가
 
-  valuekey?: string;
+  valuekey?: string | number;
   defaultValue?: string | number;
   className?: string;
   onChange?: (value: string | number) => void;

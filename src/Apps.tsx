@@ -23,17 +23,22 @@ import { mauve, violet, red, blackA, gray } from "@radix-ui/colors"; // 예시
 
 import AlertDialog from "./components/ui/alertdialog/alertdialog";
 import PrivacyContents from "./constants/privacyContents";
+import { useUser } from "@/lib/auth";
 function Apps() {
-  const [count, setCount] = React.useState(0);
-  mauve.mauve1;
-  const [seconds, setSeconds] = React.useState(0);
+  const user = useUser();
 
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setSeconds((prev) => prev + 1);
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+  console.log(user.data);
+
+  const [count, setCount] = React.useState(0);
+
+  // const [seconds, setSeconds] = React.useState(0);
+
+  // React.useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setSeconds((prev) => prev + 1);
+  //   }, 1000);
+  //   return () => clearInterval(timer);
+  // }, []);
 
   const formatTime = (secs: number) => {
     const minutes = Math.floor(secs / 60);
@@ -206,9 +211,7 @@ function Apps() {
           </div>
         </div>
       </div>
-      <div>
-        <Text>🕒 면접 시작 까지... {formatTime(seconds)}</Text>
-      </div>
+      <div>{/* <Text>🕒 면접 시작 까지... {formatTime(seconds)}</Text> */}</div>
       <AlertDialog
         title={"개인정보 이용약관"}
         contents={<PrivacyContents></PrivacyContents>}

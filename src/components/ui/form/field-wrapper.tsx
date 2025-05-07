@@ -30,18 +30,19 @@ export const FieldWrapper = (props: FieldWrapperProps) => {
         {label}
         <div className="mt-1 ">{children}</div>
       </Label>
-      <div className="flex min-h-[30px] justify-between">
-        {error?.message ? (
-          <Error errorMessage={error?.message || "⠀"} />
-        ) : (
-          <div /> // 또는 <span />로 공간 차지하지 않게
-        )}
-        {showLink && (
-          <Link className="pt-[5px] text-[10px] underline" to="forgot-password">
-            비밀번호 찾기
-          </Link>
-        )}
-      </div>
+      {(error?.message || showLink) && (
+        <div className="flex min-h-[30px] justify-between">
+          {error?.message && <Error errorMessage={error.message} />}
+          {showLink && (
+            <Link
+              className="pt-[5px] text-[10px] underline"
+              to="forgot-password"
+            >
+              비밀번호 찾기
+            </Link>
+          )}
+        </div>
+      )}
     </div>
   );
 };

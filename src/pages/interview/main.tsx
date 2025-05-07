@@ -15,6 +15,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 const Interview = () => {
   const form = useForm({
     resolver: zodResolver({}),
+    defaultValues: {
+      jobType: "인성",
+      expType: "신입",
+      jobCode: "",
+      jobDetailCode: "",
+      otherField: false,
+    },
   });
 
   const dispatch = useDispatch();
@@ -28,6 +35,9 @@ const Interview = () => {
     navigate("/interview/matching");
   };
 
+  React.useEffect(() => {
+    form.setValue("jobType", "인성");
+  }, []);
   return (
     <Form
       form={form}
@@ -41,7 +51,7 @@ const Interview = () => {
 
         return (
           <>
-            <FieldsSelect control={control}></FieldsSelect>
+            <FieldsSelect form={form} control={control}></FieldsSelect>
             <People control={control}></People>
             <ContentsBox title="자신을 소개해주세요">
               <Textarea placeholder="ex) 데이터보다 사람 마음을 읽는 마케터를 꿈꿔요"></Textarea>

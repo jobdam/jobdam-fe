@@ -25,14 +25,18 @@ import { Label } from "./label";
 
 // }
 
+export type Variant = "default" | "interview" | "progress";
+
 interface CombinedCheckboxProps
-  extends CheckboxProps,
-    FieldWrapperPassThroughProps {
-  interview?: boolean;
-  terms?: boolean;
-  interview2?: boolean;
-  progress?: boolean;
-  // onSubmit: () => void;
+  extends FieldWrapperPassThroughProps,
+    Omit<
+      React.ComponentPropsWithoutRef<typeof CheckBoxPrimitive.Root>,
+      "onCheckedChange"
+    > {
+  label?: string;
+  registration?: Partial<UseFormRegisterReturn>;
+  onCheckedChange?: (checked: CheckedState) => void;
+  variant?: Variant;
 }
 
 export const Checkbox = React.forwardRef<
@@ -42,45 +46,48 @@ export const Checkbox = React.forwardRef<
   (
     {
       className,
-      interview = false,
       label,
-      progress = false,
+      variant = "default",
+
       checked,
-      interview2 = false,
       onCheckedChange,
       error,
-      terms = false,
       registration,
       ...props
     },
     ref
   ) => {
+    //checkbox는 다양하게 쓰인다 1. interview sidebar에 쓰인다. -> interview
+    // 2. 그냥 checkbox 그자체로의 역할
+    //checkbox의 크기나 모양을 변하기 쉽게 만들자.
+    const rootClass = cn(
+      "flex size-[25px] appearance-none items-center justify-center rounded-full bg-[#D9D9D9] outline-none shadow-blackA4 transition-colors",
+      variant === "interview" && "rounded-none bg-black",
+      className
+    );
+    const isDisabled = props.disabled;
+
+    const wrapperClass = cn(
+      "flex items-start gap-2",
+      variant === "interview" && "w-[75px] justify-center",
+      variant === "progress" && "w-[150px] justify-start"
+    );
+
     return (
       <FieldWrapper error={error}>
-        <div
-          className={cn(
-            "flex gap-2 items-start ",
-            interview && "flex w-[150px] items-center justify-center ",
-            progress && "flex w-[150px] items-center justify-start "
-          )}
-        >
+        <div className={wrapperClass}>
           <CheckBoxPrimitive.Root
-            className={cn(
-              "flex size-[25px] transition-color appearance-none items-center justify-center  bg-[#D9D9D9] rounded-full shadow-blackA4 outline-none",
-              interview &&
-                "flex size-[25px] transition-color appearance-none items-center justify-center rounded-none  bg-black outline-none  ",
-              className
-            )}
-            disabled={interview2}
-            // disabled={interview}
+            className={rootClass}
+            disabled={isDisabled}
             onCheckedChange={onCheckedChange}
             checked={checked}
-            required
+            {...props}
+            {...registration}
           >
             {/* <div className="w-[1px] bg-black h-[80px]"></div> */}
 
             <CheckBoxPrimitive.Indicator className="text-violet11">
-              <Check className={cn(interview || (progress && "text-white"))} />
+              <Check className={cn(variant !== "default" && "text-white")} />
             </CheckBoxPrimitive.Indicator>
           </CheckBoxPrimitive.Root>
           <Label>{label}</Label>
