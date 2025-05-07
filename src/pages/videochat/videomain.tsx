@@ -9,7 +9,7 @@ import {
   SignalMessage,
   useSignalSubscription,
 } from "@/services/webSockect/videoChat/useSignalSubscrpition";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router";
 
 const Videomain = () => {
@@ -26,7 +26,6 @@ const Videomain = () => {
   //미디어 관련 훅
   const {
     stream,
-    micTrack,
     cameraTrack,
     screenTrack,
     isMicOn,

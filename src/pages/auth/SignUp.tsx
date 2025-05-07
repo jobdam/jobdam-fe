@@ -1,14 +1,10 @@
 /** @format */
-
-import { Button } from "@/components/ui/button";
 import { Checkbox, Form, Input, Label } from "@/components/ui/form";
-import { Link } from "@/components/ui/link";
-import { paths } from "@/config/paths";
 import { registerInputSchema, useRegister } from "@/lib/auth";
 import { Check } from "lucide-react";
 import * as React from "react";
 import { useCheckEmail } from "./api/get-checkemail";
-import { useForm, useFormContext, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useVerifyEmail } from "../emailverify/api/get-emailverify";
 import { zodResolver } from "@hookform/resolvers/zod";
 

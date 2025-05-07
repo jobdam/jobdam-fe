@@ -1,9 +1,6 @@
 /** @format */
 
 import { CustomImage } from "@/components/common/image/image";
-import { api } from "@/lib/api-client";
-import { googleOauth, naverOauth } from "@/utils/Oauth";
-import axios from "axios";
 const naverRedirect = import.meta.env.VITE_NAVER_REDIRECT;
 const NaverSignin = () => {
   const naverLogin = async () => {

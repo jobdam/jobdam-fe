@@ -1,9 +1,9 @@
 /** @format */
 
 import { InterviewSpinner } from "@/components/ui/spinner";
-import { nextStep, setStep } from "@/store/slices/progress";
+import { setStep } from "@/store/slices/progress";
 import * as React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "@/components/ui/link";
 import { paths } from "@/config/paths";
 //인터뷰 매칭에서는 적절한 대상을 찾아 매칭을 하는 단계

@@ -1,6 +1,5 @@
 /** @format */
 
-import axios, { AxiosError } from "axios";
 import { api } from "./api-client";
 
 export function getAccessToken(): string | null {

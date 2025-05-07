@@ -1,12 +1,9 @@
 /** @format */
 
-import { useNotifications } from "@/components/ui/notification";
-import { paths } from "@/config/paths";
-import { getAccessToken, refreshAccessToken } from "@/lib/authSerivices";
+import { getAccessToken } from "@/lib/authSerivices";
 import { store } from "@/store";
 import { addNotification } from "@/store/slices/notifications";
 import Axios, { InternalAxiosRequestConfig } from "axios";
-import { useDispatch } from "react-redux";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 // api 요청을 할때 interceptor 요청을 가로채기하여 이과정을 먼저 수행해서 통과되어야 한다.
