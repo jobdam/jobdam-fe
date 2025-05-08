@@ -29,6 +29,7 @@ const FieldsSelect = ({ control, form }: FieldsSelectProps) => {
 
   const jobCode = form.watch("jobCode");
   const jobDetailCode = form.watch("jobDetailCode");
+  // console.log(watch)e
 
   console.log(jobCode, jobDetailCode);
 
