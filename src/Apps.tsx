@@ -13,8 +13,7 @@ import { useUser } from "@/lib/auth";
 import { Link } from "react-router";
 function Apps() {
   const user = useUser();
-
-  console.log(user.data);
+  console.log(user.data, "user");
 
   const [count, setCount] = React.useState(0);
 
