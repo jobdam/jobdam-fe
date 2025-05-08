@@ -27,8 +27,6 @@ const Interview = () => {
 
   const navigate = useNavigate();
 
-  const onSuccess = () => {};
-
   const createInterview = usePostInterview({
     mutationConfig: {
       onSuccess: () => {
@@ -45,10 +43,7 @@ const Interview = () => {
         createInterview.mutate(values);
       }}
     >
-      {({ control, watch }) => {
-        // const jobTypeValue = watch("jobType");
-        // console.log("선택된 직무:", jobTypeValue);
-
+      {({ control }) => {
         return (
           <>
             <FieldsSelect form={form} control={control} />
@@ -113,7 +108,6 @@ const Interview = () => {
 
             <div className="relative bottom-[-150px] left-[100px] flex justify-center items-center">
               <button
-                onClick={handleOnSubmit}
                 type="submit"
                 className="bg-[#E4E4E4] h-[70px] w-[480px] cursor-pointer rounded-[10px]"
               >
