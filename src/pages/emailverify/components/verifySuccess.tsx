@@ -1,11 +1,10 @@
 /** @format */
 
 import { Button } from "@/components/ui/button";
-import { api } from "@/lib/api-client";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import * as React from "react";
-import { paths } from "@/config/paths";
+// import { paths } from "@/config/paths";
 
 const VerifySuccess = () => {
   const navigate = useNavigate();

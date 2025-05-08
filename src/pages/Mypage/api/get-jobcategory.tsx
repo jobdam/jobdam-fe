@@ -3,7 +3,6 @@
 import { useQuery, queryOptions } from "@tanstack/react-query";
 import { api } from "@/lib/api-client";
 import { QueryConfig } from "@/lib/react-query";
-import { queryConfig } from "@/lib/react-query";
 
 //직무 설정을 위한 데이터
 export const getJobCategory = () => {
@@ -15,7 +14,7 @@ export const getJobCategoryQuery = () => {
   return queryOptions({
     queryKey: ["jobCategory"],
     queryFn: () => getJobCategory(),
-    gcTime: 1000 * 60,
+    gcTime: 1000 * 60 * 30,
   });
 };
 

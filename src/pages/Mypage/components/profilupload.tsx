@@ -1,15 +1,8 @@
 /** @format */
 
-import { openProfilePreview } from "@/store/slices/uistate";
-import { Camera } from "lucide-react";
-
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
 import ProfilePreview from "./profilepreview";
-import { RootState } from "@/store";
 
-type FormValues = {
+export type FormValues = {
   profileImage: File | null;
 };
 //프로필 이미지 클릭하면 파일 업로드할수있는 창띄우기.
@@ -18,11 +11,6 @@ const ProfileUpload = () => {
   //서버 업로드 api를 여기서 호출.
 
   // 1. 서버 업로드 API 호출 (예시용 가짜 URL 사용)
-  // const uploadedUrl = await fakeUpload(file);
-
-  // 2. form 상태에 등록
-  // setValue("profileImageUrl", uploadedUrl);
-  // setPreview(uploadedUrl);
 
   return (
     <>

@@ -1,6 +1,5 @@
 /** @format */
 
-import { InterviewLayout } from "@/components/layout/interview-layout";
 import InterviewMatchingFinish from "@/pages/interview/matchingwaiting";
 
 const MatchingWaiting = () => {

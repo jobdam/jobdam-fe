@@ -4,8 +4,8 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 
 import ContentsBox from "@/components/layout/contentsBox";
-import { Checkbox, Form, Radio, Select, Textarea } from "@/components/ui/form";
-import { Controller, useForm } from "react-hook-form";
+import { Form, Textarea } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
 import FieldsSelect from "./components/fieldsSelect";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
@@ -22,6 +22,14 @@ const interviewSchema = z.object({
     peopleCount: z.coerce.number().min(1, "인원수를 선택해주세요."),
 });
 
+
+const formSchema = z.object({
+  expType: z.string().default("신입"), // 기본값을 설정
+  jobCode: z.string().default(""), // 기본값을 설정
+  jobDetailCode: z.string().default(""), // 기본값을 설정
+  otherField: z.boolean().default(false), // 기본값을 설정
+  introduce: z.string().default(""),
+});
 const Interview = () => {
     const form = useForm({
         resolver: zodResolver(interviewSchema),
@@ -52,6 +60,7 @@ const Interview = () => {
                             Authorization: `Bearer ${accessToken}`,
                         },
                     });
+
 
                     console.log("매칭 정보 등록 완료:", values);
                 } catch (error) {
@@ -84,6 +93,7 @@ const Interview = () => {
                                 )}
                             />
                         </ContentsBox>
+
 
                         <ContentsBox title="자신을 소개해주세요">
                             <Controller
@@ -126,6 +136,7 @@ const Interview = () => {
                                 )}
                             />
                         </ContentsBox>
+
 
                         <div className="relative bottom-[-150px] left-[100px] flex justify-center items-center">
                             <button

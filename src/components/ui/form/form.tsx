@@ -3,8 +3,6 @@
 //react-hook-form ⬅️ 연결 ⬅️ @hookform/resolvers/zod ⬅️ zod
 //React Hook Form과 Zod를 연결해주는 브릿지 라이브러리
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
 import {
@@ -16,11 +14,8 @@ import {
   SubmitHandler,
   UseFormProps,
   UseFormReturn,
-  useForm,
   useFormContext,
 } from "react-hook-form";
-
-import { Label } from "./label";
 
 import { ZodType, z } from "zod";
 import { cn } from "@/utils/cn";
@@ -36,7 +31,9 @@ import { cn } from "@/utils/cn";
 // 예를 들어, TFieldValues가 { email: string, password: string }라면 TName은 email 또는 password와 같은 값을 가질 수 있습니다.
 export type FormProps<TFormValues extends FieldValues, Schema> = {
   onSubmit: SubmitHandler<TFormValues>;
-  form: UseFormReturn<TFormValues>;
+  // form: UseFormReturn<TFormValues>;
+  form: UseFormReturn<any>;
+
   schema?: Schema;
   className?: string;
   children: (methods: UseFormReturn<TFormValues>) => React.ReactNode;
@@ -147,9 +144,7 @@ const Form = <
   children,
   className,
   form,
-  options,
   id,
-  schema,
 }: FormProps<TFormValues, Schema>) => {
   return (
     <FormProvider {...form}>

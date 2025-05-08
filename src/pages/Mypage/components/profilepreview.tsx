@@ -1,17 +1,15 @@
 /** @format */
 
 import AlertDialog from "@/components/ui/alertdialog/alertdialog";
-import { useSelector } from "react-redux";
 import React, { useState } from "react";
 
-import { Camera } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 type FormValues = {
-  profileImage: File | null;
+  profileImage: any;
 };
 const ProfilePreview = () => {
-  const { register, handleSubmit, setValue, watch } = useForm<FormValues>({
+  const { setValue, watch } = useForm<FormValues>({
     defaultValues: { profileImage: null },
   });
   const fileInputRef = React.useRef<HTMLInputElement>(null);
@@ -25,14 +23,16 @@ const ProfilePreview = () => {
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+    const fileInput = event.target as HTMLInputElement;
+    const file = fileInput.files?.[0];
     console.log(file);
     if (file) {
       setValue("profileImage", file); // RHF에 등록
       setPreview(URL.createObjectURL(file)); // 미리보기 URL 설정
 
       //!데이터 api 사용할때 사용
-      //   const uploadedUrl = await fakeUpload(file);
+      //
+      //   const {data} = postProfileImage(file)
 
       //   2. form 상태에 등록
       //   setValue("profileImageUrl", uploadedUrl);
@@ -78,7 +78,7 @@ const ProfilePreview = () => {
         </div>
 
         <div className="my-[10px]">
-          <button onClick={handleFileChange}> 변경</button>
+          <button> 변경</button>
         </div>
       </section>
     );

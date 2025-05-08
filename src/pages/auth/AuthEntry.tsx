@@ -5,7 +5,7 @@ import { Form } from "@/components/ui/form";
 import { Link } from "@/components/ui/link";
 import { oauthLoginSchema } from "@/lib/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import GoogleSignin from "./components/googlesignin";
 import NaverSignin from "./components/naversignin";
 
@@ -22,11 +22,11 @@ export const AuthEntry = () => {
       <Form
         form={form}
         onSubmit={(values) => {
-          console.log("Oauth");
+          console.log(values);
         }}
         schema={oauthLoginSchema}
       >
-        {({ register, formState }) => (
+        {() => (
           <>
             <div className="mt-[50px] flex flex-col items-center justify-center space-y-4">
               <CustomImage

@@ -2,13 +2,13 @@
 
 import FeedbackContents from "./components/feedbackcontents";
 
-const data = [
-  {
-    title: "2025.04.22 디자이너 모의면접",
-    merits: ["논리적 구조", "목소리 톤 안정"],
-    improvements: ["사례 구체화", "시선처리 부족"],
-  },
-];
+// const data = [
+//   {
+//     title: "2025.04.22 디자이너 모의면접",
+//     merits: ["논리적 구조", "목소리 톤 안정"],
+//     improvements: ["사례 구체화", "시선처리 부족"],
+//   },
+// ];
 
 const MyFeedback = () => {
   return (

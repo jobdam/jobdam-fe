@@ -3,36 +3,6 @@
 import ProfileCard from "./components/profilecard";
 
 //role을 정해서
-const data = [
-  {
-    id: 1,
-    profile: "사진",
-    name: "오예린님",
-    job: "UXUI 디자인 직무",
-    role: "me",
-  },
-  {
-    id: 2,
-    profile: "사진",
-    name: "오예린님",
-    job: "UXUI 디자인 직무",
-    role: "guest",
-  },
-  {
-    id: 3,
-    profile: "사진",
-    name: "오예린님",
-    job: "UXUI 디자인 직무",
-    role: "guest",
-  },
-  {
-    id: 4,
-    profile: "사진",
-    name: "오예린님",
-    job: "UXUI 디자인 직무",
-    role: "guest",
-  },
-];
 
 const InterviewMatchingWaiting = () => {
   //role을 나눠서 guest는 아래쪽에, me는 보기쉽게 위쪽에 배치

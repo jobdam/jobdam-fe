@@ -1,31 +1,33 @@
 /** @format */
 
-import { useNavigate, useSearchParams } from "react-router";
+// /** @format */
 
-import { AuthLayout } from "@/components/layout/auth-layout";
-import { paths } from "@/config/paths";
-import { SignIn } from "@/pages/auth/SignIn";
-import { TermsAgreementLayout } from "@/components/layout/termsAgreement-layout";
-import TermsAgreement from "@/pages/auth/TermsAgreement";
+// import { useNavigate, useSearchParams } from "react-router";
 
-const TermsAgreementRoute = () => {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo");
+// import { AuthLayout } from "@/components/layout/auth-layout";
+// import { paths } from "@/config/paths";
+// import { SignIn } from "@/pages/auth/SignIn";
+// import { TermsAgreementLayout } from "@/components/layout/termsAgreement-layout";
+// import TermsAgreement from "@/pages/auth/TermsAgreement";
 
-  return (
-    <TermsAgreementLayout
-      title={
-        <>
-          가입을 위해
-          <br />
-          약관에 동의해주세요
-        </>
-      }
-    >
-      <TermsAgreement onSuccess={() => {}} />
-    </TermsAgreementLayout>
-  );
-};
+// const TermsAgreementRoute = () => {
+//   const navigate = useNavigate();
+//   const [searchParams] = useSearchParams();
+//   const redirectTo = searchParams.get("redirectTo");
 
-export default TermsAgreementRoute;
+//   return (
+//     <TermsAgreementLayout
+//       title={
+//         <>
+//           가입을 위해
+//           <br />
+//           약관에 동의해주세요
+//         </>
+//       }
+//     >
+//       <TermsAgreement onSuccess={() => {}} />
+//     </TermsAgreementLayout>
+//   );
+// };
+
+// export default TermsAgreementRoute;

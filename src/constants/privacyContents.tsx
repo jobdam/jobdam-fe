@@ -1,7 +1,5 @@
 /** @format */
 
-import React from "react";
-
 const PrivacyContents = () => {
   return (
     <div className=" border-box p-4 text-sm mb-[9px]">

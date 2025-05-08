@@ -12,6 +12,8 @@ import WebSocketConnectManager from "./WebSocketConnectManager";
 // default: 기본 컴포넌트 → Component라는 이름으로 바뀜
 // ...rest: 나머지 속성들 (예: path, errorElement 등)
 
+// m의 타입 정의
+
 const convert = (queryClient: QueryClient) => (m: any) => {
   const { clientLoader, clientAction, default: Component, ...rest } = m;
   return {

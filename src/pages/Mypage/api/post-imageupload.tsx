@@ -1,16 +1,8 @@
 /** @format */
 
 import { api } from "@/lib/api-client";
-import {
-  useQuery,
-  queryOptions,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
-import { User } from "@/types/api";
-import { QueryConfig } from "@/lib/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { MutationConfig } from "@/lib/react-query";
-import { useUser } from "@/lib/auth";
 
 export const postProfileImage = (file) => {
   const formData = new FormData();
@@ -30,9 +22,7 @@ export type UseUploadImageOptions = {
 export const useUploadProfileImage = ({
   mutationConfig,
 }: UseUploadImageOptions = {}) => {
-  const queryClient = useQueryClient();
-
-  const { onSuccess, ...restConfig } = mutationConfig || {};
+  const { ...restConfig } = mutationConfig || {};
   return useMutation({
     // onSuccess: (...args) => {
     //   queryClient.invalidateQueries({
