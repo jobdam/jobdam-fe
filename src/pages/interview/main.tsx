@@ -5,30 +5,14 @@ import { useNavigate } from "react-router";
 import ContentsBox from "@/components/layout/contentsBox";
 import { Form, Textarea } from "@/components/ui/form";
 import { Controller, useForm } from "react-hook-form";
-import People from "./components/people";
+// import People from "./components/people";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
 import { setStep } from "@/store/slices/progress";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import FieldsSelect from "./components/fieldsSelect";
-import axios from "axios";
+import { interviewSchema, usePostInterview } from "./api/post-interview";
 
-//fieldselect에 직무와 세부직무를 선택하는게 존재해서 jobCode  , jobDetailcode가 필요.
-const interviewSchema = z.object({
-  jobCode: z.string().min(1, "직무를 선택해주세요"), // 기본값을 설정
-  jobDetailCode: z.string().min(1, "세부 직무를 선택해주세요"), // 기본값을 설정
-  // jobType: z.string().min(1, "직무를 선택해주세요."),
-  introduce: z.string().min(1, "자기소개를 입력해주세요."),
-  interviewType: z.string().min(1, "면접 유형을 선택해주세요."),
-  peopleCount: z.coerce.number().min(1, "인원수를 선택해주세요."),
-});
-
-// const formSchema = z.object({
-//   expType: z.string().default("신입"), // 기본값을 설정
-
-//   otherField: z.boolean().default(false), // 기본값을 설정
-// });
 const Interview = () => {
   const form = useForm({
     resolver: zodResolver(interviewSchema),
@@ -42,36 +26,24 @@ const Interview = () => {
   }, []);
 
   const navigate = useNavigate();
-  const handleOnSubmit = () => {
-    navigate("/interview/matching");
-  };
 
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const createInterview = usePostInterview({
+    mutationConfig: {
+      onSuccess: () => {
+        console.log("매칭 정보가 성공적으로 등록되었습니다.");
+        navigate("/interview/matching");
+      },
+    },
+  });
+
   return (
     <Form
       form={form}
-      onSubmit={async (values) => {
-        try {
-          const accessToken = localStorage.getItem("accessToken");
-
-          await axios.post(`${apiUrl}/api/matching/info`, values, {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          });
-
-          console.log("매칭 정보 등록 완료:", values);
-        } catch (error) {
-          console.error("매칭 정보 등록 실패", error);
-        } finally {
-          navigate("/interview/matching");
-        }
+      onSubmit={(values: any) => {
+        createInterview.mutate(values);
       }}
     >
-      {({ control, watch }) => {
-        // const jobTypeValue = watch("jobType");
-        // console.log("선택된 직무:", jobTypeValue);
-
+      {({ control }) => {
         return (
           <>
             <FieldsSelect form={form} control={control} />
@@ -136,7 +108,6 @@ const Interview = () => {
 
             <div className="relative bottom-[-150px] left-[100px] flex justify-center items-center">
               <button
-                onClick={handleOnSubmit}
                 type="submit"
                 className="bg-[#E4E4E4] h-[70px] w-[480px] cursor-pointer rounded-[10px]"
               >
