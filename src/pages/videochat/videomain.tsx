@@ -11,6 +11,10 @@ import {
 } from "@/services/webSockect/videoChat/useSignalSubscrpition";
 import { useCallback, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router";
+<<<<<<< HEAD
+=======
+import Video from "./components/vidio";
+>>>>>>> 7e6b873 (소셜 로그인 네이버 완료)
 
 const Videomain = () => {
   const { roomId } = useParams();
