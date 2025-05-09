@@ -2,8 +2,6 @@
 
 import { useLocalMediaStream } from "@/services/webSockect/videoChat/useLocalMediaStream";
 
-import { useCallback } from "react";
-
 const Video = () => {
   //미디어 관련 훅
   const {

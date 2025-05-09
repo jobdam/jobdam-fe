@@ -64,5 +64,5 @@ export const useSignalSubscription = ({
       subscription.unsubscribe();
       console.log(" 시그널 구독 해제:", destination);
     };
-  }, [isConnected, roomId, onSignal]);
+  }, [isConnected, roomId, onSignal, enabled]);
 };
