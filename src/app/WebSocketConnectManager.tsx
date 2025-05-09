@@ -2,7 +2,7 @@
 import { useWebSocketConnect } from "@/services/webSockect/useWebSocketConnect";
 import { Outlet, useLocation } from "react-router";
 
-const connectPaths = ["/interview/matching", "/chatroom", "/videoChat"];
+const connectPaths = ["/interview/matching", "/chatRoom", "/videoChat"];
 
 export const WebSocketConnect = () => {
   const location = useLocation();
