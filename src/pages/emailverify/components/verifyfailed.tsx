@@ -1,5 +1,9 @@
 /** @format */
 
+import { Link } from "@/components/ui/link";
+import { useUser } from "@/lib/auth";
+import { useCheckEmail } from "@/pages/auth/api/get-checkemail";
+import * as React from "react";
 import { useVerifyEmail } from "../api/get-emailverify";
 import { Button } from "@/components/ui/button";
 
@@ -17,7 +21,7 @@ const VerifyFailed = () => {
   //인증 실패의경우 중복인증한경우와 링크가 만료된경우 등등 둘다 필요하다.
 
   //중복인증의 경우 인증 메일을 다시 보낼필요가없다.
-  //중복인증을
+  //중복인증을 어떻게 구분?
   return (
     <div>
       ❌ 이메일 인증에 실패했습니다.

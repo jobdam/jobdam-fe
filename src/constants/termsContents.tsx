@@ -1,5 +1,7 @@
 /** @format */
 
+import React from "react";
+
 const TermsContents = () => {
   return (
     <div className="max-h-[100px] border-box overflow-y-auto p-4  text-sm mb-[9px] bg-[#D9D9D9]">

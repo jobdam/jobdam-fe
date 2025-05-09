@@ -1,5 +1,7 @@
 /** @format */
 
+import { api } from "@/lib/api-client";
+import { useSearchParams } from "react-router-dom";
 import VerifySuccess from "./components/verifySuccess";
 import VerifyFailed from "./components/verifyfailed";
 import { useVerifyEmail } from "./api/get-emailverify";

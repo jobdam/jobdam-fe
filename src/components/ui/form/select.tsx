@@ -5,56 +5,48 @@ import { UseFormRegisterReturn } from "react-hook-form";
 import { ChevronDown } from "lucide-react"; // lucide 아이콘 또는 이미지로 대체 가능
 import { cn } from "@/utils/cn";
 
-import { FieldWrapperPassThroughProps } from "./field-wrapper";
+import { FieldWrapper, FieldWrapperPassThroughProps } from "./field-wrapper";
 
-interface Option {
-  value: string | number; // 예시: value는 문자열
-  label: string | number; // 예시: label은 문자열
-} //어떤 구조든 상관이 없음
+type Option = {
+  label: React.ReactNode | string;
+  value: string | number;
+};
 
 interface SelectFieldProps extends FieldWrapperPassThroughProps {
   options: Option[];
-  labelkey?: string | number;
-  value?: string | number; // 👈 이걸 추가
-
-  valuekey?: string | number;
   defaultValue?: string | number;
   className?: string;
-  onChange?: (value: string | number) => void;
-
   registration?: Partial<UseFormRegisterReturn>;
 }
 
-//여기서 선택된게 다른 select에도 영향을 준다.
 export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
   (
-    {
-      value,
-      options = [],
-      labelkey = "label",
-      valuekey = "value",
-      onChange,
-      className,
-    },
+    { label, options = [], defaultValue, error, className, registration },
     ref
   ) => {
     const [isOpen, setIsOpen] = React.useState(false);
-    // const [selected, setSelected] = React.useState<string | number>(
-    //   defaultValue ?? options[0]?.[labelkey] ?? ""
-    // );
+    const [selected, setSelected] = React.useState<string | number>(
+      defaultValue ?? options[0]?.value ?? ""
+    );
 
     const handleSelect = (value: string | number) => {
-      onChange?.(value); // 상태는 바깥에서 관리
+      setSelected(value);
       setIsOpen(false);
-    };
-    const selectedLabel =
-      options.find((option) => option[labelkey] === value)?.[valuekey] ?? value;
 
-    console.log(labelkey, options);
+      // react-hook-form onChange 수동 호출
+      registration?.onChange?.({ target: { value, name: registration?.name } });
+    };
+
+    const selectedLabel =
+      options.find((option) => option.value === selected)?.label ?? selected;
+
     return (
       // <FieldWrapper label={label} error={error}>
       <div
-        className={cn("w-[200px] flex items-center relative", className)}
+        className={cn(
+          "w-[200px] flex items-center justify-center relative",
+          className
+        )}
         ref={ref}
       >
         <div
@@ -66,15 +58,14 @@ export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
         </div>
 
         {isOpen && (
-          <div className="absolute left-0 top-full mt-1 overflow-y-auto w-full max-h-[200px] rounded-md bg-white border border-gray-300 shadow-md z-10">
-            {options.map((option) => (
+          <div className="absolute left-0 top-full mt-1 w-full rounded-md bg-white border border-gray-300 shadow-md z-10">
+            {options.map((option, index) => (
               <div
-                defaultValue={value}
-                key={Number(option[labelkey])}
+                key={index}
                 className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
-                onClick={() => handleSelect(option[valuekey])}
+                onClick={() => handleSelect(option.value)}
               >
-                {option[valuekey]}
+                {option.label}
               </div>
             ))}
           </div>

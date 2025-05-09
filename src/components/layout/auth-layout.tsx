@@ -1,8 +1,12 @@
 /** @format */
 
 import * as React from "react";
-// import { useSearchParams } from "react-router";
+import { useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router";
 
+import { Link } from "@/components/ui/link";
+import { paths } from "@/config/paths";
+import { useUser } from "@/lib/auth";
 import { cn } from "@/utils/cn";
 
 type LayoutProps = {
@@ -18,7 +22,11 @@ export const AuthLayout = ({
   subtitle,
   className,
 }: LayoutProps) => {
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo");
+
   //auth 에서 useUser를 하면 내정보를 불러오고,
+  const navigate = useNavigate();
   // const user = useUser();
 
   // useEffect(() => {

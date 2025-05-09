@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 import { paths } from "@/config/paths";
 import { Link } from "../ui/link";
+import { cn } from "@/utils/cn";
 
 interface MypageLayoutProps {
   children: ReactNode;
@@ -25,9 +26,9 @@ const MypageLayout = ({
 }: MypageLayoutProps) => {
   return (
     <div className="flex min-h-screen w-[1920px] flex-row justify-center items-center">
-      <div className="flex gap-x-[117px] items-start">
+      <div className="flex gap-x-[117px]">
         {/* 사이드바 */}
-        <div className="flex flex-col w-[200px] shrink-0">
+        <div className="flex flex-col">
           <div>
             {/* 프로필 사진 */}
             <div className="w-[150px] h-[150px] mb-[43px] rounded-full bg-[#D9D9D9]"></div>

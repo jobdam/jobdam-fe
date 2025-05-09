@@ -1,22 +1,44 @@
 /** @format */
 import * as React from "react";
-import { Button } from "@radix-ui/themes";
-
+import { Flex, Text, Button, DropdownMenu } from "@radix-ui/themes";
+import {
+  BrowserRouter,
+  Link,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
+import { Select } from "./components/ui/form/select";
 import LoggedOutHeader from "./components/common/header/LoggedOutHeader";
 import { Checkbox, Radio, Textarea } from "./components/ui/form/index";
 import { InterviewSpinner, Spinner } from "./components/ui/spinner";
 import Avatars from "./components/ui/avatar/avatars";
+import { Input } from "@/components/ui/form";
 import { SendHorizontal } from "lucide-react";
 import { Plus } from "lucide-react";
+import { type } from "./store/index";
 
-import { useUser } from "@/lib/auth";
-import { Link } from "react-router";
-import { paths } from "./config/paths";
+import { mauve, violet, red, blackA, gray } from "@radix-ui/colors"; // 예시
+
+import AlertDialog from "./components/ui/alertdialog/alertdialog";
+import PrivacyContents from "./constants/privacyContents";
 function Apps() {
-  const user = useUser();
-  console.log(user.data, "user");
-
   const [count, setCount] = React.useState(0);
+  mauve.mauve1;
+  const [seconds, setSeconds] = React.useState(0);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setSeconds((prev) => prev + 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (secs: number) => {
+    const minutes = Math.floor(secs / 60);
+    const seconds = secs % 60;
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
 
   return (
     <div className=" min-h-[100vh] min-w-[1440px]">
@@ -33,8 +55,7 @@ function Apps() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-      <Link to={paths.videochat.main.path}>화상채팅 시작 </Link>
-      <Link to="/post-profile">마이페이지</Link>
+      <Link to="post-profile">마이페이지</Link>
       <Link to="/chatRoom">채팅방</Link>
       <Button>
         <Link to="/login">로그인페이지</Link>
@@ -45,6 +66,7 @@ function Apps() {
       <Button>
         <Link to="/termsAgreement">이용약관</Link>
       </Button>
+      <Select options={["개발", "디자인", "기획"]} defaultValue="개발"></Select>
       <div>
         <Radio
           // className={}
@@ -72,8 +94,8 @@ function Apps() {
       <Spinner size="xl" variant="primary"></Spinner>
       <InterviewSpinner></InterviewSpinner>
       <Checkbox></Checkbox>
-      <Checkbox checked={true} label="신청 완료"></Checkbox>
-      <Checkbox checked={true} label="면접 준비"></Checkbox>
+      <Checkbox checked={true} interview={true} label="신청 완료"></Checkbox>
+      <Checkbox checked={true} interview={true} label="면접 준비"></Checkbox>
       <Checkbox></Checkbox>
       <Avatars
         users={[
@@ -184,7 +206,15 @@ function Apps() {
           </div>
         </div>
       </div>
-      <div>{/* <Text>🕒 면접 시작 까지... {formatTime(seconds)}</Text> */}</div>
+      <div>
+        <Text>🕒 면접 시작 까지... {formatTime(seconds)}</Text>
+      </div>
+      <AlertDialog
+        title={"개인정보 이용약관"}
+        contents={<PrivacyContents></PrivacyContents>}
+      >
+        자세히
+      </AlertDialog>
     </div>
   );
 }

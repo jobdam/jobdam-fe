@@ -2,6 +2,7 @@
 
 import { api } from "@/lib/api-client";
 import { useQuery, queryOptions } from "@tanstack/react-query";
+import { User } from "@/types/api";
 import { QueryConfig } from "@/lib/react-query";
 
 export const getcheckemail = (email: string) => {
