@@ -13,6 +13,9 @@ export const paths = {
   },
 
   auth: {
+    oauth: {
+      path: "/oauth-redirect",
+    },
     register: {
       path: "/register",
       getHref: (redirectTo?: string | null | undefined) =>
@@ -43,6 +46,7 @@ export const paths = {
     waiting: {
       path: "/interview/waiting",
     },
+    finish: { path: "/interview" },
   },
   chatroom: {
     main: {
@@ -67,7 +71,7 @@ export const paths = {
       path: "/post-profile",
     },
     editdata: {
-      path: "",
+      path: "/mypage/edit",
     },
     feedback: {
       path: "/mypage/feedback",
@@ -78,7 +82,11 @@ export const paths = {
   },
   videochat: {
     main: {
-      path: "/videochat",
+      path: "/videoChat/:roomId",
+      getHref: (roomId?: string | number) =>
+        roomId != null
+          ? `/videoChat/${encodeURIComponent(roomId.toString())}`
+          : "/",
     },
   },
 };

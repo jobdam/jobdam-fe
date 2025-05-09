@@ -13,14 +13,27 @@ export type Entity<T> = {
 export type User = Entity<{
   id: number;
   email: string;
-  name: string;
+  name?: string;
   birthday?: string;
   profileImageUrl?: string;
   jobCode?: string;
   targetCompanySize?: string;
+  educationLevel?: string;
+  educationStatus?: string;
+  experienceType?: string;
+  jobDetailCode?: string;
 }>;
 
 export type AuthResponse = {
+  headers: any;
   jwt: string;
   user: User;
+};
+
+export type InterviewData = {
+  jobCode: string;
+  jobDetailCode: string;
+  introduce: string;
+  interviewType: string;
+  peopleCount: number;
 };

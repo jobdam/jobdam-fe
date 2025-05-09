@@ -1,5 +1,5 @@
 /** @format */
 
-export * from "./agreePrivacy";
-export * from "./agreeTerms";
+export * from "./privacyContents";
+export * from "./termsContents";
 export * from "./mainContents";

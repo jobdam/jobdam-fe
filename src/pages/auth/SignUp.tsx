@@ -1,16 +1,22 @@
 /** @format */
 
-import { Button } from "@/components/ui/button";
 import { Checkbox, Form, Input, Label } from "@/components/ui/form";
-import { Link } from "@/components/ui/link";
-import { paths } from "@/config/paths";
+import { type FieldError } from "react-hook-form";
+
 import { registerInputSchema, useRegister } from "@/lib/auth";
 import { Check } from "lucide-react";
 import * as React from "react";
 import { useCheckEmail } from "./api/get-checkemail";
-import { useForm, useFormContext, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useVerifyEmail } from "../emailverify/api/get-emailverify";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+export const getFieldError = (error: any): FieldError | undefined => {
+  if (error && typeof error === "object" && "type" in error) {
+    return error as FieldError;
+  }
+  return undefined;
+};
 
 type RegisterFormProps = {
   onSuccess: () => void;
@@ -23,11 +29,11 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
     defaultValues: {
       email: "",
       password: "",
-      agreeAll: false,
-      agreeTerms: false,
-      agreePrivacy: false,
-      agreeAge: false,
-      agreeJobDam: false,
+      // agreeAll: false,
+      // agreeTerms: false,
+      // agreePrivacy: false,
+      // agreeAge: false,
+      // agreeJobDam: false,
     },
   });
 
@@ -40,6 +46,7 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
   const agreePrivacy = form.watch("agreePrivacy");
   const agreeAge = form.watch("agreeAge");
   const agreeJobDam = form.watch("agreeJobDam");
+  const { refetch: verifyRefetch } = useVerifyEmail({});
 
   React.useEffect(() => {
     if (agreeTerms && agreePrivacy && agreeAge) {
@@ -53,31 +60,27 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
     refetch,
     data,
     isError: checkError,
-    isFetching,
     isFetched,
   } = useCheckEmail({ email: email, queryConfig: { enabled: false } });
   console.log(data?.data.isDuplicate, checkError, isFetched);
 
   const registering = useRegister({ onSuccess });
-  const { refetch: verifyRefetch, isError } = useVerifyEmail({});
 
   return (
     <Form
       onSubmit={(values) => {
         //회원가입 db에 넣기
-        console.log(email);
-        values.email, values.password;
+        console.log(values);
 
         //agreeTerms,agreePrivacy,agreeAgre
         //회원가입 완료는 모든 것이 체크되어있어야하며, 중복확인이 완료된 상태여야한다.
         if (agreeAll && data?.data.isDuplicate) {
-          console.log("실행되면안돼");
           registering.mutate({
             email: values.email,
             password: values.password,
-          });
+          } as any);
+          verifyRefetch();
           //이메일 인증을 가입할때 곱바로 시행한다.
-
           // verifyRefetch();
         }
       }}
@@ -87,7 +90,7 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
       //   shouldUnregister: true,
       // }}
     >
-      {({ register, formState, watch }) => {
+      {({ register, formState }) => {
         // 여기에 axios or react-query mutation으로 중복 확인 요청
         // console.log(watch("email"));
 
@@ -101,7 +104,7 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
                   label="이메일"
                   className="font-medium min-w-[400px] h-[70px] text-left border px-[24px] border-[rgba(0,0,0,0.3)] text-black"
                   placeholder="jodbdam0415@gmail.com"
-                  error={formState.errors["email"]}
+                  error={getFieldError(formState.errors["email"])}
                   registration={register("email")}
                 />
                 <div className="mt-[23px] ">
@@ -141,7 +144,7 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
                 label="비밀번호"
                 placeholder="비밀번호를 입력하세요."
                 className="font-medium text-left border border-[rgba(0,0,0,0.3)] text-black"
-                error={formState.errors["password"]}
+                error={getFieldError(formState.errors["password"])}
                 registration={register("password")}
               />
               <Input
@@ -149,14 +152,14 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
                 label="비밀번호 확인"
                 placeholder="비밀번호를 입력하세요."
                 className="font-medium text-left border border-[rgba(0,0,0,0.3)] text-black"
-                error={formState.errors["passwordConfirm"]}
+                error={getFieldError(formState.errors["passwordConfirm"])}
                 registration={register("passwordConfirm")}
               />
               <div className="flex  mt-[40px] gap-[15px] flex-col">
                 <div className="flex flex-row">
                   <Checkbox
                     label="전체동의"
-                    error={formState.errors["agreeAll"]}
+                    error={getFieldError(formState.errors["agreeAll"])}
                     checked={agreeAll}
                     onCheckedChange={(checked) => {
                       const value = Boolean(checked);
