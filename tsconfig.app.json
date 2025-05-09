@@ -28,5 +28,9 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "src/store/slices/progress.ts"]
+  "include": [
+    "src",
+    "src/store/slices/progress.ts",
+    "src/app/routes/app/interview/.tsx"
+  ]
 }

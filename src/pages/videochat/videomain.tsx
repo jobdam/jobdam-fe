@@ -11,13 +11,17 @@ import {
 } from "@/services/webSockect/videoChat/useSignalSubscrpition";
 import { useCallback, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router";
+import Video from "./components/vidio";
+import Utility from "./components/utility";
+import FeedbackandAiQuestion from "./components/feedbackandaiquestion";
 
 const Videomain = () => {
   const { roomId } = useParams();
   const navigate = useNavigate();
-  //내미디어 정보보
+
+  //내 미디어관련
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
-  //다른사람 스트림(미디어)정보
+  //다른사람 스트림정보
   const { remoteStreams, addRemoteStream, removeRemoteStream } =
     useRemoteStreamMap();
   //peer관리 훅
@@ -25,18 +29,12 @@ const Videomain = () => {
   //미디어 관련 훅
   const {
     stream,
-    micTrack,
     cameraTrack,
     screenTrack,
-    isMicOn,
-    isCameraOn,
-    toggleMic,
-    toggleCamera,
-    toggleScreenShare,
+
     isScreenSharing,
   } = useLocalMediaStream();
-  //미디어, 스트림 준비완료 확인
-  const isStreamReady = !!micTrack && (!!cameraTrack || !!screenTrack);
+
   //시그널 전송 훅
   const { sendSignal } = useSignalPublisher();
   //시그널 받을때 핸들
@@ -65,9 +63,9 @@ const Videomain = () => {
   }, [roomId, navigate]);
   /////////////////////////////
 
-  // 초기화한 스트림을 내미디어화면 넣기
+  // 로컬 스트림을 비디오에 연결
   useEffect(() => {
-    if (localVideoRef.current && stream) {
+    if (localVideoRef.current) {
       localVideoRef.current.srcObject = stream;
     }
   }, [stream]);
@@ -94,12 +92,6 @@ const Videomain = () => {
 
   //peerConnect를 만들고 상대방에게 offer를 보내는 함수
   const createPeerAndSendOffer = async (targetUserId: number) => {
-    const existingPC = peerMap.getPeer(targetUserId);
-    if (existingPC) {
-      console.warn(`[Peer Reset] 기존 연결 제거: ${targetUserId}`);
-      peerMap.removePeer(targetUserId); // 내부에서 pc.close + removeRemoteStream 실행됨
-    }
-
     // 1. peer 연결 생성
     const pc = peerMap.createPeerConnection(
       targetUserId,
@@ -142,6 +134,7 @@ const Videomain = () => {
       },
     });
   };
+
   //////////////////////////////////
   //구독시 시그널서버로 peer정보주고 받는곳
   const handleSignal = useCallback(
@@ -156,7 +149,6 @@ const Videomain = () => {
           await handleOffer(
             { sdp: data.sdp, type: "offer" },
             data.senderId,
-            roomId!,
             stream!
           );
           break;
@@ -179,17 +171,18 @@ const Videomain = () => {
   );
 
   //구독하기
+
   useSignalSubscription({
     roomId: roomId as string,
     onSignal: handleSignal,
-    enabled: isStreamReady,
+    enabled: !!stream,
   });
   //////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////
   ///////////////시그널 완료/////////////////////////////////////
 
   return (
-    <div className="bg-gradient-videochat">
+    <div className="bg-gradient-videochat flex-row">
       <div
         style={{
           display: "flex",
@@ -201,8 +194,8 @@ const Videomain = () => {
         }}
       >
         <video
-          autoPlay
           ref={localVideoRef}
+          autoPlay
           playsInline
           muted
           style={{
@@ -231,21 +224,16 @@ const Videomain = () => {
           />
         ))}
       </div>
-      {/* 비디오 영역 */}
+      {/* 유틸리티 영역 */}
       <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-        <div
-          style={{ width: "100%", display: "flex", justifyContent: "center" }}
-        >
-          <button onClick={toggleMic}>
-            {isMicOn ? "🔇 마이크 끄기" : "🎙 마이크 켜기"}
-          </button>
-          <button onClick={toggleCamera}>
-            {isCameraOn ? "📷 카메라 끄기" : "📸 카메라 켜기"}
-          </button>
-          <button onClick={toggleScreenShare}>
-            {isScreenSharing ? "🛑 화면 공유 중지" : "🖥 화면 공유 시작"}
-          </button>
-        </div>
+        <Utility></Utility>
+      </div>
+      <div
+        className="w-[530px] h-[847px]
+      border-[1px] border-[#d9d9d9] shadow-custom
+      bg-white rounded-[20px] pt-[39px] pb-[28px] px-[18px]"
+      >
+        <FeedbackandAiQuestion></FeedbackandAiQuestion>
       </div>
     </div>
   );

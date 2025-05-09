@@ -5,11 +5,18 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface UIState {
   isProfilePreviewOpen: boolean;
   progressStep: number;
+
+  resumeState: boolean;
+  aiState: boolean;
+  selectList: string | number;
 }
 
 const initialState: UIState = {
   isProfilePreviewOpen: false,
   progressStep: 1,
+  resumeState: false,
+  aiState: true,
+  selectList: "",
 };
 
 const uiSlice = createSlice({
@@ -25,13 +32,25 @@ const uiSlice = createSlice({
     setProgressStep: (state, action: PayloadAction<number>) => {
       state.progressStep = action.payload;
     },
+    setResumeState: (state, action: PayloadAction<boolean>) => {
+      state.resumeState = action.payload;
+    },
+    setAiState: (state, action: PayloadAction<boolean>) => {
+      state.aiState = action.payload;
+    },
 
-    // setSelected: (state, action: PayloadAction<string | number>) => {
-    //   state.selected = action.payload;
-    // },
+    setSelectList: (state, action: PayloadAction<string | number>) => {
+      state.selectList = action.payload;
+    },
   },
 });
 
-export const { openProfilePreview, closeProfilePreview, setProgressStep } =
-  uiSlice.actions;
+export const {
+  openProfilePreview,
+  closeProfilePreview,
+  setResumeState,
+  setAiState,
+  setProgressStep,
+  setSelectList,
+} = uiSlice.actions;
 export default uiSlice.reducer;

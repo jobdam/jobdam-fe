@@ -1,8 +1,7 @@
 /** @format */
 
-import Interview from "@/pages/interview/interviewStart";
-
 import InterviewLayout from "@/components/layout/interview-layout";
+import InterviewRegister from "@/pages/interview/mathcingregister";
 
 const InterviewRegisterRoute = () => {
   // const navigate = useNavigate();
@@ -27,7 +26,7 @@ const InterviewRegisterRoute = () => {
         }
         showIcon={true}
       >
-        <Interview></Interview>
+        <InterviewRegister></InterviewRegister>
       </InterviewLayout>
     </>
   );
