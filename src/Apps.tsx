@@ -33,7 +33,7 @@ function Apps() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-      <Link to={paths.interview.start.path}>화상채팅 시작 </Link>
+      <Link to={paths.videochat.main.path}>화상채팅 시작 </Link>
       <Link to="/post-profile">마이페이지</Link>
       <Link to="/chatRoom">채팅방</Link>
       <Button>

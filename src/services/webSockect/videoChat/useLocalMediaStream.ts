@@ -73,7 +73,7 @@ export const useLocalMediaStream = () => {
       combinedStreamRef.current.addTrack(track); //스트림에 마이크트랙 넣기
       setIsMicOn(true); //마이크 토글기본값
     } catch (err) {
-      console.error("사용 가능한 마이크가 없습니다.");
+      console.error("사용 가능한 마이크가 없습니다.", err);
       const fakeAudio = createSilentAudioTrack();
       setMicTrack(fakeAudio);
       combinedStreamRef.current.addTrack(fakeAudio);
@@ -100,7 +100,7 @@ export const useLocalMediaStream = () => {
       setIsCameraOn(true);
       setIsScreenSharing(false);
     } catch (err) {
-      console.error("사용 가능한 카메라가 없습니다.");
+      console.error("사용 가능한 카메라가 없습니다.", err);
       const fakeVideo = createBlackVideoTrack();
       setCameraTrack(fakeVideo);
       combinedStreamRef.current.addTrack(fakeVideo);
