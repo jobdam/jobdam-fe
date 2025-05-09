@@ -1,6 +1,6 @@
 /** @format */
 
-import Interview from "@/pages/interview/main";
+import Interview from "@/pages/interview/interviewStart";
 
 import InterviewLayout from "@/components/layout/interview-layout";
 

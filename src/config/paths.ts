@@ -14,7 +14,7 @@ export const paths = {
 
   auth: {
     oauth: {
-      path: "/oauth/callback",
+      path: "/oauth-redirect",
     },
     register: {
       path: "/register",
@@ -37,7 +37,7 @@ export const paths = {
     },
   },
   interview: {
-    main: { path: "/main", getHref: "/main" },
+    start: { path: "/interview/start", getHref: "/interview/start" },
     register: {
       path: "/interview/register",
       getHref: "/interview/register",
@@ -46,7 +46,7 @@ export const paths = {
     waiting: {
       path: "/interview/waiting",
     },
-    finish: { path: "/interview" },
+    // finish: { path: "/interview" },
   },
   chatroom: {
     main: {
