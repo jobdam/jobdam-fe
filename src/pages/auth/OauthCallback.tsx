@@ -1,32 +1,20 @@
 /** @format */
 
-import { api } from "@/lib/api-client";
-import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router";
+import { useGetOauth } from "./api/get-oauth";
 
 const OauthCallback = () => {
-  const email = "test1@gmail.com";
+  const navigate = useNavigate();
 
-  const [searchParams] = useSearchParams();
-  console.log(searchParams.get("state"), searchParams.get("code"));
-  //구글 네이버 분기를 해야한다.
-  //   const state = searchParams.get("state");
+  const { data, isSuccess } = useGetOauth({});
 
-  useEffect(() => {
-    // if (state === "google") {
-    //   const response = api.get("/oauth2/authorization/google");
-    //   //로그인하면 성공후 token발급.
+  if (isSuccess) {
+    navigate("/");
+  }
 
-    //   // getAccessToken(response)
-    //   console.log(response);
-    // }
+  //데이털ㄹ 불러오는데 성공하면 다시 메인으로 넘어가기
 
-    // if (state === "naver") {
-    const response = api.post("/user/profile", email);
-
-    console.log(response);
-    // }
-  }, []);
+  console.log(data);
 
   return <div>OAuth 처리 중...</div>;
 };

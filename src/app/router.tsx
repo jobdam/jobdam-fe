@@ -127,9 +127,9 @@ const createAppRouter = (queryClient: QueryClient) => {
             ),
         },
         {
-          path: paths.interview.main.path,
+          path: paths.interview.start.path,
           lazy: () =>
-            import("@/app/routes/app/interview/main").then(
+            import("@/app/routes/app/interview/start").then(
               convert(queryClient)
             ),
         },
