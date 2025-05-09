@@ -3,6 +3,8 @@
 import { InterviewSpinner } from "@/components/ui/spinner";
 import * as React from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { paths } from "@/config/paths";
 
 import { setProgressStep } from "@/store/slices/uistate";
 //인터뷰 매칭에서는 적절한 대상을 찾아 매칭을 하는 단계
@@ -10,6 +12,7 @@ import { setProgressStep } from "@/store/slices/uistate";
 //여기서부터 web
 const InterviewMatching = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     dispatch(setProgressStep(2));
@@ -23,6 +26,9 @@ const InterviewMatching = () => {
       <InterviewSpinner></InterviewSpinner>
       <div className="mt-[100px]">
         <span>다른 면접자들의 연결을 기다리는 중이에요</span>
+        <div onClick={() => navigate(paths.chatroom.main.path)}>
+          채팅방으로{" "}
+        </div>
       </div>
     </div>
   );

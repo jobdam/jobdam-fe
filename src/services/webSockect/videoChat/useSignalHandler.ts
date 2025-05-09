@@ -1,18 +1,37 @@
 import { usePeerMap } from "./usePeerMap";
+import { useSignalPublisher } from "./useSignalPublisher";
 
 export const useSignalHandler = (
   peerMap: ReturnType<typeof usePeerMap>,
   sendAnswer: (to: number, answer: RTCSessionDescriptionInit) => void
 ) => {
   const { createPeerConnection, getPeer } = peerMap;
+  const { sendSignal } = useSignalPublisher();
 
   //offer를 받을때 + 화면상태도 받아야함. 그러고 offer를보내야 화면이나옴
   const handleOffer = async (
     offer: RTCSessionDescriptionInit, //내부에 sdp정보랑, type이있음
     senderId: number,
+    roomId: string | number,
     localStream: MediaStream
   ) => {
-    const pc = createPeerConnection(senderId); //peer생성(저장할거)
+    const pc = createPeerConnection(
+      senderId, //peer생성(저장할거)
+      (event: RTCPeerConnectionIceEvent) => {
+        if (event.candidate) {
+          sendSignal({
+            signalType: "CANDIDATE",
+            receiverId: senderId,
+            roomId: roomId!,
+            signal: {
+              candidate: event.candidate.candidate,
+              sdpMid: event.candidate.sdpMid!,
+              sdpMLineIndex: event.candidate.sdpMLineIndex!,
+            },
+          });
+        }
+      }
+    );
 
     //스트림을 추가한다(화면송출용)
     localStream.getTracks().forEach((track) => {

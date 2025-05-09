@@ -5,7 +5,6 @@ import { useNavigate } from "react-router";
 import ContentsBox from "@/components/layout/contentsBox";
 import { Form, Textarea } from "@/components/ui/form";
 import { Controller, useForm } from "react-hook-form";
-import People from "./components/people";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
 import { setStep } from "@/store/slices/progress";
@@ -68,7 +67,7 @@ const Interview = () => {
         }
       }}
     >
-      {({ control, watch }) => {
+      {({ control }) => {
         // const jobTypeValue = watch("jobType");
         // console.log("선택된 직무:", jobTypeValue);
 

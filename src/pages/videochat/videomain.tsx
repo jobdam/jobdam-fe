@@ -15,10 +15,9 @@ import { useNavigate, useParams } from "react-router";
 const Videomain = () => {
   const { roomId } = useParams();
   const navigate = useNavigate();
-
-  //내 미디어관련
+  //내미디어 정보보
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
-  //다른사람 스트림정보
+  //다른사람 스트림(미디어)정보
   const { remoteStreams, addRemoteStream, removeRemoteStream } =
     useRemoteStreamMap();
   //peer관리 훅
@@ -26,6 +25,7 @@ const Videomain = () => {
   //미디어 관련 훅
   const {
     stream,
+    micTrack,
     cameraTrack,
     screenTrack,
     isMicOn,
@@ -35,7 +35,8 @@ const Videomain = () => {
     toggleCamera,
     toggleScreenShare,
   } = useLocalMediaStream();
-
+  //미디어, 스트림 준비완료 확인
+  const isStreamReady = !!micTrack && (!!cameraTrack || !!screenTrack);
   //시그널 전송 훅
   const { sendSignal } = useSignalPublisher();
   //시그널 받을때 핸들
@@ -64,9 +65,9 @@ const Videomain = () => {
   }, [roomId, navigate]);
   /////////////////////////////
 
-  // 로컬 스트림을 비디오에 연결
+  // 초기화한 스트림을 내미디어화면 넣기
   useEffect(() => {
-    if (localVideoRef.current) {
+    if (localVideoRef.current && stream) {
       localVideoRef.current.srcObject = stream;
     }
   }, [stream]);
@@ -93,6 +94,12 @@ const Videomain = () => {
 
   //peerConnect를 만들고 상대방에게 offer를 보내는 함수
   const createPeerAndSendOffer = async (targetUserId: number) => {
+    const existingPC = peerMap.getPeer(targetUserId);
+    if (existingPC) {
+      console.warn(`[Peer Reset] 기존 연결 제거: ${targetUserId}`);
+      peerMap.removePeer(targetUserId); // 내부에서 pc.close + removeRemoteStream 실행됨
+    }
+
     // 1. peer 연결 생성
     const pc = peerMap.createPeerConnection(
       targetUserId,
@@ -149,6 +156,7 @@ const Videomain = () => {
           await handleOffer(
             { sdp: data.sdp, type: "offer" },
             data.senderId,
+            roomId!,
             stream!
           );
           break;
@@ -171,11 +179,10 @@ const Videomain = () => {
   );
 
   //구독하기
-
   useSignalSubscription({
     roomId: roomId as string,
     onSignal: handleSignal,
-    enabled: !!stream,
+    enabled: isStreamReady,
   });
   //////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////
@@ -194,8 +201,8 @@ const Videomain = () => {
         }}
       >
         <video
-          ref={localVideoRef}
           autoPlay
+          ref={localVideoRef}
           playsInline
           muted
           style={{
