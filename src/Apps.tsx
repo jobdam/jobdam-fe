@@ -11,10 +11,10 @@ import { Plus } from "lucide-react";
 
 import { useUser } from "@/lib/auth";
 import { Link } from "react-router";
+import { paths } from "./config/paths";
 function Apps() {
   const user = useUser();
-
-  console.log(user.data);
+  console.log(user.data, "user");
 
   const [count, setCount] = React.useState(0);
 
@@ -33,7 +33,8 @@ function Apps() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-      <Link to="post-profile">마이페이지</Link>
+      <Link to={paths.interview.start.path}>화상채팅 시작 </Link>
+      <Link to="/post-profile">마이페이지</Link>
       <Link to="/chatRoom">채팅방</Link>
       <Button>
         <Link to="/login">로그인페이지</Link>

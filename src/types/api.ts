@@ -18,10 +18,22 @@ export type User = Entity<{
   profileImageUrl?: string;
   jobCode?: string;
   targetCompanySize?: string;
+  educationLevel?: string;
+  educationStatus?: string;
+  experienceType?: string;
+  jobDetailCode?: string;
 }>;
 
 export type AuthResponse = {
   headers: any;
   jwt: string;
   user: User;
+};
+
+export type InterviewData = {
+  jobCode: string;
+  jobDetailCode: string;
+  introduce: string;
+  interviewType: string;
+  peopleCount: number;
 };
