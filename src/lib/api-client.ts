@@ -58,7 +58,7 @@ api.interceptors.response.use(
     //인증 되지 않은 사용자는 로그인으로 되돌려 보내기.
 
     //401에러 일때도 re
-    console.log(error.response?.data);
+    console.log(error.response?.data, error);
     //401 에러가 뜨는경우 => 로그인이 안된경우, 와 accesstoken을 재발급 받아야하는겨웅'
 
     //로그인이 안된경우 protected router 로 강제로 로그인으로 보내기.
@@ -83,7 +83,7 @@ api.interceptors.response.use(
       } catch (error) {
         // refresh 실패하면 로그인 페이지로 이동 , 401에러인데 아직 로그인을
         //401에러 가 발생시
-        useLogout();
+        // useLogout();
 
         const searchParams = new URLSearchParams();
         const redirectTo =

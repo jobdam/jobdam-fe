@@ -37,7 +37,7 @@ export const paths = {
     },
   },
   interview: {
-    start: { path: "/interview/start", getHref: "/interview/start" },
+    main: { path: "/main", getHref: "/main" },
     register: {
       path: "/interview/register",
       getHref: "/interview/register",
@@ -46,7 +46,7 @@ export const paths = {
     waiting: {
       path: "/interview/waiting",
     },
-    // finish: { path: "/interview" },
+    finish: { path: "/interview" },
   },
   chatroom: {
     main: {
