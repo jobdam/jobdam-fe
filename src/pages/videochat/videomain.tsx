@@ -11,6 +11,7 @@ import {
 } from "@/services/webSockect/videoChat/useSignalSubscrpition";
 import { useCallback, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router";
+import Video from "./components/vidoe";
 
 const Videomain = () => {
   const { roomId } = useParams();
@@ -28,12 +29,8 @@ const Videomain = () => {
     stream,
     cameraTrack,
     screenTrack,
-    isMicOn,
-    isCameraOn,
+
     isScreenSharing,
-    toggleMic,
-    toggleCamera,
-    toggleScreenShare,
   } = useLocalMediaStream();
 
   //시그널 전송 훅
@@ -182,7 +179,7 @@ const Videomain = () => {
   ///////////////시그널 완료/////////////////////////////////////
 
   return (
-    <div>
+    <div className="bg-gradient-videochat">
       <div
         style={{
           display: "flex",
@@ -224,16 +221,9 @@ const Videomain = () => {
           />
         ))}
       </div>
+      {/* 비디오 영역 */}
       <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-        <button onClick={toggleMic}>
-          {isMicOn ? "🔇 마이크 끄기" : "🎙 마이크 켜기"}
-        </button>
-        <button onClick={toggleCamera}>
-          {isCameraOn ? "📷 카메라 끄기" : "📸 카메라 켜기"}
-        </button>
-        <button onClick={toggleScreenShare}>
-          {isScreenSharing ? "🛑 화면 공유 중지" : "🖥 화면 공유 시작"}
-        </button>
+        <Video></Video>
       </div>
     </div>
   );

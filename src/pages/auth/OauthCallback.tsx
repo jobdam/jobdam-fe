@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { useGetOauth } from "./api/get-oauth";
 
 const OauthCallback = () => {
+  console.log("여기에 도착");
   const navigate = useNavigate();
 
   const { data, isSuccess } = useGetOauth({});
