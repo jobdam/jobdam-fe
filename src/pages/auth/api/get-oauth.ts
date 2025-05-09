@@ -8,27 +8,28 @@ import { QueryConfig } from "@/lib/react-query";
 
 // export const oauth;
 
-export const getOauth = () => {
-  return api.get("/oauth-redirect");
+export const getOauth = (params) => {
+  console.log(`/oauth-redirect/?token=${params}`);
+  return api.get(`/oauth-redirect?token=${params}`);
 };
 //소셜 로그인은 바로바로 요청
-export const getOauthQuery = () => {
+export const getOauthQuery = (params) => {
   return queryOptions({
-    queryKey: ["oauth"],
-    queryFn: () => getOauth(),
+    queryKey: ["authenticate-user"],
+    queryFn: () => getOauth(params),
     staleTime: 0,
     gcTime: 0,
   });
 };
 
 type useOauthQueryOptions = {
-  //   email: string;
+  params: string;
   queryConfig?: QueryConfig<typeof getOauthQuery>;
 };
 
-export const useGetOauth = ({ queryConfig }: useOauthQueryOptions) => {
+export const useGetOauth = ({ params, queryConfig }: useOauthQueryOptions) => {
   return useQuery({
     ...queryConfig,
-    ...getOauthQuery(),
+    ...getOauthQuery(params),
   });
 };
