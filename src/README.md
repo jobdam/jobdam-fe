@@ -74,7 +74,7 @@ api-client - axios interceptor로 요청들을 가로채 응답값 리턴
 auth api + schema 들이 담겨있음 schema란 데이터의 형태 및 구조라고 할 수 있다.
 
 ```js
-//scheam
+//schema
 const Man = z.object({
   name: z.string(),
   height: z.number(),
