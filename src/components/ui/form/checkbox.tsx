@@ -29,17 +29,20 @@ export const Checkbox = React.forwardRef<
   HTMLInputElement,
   CombinedCheckboxProps
 >(
-  ({
-    className,
-    label,
-    variant = "default",
+  (
+    {
+      className,
+      label,
+      variant = "default",
 
-    checked,
-    onCheckedChange,
-    error,
-    registration,
-    ...props
-  }) => {
+      checked,
+      onCheckedChange,
+      error,
+      registration,
+      ...props
+    },
+    ref
+  ) => {
     //checkbox는 다양하게 쓰인다 1. interview sidebar에 쓰인다. -> interview
     // 2. 그냥 checkbox 그자체로의 역할
     //checkbox의 크기나 모양을 변하기 쉽게 만들자.
@@ -66,6 +69,7 @@ export const Checkbox = React.forwardRef<
             checked={checked}
             {...props}
             {...registration}
+            ref={ref}
           >
             {/* <div className="w-[1px] bg-black h-[80px]"></div> */}
 

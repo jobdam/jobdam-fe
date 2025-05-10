@@ -1,22 +1,33 @@
 /** @format */
 import * as React from "react";
-import { Button } from "@radix-ui/themes";
-
+import { Text, Button } from "@radix-ui/themes";
+import { Link } from "react-router-dom";
 import LoggedOutHeader from "./components/common/header/LoggedOutHeader";
-import { Checkbox, Radio, Textarea } from "./components/ui/form/index";
+import { Checkbox, Radio } from "./components/ui/form/index";
 import { InterviewSpinner, Spinner } from "./components/ui/spinner";
 import Avatars from "./components/ui/avatar/avatars";
 import { SendHorizontal } from "lucide-react";
 import { Plus } from "lucide-react";
 
-import { useUser } from "@/lib/auth";
-import { Link } from "react-router";
-import { paths } from "./config/paths";
-function Apps() {
-  const user = useUser();
-  console.log(user.data, "user");
+import { mauve } from "@radix-ui/colors"; // 예시
 
+function Apps() {
   const [count, setCount] = React.useState(0);
+  mauve.mauve1;
+  const [seconds, setSeconds] = React.useState(0);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setSeconds((prev) => prev + 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (secs: number) => {
+    const minutes = Math.floor(secs / 60);
+    const seconds = secs % 60;
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
 
   return (
     <div className=" min-h-[100vh] min-w-[1440px]">
@@ -33,8 +44,7 @@ function Apps() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-      <Link to={paths.videochat.main.path}>화상채팅 시작 </Link>
-      <Link to="/post-profile">마이페이지</Link>
+      <Link to="post-profile">마이페이지</Link>
       <Link to="/chatRoom">채팅방</Link>
       <Button>
         <Link to="/login">로그인페이지</Link>
@@ -65,10 +75,7 @@ function Apps() {
           { label: "선택 안 함", value: "none" },
         ]}
       ></Radio>
-      <Textarea
-        className="bg-[#D9D9D9] rounded-none h-[164px] border-none"
-        label="입력해주세요"
-      ></Textarea>
+
       <Spinner size="xl" variant="primary"></Spinner>
       <InterviewSpinner></InterviewSpinner>
       <Checkbox></Checkbox>
@@ -108,11 +115,7 @@ function Apps() {
         <button className="inline-flex size-[35px] items-center justify-center rounded-full bg-black text-violet11 outline-none hover:bg-violet3">
           <Plus strokeWidth={1} className=" text-white size-[30px]" />
         </button>
-        <Textarea
-          placeholder="메세지를 입력하세요"
-          className="bg-[#777777] rounded-[20px]
-        placeholder:text-white placeholder:font-medium h-[122px] "
-        ></Textarea>{" "}
+
         <SendHorizontal className="text-[#D9D9D9] w-[28.5px] h-[36px] absolute right-4 bottom-4 cursor-pointer z-10"></SendHorizontal>
       </div>
       <div className="flex gap-2">
@@ -184,7 +187,9 @@ function Apps() {
           </div>
         </div>
       </div>
-      <div>{/* <Text>🕒 면접 시작 까지... {formatTime(seconds)}</Text> */}</div>
+      <div>
+        <Text>🕒 면접 시작 까지... {formatTime(seconds)}</Text>
+      </div>
     </div>
   );
 }

@@ -14,7 +14,11 @@ const SignInRoute = () => {
   // const user = useUser();
 
   return (
-    <AuthLayout title="회원 로그인">
+    <AuthLayout
+      className="w-[640px] max-h-[800px]"
+      login={true}
+      title="회원 로그인"
+    >
       <SignIn
         onSuccess={() => {
           navigate(`${redirectTo ? `${redirectTo}` : paths.home.getHref()}`, {

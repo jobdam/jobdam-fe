@@ -8,6 +8,7 @@ import { type FieldError } from "react-hook-form";
 import { Error } from "./error";
 import { Label } from "./label";
 import { Link } from "@/components/ui/link";
+import { cn } from "@/utils/cn";
 
 export type FieldWrapperProps = {
   label?: string;
@@ -28,14 +29,19 @@ export const FieldWrapper = (props: FieldWrapperProps) => {
     <div>
       <Label>
         {label}
-        <div className="mt-1 ">{children}</div>
+        <div className="mt-2 ">{children}</div>
       </Label>
       {(error?.message || showLink) && (
-        <div className="flex min-h-[30px] justify-between">
+        <div
+          className={cn(
+            "flex min-h-[30px] justify-start ",
+            showLink && "text-right justify-end"
+          )}
+        >
           {error?.message && <Error errorMessage={error.message} />}
           {showLink && (
             <Link
-              className="pt-[5px] text-[10px] underline"
+              className="pt-[5px] text-[12px]  underline"
               to="forgot-password"
             >
               비밀번호 찾기

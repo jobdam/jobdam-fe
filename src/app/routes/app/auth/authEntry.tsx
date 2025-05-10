@@ -13,7 +13,7 @@ const AuthEntryRoute = () => {
   // const redirectTo = searchParams.get("redirectTo");
 
   return (
-    <AuthLayout title="Log in to your account">
+    <AuthLayout entry={true}>
       {/* <AuthEntry onSuccess={() => {}} /> */}
       <AuthEntry></AuthEntry>
     </AuthLayout>
