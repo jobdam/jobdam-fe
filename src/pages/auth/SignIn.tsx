@@ -48,11 +48,11 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
             </h2> */}
 
             {/* <Text text={"이메일 "}></Text> */}
-            <div className=" mb-[10px] text-left">
+            <div className=" mb-[10px] space-y-[20px]  text-left">
               <Input
                 type="email"
                 label="이메일"
-                className=" font-medium text-left text-black"
+                className=" font-medium text-left border-[1px] border-[#488FFF] text-black"
                 placeholder="jodbdam0415@gmail.com"
                 error={getFieldError(formState.errors["email"])}
                 registration={register("email")}
@@ -61,8 +61,9 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
               <Input
                 type="password"
                 label="비밀번호"
+                showLink={true}
                 placeholder="비밀번호를 입력하세요."
-                className=" font-medium text-left text-black"
+                className=" font-medium text-left  border-[1px] border-[#488FFF] text-black"
                 error={getFieldError(formState.errors["password"])}
                 registration={register("password")}
               />
@@ -70,15 +71,15 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
               {/* 에러 메시지가 이미 Input 컴포넌트 안에 있다면 여기선 빈 공간만 차지하도록 */}
             </div>
 
-            <div className=" flex justify-center items-center mb-[30px]">
+            <div className=" flex justify-center items-center my-[30px]">
               <Button
                 isLoading={login.isPending}
                 type="submit"
                 size="lg"
-                className=" w-full text-2xl
+                className=" w-full cursor-pointer h-[65px] flex justify-center items-center text-white bg-[#488fff] text-[24px]
               "
               >
-                로그인
+                로그인하기
               </Button>
             </div>
           </>
@@ -91,7 +92,7 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
         <div>
           <Link
             to={paths.auth.register.getHref(redirectTo)}
-            className="underline font-medium text-[14px] text-[#00000080]"
+            className="underline font-medium text-[14px]  text-[#00000080]"
           >
             회원가입
           </Link>

@@ -2,7 +2,7 @@
 
 import { Outlet } from "react-router";
 
-import LoggedOutHeader from "@/components/common/header/LoggedOutHeader";
+// import LoggedOutHeader from "@/components/common/header/LoggedOutHeader";
 
 export const ErrorBoundary = () => {
   return <div>Something went wrong!</div>;
@@ -11,8 +11,6 @@ export const ErrorBoundary = () => {
 const AppRoot = () => {
   return (
     <>
-      <LoggedOutHeader></LoggedOutHeader>
-
       <Outlet />
     </>
   );

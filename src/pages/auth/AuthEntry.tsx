@@ -20,6 +20,7 @@ export const AuthEntry = () => {
   return (
     <>
       <Form
+        className="mt-[50px] flex justify-center items-center flex-col"
         form={form}
         onSubmit={(values) => {
           console.log(values);
@@ -28,17 +29,9 @@ export const AuthEntry = () => {
       >
         {() => (
           <>
-            <div className="mt-[50px] flex flex-col items-center justify-center space-y-4">
-              <CustomImage
-                width={110}
-                height={160}
-                src="/graphic.png"
-              ></CustomImage>
-              <CustomImage
-                width={270}
-                height={50}
-                src="/logo.png"
-              ></CustomImage>
+            <div className="w-[263px] gap-[10px] h-[255px] flex flex-col items-center justify-center space-y-4">
+              <CustomImage width={116} src="/graphic.svg"></CustomImage>
+              <CustomImage width={264} src="/logo.png"></CustomImage>
             </div>
 
             <div className="mt-[50px] space-y-3">
@@ -47,7 +40,7 @@ export const AuthEntry = () => {
               <NaverSignin></NaverSignin>
             </div>
 
-            <div className="mt-[80px] text-sm flex justify-center items-center">
+            <div className=" text-sm flex justify-center items-center">
               <Link className="underline" to="/login">
                 이메일 로그인/회원가입
               </Link>

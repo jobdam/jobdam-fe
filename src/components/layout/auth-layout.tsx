@@ -10,6 +10,8 @@ type LayoutProps = {
   title?: string;
   subtitle?: string;
   className?: React.ReactNode;
+  entry?: boolean;
+  login?: boolean;
 };
 
 export const AuthLayout = ({
@@ -17,6 +19,8 @@ export const AuthLayout = ({
   title,
   subtitle,
   className,
+  entry = false,
+  login = false,
 }: LayoutProps) => {
   //auth 에서 useUser를 하면 내정보를 불러오고,
   // const user = useUser();
@@ -40,21 +44,31 @@ export const AuthLayout = ({
 
   return (
     <>
-      <div className="flex min-h-screen justify-center items-center">
+      <div
+        className={cn(
+          "flex min-h-screen justify-center items-center",
+          entry && "bg-gradient-auth-entry ",
+          login && "bg-gradient-auth-login"
+        )}
+      >
         <div
           className={cn(
-            "w-[588px] h-[600px] rounded px-16 py-[40px]",
+            "w-[588px] max-h-[800px] rounded-[20px] absolute px-16 py-[52px] bg-white",
             className
           )}
         >
-          <div className="mb-[80px] text-center flex gap-[15px] flex-col ">
-            <h2 className="  text-[32px] font-semibold text-gray-900">
-              {title}
-            </h2>
-            <p className=" text-center leading-[30px] font-medium text-black text-[20px]">
-              {subtitle}
-            </p>
-          </div>
+          {title ? (
+            <div className="mb-[80px] text-center flex gap-[15px] flex-col ">
+              <h2 className="  text-[32px] font-semibold text-gray-900">
+                {title}
+              </h2>
+              <p className=" text-center leading-[30px] font-medium text-black text-[20px]">
+                {subtitle}
+              </p>
+            </div>
+          ) : (
+            <></>
+          )}
           {children}
         </div>
       </div>
