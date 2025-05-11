@@ -8,6 +8,7 @@ import notificationReducer from "./slices/notifications";
 import selectReducer from "./slices/select";
 import websocketReducer from "./slices/websockets";
 import uiReducer from "./slices/uistate";
+import signupReducer from "./slices/signup";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     selects: selectReducer,
     websocket: websocketReducer,
     ui: uiReducer,
+    signup: signupReducer,
   },
 });
 

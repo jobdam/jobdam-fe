@@ -60,6 +60,8 @@ export const paths = {
     },
     verifycheck: {
       path: "/verify-email-check",
+      getHref: (redirectTo?: string | null | undefined) =>
+        `/verify-email-check"${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
     },
   },
 

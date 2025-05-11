@@ -9,6 +9,7 @@ interface UIState {
   resumeState: boolean;
   aiState: boolean;
   selectList: string | number;
+  ErrorDuplicate: string;
 }
 
 const initialState: UIState = {
@@ -17,6 +18,7 @@ const initialState: UIState = {
   resumeState: false,
   aiState: true,
   selectList: "",
+  ErrorDuplicate: "",
 };
 
 const uiSlice = createSlice({
@@ -40,6 +42,9 @@ const uiSlice = createSlice({
     },
 
     setSelectList: (state, action: PayloadAction<string | number>) => {
+      state.selectList = action.payload;
+    },
+    setErrorDuplicate: (state, action: PayloadAction<string>) => {
       state.selectList = action.payload;
     },
   },

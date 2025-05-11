@@ -16,6 +16,7 @@ export type FieldWrapperProps = {
   children: React.ReactNode;
   error?: FieldError | undefined;
   showLink?: boolean; // ✅ 이거 추가
+  isAbsoluteErrorPosition?: boolean; // ➕ 조건적 포지셔닝을 위한 prop
 };
 
 export type FieldWrapperPassThroughProps = Omit<
@@ -24,21 +25,32 @@ export type FieldWrapperPassThroughProps = Omit<
 >;
 
 export const FieldWrapper = (props: FieldWrapperProps) => {
-  const { label, error, children, showLink } = props;
+  const {
+    label,
+    error,
+    children,
+    showLink,
+    isAbsoluteErrorPosition = false, // 기본값 true (기존 방식 유지)
+  } = props;
+
   return (
     <div>
       <Label>
         {label}
-        <div className="mt-2 ">{children}</div>
+        <div className="mt-2 relative ">{children}</div>
       </Label>
+
       {(error?.message || showLink) && (
         <div
           className={cn(
-            "flex min-h-[30px] justify-start ",
+            "flex absolute justify-start ",
+            isAbsoluteErrorPosition && "pl-[20px]",
             showLink && "text-right justify-end"
           )}
         >
+          {/* 에러 메세지가 있다면 없어지고 에러 메세지가 없으면 나오도록 */}
           {error?.message && <Error errorMessage={error.message} />}
+
           {showLink && (
             <Link
               className="pt-[5px] text-[12px]  underline"

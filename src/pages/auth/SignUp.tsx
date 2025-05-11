@@ -1,7 +1,7 @@
 /** @format */
 
 import { Checkbox, Form, Input, Label } from "@/components/ui/form";
-import { type FieldError } from "react-hook-form";
+import { Controller, type FieldError } from "react-hook-form";
 
 import { registerInputSchema, useRegister } from "@/lib/auth";
 import { Check } from "lucide-react";
@@ -10,6 +10,10 @@ import { useCheckEmail } from "./api/get-checkemail";
 import { useForm } from "react-hook-form";
 import { useVerifyEmail } from "../emailverify/api/get-emailverify";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/components/ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { setCheckDuplicate, setErrorDuplicate } from "@/store/slices/signup";
+import { RootState } from "@/store";
 
 export const getFieldError = (error: any): FieldError | undefined => {
   if (error && typeof error === "object" && "type" in error) {
@@ -23,23 +27,33 @@ type RegisterFormProps = {
 };
 
 const SignUp = ({ onSuccess }: RegisterFormProps) => {
+  //회원가입 실패 메시지
+  const checkDuplicate = useSelector(
+    (state: RootState) => state.signup.checkDuplicate
+  );
+  const errorDuplicate = useSelector(
+    (state: RootState) => state.signup.ErrorDuplicate
+  );
+  const dispatch = useDispatch();
+
   const form = useForm({
-    resolver: zodResolver(registerInputSchema),
+    resolver: zodResolver(registerInputSchema(checkDuplicate)),
 
     defaultValues: {
       email: "",
       password: "",
-      // agreeAll: false,
-      // agreeTerms: false,
-      // agreePrivacy: false,
-      // agreeAge: false,
-      // agreeJobDam: false,
+      agreeAll: false,
+      agreeTerms: false,
+      agreePrivacy: false,
+      agreeAge: false,
+      agreeJobDam: false,
     },
   });
 
   //email verify하기
 
   const email = form.watch("email");
+  const password = form.watch("password");
 
   const agreeAll = form.watch("agreeAll");
   const agreeTerms = form.watch("agreeTerms");
@@ -47,7 +61,7 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
   const agreeAge = form.watch("agreeAge");
   const agreeJobDam = form.watch("agreeJobDam");
   const { refetch: verifyRefetch } = useVerifyEmail({});
-
+  //이메일 에리거 없을때, email이 존재할때
   React.useEffect(() => {
     if (agreeTerms && agreePrivacy && agreeAge) {
       form.setValue("agreeAll", true, { shouldValidate: true }); // 전체동의 체크
@@ -61,52 +75,64 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
     data,
     isError: checkError,
     isFetched,
+    isSuccess,
   } = useCheckEmail({ email: email, queryConfig: { enabled: false } });
-  console.log(data?.data.isDuplicate, checkError, isFetched);
 
+  // console.log(data?.data?.isDuplicate);
+  React.useEffect(() => {
+    if (isSuccess) {
+      dispatch(setCheckDuplicate(true));
+      form.clearErrors("email");
+    }
+  }, [isSuccess, data, dispatch]);
   const registering = useRegister({ onSuccess });
 
   return (
     <Form
       onSubmit={(values) => {
         //회원가입 db에 넣기
-        console.log(values);
 
+        console.log(
+          values,
+          email,
+          password,
+          agreeAll,
+          !data?.data?.isDuplicate
+        );
         //agreeTerms,agreePrivacy,agreeAgre
         //회원가입 완료는 모든 것이 체크되어있어야하며, 중복확인이 완료된 상태여야한다.
-        if (agreeAll && data?.data.isDuplicate) {
+        if (agreeAll && !data?.data?.isDuplicate) {
           registering.mutate({
-            email: values.email,
-            password: values.password,
+            email: email,
+            password: password,
           } as any);
-          verifyRefetch();
-          //이메일 인증을 가입할때 곱바로 시행한다.
-          // verifyRefetch();
         }
+        //이메일은 조건이 갖춰진 상태에서 중복확인이 안된경우
+
+        //버튼을클릭햇을 checkduplicate
+
+        //조건에는 부합하나 로그인이 실패하는 경우
       }}
       form={form}
-      // schema={
-      // options={{
-      //   shouldUnregister: true,
-      // }}
     >
       {({ register, formState }) => {
-        // 여기에 axios or react-query mutation으로 중복 확인 요청
-        // console.log(watch("email"));
+        // console.log(formState.errors.email?.message);
 
-        console.log(agreeAll, "agreeall");
         return (
           <>
-            <div className="flex flex-col mb-[10px] text-left">
+            <div className="flex flex-col mb-[10px] space-y-[30px]  text-left">
               <div className="flex items-center ">
                 <Input
                   type="email"
                   label="이메일"
                   className="font-medium min-w-[400px] h-[70px] text-left border px-[24px] border-[rgba(0,0,0,0.3)] text-black"
                   placeholder="jodbdam0415@gmail.com"
-                  error={getFieldError(formState.errors["email"])}
+                  error={getFieldError(formState.errors.email)}
                   registration={register("email")}
-                />
+                ></Input>
+                {/* {form.formState.errors.email && (
+                  <span>{form.formState.errors.email.message}</span>
+                )} */}
                 <div className="mt-[23px] ">
                   {/* gap-y-[10px] */}
                   <button
@@ -119,15 +145,15 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
                 </div>
                 {/* //ifetched가 true일때만 보이도록 */}
                 {isFetched &&
-                  (!data?.data.isDuplicate ? (
-                    <div className="flex min-w-[100px]  relative right-50">
+                  (!data?.data.isDuplicate === true ? (
+                    <div className="flex min-w-[100px]  relative top-3 right-50">
                       <Check className="mt-[2px]" strokeWidth="1"></Check>
                       <span className=" text-[16px] text-[rgba(0,0,0,0.50)] leading-[30px] font-medium ">
                         사용 가능
                       </span>
                     </div>
                   ) : (
-                    <div className="flex min-w-[100px] relative right-50">
+                    <div className="flex min-w-[100px] relative top-3 right-50">
                       <Check
                         className="mt-[2px] text-[red]"
                         strokeWidth="1"
@@ -144,7 +170,7 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
                 label="비밀번호"
                 placeholder="비밀번호를 입력하세요."
                 className="font-medium text-left border border-[rgba(0,0,0,0.3)] text-black"
-                error={getFieldError(formState.errors["password"])}
+                error={getFieldError(form.formState.errors["password"])}
                 registration={register("password")}
               />
               <Input
@@ -152,14 +178,15 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
                 label="비밀번호 확인"
                 placeholder="비밀번호를 입력하세요."
                 className="font-medium text-left border border-[rgba(0,0,0,0.3)] text-black"
-                error={getFieldError(formState.errors["passwordConfirm"])}
+                error={getFieldError(form.formState.errors["passwordConfirm"])}
                 registration={register("passwordConfirm")}
               />
-              <div className="flex  mt-[40px] gap-[15px] flex-col">
-                <div className="flex flex-row">
+              <div className="flex  mt-[40px] gap-[20px] flex-col">
+                <div className="flex flex-col">
                   <Checkbox
                     label="전체동의"
-                    error={getFieldError(formState.errors["agreeAll"])}
+                    isAbsoluteErrorPosition={true}
+                    error={getFieldError(form.formState.errors["agreeAll"])}
                     checked={agreeAll}
                     onCheckedChange={(checked) => {
                       const value = Boolean(checked);
@@ -181,15 +208,15 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
                     }}
                     className=" rounded-[5px] border-[1px] bg-[rgba(0,0,0,0.05)] border-[rgba(0,0,0,0.30)]"
                   ></Checkbox>
-                  {/* <div className="flex flex-col">
-                   
+
+                  <div className="flex mt-[30px] pl-[35px]">
                     <span className="text-[#B2B2B2] text-[14px] font-normal">
                       위치기반 서비스 이용약관(선택), 마케팅 정보 수신
                       동의(이메일,SMS/MMS)(선택) 동의를 포함합니다.
                     </span>
-                  </div> */}
+                  </div>
                 </div>
-                <div className="flex flex-row">
+                <div className="flex flex-row items-center">
                   <Checkbox
                     checked={agreeAge}
                     onCheckedChange={(checked) =>
@@ -203,7 +230,7 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
                     [필수] 만 14세 이상입니다.{" "}
                   </Label>
                 </div>
-                <div className="flex flex-row">
+                <div className="flex flex-row items-center">
                   <Checkbox
                     checked={agreeTerms}
                     onCheckedChange={(checked) =>
@@ -220,7 +247,7 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
                   </Label>
                 </div>
 
-                <div className="flex flex-row">
+                <div className="flex flex-row items-center">
                   <Checkbox
                     checked={agreePrivacy}
                     onCheckedChange={(checked) =>
@@ -238,7 +265,7 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
                     동의
                   </Label>
                 </div>
-                <div className="flex flex-row">
+                <div className="flex flex-row items-center">
                   <Checkbox
                     checked={agreeJobDam}
                     onCheckedChange={(checked) =>
@@ -251,18 +278,10 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
                   </Label>
                 </div>
               </div>
-              {/* <div className=" flex justify-center items-center"> */}
-              <button className=" flex  mt-[68px] text-[32px] bg[##D0D0D0] items-center justify-center cursor-pointer">
-                회원가입 완료
-              </button>
-              {/* </div> */}
+              <div className=" pointer-cursor flex justify-center items-center mt-[70px] mb-[78px]">
+                <Button isLoading={registering.isPending}>회원가입</Button>
+              </div>
             </div>
-
-            {/* <div className="flex justify-center items-center mb-[30px]">
-              <Button type="submit" size="lg" className="w-full text-2xl">
-                회원가입
-              </Button>
-            </div> */}
           </>
         );
       }}
