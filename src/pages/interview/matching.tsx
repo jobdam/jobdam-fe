@@ -3,7 +3,7 @@
 import { InterviewSpinner } from "@/components/ui/spinner";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { paths } from "@/config/paths";
 
 import { setProgressStep } from "@/store/slices/uistate";
@@ -14,9 +14,16 @@ const InterviewMatching = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const location = useLocation();
+  const formData = location.state;
+
   React.useEffect(() => {
     dispatch(setProgressStep(2));
   }, []);
+
+  React.useEffect(() => {
+    console.log("매칭에 사용될 데이터:", formData);
+  }, [formData]);
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen">

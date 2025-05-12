@@ -19,9 +19,9 @@ const InterviewRegisterRoute = () => {
       <InterviewLayout
         title={
           <>
-            가입을 위해
+            모의면접을 위한
             <br />
-            약관에 동의해주세요
+            매칭 정보를 입력해주세요.
           </>
         }
         showIcon={true}
