@@ -1,19 +1,22 @@
 /** @format */
 
-import { useLocalMediaStream } from "@/services/webSockect/videoChat/useLocalMediaStream";
+interface UtilityProps {
+  isMicOn: boolean;
+  isCameraOn: boolean;
+  isScreenSharing: boolean;
+  toggleMic: () => void;
+  toggleCamera: () => void;
+  toggleScreenShare: () => void;
+}
 
-const Utility = () => {
-  //미디어 관련 훅
-  const {
-    isMicOn,
-    isCameraOn,
-    isScreenSharing,
-    toggleMic,
-    toggleCamera,
-
-    toggleScreenShare,
-  } = useLocalMediaStream();
-
+const Utility = ({
+  isMicOn,
+  isCameraOn,
+  isScreenSharing,
+  toggleMic,
+  toggleCamera,
+  toggleScreenShare,
+}: UtilityProps) => {
   return (
     <>
       <button onClick={toggleMic}>

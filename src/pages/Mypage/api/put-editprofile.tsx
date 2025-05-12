@@ -2,7 +2,7 @@
 
 import { api } from "@/lib/api-client";
 import { MutationConfig } from "@/lib/react-query";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const editProfile = (userId, updateData) => {
   return api.put(`/users/${userId}`, updateData);
@@ -15,6 +15,7 @@ type UseUpdateUserOptions = {
 };
 
 export const useEditProfile = ({ mutationConfig }: UseUpdateUserOptions) => {
+  const queryClient = useQueryClient();
   const { onSuccess, ...restConfig } = mutationConfig || {};
 
   return useMutation({
@@ -23,6 +24,7 @@ export const useEditProfile = ({ mutationConfig }: UseUpdateUserOptions) => {
     onSuccess: (...args) => {
       // 유저 정보 쿼리 무효화 → 최신화
       //   queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: ["matching-profile"] });
       onSuccess?.(...args);
     },
     ...restConfig,
