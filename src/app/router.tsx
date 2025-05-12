@@ -136,6 +136,13 @@ const createAppRouter = (queryClient: QueryClient) => {
             ),
         },
         {
+          path: paths.mypage.editdata.path,
+          lazy: () =>
+            import("@/app/routes/app/mypage/editprofie").then(
+              convert(queryClient)
+            ),
+        },
+        {
           path: paths.mypage.resume.path,
           lazy: () =>
             import("@/app/routes/app/mypage/resume").then(convert(queryClient)),

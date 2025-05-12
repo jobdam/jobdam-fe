@@ -1,9 +1,11 @@
 /** @format */
 
-import VerifyExpired from "@/pages/emailverify/components/verifyexpired";
+// /** @format */
 
-const Expired = () => {
-  return <VerifyExpired></VerifyExpired>;
-};
+// import VerifyExpired from "@/pages/emailverify/components/verifyexpired";
 
-export default Expired;
+// const Expired = () => {
+//   return <VerifyExpired></VerifyExpired>;
+// };
+
+// export default Expired;
