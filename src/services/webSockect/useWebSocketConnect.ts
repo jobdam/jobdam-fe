@@ -12,7 +12,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 //클라이언트 연결정보 참조
 let globalClientRef: Client | null = null;
-export const getWebSocketClient = () => globalClientRef;
+export const getWebSocketClient = (): Client | null => globalClientRef;
 
 export const useWebSocketConnect = (connect: boolean) => {
   const dispatch = useDispatch<AppDispatch>();

@@ -50,7 +50,11 @@ export const paths = {
   },
   chatroom: {
     main: {
-      path: "/chatroom",
+      path: "/chatroom/:roomId",
+      getHref: (roomId?: string | number) =>
+        roomId != null
+          ? `/chatroom/${encodeURIComponent(roomId.toString())}`
+          : "/",
     },
   },
 

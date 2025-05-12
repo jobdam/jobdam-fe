@@ -2,11 +2,12 @@
 
 import * as React from "react";
 import ContentsBox from "@/components/layout/contentsBox";
-import { Checkbox, Radio, Select } from "@/components/ui/form";
+import { Radio, Select } from "@/components/ui/form";
 
 import { useJobCategory } from "../../Mypage/api/get-jobcategory";
 
-import { Controller, useWatch } from "react-hook-form";
+import { Controller } from "react-hook-form";
+import { Button } from "@/components/ui/button";
 type FieldsSelectProps = {
   control: any;
   form: any;
@@ -21,10 +22,6 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
   const { data } = useJobCategory({});
   const jobGroups = data?.data ?? []; //여러직무과 그룹안에 세부직무그룹이있음.
 
-  //선택한 직무
-  const [selectedJobGroup, setSelectedJobGroup] = React.useState<any | null>(
-    null
-  );
   //선택한 직무안에 세부직무들
   const [jobDetails, setJobDetails] = React.useState<any[]>([]);
 
@@ -39,7 +36,6 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
         (d) => d.jobDetailCode === profile.jobDetailCode
       ) ?? initGroup.details[0];
 
-    setSelectedJobGroup(initGroup);
     setJobDetails(initGroup.details);
 
     form.setValue("jobCode", initGroup.jobCode);
@@ -52,7 +48,6 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
     form.setValue("jobCode", newJobCode);
     //해당 group 찾기
     const selectedGroup = jobGroups.find((g) => g.jobCode === newJobCode);
-    setSelectedJobGroup(selectedGroup);
     setJobDetails(selectedGroup.details);
 
     //기본값은 0번
@@ -75,7 +70,8 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
                 { label: "신입", value: "NEW" },
                 { label: "경력", value: "EXPERIENCED" },
               ]}
-              {...field}
+              value={field.value}
+              onValueChange={field.onChange}
             />
           )}
         />
@@ -111,6 +107,37 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
             />
           </div>
         </div>
+      </ContentsBox>
+      <ContentsBox title="함께 하고 싶은 인원수를 선택해주세요.">
+        <Controller
+          control={control}
+          name="matchType"
+          render={({ field }) => (
+            <>
+              <Button
+                type="button"
+                variant={field.value === "ONE_TO_ONE" ? "outline" : "default"}
+                onClick={() => field.onChange("ONE_TO_ONE")}
+              >
+                1:1
+              </Button>
+              <Button
+                type="button"
+                variant={field.value === "GROUP" ? "outline" : "default"}
+                onClick={() => field.onChange("GROUP")}
+              >
+                3~6명
+              </Button>
+              <Button
+                type="button"
+                variant={field.value === "NONE" ? "outline" : "default"}
+                onClick={() => field.onChange("NONE")}
+              >
+                상관없어요
+              </Button>
+            </>
+          )}
+        />
       </ContentsBox>
     </>
   );
