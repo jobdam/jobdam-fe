@@ -87,9 +87,30 @@ const createAppRouter = (queryClient: QueryClient) => {
             ),
         },
         {
-          path: paths.emailverify.pending.path,
+          path: paths.emailverify.expired.path,
           lazy: () =>
-            import("@/app/routes/app/emailverify/pending").then(
+            import("@/app/routes/app/emailverify/expired").then(
+              convert(queryClient)
+            ),
+        },
+        {
+          path: paths.emailverify.already.path,
+          lazy: () =>
+            import("@/app/routes/app/emailverify/already").then(
+              convert(queryClient)
+            ),
+        },
+        {
+          path: paths.emailverify.success.path,
+          lazy: () =>
+            import("@/app/routes/app/emailverify/success").then(
+              convert(queryClient)
+            ),
+        },
+        {
+          path: paths.emailverify.error.path,
+          lazy: () =>
+            import("@/app/routes/app/emailverify/error").then(
               convert(queryClient)
             ),
         },

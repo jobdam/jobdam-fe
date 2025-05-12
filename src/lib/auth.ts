@@ -13,9 +13,6 @@ import { z } from "zod";
 
 import { api } from "./api-client";
 import { clearTokens, saveTokens } from "./authSerivices";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store";
-import { setCheckDuplicate } from "@/store/slices/signup";
 
 const getUser = async (): Promise<User> => {
   const response = await api.get(`/user/profile`);
@@ -87,7 +84,7 @@ export const registerInputSchema = (checkDuplicate) =>
       message: "비밀번호가 일치하지 않습니다.",
     })
     .superRefine((data, ctx) => {
-      console.log(checkDuplicate, "dh");
+      console.log(checkDuplicate, data);
       if (!checkDuplicate) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,

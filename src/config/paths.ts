@@ -55,13 +55,22 @@ export const paths = {
   },
 
   emailverify: {
-    pending: {
-      path: "/verify-email-pending",
+    error: {
+      path: "/verify-email-check/error",
+    },
+    success: {
+      path: "/verify-email-check/success",
     },
     verifycheck: {
       path: "/verify-email-check",
       getHref: (redirectTo?: string | null | undefined) =>
-        `/verify-email-check"${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
+        `/verify-email-check${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
+    },
+    already: {
+      path: "/verify-email-check/already",
+    },
+    expired: {
+      path: "/verify-email-check/expired",
     },
   },
 

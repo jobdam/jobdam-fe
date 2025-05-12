@@ -1,5 +1,5 @@
 /** @format */
-import { Text, Button } from "@radix-ui/themes";
+import { Button } from "@radix-ui/themes";
 import { Link } from "react-router-dom";
 import LoggedOutHeader from "./components/common/header/LoggedOutHeader";
 import { Checkbox, Radio } from "./components/ui/form/index";

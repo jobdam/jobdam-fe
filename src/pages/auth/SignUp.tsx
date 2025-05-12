@@ -1,7 +1,7 @@
 /** @format */
 
 import { Checkbox, Form, Input, Label } from "@/components/ui/form";
-import { Controller, type FieldError } from "react-hook-form";
+import { type FieldError } from "react-hook-form";
 
 import { registerInputSchema, useRegister } from "@/lib/auth";
 import { Check } from "lucide-react";
@@ -12,7 +12,7 @@ import { useVerifyEmail } from "../emailverify/api/get-emailverify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { setCheckDuplicate, setErrorDuplicate } from "@/store/slices/signup";
+import { setCheckDuplicate } from "@/store/slices/signup";
 import { RootState } from "@/store";
 
 export const getFieldError = (error: any): FieldError | undefined => {
@@ -31,9 +31,7 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
   const checkDuplicate = useSelector(
     (state: RootState) => state.signup.checkDuplicate
   );
-  const errorDuplicate = useSelector(
-    (state: RootState) => state.signup.ErrorDuplicate
-  );
+
   const dispatch = useDispatch();
 
   const form = useForm({
@@ -60,7 +58,6 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
   const agreePrivacy = form.watch("agreePrivacy");
   const agreeAge = form.watch("agreeAge");
   const agreeJobDam = form.watch("agreeJobDam");
-  const { refetch: verifyRefetch } = useVerifyEmail({});
   //이메일 에리거 없을때, email이 존재할때
   React.useEffect(() => {
     if (agreeTerms && agreePrivacy && agreeAge) {
@@ -70,13 +67,10 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
     }
   }, [agreeTerms, agreePrivacy, agreeAge]);
 
-  const {
-    refetch,
-    data,
-    isError: checkError,
-    isFetched,
-    isSuccess,
-  } = useCheckEmail({ email: email, queryConfig: { enabled: false } });
+  const { refetch, data, isFetched, isSuccess } = useCheckEmail({
+    email: email,
+    queryConfig: { enabled: false },
+  });
 
   // console.log(data?.data?.isDuplicate);
   React.useEffect(() => {

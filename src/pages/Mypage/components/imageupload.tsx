@@ -3,19 +3,19 @@
 // profileImage가 url로
 
 import { Camera } from "lucide-react";
-import React, { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+// import React, { useState } from "react";
+// import { useForm, Controller } from "react-hook-form";
 
-type FormValues = {
-  profileImageUrl: string | null;
-};
+// type FormValues = {
+//   profileImageUrl: string | null;
+// };
 
 const ProfileImageUpload = () => {
-  const { register, handleSubmit, setValue, watch } = useForm<FormValues>({
-    defaultValues: {
-      profileImageUrl: "", // 서버에서 받아온 초기 URL (있다면)
-    },
-  });
+  // const form = useForm<FormValues>({
+  //   defaultValues: {
+  //     profileImageUrl: "", // 서버에서 받아온 초기 URL (있다면)
+  //   },
+  // });
 
   return (
     <>

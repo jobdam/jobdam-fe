@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from "react-router";
 import { AuthLayout } from "@/components/layout/auth-layout";
 import { paths } from "@/config/paths";
 import SignUp from "@/pages/auth/SignUp";
+import { useCheckEmail } from "@/pages/auth/api/get-checkemail";
 
 const SignUpRoute = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const SignUpRoute = () => {
 
   console.log(redirectTo);
 
-  //회원가입 성공후 메인페이지로 넘어가기.
+  //회원가입 할때 이메일도 같이 넘긴다.
 
   return (
     <AuthLayout
@@ -23,12 +24,9 @@ const SignUpRoute = () => {
     >
       <SignUp
         onSuccess={() => {
-          navigate(
-            `${redirectTo ? `${redirectTo}` : paths.emailverify.verifycheck.path}`,
-            {
-              replace: true,
-            }
-          );
+          navigate(paths.emailverify.verifycheck.path, {
+            replace: true,
+          });
         }}
       />
     </AuthLayout>
