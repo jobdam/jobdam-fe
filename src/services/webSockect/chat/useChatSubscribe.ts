@@ -4,15 +4,15 @@ import { useEffect } from "react";
 import { IMessage } from "@stomp/stompjs";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
-import { getWebSocketClient } from "./useWebSocketConnect";
 import { setDestination } from "@/store/slices/websockets"; // 선택사항
+import { getWebSocketClient } from "../useWebSocketConnect";
 
 interface Props {
   destination: string;
   onMessage: (msg: IMessage) => void;
 }
 
-export const useWebSocketSubscribe = ({ destination, onMessage }: Props) => {
+export const useChatSubscribe = ({ destination, onMessage }: Props) => {
   const isConnected = useSelector(
     (state: RootState) => state.websocket.isConnected
   );
@@ -23,7 +23,7 @@ export const useWebSocketSubscribe = ({ destination, onMessage }: Props) => {
 
     const client = getWebSocketClient();
     if (!client || !client.connected) {
-      console.warn("WebSocket 연결 안 됨");
+      console.warn("WebSocket 연결 안 됨dd");
       return;
     }
 

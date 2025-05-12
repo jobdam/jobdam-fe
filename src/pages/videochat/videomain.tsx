@@ -28,7 +28,6 @@ const Videomain = () => {
   //미디어 관련 훅
   const {
     stream,
-    micTrack,
     cameraTrack,
     screenTrack,
     isMicOn,
