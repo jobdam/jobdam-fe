@@ -5,7 +5,6 @@ import { useNavigate, useSearchParams } from "react-router";
 import { AuthLayout } from "@/components/layout/auth-layout";
 import { paths } from "@/config/paths";
 import SignUp from "@/pages/auth/SignUp";
-import { useCheckEmail } from "@/pages/auth/api/get-checkemail";
 
 const SignUpRoute = () => {
   const navigate = useNavigate();

@@ -4,7 +4,7 @@ import { getAccessToken, refreshAccessToken } from "@/lib/authSerivices";
 import { store } from "@/store";
 import { addNotification } from "@/store/slices/notifications";
 import Axios, { InternalAxiosRequestConfig } from "axios";
-import { paths } from "@/config/paths";
+// import { paths } from "@/config/paths";
 
 let isRefreshing = false; // 토큰 갱신 상태 추적
 
@@ -58,7 +58,7 @@ api.interceptors.response.use(
     //인증 되지 않은 사용자는 로그인으로 되돌려 보내기.
 
     //401에러 일때도 re
-    console.log(error.response?.data, error);
+    console.log(error.response?.status, error);
     //401 에러가 뜨는경우 => 로그인이 안된경우, 와 accesstoken을 재발급 받아야하는겨웅'
 
     //로그인이 안된경우 protected router 로 강제로 로그인으로 보내기.
@@ -66,6 +66,12 @@ api.interceptors.response.use(
 
     //로그인을 한 상황에서 local에 토큰이 있는 상황에서 아래와같은 과정을 거쳐야한다.
 
+    console.log(
+      error.response?.status === 401,
+      !originalRequest._retry,
+      isRefreshing,
+      token
+    );
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
@@ -78,7 +84,6 @@ api.interceptors.response.use(
       try {
         //액세스토큰 재발급 전에 401 에러 발생하면
         const newAccessToken = await refreshAccessToken();
-
         //새 토큰으로 authorization 헤더 갱신하기
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 

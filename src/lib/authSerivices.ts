@@ -18,7 +18,7 @@ export function clearTokens() {
 //refresh로 access 재발급 하는 코드
 export const refreshAccessToken = async (): Promise<string | void> => {
   try {
-    const response = await api.post("/reissue");
+    const response = await api.post("/reissue", {});
 
     console.log(response);
     //accessToken 서버에서 받은거 불러오기

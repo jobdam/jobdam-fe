@@ -14,6 +14,7 @@ module.exports = {
       boxShadow: {
         custom: "0px 8px 24px 0px rgba(112, 144, 176, 0.30)",
       },
+
       backgroundImage: {
         "gradient-videochat":
           "linear-gradient(180deg, #C1E1FF 0%, #F2F9FF 100%)",
@@ -50,5 +51,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar")],
 };

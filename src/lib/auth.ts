@@ -22,7 +22,7 @@ const getUser = async (): Promise<User> => {
 
 //로그아웃 할때 로컬제거, 쿠키 제거
 const logout = (): Promise<void> => {
-  return api.post("/logout");
+  return api.get("/logout");
 };
 //로그인
 export type LoginInput = z.infer<typeof loginInputSchema>;
@@ -131,6 +131,7 @@ export const authConfig = {
     await logout();
     //로그아웃에 성공하면 token제거,
 
+    clearTokens();
     clearTokens();
 
     window.location.href = "/login";
