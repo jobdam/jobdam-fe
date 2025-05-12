@@ -127,13 +127,6 @@ const createAppRouter = (queryClient: QueryClient) => {
             ),
         },
         {
-          path: paths.interview.main.path,
-          lazy: () =>
-            import("@/app/routes/app/interview/main").then(
-              convert(queryClient)
-            ),
-        },
-        {
           path: paths.videochat.main.path,
           lazy: () =>
             import("@/app/routes/app/videochat/video-chat").then(
