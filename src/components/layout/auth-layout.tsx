@@ -12,6 +12,7 @@ type LayoutProps = {
   className?: React.ReactNode;
   entry?: boolean;
   login?: boolean;
+  profile?: boolean;
 };
 
 export const AuthLayout = ({
@@ -19,6 +20,7 @@ export const AuthLayout = ({
   title,
   subtitle,
   className,
+  profile,
   entry = false,
   login = false,
 }: LayoutProps) => {
@@ -58,7 +60,13 @@ export const AuthLayout = ({
           )}
         >
           {title ? (
-            <div className="mb-[80px] text-center flex gap-[15px] flex-col ">
+            <div
+              className={cn(
+                "mb-[80px] text-center flex gap-[15px] flex-col",
+
+                profile && "text-left"
+              )}
+            >
               <h2 className="  text-[32px] font-semibold text-gray-900">
                 {title}
               </h2>

@@ -6,15 +6,16 @@
 
 @font-face {
   font-family: "Roboto";
-  src: url("/fonts/Roboto-Regular.woff2") format("woff2");
-  font-weight: 400;
+  src: url("/fonts/Roboto-VariableFont_wdth,wght.ttf") format("truetype");
+  font-weight: 100 900; /* 가변 범위 */
+  font-stretch: 75% 100%; /* 너비 조절 (선택 사항) */
   font-style: normal;
 }
 @font-face {
   font-family: "Roboto";
-  src: url("/fonts/Roboto-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
+  src: url("/fonts/Roboto-Italic-VariableFont_wdth,wght.ttf") format("truetype");
+  font-stretch: 75% 100%;
+  font-style: italic;
 }
 
 body {

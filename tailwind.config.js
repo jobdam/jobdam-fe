@@ -11,6 +11,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      font: {
+        roboto: ["Roboto", "sans-serif"],
+        // 기본 sans 대체도 가능
+      },
+
       boxShadow: {
         custom: "0px 8px 24px 0px rgba(112, 144, 176, 0.30)",
       },
@@ -24,7 +29,6 @@ module.exports = {
           "linear-gradient(180deg, #C1E1FF 0%, #F2F9FF 100%)",
       },
 
-      fontFamily: {},
       colors: {
         ...mauve,
         ...violet,
