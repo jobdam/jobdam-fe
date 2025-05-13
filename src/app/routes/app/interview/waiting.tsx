@@ -1,6 +1,6 @@
 /** @format */
 
-import InterviewMatchingFinish from "@/pages/interview/matchingwaiting";
+import InterviewMatchingFinish from "@/pages/ChatRoom/components/InterviewWaiting";
 
 const MatchingWaiting = () => {
   return (

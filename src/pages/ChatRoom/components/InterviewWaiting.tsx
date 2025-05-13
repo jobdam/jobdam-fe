@@ -1,41 +1,36 @@
 /** @format */
 
-import ProfileCard from "./components/profilecard";
+import { useState } from "react";
+import ProfileCard from "./profilecard";
 
-//role을 정해서
+interface UserProfile {
+  id: number;
+  name: string;
+  role: string;
+  image: string;
+  isMe: boolean;
+}
 
-const InterviewMatchingWaiting = () => {
+const InterviewWaiting = () => {
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const participants = [
+    { id: 1, name: "김지윤님", profileImgUrl: "/user1.jpg", isReady: true },
+    { id: 2, name: "오예린님", profileImgUrl: "/user2.jpg", isReady: false },
+  ];
   //role을 나눠서 guest는 아래쪽에, me는 보기쉽게 위쪽에 배치
   return (
     <div className="flex flex-col items-center gap-y-8 p-8 bg-gray-100 min-h-screen">
       {/* 내 프로필 (위쪽) */}
       <div className="text-center">
-        <h2 className="text-lg font-bold mb-2">내 프로필</h2>
-        <ProfileCard name="나" role="면접자" image="/me.jpg" />
+        <h2 className="text-lg font-bold mb-2">내 프로필</h2>/
       </div>
 
       {/* 나머지 사람들 프로필 (아래쪽) */}
-      <div className="flex flex-row items-center gap-y-6">
-        <ProfileCard
-          name="오태식"
-          role="UX/UI 디자이너 지원"
-          image="/user1.jpg"
-        />
-        <ProfileCard
-          name="김진남"
-          role="UX/UI 디자이너 지원"
-          image="/user2.jpg"
-        />
-        <ProfileCard
-          name="임한식"
-          role="UX/UI 디자이너 지원"
-          image="/user3.jpg"
-        />
-      </div>
+      <div className="items-center gap-y-6"></div>
     </div>
   );
 };
-export default InterviewMatchingWaiting;
+export default InterviewWaiting;
 
 {
   /* {data.map((el) => {
