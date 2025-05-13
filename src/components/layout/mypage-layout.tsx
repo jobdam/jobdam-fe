@@ -1,8 +1,10 @@
 /** @format */
 
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { paths } from "@/config/paths";
 import { Link } from "../ui/link";
+import { cn } from "@/utils/cn";
+import { useLocation, useNavigate } from "react-router";
 
 interface MypageLayoutProps {
   children: ReactNode;
@@ -23,56 +25,70 @@ const MypageLayout = ({
   button = false,
   subtitle,
 }: MypageLayoutProps) => {
+  const location = useLocation(); // 현재 URL 위치
+  const [activeTab, setActiveTab] = React.useState(1);
+
+  React.useEffect(() => {
+    const activeTabFromUrl = data.findIndex(
+      (opt) => opt.link === location.pathname
+    );
+    setActiveTab(activeTabFromUrl === -1 ? 1 : activeTabFromUrl + 1); // 기본값 1로 설정
+  }, [location.pathname]);
+
   return (
-    <div className="flex min-h-screen w-[1920px] flex-row justify-center items-center">
-      <div className="flex gap-x-[117px] items-start">
-        {/* 사이드바 */}
-        <div className="flex flex-col w-[200px] shrink-0">
-          <div>
-            {/* 프로필 사진 */}
-            <div className="w-[150px] h-[150px] mb-[43px] rounded-full bg-[#D9D9D9]"></div>
+    <div className="flex min-h-screen w-[1920px] flex-row justify-center ">
+      {/* <div className="flex gap-x-[117px] items-start "> */}
+      {/* 사이드바 */}
+      <div className="flex flex-col w-[200px] shrink-0 mt-[137px] mr-[102px] relative">
+        <div>
+          {/* 프로필 사진 */}
+          <div className="w-[150px] h-[150px] mb-[43px] bg-[] rounded-full bg-[#D9D9D9]"></div>
 
-            {/* 메뉴 리스트 */}
-            <ul className="flex flex-col gap-y-[20px]">
-              {data.map((opt) => (
-                <li
-                  key={opt.id}
-                  className="border-b-[3px] pl-[5px] border-[#D9D9D9] w-[158px]"
+          {/* 메뉴 리스트 */}
+          <ul className="flex flex-col gap-y-[20px]">
+            {data.map((opt) => (
+              <li
+                key={opt.id}
+                className={cn(
+                  "pl-[5px] border-[#D9D9D9] w-[183px] h-[51px] cursor-pointer rounded-[20px]",
+                  activeTab === opt.id && "bg-[rgba(72,143,255,0.20)]"
+                )}
+              >
+                <Link
+                  onClick={() => setActiveTab(opt.id)}
+                  className="flex items-center no-underline pl-[10px] h-full w-full font-medium text-black"
+                  to={opt.link}
                 >
-                  <Link
-                    className="no-underline w-[150px] font-medium text-black"
-                    to={opt.link}
-                  >
-                    {opt.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* 본문 영역 */}
-        <div className="flex flex-col gap-y-[47px]">
-          <div className="flex flex-row">
-            <div className="flex flex-col">
-              <h2 className="text-[32px] font-semibold leading-[150%]">
-                {title}
-              </h2>
-              {subtitle ? (
-                <span className="text-[20px] mt-[5px] font-semibold leading-[150%]">
-                  {subtitle}
-                </span>
-              ) : (
-                <></>
-              )}
-            </div>
-            {button && <Link to={paths.mypage.editdata.path}>수정하기</Link>}
-          </div>
-
-          {children}
+                  {opt.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
+
+      {/* 본문 영역 */}
+      <div className="flex flex-col mt-[105px] gap-y-[47px]">
+        <div className="flex flex-row">
+          <div className="flex flex-col">
+            <h2 className="text-[32px] font-semibold leading-[150%]">
+              {title}
+            </h2>
+            {subtitle ? (
+              <span className="text-[20px] mt-[5px] font-semibold leading-[150%]">
+                {subtitle}
+              </span>
+            ) : (
+              <></>
+            )}
+          </div>
+          {button && <Link to={paths.mypage.editdata.path}>수정하기</Link>}
+        </div>
+
+        {children}
+      </div>
     </div>
+    // </div>
   );
 };
 

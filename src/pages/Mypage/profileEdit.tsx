@@ -1,23 +1,11 @@
 /** @format */
 
+import { Button } from "@/components/ui/button";
+import { labelMap } from "./myprofile";
 import { useUser } from "@/lib/auth";
 import { useJobCategory } from "./api/get-jobcategory";
-import { paths } from "@/config/paths";
-import { Link } from "@/components/ui/link";
-export const labelMap: Record<string, string> = {
-  name: "이름",
-  phone: "휴대폰 번호",
-  email: "이메일",
-  birthday: "생년월일",
-  job: "직무",
-  education: "학교(전공)",
 
-  targetCompanySize: "희망 기업",
-};
-const MyProfile = () => {
-  //데이터 가공필요 , useUser에서 code를 주면 code를 jobcategory매칭해서
-  //새로운 data [{ }] 쌍을 만들어 반환하기 useMemo? 쓰면 좋을듯.
-
+const ProfileEdit = () => {
   const { data: userData } = useUser();
   const { data: jobData } = useJobCategory({});
 
@@ -33,8 +21,6 @@ const MyProfile = () => {
     return el.jobDetailCode === userData?.jobDetailCode || "100185";
   });
 
-  console.log(jobDetail?.jobDetail);
-
   const profile = {
     name: userData?.name,
     phone: "010-0000-000",
@@ -45,16 +31,17 @@ const MyProfile = () => {
     targetCompanySize: userData?.targetCompanySize,
     education: userData?.educationLevel,
   };
+
   return (
     <div className="border-[1px] rounded-[20px] border-[#488FFF] pt-[38px] pb-[84px] px-[60px] max-h-[626px] w-[915px]">
       <ul className="flex gap-y-[30px] flex-col">
         <div className="flex justify-end">
-          <Link
-            to={paths.mypage.editdata.path}
-            className=" cursor-pointer flex rounded-[30px] bg-[#488fff] justify-center items-center w-[102px] h-[42px] text-[16px] text-white font-semibold"
+          <Button
+            className=" cursor-pointer border-[1px] bg-white flex rounded-[10px] justify-center 
+          items-center text-[#488fff] w-[74px] h-[30px] text-[16px]  font-semibold"
           >
-            수정하기
-          </Link>
+            저장
+          </Button>
         </div>
 
         {Object.entries(labelMap ?? {}).map(([key, value]) => {
@@ -78,4 +65,4 @@ const MyProfile = () => {
   );
 };
 
-export default MyProfile;
+export default ProfileEdit;

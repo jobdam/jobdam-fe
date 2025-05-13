@@ -19,7 +19,7 @@ const FeedbackandAiQuestion = () => {
 
   const ai = useSelector((state: RootState) => state.ui.aiState);
   const resume = useSelector((state: RootState) => state.ui.resumeState);
-  const selectList = useSelector((state: RootState) => state.ui.selectList);
+  // const selectList = useSelector((state: RootState) => state.ui.selectList);
   const dispatch = useDispatch();
   const onAiChange = () => {
     dispatch(setAiState(true));
