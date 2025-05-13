@@ -1,11 +1,10 @@
 /** @format */
 import { useCallback } from "react";
 import { Send } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { paths } from "@/config/paths";
-import { useWebSocketSubscribe } from "@/services/webSockect/useWebSocketSubscribe";
 import { IMessage } from "@stomp/stompjs";
-
+import { useChatSubscribe } from "@/services/webSockect/chat/useChatSubscribe";
 const ChatRoom = () => {
   const messages = [
     {
@@ -23,7 +22,7 @@ const ChatRoom = () => {
       isMe: true,
     },
   ];
-
+  const { roomId } = useParams();
   const navigate = useNavigate();
 
   const enterSignalRoom = (roomId: number) => {
@@ -33,28 +32,15 @@ const ChatRoom = () => {
   const handleMessage = useCallback((msg: IMessage) => {
     const data = JSON.parse(msg.body);
     console.log("📩 수신된 채팅 메시지:", data);
-
-    // TODO: 상태로 추가하거나 Redux dispatch 가능
   }, []);
 
-  useWebSocketSubscribe({
-    destination: `/topic/chat/1`,
+  useChatSubscribe({
+    destination: `/topic/chat/${roomId}`,
     onMessage: handleMessage,
   });
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="flex gap-2">
-        {[1, 2, 3, 4, 5].map((i) => (
-          <button
-            key={i}
-            className="px-4 py-2 bg-blue-500 text-white rounded"
-            onClick={() => enterSignalRoom(i)}
-          >
-            방 {i} 입장
-          </button>
-        ))}
-      </div>
       {/* 헤더 */}
       <header className="h-16 bg-gray-800 text-white flex items-center px-4 shadow-md">
         <h1 className="text-lg font-semibold">채팅방</h1>

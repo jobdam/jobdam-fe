@@ -11,7 +11,6 @@ import {
 } from "@/services/webSockect/videoChat/useSignalSubscrpition";
 import { useCallback, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router";
-import Video from "./components/vidio";
 import Utility from "./components/utility";
 import FeedbackandAiQuestion from "./components/feedbackandaiquestion";
 
@@ -31,8 +30,12 @@ const Videomain = () => {
     stream,
     cameraTrack,
     screenTrack,
-
+    isMicOn,
+    isCameraOn,
     isScreenSharing,
+    toggleMic,
+    toggleCamera,
+    toggleScreenShare,
   } = useLocalMediaStream();
 
   //시그널 전송 훅
@@ -149,6 +152,7 @@ const Videomain = () => {
           await handleOffer(
             { sdp: data.sdp, type: "offer" },
             data.senderId,
+            roomId!,
             stream!
           );
           break;
@@ -226,7 +230,14 @@ const Videomain = () => {
       </div>
       {/* 유틸리티 영역 */}
       <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-        <Utility></Utility>
+        <Utility
+          isMicOn={isMicOn}
+          isCameraOn={isCameraOn}
+          isScreenSharing={isScreenSharing}
+          toggleMic={toggleMic}
+          toggleCamera={toggleCamera}
+          toggleScreenShare={toggleScreenShare}
+        />
       </div>
       <div
         className="w-[530px] h-[847px]

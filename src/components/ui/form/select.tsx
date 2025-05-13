@@ -48,7 +48,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
       setIsOpen(false);
     };
     const selectedLabel =
-      options.find((option) => option[labelkey] === value)?.[valuekey] ?? value;
+      options.find((option) => option[valuekey] === value)?.[labelkey] ?? value;
 
     console.log(labelkey, options);
     return (
@@ -70,11 +70,11 @@ export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
             {options.map((option) => (
               <div
                 defaultValue={value}
-                key={Number(option[labelkey])}
+                key={Number(option[valuekey])}
                 className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
                 onClick={() => handleSelect(option[valuekey])}
               >
-                {option[valuekey]}
+                {option[labelkey]}
               </div>
             ))}
           </div>

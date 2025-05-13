@@ -20,7 +20,10 @@ const LoggedOutHeader = () => {
             <Link to="/" className="cursor-pointer h-[20px] ">
               잡담 소개
             </Link>
-            <Link to="/main" className="cursor-pointer ">
+            <Link
+              to={paths.interview.register.path}
+              className="cursor-pointer "
+            >
               면접 보러가기
             </Link>
             <Link
