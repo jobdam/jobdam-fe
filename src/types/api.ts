@@ -29,11 +29,3 @@ export type AuthResponse = {
   jwt: string;
   user: User;
 };
-
-export type InterviewData = {
-  jobCode: string;
-  jobDetailCode: string;
-  introduce: string;
-  interviewType: string;
-  peopleCount: number;
-};

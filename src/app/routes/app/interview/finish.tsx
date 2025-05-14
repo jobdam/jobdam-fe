@@ -1,7 +1,7 @@
 /** @format */
 
 import InterviewLayout from "@/components/layout/interview-layout";
-import InterviewMatchingFinish from "@/pages/interview/matchingwaiting";
+import InterviewMatchingFinish from "@/pages/ChatRoom/components/user/UserPanel";
 
 const MatchingWaiting = () => {
   return (
