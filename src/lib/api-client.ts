@@ -5,6 +5,7 @@ import { store } from "@/store";
 import { addNotification } from "@/store/slices/notifications";
 import Axios, { InternalAxiosRequestConfig } from "axios";
 import { paths } from "@/config/paths";
+import { useLogout } from "./auth";
 
 let isRefreshing = false; // 토큰 갱신 상태 추적
 
@@ -64,13 +65,14 @@ api.interceptors.response.use(
     //로그인이 안된경우 protected router 로 강제로 로그인으로 보내기.
     //이메일 검증시엔 이러한 시도가 필요가 없다.
 
-    //로그인을 한 상황에서 local에 토큰이 있는 상황에서 아래와같은 과정을 거쳐야한다.
+    //로그인을 한 상황에서는 token재발급 과정을 먼저 거치고 refreshtokenㅣ 없을때 로그아웃을하고 메인으로 돌려보낸다.
+
+    // 로그인을 하지 않은 상황에서는 만약 인증을 해야되는곳을 갔을때 redirect를준다 -> 로그인했을때 그쪽으로 다시 리턴
 
     console.log(
       error.response?.status === 401,
       !originalRequest._retry,
-      isRefreshing,
-      token
+      isRefreshing
     );
     if (
       error.response?.status === 401 &&
@@ -94,17 +96,21 @@ api.interceptors.response.use(
         console.log(error, "catch");
         // refresh 실패하면 로그인 페이지로 이동 , 401에러인데 아직 로그인을
         //401에러 가 발생시
-        // useLogout();
-
-        const searchParams = new URLSearchParams();
-        const redirectTo =
-          searchParams.get("redirectTo") || window.location.pathname;
-        window.location.href = paths.auth.login.getHref(redirectTo);
+        useLogout();
         return Promise.reject(error);
       } finally {
         isRefreshing = false; // 토큰 갱신 완료
       }
     }
-    return Promise.reject(error);
+    //나머지의 에러 상황인경우 라면(로그인이 되지 않은 경우 로그인이 필요한 곳에 진입했을때 리다이렉트)
+    else {
+      const searchParams = new URLSearchParams();
+      const redirectTo =
+        searchParams.get("redirectTo") || window.location.pathname;
+      if (!window.location.pathname.includes("login")) {
+        window.location.href = paths.auth.login.getHref(redirectTo);
+      }
+      return Promise.reject(error);
+    }
   }
 );

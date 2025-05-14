@@ -35,15 +35,14 @@ const LoggedInHeader = () => {
             >
               면접 보러가기
             </Link>
-            <Link
+            <button
               onClick={() => logout({})}
-              to={paths.auth.login.path}
               className="text-white
             rounded-[20px] bg-[#488fff]
               flex items-center justify-center mx-2 z-[20] w-[106px] h-[32px]"
             >
               로그아웃
-            </Link>
+            </button>
             <Link
               to={paths.mypage.me.path}
               className="cursor-pointer text-white text-[16px] font-semibold leading-normal "
