@@ -21,6 +21,9 @@ const InterviewRegister = () => {
     resolver: zodResolver(interviewSchema),
     defaultValues: {
       matchType: undefined,
+      experienceType: "NEW",
+      jobCode: "",
+      jobDetailCode: "",
     },
   });
   const { data: matchingProfile } = useMatchingProfile();
