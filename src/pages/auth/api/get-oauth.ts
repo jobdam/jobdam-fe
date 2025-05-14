@@ -9,7 +9,6 @@ import { QueryConfig } from "@/lib/react-query";
 // export const oauth;
 
 export const getOauth = (params) => {
-  console.log(`/oauth-redirect/?token=${params}`);
   return api.get(`/oauth-redirect?token=${params}`);
 };
 //소셜 로그인은 바로바로 요청

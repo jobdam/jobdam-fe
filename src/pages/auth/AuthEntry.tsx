@@ -40,8 +40,11 @@ export const AuthEntry = () => {
               <NaverSignin></NaverSignin>
             </div>
 
-            <div className=" text-sm flex justify-center items-center">
-              <Link className="underline" to="/login">
+            <div className=" flex justify-center items-center">
+              <Link
+                className="underline text-[rgba(0,0,0,0.50)]  text-[20px]"
+                to="/login"
+              >
                 이메일 로그인/회원가입
               </Link>
             </div>
