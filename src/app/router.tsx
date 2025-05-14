@@ -32,7 +32,7 @@ const createAppRouter = (queryClient: QueryClient) => {
       children: [
         {
           path: paths.home.path,
-          lazy: () => import("@/Apps").then(convert(queryClient)),
+          lazy: () => import("@/app/routes/landing").then(convert(queryClient)),
         },
         {
           path: paths.auth.register.path,
