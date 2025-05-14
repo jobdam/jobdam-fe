@@ -1,8 +1,8 @@
 /** @format */
 import { useCallback } from "react";
 import { Send } from "lucide-react";
-import { useNavigate, useParams } from "react-router";
-import { paths } from "@/config/paths";
+import { useParams } from "react-router";
+// import { paths } from "@/config/paths";
 import { IMessage } from "@stomp/stompjs";
 import { useChatSubscribe } from "@/services/webSockect/chat/useChatSubscribe";
 const ChatRoom = () => {
@@ -23,11 +23,11 @@ const ChatRoom = () => {
     },
   ];
   const { roomId } = useParams();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const enterSignalRoom = (roomId: number) => {
-    navigate(paths.videochat.main.getHref(roomId));
-  };
+  // const enterSignalRoom = (roomId: number) => {
+  //   navigate(paths.videochat.main.getHref(roomId));
+  // };
 
   const handleMessage = useCallback((msg: IMessage) => {
     const data = JSON.parse(msg.body);

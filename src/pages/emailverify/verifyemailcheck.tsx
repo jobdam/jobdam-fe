@@ -2,13 +2,10 @@
 
 import VerifySuccess from "./components/verifySuccess";
 import { useVerifyEmail } from "./api/get-emailverify";
-import { AxiosError } from "axios";
-import VerifyExpired from "./components/verifyexpired";
-import VerifyAlready from "./components/verifyalready";
+
 import VerifyPending from "./components/verifypending";
 import { useNavigate, useSearchParams } from "react-router";
-import VerifyError from "./verifymailerror";
-import React, { useEffect } from "react";
+import React from "react";
 
 //여기서 받아서 성공 실패를 가른다.성공한경우는
 
@@ -23,7 +20,7 @@ const VerifyEmailCheck = () => {
   const token = URLsearchParams.get("token") ?? "";
   console.log(token, "token");
 
-  const { isSuccess, isError, error, data, refetch } = useVerifyEmail({
+  const { isError, error, data } = useVerifyEmail({
     token,
     enabled: !!token,
   });

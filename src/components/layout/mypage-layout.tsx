@@ -4,7 +4,7 @@ import React, { ReactNode } from "react";
 import { paths } from "@/config/paths";
 import { Link } from "../ui/link";
 import { cn } from "@/utils/cn";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 
 interface MypageLayoutProps {
   children: ReactNode;
@@ -30,7 +30,7 @@ const MypageLayout = ({
 
   React.useEffect(() => {
     const activeTabFromUrl = data.findIndex(
-      (opt) => opt.link === location.pathname
+      (opt) => opt?.link === location?.pathname
     );
     setActiveTab(activeTabFromUrl === -1 ? 1 : activeTabFromUrl + 1); // 기본값 1로 설정
   }, [location.pathname]);

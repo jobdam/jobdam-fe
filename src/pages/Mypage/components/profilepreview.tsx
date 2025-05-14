@@ -16,7 +16,7 @@ const ProfilePreview = ({ onSelectFile }: Props) => {
   const [file, setFile] = useState<File | null>(null);
   const [uploadPreview, setUploadPreview] = useState<string | null>(null);
 
-  const { setValue, watch } = useForm<FormValues>({
+  const { watch } = useForm<FormValues>({
     defaultValues: { profileImage: null },
   });
 

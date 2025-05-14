@@ -85,11 +85,13 @@ const InterviewRegister = () => {
                   control={form.control}
                   name="interviewType"
                   render={({ field }) => (
-                    <>
+                    <div className="w-fll flex flex-row gap-[20px]">
                       <Button
                         type="button"
+                        size="register"
+                        className="text-black"
                         variant={
-                          field.value === "PERSONALITY" ? "outline" : "default"
+                          field.value === "PERSONALITY" ? "outline" : "register"
                         }
                         onClick={() => field.onChange("PERSONALITY")}
                       >
@@ -97,21 +99,25 @@ const InterviewRegister = () => {
                       </Button>
                       <Button
                         type="button"
-                        variant={field.value === "JOB" ? "outline" : "default"}
+                        size="register"
+                        className="text-black"
+                        variant={field.value === "JOB" ? "outline" : "register"}
                         onClick={() => field.onChange("JOB")}
                       >
                         직무
                       </Button>
                       <Button
                         type="button"
+                        size="register"
+                        className="text-black"
                         variant={
-                          field.value === "TECHNICAL" ? "outline" : "default"
+                          field.value === "TECHNICAL" ? "outline" : "register"
                         }
                         onClick={() => field.onChange("TECHNICAL")}
                       >
                         기술
                       </Button>
-                    </>
+                    </div>
                   )}
                 />
               </ContentsBox>
