@@ -1,6 +1,7 @@
 /** @format */
 
 import FeedbackContents from "./components/feedbackcontents";
+import FeedbackDetailContents from "./components/feedbackdetailcontents";
 
 // const data = [
 //   {
@@ -13,14 +14,31 @@ import FeedbackContents from "./components/feedbackcontents";
 const MyFeedback = () => {
   return (
     <>
-      <div className="flex flex-row  items-stretch gap-x-[20px]">
-        <div className="flex flex-col justify-center items-center">
+      <div className="flex flex-col w-[915px] h-[240px] items-stretch ">
+        {/* <FeedbackContents></FeedbackContents> */}
+        <FeedbackDetailContents></FeedbackDetailContents>
+
+        {/* <FeedbackContents></FeedbackContents> */}
+      </div>
+
+      {/* <div className="flex flex-col justify-center items-center">
           <div className=" w-[15px] h-[15px] bg-[#a8a8a8] rounded-full "></div>
 
           <div className=" w-[2px] max-h-full h-[200px] bg-[#a8a8a8] "></div>
         </div>
-        <FeedbackContents></FeedbackContents>
-      </div>
+        <div>
+          {" "}
+          <FeedbackContents></FeedbackContents>
+        </div>
+             <div className="flex flex-col justify-center items-center">
+          <div className=" w-[15px] h-[15px] bg-[#a8a8a8] rounded-full "></div>
+
+          <div className=" w-[2px] max-h-full h-[200px] bg-[#a8a8a8] "></div>
+        </div>
+        <div>
+          {" "}
+          <FeedbackContents></FeedbackContents>
+        </div> */}
     </>
   );
 };

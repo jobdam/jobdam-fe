@@ -1,6 +1,5 @@
 /** @format */
-import * as React from "react";
-import { Text, Button } from "@radix-ui/themes";
+import { Button } from "@radix-ui/themes";
 import { Link } from "react-router-dom";
 import LoggedOutHeader from "./components/common/header/LoggedOutHeader";
 import { Checkbox, Radio } from "./components/ui/form/index";
@@ -8,35 +7,14 @@ import { InterviewSpinner, Spinner } from "./components/ui/spinner";
 import Avatars from "./components/ui/avatar/avatars";
 import { SendHorizontal } from "lucide-react";
 import { Plus } from "lucide-react";
-
-import { mauve } from "@radix-ui/colors"; // 예시
+import { paths } from "./config/paths";
 
 function Apps() {
-  const [count, setCount] = React.useState(0);
-  mauve.mauve1;
-  const [seconds, setSeconds] = React.useState(0);
-
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setSeconds((prev) => prev + 1);
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const formatTime = (secs: number) => {
-    const minutes = Math.floor(secs / 60);
-    const seconds = secs % 60;
-    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-  };
-
   return (
     <div className=" min-h-[100vh] min-w-[1440px]">
       <LoggedOutHeader></LoggedOutHeader>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
@@ -44,7 +22,8 @@ function Apps() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-      <Link to="post-profile">마이페이지</Link>
+      <Link to={paths.emailverify.verifycheck.path}>이메일 인증 페이지</Link>
+      <Link to="/post-profile">마이페이지</Link>
       <Link to="/chatRoom">채팅방</Link>
       <Button>
         <Link to="/login">로그인페이지</Link>
@@ -186,9 +165,6 @@ function Apps() {
             <Button>내 이력서 보기</Button>
           </div>
         </div>
-      </div>
-      <div>
-        <Text>🕒 면접 시작 까지... {formatTime(seconds)}</Text>
       </div>
     </div>
   );

@@ -1,0 +1,34 @@
+/** @format */
+
+import { useQuery, queryOptions } from "@tanstack/react-query";
+import { api } from "@/lib/api-client";
+import { QueryConfig } from "@/lib/react-query";
+
+//직무 설정을 위한 데이터
+export const getFeedback = (interviewId: number) => {
+  return api.get(`/user/interviews/${interviewId}/feedback`);
+};
+//카테고리가 쓰이는곳은(매칭 잡을때 , 프로필 설정 및 수정할때)
+//
+export const getFeedbackQuery = (interviewId: number) => {
+  return queryOptions({
+    queryKey: ["feedback", interviewId],
+    queryFn: () => getFeedback(interviewId),
+    gcTime: 1000 * 60 * 30,
+  });
+};
+
+type useFeedbackOptions = {
+  interviewId: number;
+  queryConfig?: QueryConfig<typeof getFeedbackQuery>;
+};
+
+export const useFeedback = ({
+  interviewId,
+  queryConfig,
+}: useFeedbackOptions) => {
+  return useQuery({
+    ...getFeedbackQuery(interviewId),
+    ...queryConfig,
+  });
+};

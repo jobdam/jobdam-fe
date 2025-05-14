@@ -4,8 +4,7 @@ import { getAccessToken, refreshAccessToken } from "@/lib/authSerivices";
 import { store } from "@/store";
 import { addNotification } from "@/store/slices/notifications";
 import Axios, { InternalAxiosRequestConfig } from "axios";
-import { useLogout } from "./auth";
-import { paths } from "@/config/paths";
+// import { paths } from "@/config/paths";
 
 let isRefreshing = false; // 토큰 갱신 상태 추적
 
@@ -46,6 +45,7 @@ api.interceptors.response.use(
     const originalRequest = error.config as InternalAxiosRequestConfig & {
       _retry?: boolean;
     };
+    const token = getAccessToken();
 
     store.dispatch(
       addNotification({
@@ -58,14 +58,25 @@ api.interceptors.response.use(
     //인증 되지 않은 사용자는 로그인으로 되돌려 보내기.
 
     //401에러 일때도 re
-    console.log(error.response?.data, error);
+    console.log(error.response?.status, error);
     //401 에러가 뜨는경우 => 로그인이 안된경우, 와 accesstoken을 재발급 받아야하는겨웅'
 
     //로그인이 안된경우 protected router 로 강제로 로그인으로 보내기.
+    //이메일 검증시엔 이러한 시도가 필요가 없다.
+
+    //로그인을 한 상황에서 local에 토큰이 있는 상황에서 아래와같은 과정을 거쳐야한다.
+
+    console.log(
+      error.response?.status === 401,
+      !originalRequest._retry,
+      isRefreshing,
+      token
+    );
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !isRefreshing
+      !isRefreshing &&
+      token
     ) {
       originalRequest._retry = true;
       isRefreshing = true;
@@ -73,22 +84,22 @@ api.interceptors.response.use(
       try {
         //액세스토큰 재발급 전에 401 에러 발생하면
         const newAccessToken = await refreshAccessToken();
-
         //새 토큰으로 authorization 헤더 갱신하기
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
         //원래 요청 재시도
         return api(originalRequest);
         //   c
-      } catch (error) {
+      } catch {
+        // console.log(error, "catch");
         // refresh 실패하면 로그인 페이지로 이동 , 401에러인데 아직 로그인을
         //401에러 가 발생시
         // useLogout();
 
-        const searchParams = new URLSearchParams();
-        const redirectTo =
-          searchParams.get("redirectTo") || window.location.pathname;
-        window.location.href = paths.auth.login.getHref(redirectTo);
+        // const searchParams = new URLSearchParams();
+        // const redirectTo =
+        //   searchParams.get("redirectTo") || window.location.pathname;
+        // window.location.href = paths.auth.login.getHref(redirectTo);
         return Promise.reject(error);
       } finally {
         isRefreshing = false; // 토큰 갱신 완료

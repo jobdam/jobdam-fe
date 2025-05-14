@@ -6,11 +6,14 @@ import { AuthLayout } from "@/components/layout/auth-layout";
 import { paths } from "@/config/paths";
 import SignUp from "@/pages/auth/SignUp";
 
-const SignInRoute = () => {
+const SignUpRoute = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
-  //회원가입 성공후 메인페이지로 넘어가기.
+
+  console.log(redirectTo);
+
+  //회원가입 할때 이메일도 같이 넘긴다.
 
   return (
     <AuthLayout
@@ -20,7 +23,7 @@ const SignInRoute = () => {
     >
       <SignUp
         onSuccess={() => {
-          navigate(`${redirectTo ? `${redirectTo}` : paths.home.getHref()}`, {
+          navigate(paths.emailverify.verifycheck.path, {
             replace: true,
           });
         }}
@@ -29,4 +32,4 @@ const SignInRoute = () => {
   );
 };
 
-export default SignInRoute;
+export default SignUpRoute;

@@ -26,7 +26,7 @@ interface CombinedCheckboxProps
 }
 
 export const Checkbox = React.forwardRef<
-  HTMLInputElement,
+  HTMLButtonElement,
   CombinedCheckboxProps
 >(
   (
@@ -34,7 +34,7 @@ export const Checkbox = React.forwardRef<
       className,
       label,
       variant = "default",
-
+      isAbsoluteErrorPosition,
       checked,
       onCheckedChange,
       error,
@@ -60,16 +60,19 @@ export const Checkbox = React.forwardRef<
     );
 
     return (
-      <FieldWrapper error={error}>
+      <FieldWrapper
+        isAbsoluteErrorPosition={isAbsoluteErrorPosition}
+        error={error}
+      >
         <div className={wrapperClass}>
           <CheckBoxPrimitive.Root
             className={rootClass}
             disabled={isDisabled}
             onCheckedChange={onCheckedChange}
             checked={checked}
+            ref={ref}
             {...props}
             {...registration}
-            ref={ref}
           >
             {/* <div className="w-[1px] bg-black h-[80px]"></div> */}
 

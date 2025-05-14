@@ -14,12 +14,11 @@ import { Spinner } from "../spinner";
 //storybook에 서 controls 요소
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium",
   {
     variants: {
       variant: {
-        default:
-          "bg-primary text-primary-foreground shadow hover:bg-primary/90",
+        default: "bg-[#488fff] ",
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
@@ -30,7 +29,7 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-9 px-4 py-2",
+        default: "h-[65px] w-full",
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
         icon: "size-9",
@@ -57,7 +56,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     {
       className,
       variant,
-      size,
+      size = "default",
       asChild = false,
       children,
       isLoading,
@@ -77,7 +76,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <>
           {isLoading && <Spinner size="sm" className="text-current" />}
           {!isLoading && icon && <span className="mr-2">{icon}</span>}
-          <span className={cn("mx-2", className)}>{children}</span>
+          <span className={cn("text-[white] text-[24px]sss ", className)}>
+            {children}
+          </span>
         </>
       </Comp>
     );

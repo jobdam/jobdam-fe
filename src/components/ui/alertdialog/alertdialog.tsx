@@ -3,9 +3,16 @@
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import { cn } from "@/utils/cn";
 
-const AlertDialog = ({ children, title, contents, className }) => {
+const AlertDialog = ({
+  children,
+  title,
+  contents,
+  className,
+  open,
+  onOpenChange,
+}) => {
   return (
-    <AlertDialogPrimitive.Root>
+    <AlertDialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <AlertDialogPrimitive.Trigger asChild>
         {children}
       </AlertDialogPrimitive.Trigger>

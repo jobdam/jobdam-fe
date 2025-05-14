@@ -8,10 +8,18 @@ import { useForm } from "react-hook-form";
 type FormValues = {
   profileImage: any;
 };
-const ProfilePreview = () => {
+type Props = {
+  onSelectFile: (file: File | null) => void;
+};
+const ProfilePreview = ({ onSelectFile }: Props) => {
+  const [open, setOpen] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [uploadPreview, setUploadPreview] = useState<string | null>(null);
+
   const { setValue, watch } = useForm<FormValues>({
     defaultValues: { profileImage: null },
   });
+
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const imageUrl = watch("profileImage");
@@ -25,12 +33,12 @@ const ProfilePreview = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileInput = event.target as HTMLInputElement;
     const file = fileInput.files?.[0];
-    console.log(file);
     if (file) {
-      setValue("profileImage", file); // RHF에 등록
+      setFile(file);
       setPreview(URL.createObjectURL(file)); // 미리보기 URL 설정
 
       //!데이터 api 사용할때 사용
+
       //
       //   const {data} = postProfileImage(file)
 
@@ -39,8 +47,22 @@ const ProfilePreview = () => {
       //   setPreview(uploadedUrl);
     }
   };
+  const handleChangeClick = () => {
+    if (file) {
+      onSelectFile(file); // ✅ 부모에 파일 전달
+      setUploadPreview(URL.createObjectURL(file));
+    } else if (!file) {
+      setUploadPreview(null);
+      onSelectFile(null); // ✅ 부모에 파일 전달
+    }
 
-  console.log(preview);
+    setOpen(false); // 모달 닫기
+  };
+  const handleResetClick = () => {
+    setFile(null);
+    setPreview(null); // 미리보기 URL 설정
+  };
+
   const prContents = () => {
     return (
       <section>
@@ -78,19 +100,39 @@ const ProfilePreview = () => {
         </div>
 
         <div className="my-[10px]">
-          <button> 변경</button>
+          <button className="cursor-pointer" onClick={handleChangeClick}>
+            변경
+          </button>
+
+          <button
+            className=" cursor-pointer mx-[10px]"
+            onClick={handleResetClick}
+          >
+            리셋
+          </button>
         </div>
       </section>
     );
   };
   return (
     <AlertDialog
+      open={open}
+      onOpenChange={setOpen}
       className="flex-col flex justify-center items-center"
       contents={prContents()}
       title="프로필 사진 변경"
     >
       <button>
-        <div className="w-[170px] h-[170px] rounded-full bg-[#D9D9D9] cursor-pointer overflow-hidden"></div>
+        <div className="w-[170px] h-[170px] rounded-full bg-[#D9D9D9] cursor-pointer overflow-hidden">
+          {uploadPreview ? (
+            <img
+              src={uploadPreview}
+              className="w-full h-full object-cover rounded-full"
+            />
+          ) : (
+            <></>
+          )}
+        </div>
         {/* //카메라 이미지 커스텀하기 */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
