@@ -34,15 +34,17 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         <QueryClientProvider client={queryClient}>
           {import.meta.env.VITE_ENV && <ReactQueryDevtools />}
           {/* <Notifications /> */}
+
+          {children}
           {/* <AuthLoader
             renderLoading={() => (
               <div className="flex h-screen w-screen items-center justify-center">
                 <Spinner size="xl" />
               </div>
             )}
-          > */}
-          {children}
-          {/* </AuthLoader> */}
+          >
+            {children}
+          </AuthLoader> */}
         </QueryClientProvider>
       </ErrorBoundary>
     </React.Suspense>

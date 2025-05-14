@@ -25,7 +25,7 @@ const getUser = async (): Promise<User> => {
 
 //로그아웃 할때 로컬제거, 쿠키 제거
 const logout = (): Promise<void> => {
-  return api.get("/logout");
+  return api.post("/logout");
 };
 //로그인
 export type LoginInput = z.infer<typeof loginInputSchema>;
@@ -136,7 +136,8 @@ export const authConfig = {
 
     clearTokens();
 
-    window.location.href = "/login";
+    window.location.assign("/login");
+    // window.location.reload();
   },
 };
 
@@ -187,6 +188,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   const { data: user, isLoading } = useUser();
 
+  console.log(user, "user uiuiuiuiuiuiuiuiui");
   if (isLoading) {
     return <></>;
   }
