@@ -113,29 +113,35 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
           control={control}
           name="matchType"
           render={({ field }) => (
-            <>
+            <div className="gap-[20px] flex w-full flex-row">
               <Button
                 type="button"
-                variant={field.value === "ONE_TO_ONE" ? "outline" : "default"}
+                className="text-black"
+                size="register"
+                variant={field.value === "ONE_TO_ONE" ? "outline" : "register"}
                 onClick={() => field.onChange("ONE_TO_ONE")}
               >
                 1:1
               </Button>
               <Button
                 type="button"
-                variant={field.value === "GROUP" ? "outline" : "default"}
+                size="register"
+                className="text-black"
+                variant={field.value === "GROUP" ? "outline" : "register"}
                 onClick={() => field.onChange("GROUP")}
               >
                 3~6명
               </Button>
               <Button
                 type="button"
-                variant={field.value === "NONE" ? "outline" : "default"}
+                size="register"
+                className="text-black"
+                variant={field.value === "NONE" ? "outline" : "register"}
                 onClick={() => field.onChange("NONE")}
               >
                 상관없어요
               </Button>
-            </>
+            </div>
           )}
         />
       </ContentsBox>

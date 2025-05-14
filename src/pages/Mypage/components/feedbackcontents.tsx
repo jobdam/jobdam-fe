@@ -1,6 +1,5 @@
 /** @format */
 import { Link } from "@/components/ui/link";
-import { useFeedback } from "../api/get-feedback";
 
 const data = [
   {

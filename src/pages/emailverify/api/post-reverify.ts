@@ -1,34 +1,36 @@
 /** @format */
 
-//여기서는 dlapdl/** @format */
-import { useQuery, queryOptions } from "@tanstack/react-query";
-import { api } from "@/lib/api-client";
-import { QueryConfig } from "@/lib/react-query";
+// /** @format */
 
-//이메일 인증하기 get을통해 불러오고 인증을통해 넘어가게끔.
-export const getReVerifyEmail = async (token) => {
-  const response = await api.post("/resend-verification");
+// //여기서는 dlapdl/** @format */
+// import { useQuery, queryOptions } from "@tanstack/react-query";
+// import { api } from "@/lib/api-client";
+// import { QueryConfig } from "@/lib/react-query";
 
-  return response;
-};
+// //이메일 인증하기 get을통해 불러오고 인증을통해 넘어가게끔.
+// export const getReVerifyEmail = async (token) => {
+//   const response = await api.post("/resend-verification");
 
-type UseVerifyEmailOptions = {
-  queryConfig?: QueryConfig<typeof getVerifyEmail>;
-};
+//   return response;
+// };
 
-export const getVerifyEmailQuery = () => {
-  return queryOptions({
-    queryKey: ["verify"],
-    queryFn: () => getVerifyEmail(),
-    // 바로바로 요청
-    enabled: false,
-  });
-};
+// type UseVerifyEmailOptions = {
+//   queryConfig?: QueryConfig<typeof getReVerifyEmail>;
+// };
 
-export const useVerifyEmail = ({ queryConfig }: UseVerifyEmailOptions) => {
-  return useQuery({
-    ...getVerifyEmailQuery(),
+// export const getVerifyEmailQuery = () => {
+//   return queryOptions({
+//     queryKey: ["verify"],
+//     queryFn: () => getReVerifyEmail(),
+//     // 바로바로 요청
+//     enabled: false,
+//   });
+// };
 
-    ...queryConfig,
-  });
-};
+// export const useVerifyEmail = ({ queryConfig }: UseVerifyEmailOptions) => {
+//   return useQuery({
+//     ...getVerifyEmailQuery(),
+
+//     ...queryConfig,
+//   });
+// };

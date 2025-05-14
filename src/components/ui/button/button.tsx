@@ -19,10 +19,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-[#488fff] ",
-        destructive:
-          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
-        outline:
-          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+        register:
+          "bg-white text-black items-end border-[1px] border-[#d9d9d9] text-[18px] ",
+        outline: "border-[#488FFF] border-[1px] bg-[#F1F9FF] items-end   ",
         secondary:
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
@@ -30,7 +29,7 @@ const buttonVariants = cva(
       },
       size: {
         default: "h-[65px] w-full",
-        sm: "h-8 rounded-md px-3 text-xs",
+        register: "h-[132px] w-[203px] rounded-[10px] pb-[17px]",
         lg: "h-10 rounded-md px-8",
         icon: "size-9",
       },
@@ -45,7 +44,7 @@ const buttonVariants = cva(
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
-    size?: "default" | "sm" | "lg" | "icon";
+    size?: "default" | "register" | "lg" | "icon";
 
     isLoading?: boolean;
     icon?: React.ReactNode;
@@ -76,7 +75,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <>
           {isLoading && <Spinner size="sm" className="text-current" />}
           {!isLoading && icon && <span className="mr-2">{icon}</span>}
-          <span className={cn("text-[white] text-[24px]sss ", className)}>
+          <span className={cn("text-[white] text-[24px] ", className)}>
             {children}
           </span>
         </>

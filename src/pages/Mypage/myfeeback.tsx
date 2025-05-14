@@ -1,6 +1,5 @@
 /** @format */
 
-import FeedbackContents from "./components/feedbackcontents";
 import FeedbackDetailContents from "./components/feedbackdetailcontents";
 
 // const data = [
@@ -16,6 +15,7 @@ const MyFeedback = () => {
     <>
       <div className="flex flex-col w-[915px] h-[240px] items-stretch ">
         {/* <FeedbackContents></FeedbackContents> */}
+
         <FeedbackDetailContents></FeedbackDetailContents>
 
         {/* <FeedbackContents></FeedbackContents> */}
