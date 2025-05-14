@@ -10,7 +10,6 @@ import LoggedOutHeader from "@/components/common/header/LoggedOutHeader";
 function Apps() {
   return (
     <div className=" min-h-[100vh] min-w-[1440px]">
-      <LoggedOutHeader></LoggedOutHeader>
       <h1>Vite + React</h1>
       <div className="card">
         <p>
@@ -21,14 +20,20 @@ function Apps() {
         Click on the Vite and React logos to learn more
       </p>
       <Link to={paths.emailverify.verifycheck.path}>이메일 인증 페이지</Link>
+      <br></br>
       <Link to="/post-profile">마이페이지</Link>
+      <br></br>
       <Link to="/chatRoom">채팅방</Link>
+      <br></br>
       <Button>
         <Link to="/login">로그인페이지</Link>
+        <br></br>
       </Button>
+      <br></br>
       <Button>
         <Link to="/authEntry">로그인진입페이지</Link>
       </Button>
+      <br></br>
       <Button>
         <Link to="/termsAgreement">이용약관</Link>
       </Button>

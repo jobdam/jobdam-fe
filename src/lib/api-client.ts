@@ -4,7 +4,7 @@ import { getAccessToken, refreshAccessToken } from "@/lib/authSerivices";
 import { store } from "@/store";
 import { addNotification } from "@/store/slices/notifications";
 import Axios, { InternalAxiosRequestConfig } from "axios";
-// import { paths } from "@/config/paths";
+import { paths } from "@/config/paths";
 
 let isRefreshing = false; // 토큰 갱신 상태 추적
 
@@ -91,15 +91,15 @@ api.interceptors.response.use(
         return api(originalRequest);
         //   c
       } catch {
-        // console.log(error, "catch");
+        console.log(error, "catch");
         // refresh 실패하면 로그인 페이지로 이동 , 401에러인데 아직 로그인을
         //401에러 가 발생시
         // useLogout();
 
-        // const searchParams = new URLSearchParams();
-        // const redirectTo =
-        //   searchParams.get("redirectTo") || window.location.pathname;
-        // window.location.href = paths.auth.login.getHref(redirectTo);
+        const searchParams = new URLSearchParams();
+        const redirectTo =
+          searchParams.get("redirectTo") || window.location.pathname;
+        window.location.href = paths.auth.login.getHref(redirectTo);
         return Promise.reject(error);
       } finally {
         isRefreshing = false; // 토큰 갱신 완료

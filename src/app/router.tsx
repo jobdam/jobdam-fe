@@ -6,6 +6,9 @@ import { useMemo } from "react";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import WebSocketConnectManager from "./WebSocketConnectManager";
+import LoggedOutHeader from "@/components/common/header/LoggedOutHeader";
+import { getAccessToken } from "@/lib/authSerivices";
+import LoggedInHeader from "@/components/common/header/LoggedInHeader";
 
 // clientLoader: 라우터에서 사용하는 데이터 로딩 함수
 // clientAction: 라우터에서 사용하는 form action 함수
@@ -14,6 +17,8 @@ import WebSocketConnectManager from "./WebSocketConnectManager";
 
 // m의 타입 정의
 
+const token = getAccessToken();
+console.log(token);
 const convert = (queryClient: QueryClient) => (m: any) => {
   const { clientLoader, clientAction, default: Component, ...rest } = m;
   return {
@@ -28,7 +33,16 @@ const createAppRouter = (queryClient: QueryClient) => {
   return createBrowserRouter([
     {
       path: "/",
-      element: <WebSocketConnectManager />,
+      element: (
+        <>
+          {token === null ? (
+            <LoggedOutHeader></LoggedOutHeader>
+          ) : (
+            <LoggedInHeader></LoggedInHeader>
+          )}
+          <WebSocketConnectManager />
+        </>
+      ),
       children: [
         {
           path: paths.home.path,
