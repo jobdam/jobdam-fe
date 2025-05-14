@@ -5,7 +5,7 @@ import { SendHorizontal } from "lucide-react";
 import { Plus } from "lucide-react";
 import { paths } from "@/config/paths";
 import Avatars from "../../components/ui/avatar/avatars";
-import LoggedOutHeader from "@/components/common/header/LoggedOutHeader";
+import Footer from "./footer";
 
 function Apps() {
   return (
@@ -144,6 +144,8 @@ function Apps() {
           </div>
         </div>
       </div>
+
+      <Footer></Footer>
     </div>
   );
 }
