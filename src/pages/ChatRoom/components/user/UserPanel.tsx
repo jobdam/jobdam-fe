@@ -8,6 +8,7 @@ import { ChatUserInfo } from "@/types/chat";
 interface UserPanelProps {
   userList: ChatUserInfo[];
   myUserId: number;
+  onReady: (ready: boolean) => void;
 }
 
 interface ParticipantView {
@@ -17,14 +18,16 @@ interface ParticipantView {
   isReady: boolean;
 }
 
-const UserPanel = ({ userList, myUserId }: UserPanelProps) => {
+const UserPanel = ({ userList, myUserId, onReady }: UserPanelProps) => {
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+
+  const [isMeReady, setIsMeReady] = useState(false);
 
   const participants: ParticipantView[] = userList.map((user) => ({
     id: user.userId,
     name: user.name,
     profileImgUrl: user.profileImgUrl,
-    isReady: true,
+    isReady: user.ready,
   }));
 
   //내정보 골라내기
@@ -36,6 +39,13 @@ const UserPanel = ({ userList, myUserId }: UserPanelProps) => {
 
   //선택된 유저찾아서 정보보여주기
   const selectedUser = userList.find((u) => u.userId === selectedUserId);
+
+  //준비상태 토글
+  const handleToggleReady = () => {
+    const newReady = !isMeReady;
+    setIsMeReady(newReady);
+    onReady(newReady);
+  };
 
   return (
     <div className="w-[800px] bg-blue-50 p-4 flex flex-col justify-between h-full">
@@ -72,8 +82,12 @@ const UserPanel = ({ userList, myUserId }: UserPanelProps) => {
       </div>
 
       {/* 준비 버튼 */}
-      <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 mt-4">
-        준비됐어요
+      <button
+        onClick={handleToggleReady}
+        className={`w-full py-2 rounded-md mt-4 text-white 
+    ${isMeReady ? "bg-green-500 hover:bg-green-600" : "bg-blue-500 hover:bg-blue-600"}`}
+      >
+        {isMeReady ? "준비 취소" : "준비됐어요"}
       </button>
     </div>
   );

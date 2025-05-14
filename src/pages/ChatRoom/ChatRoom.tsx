@@ -19,7 +19,7 @@ const ChatRoom = () => {
   const navigate = useNavigate();
   ///채팅방 설정///
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
-  const { sendChat } = useChatPublisher();
+  const { sendChat, sendReady } = useChatPublisher();
   ///유저 설정//
   const [userList, setUserList] = useState<ChatUserInfo[]>([]);
 
@@ -100,6 +100,13 @@ const ChatRoom = () => {
             });
           }
           break;
+        //화상채팅 준비상태
+        case "READY":
+          handleReadyUpdate(data.userId, data.ready);
+          if (data.allReady) {
+            console.log("모두 준비완료 되었음!");
+          }
+          break;
 
         default:
           console.warn("잘못된 메세지 형식", data.chatMessageType);
@@ -114,6 +121,17 @@ const ChatRoom = () => {
     sendChat({ roomId: roomId!, content });
   };
 
+  //준비상태 보내기(publisher)
+  const handleReadyStatus = (ready: boolean) => {
+    sendReady({ roomId: roomId!, ready });
+  };
+
+  //화상채팅 시작하기 핸들러
+  const handleReadyUpdate = (userId: number, ready: boolean) => {
+    setUserList((prev) =>
+      prev.map((u) => (u.userId === userId ? { ...u, ready } : u))
+    );
+  };
   //채팅구독하기
   useChatSubscribe({
     destination: `/topic/chat/${roomId}`,
@@ -123,7 +141,11 @@ const ChatRoom = () => {
   return (
     <div className="flex h-screen">
       <div className="w-[800px] min-w-[800px]">
-        <UserPanel userList={userList} myUserId={myUserId!} />
+        <UserPanel
+          userList={userList}
+          myUserId={myUserId!}
+          onReady={handleReadyStatus}
+        />
       </div>
       <div className="flex flex-col flex-1">
         <ChatPanel messages={messages} onSend={handleSend} />

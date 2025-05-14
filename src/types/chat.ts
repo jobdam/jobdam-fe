@@ -35,4 +35,6 @@ export interface ChatUserInfo {
   experienceType: ExperienceType;
   introduce: string;
   interviewType: InterviewType;
+
+  ready: boolean;
 }
