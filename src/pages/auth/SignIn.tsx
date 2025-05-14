@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getFieldError } from "./SignUp";
-type LoginFormProps = {
+export type LoginFormProps = {
   onSuccess: () => void;
 };
 
@@ -48,7 +48,7 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
             </h2> */}
 
             {/* <Text text={"이메일 "}></Text> */}
-            <div className=" mb-[10px] space-y-[20px]  text-left">
+            <div className=" mb-[10px] space-y-[30px]  text-left">
               <Input
                 type="email"
                 label="이메일"
@@ -71,7 +71,7 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
               {/* 에러 메시지가 이미 Input 컴포넌트 안에 있다면 여기선 빈 공간만 차지하도록 */}
             </div>
 
-            <div className=" flex justify-center items-center my-[30px]">
+            <div className=" flex justify-center items-center mt-[50px] mb-[70.5px]">
               <Button
                 isLoading={login.isPending}
                 type="submit"

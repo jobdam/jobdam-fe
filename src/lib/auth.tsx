@@ -1,7 +1,10 @@
 /** @format */
 import { AuthResponse, User } from "@/types/api";
+import { Navigate, useLocation } from "react-router";
 
 import { configureAuth } from "react-query-auth";
+import { paths } from "@/config/paths";
+
 import { z } from "zod";
 //react-query-auth useAuth 훅을 통해 전역에서 로그인/로그아웃을관리
 //react-query를 사용해서 api '유저' 데이터 관리
@@ -132,7 +135,6 @@ export const authConfig = {
     //로그아웃에 성공하면 token제거,
 
     clearTokens();
-    clearTokens();
 
     window.location.href = "/login";
   },
@@ -180,3 +182,21 @@ export const termsSchema = z.object({
   }),
   AllCheck: z.boolean().optional(), // UI용 (검사 대상 아님)
 });
+
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation();
+  const { data: user, isLoading } = useUser();
+
+  if (isLoading) {
+    return <></>;
+  }
+  if (!user) {
+    return (
+      <Navigate to={paths.auth.login.getHref(location.pathname)} replace />
+    );
+  }
+
+  return children;
+};
+
+export default ProtectedRoute;
