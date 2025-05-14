@@ -43,17 +43,17 @@ export const FieldWrapper = (props: FieldWrapperProps) => {
       {(error?.message || showLink) && (
         <div
           className={cn(
-            "flex absolute justify-start ",
-            isAbsoluteErrorPosition && "pl-[20px]",
-            showLink && "text-right justify-end"
+            "flex absolute w-[510px] justify-between  ",
+            isAbsoluteErrorPosition && "pl-[20px]"
+            // showLink && "text-right justify-end"
           )}
         >
           {/* 에러 메세지가 있다면 없어지고 에러 메세지가 없으면 나오도록 */}
           {error?.message && <Error errorMessage={error.message} />}
-
+          <div></div>
           {showLink && (
             <Link
-              className="pt-[5px] text-[12px]  underline"
+              className=" relative text-[16px] mt-[6px]  underline"
               to="forgot-password"
             >
               비밀번호 찾기

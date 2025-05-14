@@ -24,6 +24,8 @@ const SignInRoute = () => {
           navigate(`${redirectTo ? `${redirectTo}` : paths.home.getHref()}`, {
             replace: true,
           });
+
+          window.location.reload();
         }}
       />
     </AuthLayout>

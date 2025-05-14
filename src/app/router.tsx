@@ -6,7 +6,15 @@ import { useMemo } from "react";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import WebSocketConnectManager from "./WebSocketConnectManager";
+import LoggedOutHeader from "@/components/common/header/LoggedOutHeader";
+import { getAccessToken } from "@/lib/authSerivices";
+import LoggedInHeader from "@/components/common/header/LoggedInHeader";
+import ProtectedRoute from "@/lib/auth";
 
+import {
+  default as AppRoot,
+  ErrorBoundary as AppRootErrorBoundary,
+} from "./routes/app/root";
 // clientLoader: 라우터에서 사용하는 데이터 로딩 함수
 // clientAction: 라우터에서 사용하는 form action 함수
 // default: 기본 컴포넌트 → Component라는 이름으로 바뀜
@@ -14,6 +22,7 @@ import WebSocketConnectManager from "./WebSocketConnectManager";
 
 // m의 타입 정의
 
+const token = getAccessToken();
 const convert = (queryClient: QueryClient) => (m: any) => {
   const { clientLoader, clientAction, default: Component, ...rest } = m;
   return {
@@ -28,12 +37,22 @@ const createAppRouter = (queryClient: QueryClient) => {
   return createBrowserRouter([
     {
       path: "/",
-      element: <WebSocketConnectManager />,
+      element: (
+        <>
+          {token === null ? (
+            <LoggedOutHeader></LoggedOutHeader>
+          ) : (
+            <LoggedInHeader></LoggedInHeader>
+          )}
+          <WebSocketConnectManager />
+        </>
+      ),
       children: [
         {
           path: paths.home.path,
-          lazy: () => import("@/Apps").then(convert(queryClient)),
+          lazy: () => import("@/app/routes/landing").then(convert(queryClient)),
         },
+
         {
           path: paths.auth.register.path,
           lazy: () =>
@@ -51,15 +70,16 @@ const createAppRouter = (queryClient: QueryClient) => {
               convert(queryClient)
             ),
         },
-        {
-          path: paths.auth.TermsAgreement.path,
-          lazy: () =>
-            import("@/app/routes/app/auth/termsAgreement").then(
-              convert(queryClient)
-            ),
-        },
+
         {
           path: paths.interview.register.path,
+          // element: (
+          //   <ProtectedRoute>
+          //     <AppRoot></AppRoot>
+          //   </ProtectedRoute>
+          // ),
+          ErrorBoundary: AppRootErrorBoundary,
+
           lazy: () =>
             import("@/app/routes/app/interview/register").then(
               convert(queryClient)
@@ -177,6 +197,11 @@ const createAppRouter = (queryClient: QueryClient) => {
             ),
         },
       ],
+    },
+
+    {
+      path: "*",
+      lazy: () => import("./routes/not-found").then(convert(queryClient)),
     },
   ]);
 };
