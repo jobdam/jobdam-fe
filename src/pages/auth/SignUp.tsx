@@ -8,7 +8,6 @@ import { Check } from "lucide-react";
 import * as React from "react";
 import { useCheckEmail } from "./api/get-checkemail";
 import { useForm } from "react-hook-form";
-import { useVerifyEmail } from "../emailverify/api/get-emailverify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";

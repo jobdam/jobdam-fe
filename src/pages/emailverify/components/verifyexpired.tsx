@@ -1,7 +1,5 @@
 /** @format */
 import { Button } from "@/components/ui/button";
-import { useSearchParams } from "react-router";
-import { useVerifyEmail } from "../api/get-emailverify";
 
 const VerifyExpired = ({ refetch }) => {
   //재발급할때는 기존토큰으로 다시 넣어서 재발급 받는다.

@@ -1,7 +1,6 @@
 /** @format */
 
 import MypageLayout from "@/components/layout/mypage-layout";
-import MyFeedback from "@/pages/Mypage/myfeeback";
 import MyFeedbackDetail from "@/pages/Mypage/myfeedbackdetail";
 
 const Feedbackdetail = () => {

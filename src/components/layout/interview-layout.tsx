@@ -20,7 +20,7 @@ const InterviewLayout = ({
   return (
     <div className="flex min-h-screen w-full justify-center p-[50px]">
       {/* 전체 컨텐츠 wrapper (sidebar + main) */}
-      <div className="flex w-full min-w-[1200px]  gap-8 flex-nowrap  ">
+      <div className="flex w-full min-w-[1200px] gap-6 flex-nowrap  ">
         {/* Sidebar */}
         <aside className="w-[232px]  shrink-0 mt-[100px]">
           <InterviewSidebar />
@@ -45,7 +45,7 @@ const InterviewLayout = ({
           {/* Content Area */}
           <section
             className={cn(
-              "w-full flex flex-col gap-[5px] bg-[#F5F5F5]",
+              "p-6 w-full flex flex-col gap-[5px] bg-[#F5F5F5]",
               matching && "bg-white"
             )}
           >

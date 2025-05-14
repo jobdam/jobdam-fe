@@ -1,22 +1,24 @@
 /** @format */
 
-import ProfilePreview from "./profilepreview";
+// /** @format */
 
-export type FormValues = {
-  profileImage: File | null;
-};
-//프로필 이미지 클릭하면 파일 업로드할수있는 창띄우기.
-//
-const ProfileUpload = () => {
-  //서버 업로드 api를 여기서 호출.
+// import ProfilePreview from "./profilepreview";
 
-  // 1. 서버 업로드 API 호출 (예시용 가짜 URL 사용)
+// export type FormValues = {
+//   profileImage: File | null;
+// };
+// //프로필 이미지 클릭하면 파일 업로드할수있는 창띄우기.
+// //
+// const ProfileUpload = () => {
+//   //서버 업로드 api를 여기서 호출.
 
-  return (
-    <>
-      <ProfilePreview></ProfilePreview>
-    </>
-  );
-};
+//   // 1. 서버 업로드 API 호출 (예시용 가짜 URL 사용)
 
-export default ProfileUpload;
+//   return (
+//     <>
+//       <ProfilePreview></ProfilePreview>
+//     </>
+//   );
+// };
+
+// export default ProfileUpload;

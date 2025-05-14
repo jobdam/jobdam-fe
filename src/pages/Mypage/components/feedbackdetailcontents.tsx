@@ -1,5 +1,4 @@
 /** @format */
-import { Link } from "@/components/ui/link";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useFeedback } from "../api/get-feedback";
 import React from "react";

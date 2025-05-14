@@ -9,12 +9,8 @@ import WebSocketConnectManager from "./WebSocketConnectManager";
 import LoggedOutHeader from "@/components/common/header/LoggedOutHeader";
 import { getAccessToken } from "@/lib/authSerivices";
 import LoggedInHeader from "@/components/common/header/LoggedInHeader";
-import ProtectedRoute from "@/lib/auth";
 
-import {
-  default as AppRoot,
-  ErrorBoundary as AppRootErrorBoundary,
-} from "./routes/app/root";
+import { ErrorBoundary as AppRootErrorBoundary } from "./routes/app/root";
 // clientLoader: 라우터에서 사용하는 데이터 로딩 함수
 // clientAction: 라우터에서 사용하는 form action 함수
 // default: 기본 컴포넌트 → Component라는 이름으로 바뀜
