@@ -38,9 +38,14 @@ const InterviewMatching = () => {
 
   const onMessage = React.useCallback(
     (msg) => {
-      console.log("✅ 매칭완료 수신:", msg.body);
-      setSubEnabled(false);
-      navigate(paths.chatroom.main.getHref(msg.body));
+      console.log(" 매칭완료 수신:", msg.body);
+      const { roomId, isFirstJoin } = JSON.parse(msg.body);
+      setSubEnabled(false); //구독취소
+
+      navigate(paths.chatroom.main.getHref(roomId), {
+        state: { isFirstJoin: true },
+        replace: true,
+      });
     },
     [navigate]
   );

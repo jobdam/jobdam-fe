@@ -1,6 +1,6 @@
 /** @format */
-import { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { IMessage } from "@stomp/stompjs";
 import { useChatSubscribe } from "@/services/webSockect/chat/useChatSubscribe";
 import { v4 as uuidv4 } from "uuid";
@@ -17,22 +17,53 @@ const ChatRoom = () => {
   const { roomId } = useParams();
   const myUserId = getUserIdFromJwt();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isFirstJoinRef = useRef(location.state?.isFirstJoin ?? false);
   ///채팅방 설정///
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const { sendChat, sendReady } = useChatPublisher();
   ///유저 설정//
   const [userList, setUserList] = useState<ChatUserInfo[]>([]);
 
+  //덮어쓰기 말고 병합으로 userList업데이트(비동기로 여러명이 set하면 가끔이상해짐..)
+  const mergeUserList = useCallback((incoming: ChatUserInfo[]) => {
+    setUserList((prev) => {
+      const existingIds = new Set(prev.map((u) => u.userId));
+      const newUsers = incoming.filter((u) => !existingIds.has(u.userId));
+      return [...prev, ...newUsers];
+    });
+  }, []);
+
   useEffect(() => {
-    if (!roomId) {
+    if (!roomId || !myUserId) {
       navigate("/");
       return;
     }
-    if (!myUserId) {
-      navigate("/"); // JWT 없거나 파싱 실패 → 메인으로 이동
-      return;
+  }, [roomId, myUserId]);
+
+  //초기값설정
+  useEffect(() => {
+    if (roomId && myUserId) {
+      getChatUserInfoList(roomId).then((list) => {
+        mergeUserList(list); //유저리스트 상태추가
+        if (isFirstJoinRef.current) {
+          //처음입장한사람이면
+          const joinMessages = list.map((user) => ({
+            id: uuidv4(),
+            type: "SYSTEM" as const,
+            content: `${user.name}님이 입장했습니다.`,
+          }));
+
+          setMessages((prev) => [...prev, ...joinMessages]);
+        }
+        isFirstJoinRef.current = false;
+        if (location.state?.isFirstJoin) {
+          navigate(location.pathname, { replace: true }); // 클로저 내부도 최신 상태로 반영
+        }
+      });
     }
   }, [roomId, myUserId]);
+
   //서버에서 오는 메세지 핸들러
   const handleMessage = useCallback(
     (msg: IMessage) => {
@@ -70,35 +101,19 @@ const ChatRoom = () => {
           break;
 
         case "JOIN":
-          //입장한 본인이면 기존인원들의 userInfoList를 받고
-          //본인이 아닌인원들은 입장한사람의 userInfo를 받는다.
-          if (data.userId === myUserId) {
-            getChatUserInfoList(roomId!).then((list) => {
-              setUserList(list);
-              //채팅방에 입장메세지 표시하고
-              setMessages((prev) => [
-                ...prev,
-                {
-                  id: uuidv4(),
-                  type: "SYSTEM",
-                  content: `${data.userName}님이 입장했습니다.`,
-                },
-              ]);
-            });
-          } else {
-            getChatUserInfo(roomId!, data.userId).then((userInfo) => {
-              setUserList((prev) => [...prev, userInfo]);
-              //채팅방에 입장메세지 표시하고
-              setMessages((prev) => [
-                ...prev,
-                {
-                  id: uuidv4(),
-                  type: "SYSTEM",
-                  content: `${data.userName}님이 입장했습니다.`,
-                },
-              ]);
-            });
-          }
+          if (isFirstJoinRef.current) return; //초기화 이후에는 보여줌
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: uuidv4(),
+              type: "SYSTEM",
+              content: `${data.userName}님이 입장했습니다.`,
+            },
+          ]);
+          getChatUserInfo(roomId!, data.userId).then((userInfo) => {
+            mergeUserList([userInfo]);
+          });
+
           break;
         //화상채팅 준비상태
         case "READY":
@@ -112,7 +127,7 @@ const ChatRoom = () => {
           console.warn("잘못된 메세지 형식", data.chatMessageType);
       }
     },
-    [myUserId]
+    [myUserId, mergeUserList, roomId]
   );
 
   //작성한 메세지 보내기(publisher)
