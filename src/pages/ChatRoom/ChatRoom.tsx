@@ -24,7 +24,7 @@ const ChatRoom = () => {
   const { sendChat, sendReady } = useChatPublisher();
   ///유저 설정//
   const [userList, setUserList] = useState<ChatUserInfo[]>([]);
-
+  const myUserInfo = userList.find((u) => u.userId === myUserId); //채팅방에 보여질 제목
   //덮어쓰기 말고 병합으로 userList업데이트(비동기로 여러명이 set하면 가끔이상해짐..)
   const mergeUserList = useCallback((incoming: ChatUserInfo[]) => {
     setUserList((prev) => {
@@ -147,6 +147,9 @@ const ChatRoom = () => {
       prev.map((u) => (u.userId === userId ? { ...u, ready } : u))
     );
   };
+  const handleLeave = () => {
+    if (confirm("정말 나가시겠습니까?")) navigate("/"); // 메인 페이지로 이동
+  };
   //채팅구독하기
   useChatSubscribe({
     destination: `/topic/chat/${roomId}`,
@@ -162,8 +165,15 @@ const ChatRoom = () => {
           onReady={handleReadyStatus}
         />
       </div>
+      <button onClick={handleLeave}>나가기</button>
       <div className="flex flex-col flex-1">
-        <ChatPanel messages={messages} onSend={handleSend} />
+        <ChatPanel
+          messages={messages}
+          onSend={handleSend}
+          jobGroup={myUserInfo?.jobGroup ?? ""}
+          jobDetail={myUserInfo?.jobDetail ?? ""}
+          interviewType={myUserInfo?.interviewType ?? ""}
+        />
       </div>
     </div>
   );

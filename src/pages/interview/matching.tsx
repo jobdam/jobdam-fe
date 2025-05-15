@@ -43,7 +43,7 @@ const InterviewMatching = () => {
       setSubEnabled(false); //구독취소
 
       navigate(paths.chatroom.main.getHref(roomId), {
-        state: { isFirstJoin: true },
+        state: { isFirstJoin },
         replace: true,
       });
     },
