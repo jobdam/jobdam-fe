@@ -18,7 +18,7 @@ const ChatRoom = () => {
   const myUserId = getUserIdFromJwt();
   const navigate = useNavigate();
   const location = useLocation();
-  const isFirstJoinRef = useRef(location.state?.isFirstJoin ?? false);
+  const isFirstJoinRef = useRef(location.state?.firstJoin ?? false);
   ///채팅방 설정///
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const { sendChat, sendReady } = useChatPublisher();
@@ -40,7 +40,7 @@ const ChatRoom = () => {
       return;
     }
   }, [roomId, myUserId]);
-
+  console.log("isfj", isFirstJoinRef.current);
   //초기값설정
   useEffect(() => {
     if (roomId && myUserId) {
@@ -57,7 +57,7 @@ const ChatRoom = () => {
           setMessages((prev) => [...prev, ...joinMessages]);
         }
         isFirstJoinRef.current = false;
-        if (location.state?.isFirstJoin) {
+        if (location.state?.firstJoin) {
           navigate(location.pathname, { replace: true }); // 클로저 내부도 최신 상태로 반영
         }
       });
