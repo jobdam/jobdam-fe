@@ -36,7 +36,9 @@ export interface ChatUserInfo {
   educationLevel: string;
   educationStatus: string;
 
+  jobCode: string;
   jobGroup: string;
+  jobDetailCode: string;
   jobDetail: string;
   experienceType: ExperienceType;
   introduce: string;

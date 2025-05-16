@@ -64,9 +64,6 @@ const InterviewMatching = () => {
       <InterviewSpinner></InterviewSpinner>
       <div className="mt-[100px]">
         <span>다른 면접자들의 연결을 기다리는 중이에요</span>
-        <div onClick={() => navigate(paths.chatroom.main.getHref("1abt5"))}>
-          채팅방으로{" "}
-        </div>
       </div>
     </div>
   );
