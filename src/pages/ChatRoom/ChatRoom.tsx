@@ -11,6 +11,7 @@ import ChatPanel from "./components/chat/ChatPanel";
 import { ChatMessageType, ChatUserInfo } from "@/types/chat";
 import { getChatUserInfoList } from "./api/get-chatUserInfoList";
 import { getChatUserInfo } from "./api/get-chatUserInfo";
+import { paths } from "@/config/paths";
 
 const ChatRoom = () => {
   //공통 설정//
@@ -119,7 +120,7 @@ const ChatRoom = () => {
         case "READY":
           handleReadyUpdate(data.userId, data.ready);
           if (data.allReady) {
-            console.log("모두 준비완료 되었음!");
+            handleAllReady();
           }
           break;
 
@@ -141,14 +142,27 @@ const ChatRoom = () => {
     sendReady({ roomId: roomId!, ready });
   };
 
-  //화상채팅 시작하기 핸들러
+  //화상채팅 시작하기버튼 핸들러
   const handleReadyUpdate = (userId: number, ready: boolean) => {
     setUserList((prev) =>
       prev.map((u) => (u.userId === userId ? { ...u, ready } : u))
     );
   };
+
+  //나가기 핸들러
   const handleLeave = () => {
     if (confirm("정말 나가시겠습니까?")) navigate("/"); // 메인 페이지로 이동
+  };
+
+  //allReady일떄 화상채팅으로 이동하기
+  const handleAllReady = () => {
+    navigate(paths.videochat.main.getHref(roomId), {
+      state: {
+        jobCode: myUserInfo?.jobCode,
+        interviewType: myUserInfo?.interviewType,
+      },
+      replace: true,
+    });
   };
   //채팅구독하기
   useChatSubscribe({
