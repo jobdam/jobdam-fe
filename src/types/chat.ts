@@ -1,4 +1,7 @@
 /** @format */
+
+import { InterviewType } from "./interview";
+
 //채팅 메세지부분
 export interface ChatUserMessage {
   id: string;
@@ -20,12 +23,9 @@ export type ChatMessageType = ChatUserMessage | ChatSystemMessage;
 
 //유저 정보부분
 export type ExperienceType = "NEW" | "EXPERIENCED";
-export type InterviewType = "PERSONALITY" | "JOB" | "TECHNICAL";
-
-export const InterviewTypeLabel: Record<InterviewType, string> = {
-  PERSONALITY: "인성 면접",
-  JOB: "직무 면접",
-  TECHNICAL: "기술 면접",
+export const ExperienceTypeLabel: Record<ExperienceType, string> = {
+  NEW: "신입",
+  EXPERIENCED: "경력",
 };
 
 export interface ChatUserInfo {
