@@ -12,6 +12,8 @@ import { ChatMessageType, ChatUserInfo } from "@/types/chat";
 import { getChatUserInfoList } from "./api/get-chatUserInfoList";
 import { getChatUserInfo } from "./api/get-chatUserInfo";
 import { paths } from "@/config/paths";
+import { useLeaveRoomMutation } from "./api/delete-leaveRoom";
+import { useInitInterviewMutation } from "./api/post-initInterview";
 
 const ChatRoom = () => {
   //공통 설정//
@@ -34,14 +36,13 @@ const ChatRoom = () => {
       return [...prev, ...newUsers];
     });
   }, []);
-
   useEffect(() => {
     if (!roomId || !myUserId) {
       navigate("/");
       return;
     }
   }, [roomId, myUserId]);
-  console.log("isfj", isFirstJoinRef.current);
+
   //초기값설정
   useEffect(() => {
     if (roomId && myUserId) {
@@ -120,7 +121,10 @@ const ChatRoom = () => {
         case "READY":
           handleReadyUpdate(data.userId, data.ready);
           if (data.allReady) {
-            handleAllReady();
+            initInterview({
+              jobCode: myUserInfo?.jobCode!,
+              interviewType: myUserInfo?.interviewType!,
+            });
           }
           break;
 
@@ -128,7 +132,7 @@ const ChatRoom = () => {
           console.warn("잘못된 메세지 형식", data.chatMessageType);
       }
     },
-    [myUserId, mergeUserList, roomId]
+    [myUserId, mergeUserList, roomId, myUserInfo]
   );
 
   //작성한 메세지 보내기(publisher)
@@ -154,16 +158,37 @@ const ChatRoom = () => {
     if (confirm("정말 나가시겠습니까?")) navigate("/"); // 메인 페이지로 이동
   };
 
-  //allReady일떄 화상채팅으로 이동하기
-  const handleAllReady = () => {
-    navigate(paths.videochat.main.getHref(roomId), {
-      state: {
-        jobCode: myUserInfo?.jobCode,
-        interviewType: myUserInfo?.interviewType,
+  //화상채팅 진입전 인터뷰테이블/ai질문 복사 초기화작업
+  const { mutate: initInterview } = useInitInterviewMutation({
+    mutationConfig: {
+      onSuccess: () => {
+        console.log("인터뷰 초기화 성공");
+        leaveRoom(roomId!);
       },
-      replace: true,
-    });
-  };
+      onError: (err) => {
+        console.error("인터뷰 초기화 실패", err);
+      },
+    },
+  });
+  //allReady일떄 화상채팅으로 이동하기(방에서 나가기)
+  const { mutate: leaveRoom } = useLeaveRoomMutation({
+    mutationConfig: {
+      onSuccess: () => {
+        console.log("방 나가기 성공");
+        navigate(paths.videochat.main.getHref(roomId), {
+          state: {
+            jobCode: myUserInfo?.jobCode,
+            interviewType: myUserInfo?.interviewType,
+          },
+          replace: true,
+        });
+      },
+      onError: (err) => {
+        console.error("방 나가기 실패", err);
+      },
+    },
+  });
+
   //채팅구독하기
   useChatSubscribe({
     destination: `/topic/chat/${roomId}`,

@@ -55,7 +55,7 @@ const ChatPanel = ({
               userName={msg.userName}
               profileImageUrl={msg.profileImageUrl}
               content={msg.content}
-              time={msg.time}
+              time={msg.time!}
             />
           )
         )}

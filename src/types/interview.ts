@@ -14,8 +14,8 @@ export interface InterviewRequest {
 }
 
 export interface VideoChatInterviewResponse {
-  interviewId: number;
-  interviewQuestions: InterviewQuestion[];
+  resumeUrl: string | null;
+  interviewQuestions: InterviewQuestion[] | null;
 }
 
 export interface InterviewQuestion {

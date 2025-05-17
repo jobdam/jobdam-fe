@@ -7,8 +7,7 @@ import {
   VideoChatInterviewResponse,
 } from "@/types/interview";
 
-//화상매칭 진입시 인터뷰데이터,질문등 post초기화 작업을하고
-//그 결과를 가져온다.
+//화상매칭 진입시 인터뷰데이터,질문등 post초기화 작업을한다다
 export const postInitInterview = async (
   payload: InterviewRequest
 ): Promise<VideoChatInterviewResponse> => {
