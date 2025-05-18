@@ -11,7 +11,7 @@ import { useUser } from "@/lib/auth";
 const connectPaths = ["/interview/matching", "/chatroom", "/videoChat"];
 
 export const ErrorBoundary = () => {
-  return <div>Something went wrong!</div>;
+  return <div> Something went wrong!</div>;
 };
 export const WebSocketConnect = () => {
   const location = useLocation();
@@ -24,12 +24,10 @@ export const WebSocketConnect = () => {
 
 const AppRoot = () => {
   const token = getAccessToken();
-  let user;
+  const user = useUser();
+  console.log(token);
+  console.log("user", user);
   //token이 존재할때만 반응하도록, useUser가 존재하면
-  if (token) {
-    console.log("이젠");
-    user = useUser();
-  }
 
   return (
     <>
@@ -38,7 +36,7 @@ const AppRoot = () => {
       ) : (
         <LoggedOutHeader></LoggedOutHeader>
       )}
-      <WebSocketConnect></WebSocketConnect>
+      <WebSocketConnect />
       <Outlet />
     </>
   );
