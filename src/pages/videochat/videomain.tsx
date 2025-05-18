@@ -9,17 +9,21 @@ import {
   SignalMessage,
   useSignalSubscription,
 } from "@/services/webSockect/videoChat/useSignalSubscrpition";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import Utility from "./components/utility";
-import FeedbackandAiQuestion from "./components/feedbackandaiquestion";
+import InterviewPanel from "./components/interview/InterviewPanel";
+import { fetchUserInterviewData } from "./api/get-interviewFullData";
+import VideoPanel from "./components/video/VideoPanel";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { setInterviewData } from "@/store/slices/videoChatInterview";
 
 const Videomain = () => {
+  ////공통////
   const { roomId } = useParams();
   const navigate = useNavigate();
 
-  //내 미디어관련
-  const localVideoRef = useRef<HTMLVideoElement | null>(null);
+  ////video////
   //다른사람 스트림정보
   const { remoteStreams, addRemoteStream, removeRemoteStream } =
     useRemoteStreamMap();
@@ -50,6 +54,11 @@ const Videomain = () => {
     }
   );
 
+  ///인터뷰 관련/////
+  const dispatch = useDispatch();
+  const interviewDataMap = useSelector(
+    (state: RootState) => state.videoChatInterview.interviewDataMap
+  );
   useEffect(() => {
     if (!roomId) {
       navigate(-1);
@@ -61,13 +70,6 @@ const Videomain = () => {
     };
   }, [roomId, navigate]);
   /////////////////////////////
-
-  // 로컬 스트림을 비디오에 연결
-  useEffect(() => {
-    if (localVideoRef.current) {
-      localVideoRef.current.srcObject = stream;
-    }
-  }, [stream]);
 
   // 화면 공유 또는 카메라 트랙 변경 시 replaceTrack
   useEffect(() => {
@@ -150,9 +152,23 @@ const Videomain = () => {
             data.senderId,
             stream!
           );
+          if (!interviewDataMap[data.senderId]) {
+            //인터뷰초기데이터를 가져와 리덕스에저장
+            const offerUserInfo = await fetchUserInterviewData(data.senderId);
+            dispatch(
+              setInterviewData({ userId: data.senderId, data: offerUserInfo })
+            );
+          }
           break;
         case "ANSWER": //answer를받는다면
           await handleAnswer({ sdp: data.sdp, type: "answer" }, data.senderId);
+          if (!interviewDataMap[data.senderId]) {
+            //인터뷰초기데이터를 가져와 리덕스에저장
+            const answerUserInfo = await fetchUserInterviewData(data.senderId);
+            dispatch(
+              setInterviewData({ userId: data.senderId, data: answerUserInfo })
+            );
+          }
           break;
         case "CANDIDATE": //candidate를받는다면
           await handleCandidate(
@@ -176,63 +192,25 @@ const Videomain = () => {
     onSignal: handleSignal,
     enabled: !!stream,
   });
-  //////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////
-  ///////////////시그널 완료/////////////////////////////////////
 
   return (
-    <div className="bg-gradient-videochat flex-row">
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          gap: "16px",
-          maxWidth: "1000px",
-          margin: "0 auto",
-        }}
-      >
-        <video
-          ref={localVideoRef}
-          autoPlay
-          playsInline
-          muted
-          style={{
-            width: "320px",
-            height: "240px",
-            backgroundColor: "black",
-            borderRadius: "12px",
+    <div className="flex justify-center items-center h-screen w-screen bg-gradient-videochat">
+      <div className="flex w-[80vw] h-[90vh] gap-x-6">
+        <VideoPanel
+          localStream={stream}
+          remoteStreams={remoteStreams}
+          mediaControl={{
+            // isMicOn,
+            // isCameraOn,
+            isScreenSharing,
+            // toggleMic,
+            // toggleCamera,
+            // toggleScreenShare,
           }}
+          roomId={roomId!}
         />
-        {Object.entries(remoteStreams).map(([userId, stream]) => (
-          <video
-            key={userId}
-            autoPlay
-            playsInline
-            style={{
-              width: "320px",
-              height: "240px",
-              backgroundColor: "black",
-              borderRadius: "12px",
-            }}
-            ref={(el: HTMLVideoElement | null) => {
-              if (el && stream) {
-                el.srcObject = stream;
-              }
-            }}
-          />
-        ))}
-      </div>
-      {/* 유틸리티 영역 */}
-      <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-        <Utility></Utility>
-      </div>
-      <div
-        className="w-[530px] h-[847px]
-      border-[1px] border-[#d9d9d9] shadow-custom
-      bg-white rounded-[20px] pt-[39px] pb-[28px] px-[18px]"
-      >
-        <FeedbackandAiQuestion></FeedbackandAiQuestion>
+        {/* 오른쪽: 인터뷰 패널 */}
+        <InterviewPanel />
       </div>
     </div>
   );
