@@ -1,6 +1,6 @@
 /** @format */
-import { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { IMessage } from "@stomp/stompjs";
 import { useChatSubscribe } from "@/services/webSockect/chat/useChatSubscribe";
 import { v4 as uuidv4 } from "uuid";
@@ -11,28 +11,60 @@ import ChatPanel from "./components/chat/ChatPanel";
 import { ChatMessageType, ChatUserInfo } from "@/types/chat";
 import { getChatUserInfoList } from "./api/get-chatUserInfoList";
 import { getChatUserInfo } from "./api/get-chatUserInfo";
+import { paths } from "@/config/paths";
 
 const ChatRoom = () => {
   //공통 설정//
   const { roomId } = useParams();
   const myUserId = getUserIdFromJwt();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isFirstJoinRef = useRef(location.state?.firstJoin ?? false);
   ///채팅방 설정///
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
-  const { sendChat } = useChatPublisher();
+  const { sendChat, sendReady } = useChatPublisher();
   ///유저 설정//
   const [userList, setUserList] = useState<ChatUserInfo[]>([]);
+  const myUserInfo = userList.find((u) => u.userId === myUserId); //채팅방에 보여질 제목
+  //덮어쓰기 말고 병합으로 userList업데이트(비동기로 여러명이 set하면 가끔이상해짐..)
+  const mergeUserList = useCallback((incoming: ChatUserInfo[]) => {
+    setUserList((prev) => {
+      const existingIds = new Set(prev.map((u) => u.userId));
+      const newUsers = incoming.filter((u) => !existingIds.has(u.userId));
+      return [...prev, ...newUsers];
+    });
+  }, []);
 
   useEffect(() => {
-    if (!roomId) {
+    if (!roomId || !myUserId) {
       navigate("/");
       return;
     }
-    if (!myUserId) {
-      navigate("/"); // JWT 없거나 파싱 실패 → 메인으로 이동
-      return;
+  }, [roomId, myUserId]);
+  console.log("isfj", isFirstJoinRef.current);
+  //초기값설정
+  useEffect(() => {
+    if (roomId && myUserId) {
+      getChatUserInfoList(roomId).then((list) => {
+        mergeUserList(list); //유저리스트 상태추가
+        if (isFirstJoinRef.current) {
+          //처음입장한사람이면
+          const joinMessages = list.map((user) => ({
+            id: uuidv4(),
+            type: "SYSTEM" as const,
+            content: `${user.name}님이 입장했습니다.`,
+          }));
+
+          setMessages((prev) => [...prev, ...joinMessages]);
+        }
+        isFirstJoinRef.current = false;
+        if (location.state?.firstJoin) {
+          navigate(location.pathname, { replace: true }); // 클로저 내부도 최신 상태로 반영
+        }
+      });
     }
   }, [roomId, myUserId]);
+
   //서버에서 오는 메세지 핸들러
   const handleMessage = useCallback(
     (msg: IMessage) => {
@@ -70,34 +102,25 @@ const ChatRoom = () => {
           break;
 
         case "JOIN":
-          //입장한 본인이면 기존인원들의 userInfoList를 받고
-          //본인이 아닌인원들은 입장한사람의 userInfo를 받는다.
-          if (data.userId === myUserId) {
-            getChatUserInfoList(roomId!).then((list) => {
-              setUserList(list);
-              //채팅방에 입장메세지 표시하고
-              setMessages((prev) => [
-                ...prev,
-                {
-                  id: uuidv4(),
-                  type: "SYSTEM",
-                  content: `${data.userName}님이 입장했습니다.`,
-                },
-              ]);
-            });
-          } else {
-            getChatUserInfo(roomId!, data.userId).then((userInfo) => {
-              setUserList((prev) => [...prev, userInfo]);
-              //채팅방에 입장메세지 표시하고
-              setMessages((prev) => [
-                ...prev,
-                {
-                  id: uuidv4(),
-                  type: "SYSTEM",
-                  content: `${data.userName}님이 입장했습니다.`,
-                },
-              ]);
-            });
+          if (isFirstJoinRef.current) return; //초기화 이후에는 보여줌
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: uuidv4(),
+              type: "SYSTEM",
+              content: `${data.userName}님이 입장했습니다.`,
+            },
+          ]);
+          getChatUserInfo(roomId!, data.userId).then((userInfo) => {
+            mergeUserList([userInfo]);
+          });
+
+          break;
+        //화상채팅 준비상태
+        case "READY":
+          handleReadyUpdate(data.userId, data.ready);
+          if (data.allReady) {
+            handleAllReady();
           }
           break;
 
@@ -105,7 +128,7 @@ const ChatRoom = () => {
           console.warn("잘못된 메세지 형식", data.chatMessageType);
       }
     },
-    [myUserId]
+    [myUserId, mergeUserList, roomId]
   );
 
   //작성한 메세지 보내기(publisher)
@@ -114,6 +137,33 @@ const ChatRoom = () => {
     sendChat({ roomId: roomId!, content });
   };
 
+  //준비상태 보내기(publisher)
+  const handleReadyStatus = (ready: boolean) => {
+    sendReady({ roomId: roomId!, ready });
+  };
+
+  //화상채팅 시작하기버튼 핸들러
+  const handleReadyUpdate = (userId: number, ready: boolean) => {
+    setUserList((prev) =>
+      prev.map((u) => (u.userId === userId ? { ...u, ready } : u))
+    );
+  };
+
+  //나가기 핸들러
+  const handleLeave = () => {
+    if (confirm("정말 나가시겠습니까?")) navigate("/"); // 메인 페이지로 이동
+  };
+
+  //allReady일떄 화상채팅으로 이동하기
+  const handleAllReady = () => {
+    navigate(paths.videochat.main.getHref(roomId), {
+      state: {
+        jobCode: myUserInfo?.jobCode,
+        interviewType: myUserInfo?.interviewType,
+      },
+      replace: true,
+    });
+  };
   //채팅구독하기
   useChatSubscribe({
     destination: `/topic/chat/${roomId}`,
@@ -123,10 +173,21 @@ const ChatRoom = () => {
   return (
     <div className="flex h-screen">
       <div className="w-[800px] min-w-[800px]">
-        <UserPanel userList={userList} myUserId={myUserId!} />
+        <UserPanel
+          userList={userList}
+          myUserId={myUserId!}
+          onReady={handleReadyStatus}
+        />
       </div>
+      <button onClick={handleLeave}>나가기</button>
       <div className="flex flex-col flex-1">
-        <ChatPanel messages={messages} onSend={handleSend} />
+        <ChatPanel
+          messages={messages}
+          onSend={handleSend}
+          jobGroup={myUserInfo?.jobGroup ?? ""}
+          jobDetail={myUserInfo?.jobDetail ?? ""}
+          interviewType={myUserInfo?.interviewType ?? ""}
+        />
       </div>
     </div>
   );

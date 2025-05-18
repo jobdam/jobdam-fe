@@ -12,6 +12,9 @@ const MatchingWaiting = () => {
       <InterviewMatchingFinish
         userList={[]}
         myUserId={0}
+        onReady={function (ready: boolean): void {
+          throw new Error("Function not implemented.");
+        }}
       ></InterviewMatchingFinish>
     </InterviewLayout>
   );

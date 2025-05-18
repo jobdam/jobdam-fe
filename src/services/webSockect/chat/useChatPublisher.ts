@@ -7,24 +7,36 @@ interface ChatSendPayload {
   content: string;
 }
 
-export const useChatPublisher = () => {
-  const sendChat = ({ roomId, content }: ChatSendPayload) => {
-    const client = getWebSocketClient();
+interface ReadySendPayload {
+  roomId: string;
+  ready: boolean;
+}
 
+export const useChatPublisher = () => {
+  const client = getWebSocketClient();
+
+  //채팅방에서 채팅보낼떄
+  const sendChat = ({ roomId, content }: ChatSendPayload) => {
+    //나중에 공통함수로 빼야함..
     if (!client || !client.connected) {
       console.warn("WebSocket 미연결 상태. 채팅 전송 실패");
       return;
     }
-
-    const destination = `/app/chat/send/${roomId}`;
-
     client.publish({
-      destination,
+      destination: `/app/chat/send/${roomId}`,
       body: JSON.stringify({ content }),
     });
-
-    console.log("채팅 전송:", content);
   };
 
-  return { sendChat };
+  const sendReady = ({ roomId, ready }: ReadySendPayload) => {
+    if (!client || !client.connected) {
+      console.warn("WebSocket 미연결 상태. 채팅 전송 실패");
+      return;
+    }
+    client.publish({
+      destination: `/app/chat/ready/${roomId}`,
+      body: JSON.stringify({ ready }),
+    });
+  };
+  return { sendChat, sendReady };
 };

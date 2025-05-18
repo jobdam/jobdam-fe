@@ -1,6 +1,6 @@
 /** @format */
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { IMessage } from "@stomp/stompjs";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
@@ -18,6 +18,12 @@ export const useChatSubscribe = ({ destination, onMessage }: Props) => {
   );
   const dispatch = useDispatch();
 
+  //메세지 핸들러 ref해서 중복구독방지
+  const handlerRef = useRef(onMessage);
+  useEffect(() => {
+    handlerRef.current = onMessage;
+  }, [onMessage]);
+
   useEffect(() => {
     if (!isConnected) return;
 
@@ -27,7 +33,10 @@ export const useChatSubscribe = ({ destination, onMessage }: Props) => {
       return;
     }
 
-    const subscription = client.subscribe(destination, onMessage);
+    const subscription = client.subscribe(destination, (msg) => {
+      handlerRef.current(msg);
+    });
+
     console.log("[구독 완료]", destination);
     dispatch(setDestination(destination));
 
@@ -36,5 +45,5 @@ export const useChatSubscribe = ({ destination, onMessage }: Props) => {
       console.log("[구독 취소]", destination);
       dispatch(setDestination(null));
     };
-  }, [isConnected, destination, onMessage]);
+  }, [isConnected, destination]);
 };

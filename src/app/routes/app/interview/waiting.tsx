@@ -1,7 +1,5 @@
 /** @format */
 
-import InterviewMatchingFinish from "@/pages/ChatRoom/components/user/UserPanel";
-
 const MatchingWaiting = () => {
   return (
     // <InterviewLayout title="면접 대기방에 입장했어요">
@@ -9,7 +7,6 @@ const MatchingWaiting = () => {
       <div>
         <span>모두 준비되면 바로 시작해요</span>
       </div>
-      <InterviewMatchingFinish></InterviewMatchingFinish>
     </>
     // {/* </InterviewLayout> */}
   );

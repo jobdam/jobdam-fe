@@ -38,9 +38,14 @@ const InterviewMatching = () => {
 
   const onMessage = React.useCallback(
     (msg) => {
-      console.log("✅ 매칭완료 수신:", msg.body);
-      setSubEnabled(false);
-      navigate(paths.chatroom.main.getHref(msg.body));
+      console.log(" 매칭완료 수신:", msg.body);
+      const { roomId, firstJoin } = JSON.parse(msg.body);
+      setSubEnabled(false); //구독취소
+
+      navigate(paths.chatroom.main.getHref(roomId), {
+        state: { firstJoin },
+        replace: true,
+      });
     },
     [navigate]
   );
@@ -59,9 +64,6 @@ const InterviewMatching = () => {
       <InterviewSpinner></InterviewSpinner>
       <div className="mt-[100px]">
         <span>다른 면접자들의 연결을 기다리는 중이에요</span>
-        <div onClick={() => navigate(paths.chatroom.main.getHref("1abt5"))}>
-          채팅방으로{" "}
-        </div>
       </div>
     </div>
   );

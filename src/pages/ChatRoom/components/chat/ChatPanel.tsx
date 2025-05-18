@@ -3,15 +3,24 @@
 import { useState } from "react";
 import ChatMessage from "./ChatMessage";
 import { Send } from "lucide-react";
-import { ChatMessageType } from "@/types/chat";
+import { ChatMessageType, InterviewTypeLabel } from "@/types/chat";
 import SystemMessage from "./ChatSystemMessage";
 
 interface ChatPanelProps {
   messages: ChatMessageType[];
+  jobGroup: string;
+  jobDetail: string;
+  interviewType: string;
   onSend: (content: string) => void;
 }
 
-const ChatPanel = ({ messages, onSend }: ChatPanelProps) => {
+const ChatPanel = ({
+  messages,
+  onSend,
+  jobGroup,
+  jobDetail,
+  interviewType,
+}: ChatPanelProps) => {
   const [input, setInput] = useState("");
 
   const handleSend = () => {
@@ -19,12 +28,18 @@ const ChatPanel = ({ messages, onSend }: ChatPanelProps) => {
     onSend(input);
     setInput("");
   };
-
+  const interviewTypeLabel = InterviewTypeLabel[interviewType];
   return (
     <>
       {/* 헤더 */}
       <header className="h-16 bg-gray-800 text-white flex items-center px-4 shadow-md">
-        <h1 className="text-lg font-semibold">채팅방</h1>
+        <h1 className="text-lg font-semibold">
+          {jobGroup}
+          {"  "}
+          {jobDetail}
+          {"  "}&middot;{"  "}
+          {interviewTypeLabel}
+        </h1>
       </header>
 
       {/* 메시지 리스트 */}
