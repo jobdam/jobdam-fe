@@ -2,6 +2,9 @@
 
 import { paths } from "@/config/paths";
 import { Link } from "@/components/ui/link";
+
+// import { useUser } from "@/lib/auth";
+// import { useNavigate } from "react-router";
 const Logo = () => {
   return (
     <Link className="flex items-center text-white" to={paths.home.getHref()}>

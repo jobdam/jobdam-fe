@@ -95,7 +95,7 @@ const ProfilePost = () => {
   const registerProfile = usePostProfile({
     mutationConfig: {
       onSuccess: () => {
-        navigate(redirectTo ? redirectTo : paths.mypage.me.path, {
+        navigate(redirectTo ? redirectTo : paths.mypage.root.path, {
           replace: true,
         });
       },
@@ -253,6 +253,7 @@ const ProfilePost = () => {
 
           <div className=" flex translate-y-[-100px] justify-center mt-[350px] items-center">
             <Button
+              type="submit"
               isLoading={registerProfile.isPending}
               className="  cursor-pointer rounded-[10px]   font-semibold flex items-center justify-center h-[75px] w-[530px]  leading-[150%] text-[24px]"
             >

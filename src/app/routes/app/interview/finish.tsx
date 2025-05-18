@@ -9,7 +9,10 @@ const MatchingWaiting = () => {
       <div>
         <span>모두 준비되면 바로 시작해요</span>
       </div>
-      <InterviewMatchingFinish></InterviewMatchingFinish>
+      <InterviewMatchingFinish
+        userList={[]}
+        myUserId={0}
+      ></InterviewMatchingFinish>
     </InterviewLayout>
   );
 };

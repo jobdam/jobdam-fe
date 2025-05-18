@@ -5,12 +5,14 @@ import { QueryClient, useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
-import WebSocketConnectManager from "./WebSocketConnectManager";
-import LoggedOutHeader from "@/components/common/header/LoggedOutHeader";
-import { getAccessToken } from "@/lib/authSerivices";
-import LoggedInHeader from "@/components/common/header/LoggedInHeader";
+// import WebSocketConnectManager from "./WebSocketConnectManager";
+// import LoggedOutHeader from "@/components/common/header/LoggedOutHeader";
+import { ProtectedRoute } from "@/lib/auth";
+import {
+  default as AppRoot,
+  ErrorBoundary as AppRootErrorBoundary,
+} from "./routes/app/root";
 
-import { ErrorBoundary as AppRootErrorBoundary } from "./routes/app/root";
 // clientLoader: 라우터에서 사용하는 데이터 로딩 함수
 // clientAction: 라우터에서 사용하는 form action 함수
 // default: 기본 컴포넌트 → Component라는 이름으로 바뀜
@@ -18,7 +20,6 @@ import { ErrorBoundary as AppRootErrorBoundary } from "./routes/app/root";
 
 // m의 타입 정의
 
-const token = getAccessToken();
 const convert = (queryClient: QueryClient) => (m: any) => {
   const { clientLoader, clientAction, default: Component, ...rest } = m;
   return {
@@ -32,111 +33,48 @@ const convert = (queryClient: QueryClient) => (m: any) => {
 const createAppRouter = (queryClient: QueryClient) => {
   return createBrowserRouter([
     {
-      path: "/",
+      path: paths.emailverify.expired.path,
+      lazy: () =>
+        import("@/app/routes/app/emailverify/expired").then(
+          convert(queryClient)
+        ),
+    },
+    {
+      path: paths.emailverify.already.path,
+      lazy: () =>
+        import("@/app/routes/app/emailverify/already").then(
+          convert(queryClient)
+        ),
+    },
+    {
+      path: paths.emailverify.success.path,
+      lazy: () =>
+        import("@/app/routes/app/emailverify/success").then(
+          convert(queryClient)
+        ),
+    },
+    {
+      path: paths.emailverify.error.path,
+      lazy: () =>
+        import("@/app/routes/app/emailverify/error").then(convert(queryClient)),
+    },
+    {
+      path: paths.emailverify.verifycheck.path,
+      lazy: () =>
+        import("@/app/routes/app/emailverify/check").then(convert(queryClient)),
+    },
+
+    {
+      path: paths.mypage.root.path,
+
       element: (
         <>
-          {token === null ? (
-            <LoggedOutHeader></LoggedOutHeader>
-          ) : (
-            <LoggedInHeader></LoggedInHeader>
-          )}
-          <WebSocketConnectManager />
+          {/* <ProtectedRoute> */}
+          <AppRoot></AppRoot>
+          {/* </ProtectedRoute> */}
         </>
       ),
       children: [
-        {
-          path: paths.home.path,
-          lazy: () => import("@/app/routes/landing").then(convert(queryClient)),
-        },
-
-        {
-          path: paths.auth.register.path,
-          lazy: () =>
-            import("@/app/routes/app/auth/signup").then(convert(queryClient)),
-        },
-        {
-          path: paths.auth.login.path,
-          lazy: () =>
-            import("@/app/routes/app/auth/signin").then(convert(queryClient)),
-        },
-        {
-          path: paths.auth.entry.path,
-          lazy: () =>
-            import("@/app/routes/app/auth/authEntry").then(
-              convert(queryClient)
-            ),
-        },
-
-        {
-          path: paths.interview.register.path,
-          // element: (
-          //   <ProtectedRoute>
-          //     <AppRoot></AppRoot>
-          //   </ProtectedRoute>
-          // ),
-          ErrorBoundary: AppRootErrorBoundary,
-
-          lazy: () =>
-            import("@/app/routes/app/interview/register").then(
-              convert(queryClient)
-            ),
-        },
-        {
-          path: paths.interview.matching.path,
-          lazy: () =>
-            import("@/app/routes/app/interview/matching").then(
-              convert(queryClient)
-            ),
-        },
-        {
-          path: paths.interview.waiting.path,
-          lazy: () =>
-            import("@/app/routes/app/interview/waiting").then(
-              convert(queryClient)
-            ),
-        },
-        {
-          path: paths.chatroom.main.path,
-          lazy: () =>
-            import("@/app/routes/app/chatroom/chatroom").then(
-              convert(queryClient)
-            ),
-        },
-        {
-          path: paths.emailverify.expired.path,
-          lazy: () =>
-            import("@/app/routes/app/emailverify/expired").then(
-              convert(queryClient)
-            ),
-        },
-        {
-          path: paths.emailverify.already.path,
-          lazy: () =>
-            import("@/app/routes/app/emailverify/already").then(
-              convert(queryClient)
-            ),
-        },
-        {
-          path: paths.emailverify.success.path,
-          lazy: () =>
-            import("@/app/routes/app/emailverify/success").then(
-              convert(queryClient)
-            ),
-        },
-        {
-          path: paths.emailverify.error.path,
-          lazy: () =>
-            import("@/app/routes/app/emailverify/error").then(
-              convert(queryClient)
-            ),
-        },
-        {
-          path: paths.emailverify.verifycheck.path,
-          lazy: () =>
-            import("@/app/routes/app/emailverify/check").then(
-              convert(queryClient)
-            ),
-        },
         {
           path: paths.mypage.postdata.path,
           lazy: () =>
@@ -145,7 +83,8 @@ const createAppRouter = (queryClient: QueryClient) => {
             ),
         },
         {
-          path: paths.mypage.me.path,
+          index: true,
+
           lazy: () =>
             import("@/app/routes/app/mypage/profile").then(
               convert(queryClient)
@@ -177,18 +116,98 @@ const createAppRouter = (queryClient: QueryClient) => {
               convert(queryClient)
             ),
         },
+      ],
+    },
 
-        {
-          path: paths.videochat.main.path,
-          lazy: () =>
-            import("@/app/routes/app/videochat/video-chat").then(
-              convert(queryClient)
-            ),
-        },
+    {
+      path: "/auth",
+      element: (
+        <>
+          <AppRoot />
+        </>
+      ), // 로그인, 회원가입 등에만 헤더 포함
+      children: [
         {
           path: paths.auth.oauth.path,
           lazy: () =>
             import("@/app/routes/app/auth/oauh-callback").then(
+              convert(queryClient)
+            ),
+        },
+        {
+          path: paths.auth.register.path,
+          lazy: () =>
+            import("@/app/routes/app/auth/signup").then(convert(queryClient)),
+        },
+        {
+          path: paths.auth.login.path,
+          lazy: () =>
+            import("@/app/routes/app/auth/signin").then(convert(queryClient)),
+        },
+        {
+          path: paths.auth.entry.path,
+          lazy: () =>
+            import("@/app/routes/app/auth/authEntry").then(
+              convert(queryClient)
+            ),
+        },
+      ],
+    },
+
+    {
+      path: paths.home.path,
+      element: <AppRoot></AppRoot>,
+      ErrorBoundary: AppRootErrorBoundary,
+      children: [
+        {
+          index: true,
+
+          lazy: () => import("@/app/routes/landing").then(convert(queryClient)),
+        },
+      ],
+    },
+
+    {
+      path: "/",
+      element: (
+        <ProtectedRoute>
+          <AppRoot />
+        </ProtectedRoute>
+      ),
+      ErrorBoundary: AppRootErrorBoundary,
+      children: [
+        {
+          path: paths.interview.register.path,
+          lazy: () =>
+            import("@/app/routes/app/interview/register").then(
+              convert(queryClient)
+            ),
+        },
+        {
+          path: paths.interview.matching.path,
+          lazy: () =>
+            import("@/app/routes/app/interview/matching").then(
+              convert(queryClient)
+            ),
+        },
+        {
+          path: paths.interview.waiting.path,
+          lazy: () =>
+            import("@/app/routes/app/interview/waiting").then(
+              convert(queryClient)
+            ),
+        },
+        {
+          path: paths.chatroom.main.path,
+          lazy: () =>
+            import("@/app/routes/app/chatroom/chatroom").then(
+              convert(queryClient)
+            ),
+        },
+        {
+          path: paths.videochat.main.path,
+          lazy: () =>
+            import("@/app/routes/app/videochat/video-chat").then(
               convert(queryClient)
             ),
         },

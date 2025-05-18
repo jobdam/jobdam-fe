@@ -50,8 +50,8 @@ api.interceptors.response.use(
 
     store.dispatch(
       addNotification({
-        type: "error",
-        title: "Error",
+        type: "success",
+        title: "Success",
         message,
       })
     );
@@ -69,11 +69,6 @@ api.interceptors.response.use(
 
     // 로그인을 하지 않은 상황에서는 만약 인증을 해야되는곳을 갔을때 redirect를준다 -> 로그인했을때 그쪽으로 다시 리턴
 
-    console.log(
-      error.response?.status === 401,
-      !originalRequest._retry,
-      isRefreshing
-    );
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
@@ -96,14 +91,23 @@ api.interceptors.response.use(
         console.log(error, "catch");
         // refresh 실패하면 로그인 페이지로 이동 , 401에러인데 아직 로그인을
         //401에러 가 발생시
+
+        store.dispatch(
+          addNotification({
+            type: "error",
+            title: "Error",
+            message: message + `5초 후에 사라집니다.`,
+          })
+        );
+
         useLogout();
-        return Promise.reject(error);
       } finally {
         isRefreshing = false; // 토큰 갱신 완료
       }
     }
     //나머지의 에러 상황인경우 라면(로그인이 되지 않은 경우 로그인이 필요한 곳에 진입했을때 리다이렉트)
-    else {
+    if (error.response?.status == 401) {
+      console.log(error.response);
       const searchParams = new URLSearchParams();
       const redirectTo =
         searchParams.get("redirectTo") || window.location.pathname;

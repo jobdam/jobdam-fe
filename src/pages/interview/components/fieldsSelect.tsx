@@ -8,6 +8,7 @@ import { useJobCategory } from "../../Mypage/api/get-jobcategory";
 
 import { Controller } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import { experienceOptions } from "@/constants";
 type FieldsSelectProps = {
   control: any;
   form: any;
@@ -66,10 +67,7 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
           render={({ field }) => (
             <Radio
               className="mr-[30px] flex justify-center pb-[9px] items-end"
-              options={[
-                { label: "신입", value: "NEW" },
-                { label: "경력", value: "EXPERIENCED" },
-              ]}
+              options={experienceOptions}
               value={field.value}
               onValueChange={field.onChange}
             />
