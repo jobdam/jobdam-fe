@@ -5,7 +5,7 @@ import ChatMessage from "./ChatMessage";
 import { Send } from "lucide-react";
 import { ChatMessageType } from "@/types/chat";
 import SystemMessage from "./ChatSystemMessage";
-import { InterviewTypeLabel } from "@/types/interview";
+import { InterviewTypeLabel } from "@/types/api";
 
 interface ChatPanelProps {
   messages: ChatMessageType[];

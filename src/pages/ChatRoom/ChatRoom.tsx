@@ -42,7 +42,6 @@ const ChatRoom = () => {
       return;
     }
   }, [roomId, myUserId]);
-
   //초기값설정
   useEffect(() => {
     if (roomId && myUserId) {
