@@ -2,8 +2,10 @@
 import { Document, Page, pdfjs } from "react-pdf";
 import { useState } from "react";
 
-pdfjs.GlobalWorkerOptions.workerSrc =
-  "https://unpkg.com/pdfjs-dist@4.8.69/build/pdf.worker.min.js";
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  "pdfjs-dist/build/pdf.worker.min.mjs",
+  import.meta.url
+).href;
 
 const ResumeViewer = ({ resumeUrl }: { resumeUrl: string }) => {
   const [numPages, setNumPages] = useState<number | null>(null);

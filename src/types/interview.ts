@@ -22,3 +22,8 @@ export interface InterviewQuestion {
   interviewQuestionId: number;
   context: string;
 }
+
+export interface FeedBackRequest {
+  targetUserId: number;
+  content: string;
+}

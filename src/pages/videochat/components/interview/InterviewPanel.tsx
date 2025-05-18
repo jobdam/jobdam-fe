@@ -1,13 +1,14 @@
 /** @format */
 
-import { Input } from "@/components/ui/form";
 import { setAiState, setResumeState } from "@/store/slices/uistate";
 import { useDispatch } from "react-redux";
 import { cn } from "@/utils/cn";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { setSelectedUserId } from "@/store/slices/videoChatInterview";
-import ResumeViewer from "./resumeViewer";
+import QuestionFeedbackBox from "./QuestionFeedbackBox";
+import { useState } from "react";
+import ResumeViewer from "./ResumeViewer";
 
 const InterviewPanel = () => {
   //클릭된걸 아래에 나타낸다.
@@ -32,6 +33,10 @@ const InterviewPanel = () => {
     dispatch(setAiState(false));
     dispatch(setResumeState(true));
   };
+  //질문선택한거!
+  const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(
+    null
+  );
 
   if (!selectedUserId) {
     dispatch(setSelectedUserId(37));
@@ -91,10 +96,18 @@ const InterviewPanel = () => {
             {/* 질문 영역 */}
             <div className="bg-[#488FFF] rounded-[20px] w-[500px] max-h-[300px] px-[24px] py-[41px]">
               <ul className="list-disc px-[24px] flex gap-y-[20px] flex-col">
-                {interviewQuestions?.map((el, index) => (
+                {interviewQuestions?.map((el) => (
                   <li
-                    key={index}
-                    className="text-[white] opacity-50 focus-white"
+                    key={el.interviewQuestionId}
+                    onClick={() =>
+                      setSelectedQuestionId(el.interviewQuestionId)
+                    }
+                    className={cn(
+                      "cursor-pointer text-white",
+                      selectedQuestionId === el.interviewQuestionId
+                        ? "font-bold opacity-100"
+                        : "opacity-50"
+                    )}
                   >
                     {el.context}
                   </li>
@@ -102,17 +115,16 @@ const InterviewPanel = () => {
               </ul>
             </div>
             {/* 피드백/질문 입력 */}
-            <div className="mt-[19px]">
-              <Input
-                className="w-[495px] h-[120px]"
-                placeholder="피드백을 작성해주세요"
-              ></Input>
-
-              <Input
-                className="w-[495px]h-[180px]"
-                placeholder="질문을 작성해주세요"
-              ></Input>
-            </div>
+            {selectedQuestionId && (
+              <QuestionFeedbackBox
+                questionId={selectedQuestionId}
+                context={
+                  interviewQuestions?.find(
+                    (q) => q.interviewQuestionId === selectedQuestionId
+                  )?.context || ""
+                }
+              />
+            )}
           </div>
         )}
         {/* 이력서 영역 */}
