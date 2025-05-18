@@ -14,7 +14,6 @@ const SignUpRoute = () => {
   console.log(redirectTo);
 
   //회원가입 할때 이메일도 같이 넘긴다.
-
   return (
     <AuthLayout
       title="회원 가입"
@@ -23,9 +22,12 @@ const SignUpRoute = () => {
     >
       <SignUp
         onSuccess={() => {
-          navigate(paths.emailverify.verifycheck.path, {
-            replace: true,
-          });
+          navigate(
+            `${redirectTo ? `${redirectTo}` : paths.emailverify.verifycheck.path}`,
+            {
+              replace: true,
+            }
+          );
         }}
       />
     </AuthLayout>

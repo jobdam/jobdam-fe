@@ -30,12 +30,8 @@ const Videomain = () => {
     stream,
     cameraTrack,
     screenTrack,
-    isMicOn,
-    isCameraOn,
+
     isScreenSharing,
-    toggleMic,
-    toggleCamera,
-    toggleScreenShare,
   } = useLocalMediaStream();
 
   //시그널 전송 훅
@@ -152,7 +148,6 @@ const Videomain = () => {
           await handleOffer(
             { sdp: data.sdp, type: "offer" },
             data.senderId,
-            roomId!,
             stream!
           );
           break;
@@ -230,14 +225,7 @@ const Videomain = () => {
       </div>
       {/* 유틸리티 영역 */}
       <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-        <Utility
-          isMicOn={isMicOn}
-          isCameraOn={isCameraOn}
-          isScreenSharing={isScreenSharing}
-          toggleMic={toggleMic}
-          toggleCamera={toggleCamera}
-          toggleScreenShare={toggleScreenShare}
-        />
+        <Utility></Utility>
       </div>
       <div
         className="w-[530px] h-[847px]

@@ -10,7 +10,7 @@ import { Label } from "./label";
 type Option = {
   label: string;
   value: string;
-  id: number;
+  id?: number;
 };
 
 interface RadioGroupProps

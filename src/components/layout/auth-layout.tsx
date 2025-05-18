@@ -33,15 +33,26 @@ export const AuthLayout = ({
   const redirectTo = searchParams.get("redirectTo");
   const navigate = useNavigate();
   const location = useLocation();
-  const { data } = useUser();
+  //auth 영역은 useUser에서 제외한다.
+  const shouldRunAuth = ![
+    "/auth/login",
+    "/auth/register",
+    "/auth/sign-up",
+    "/auth/authEntry",
+    "/auth/oauth-callback",
+  ].includes(location.pathname);
+
+  const { data } = shouldRunAuth ? useUser() : { data: null };
+
+  // const { data } = useUser();
 
   React.useEffect(() => {
-    if (data && location.pathname !== "/mypage/post-profile") {
+    if (data) {
       navigate(redirectTo ? redirectTo : paths.home.getHref(), {
         replace: true,
       });
     }
-  }, [data, navigate, redirectTo]);
+  }, [navigate, redirectTo]);
 
   // console.log(user);
   //   useEffect(() => {

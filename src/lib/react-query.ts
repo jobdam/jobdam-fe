@@ -14,7 +14,6 @@ import { UseMutationOptions, DefaultOptions } from "@tanstack/react-query";
 // staleTime: 1000 * 60	데이터를 신선하다고 간주하는 시간 (1분)	1분 동안은 같은 queryKey로 요청해도 네트워크 요청 안 하고 캐시만 사용함
 export const queryConfig = {
   queries: {
-    // throwOnError: true,
     refetchOnWindowFocus: false,
     retry: false,
     staleTime: 1000 * 60,

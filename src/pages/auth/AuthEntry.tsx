@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import GoogleSignin from "./components/googlesignin";
 import NaverSignin from "./components/naversignin";
+import { paths } from "@/config/paths";
 
 export const AuthEntry = () => {
   //네이버 카카오 Auth로그인
@@ -43,7 +44,7 @@ export const AuthEntry = () => {
             <div className=" flex justify-center items-center">
               <Link
                 className="underline text-[rgba(0,0,0,0.50)]  text-[20px]"
-                to="/login"
+                to={paths.auth.login.path}
               >
                 이메일 로그인/회원가입
               </Link>

@@ -27,7 +27,6 @@ const AppRoot = () => {
   let user;
   //token이 존재할때만 반응하도록, useUser가 존재하면
   if (token) {
-    console.log("이젠");
     user = useUser();
   }
 

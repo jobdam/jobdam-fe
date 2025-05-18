@@ -174,7 +174,7 @@ const createAppRouter = (queryClient: QueryClient) => {
           <AppRoot />
         </ProtectedRoute>
       ),
-      ErrorBoundary: AppRootErrorBoundary,
+      // ErrorBoundary: AppRootErrorBoundary,
       children: [
         {
           path: paths.interview.register.path,

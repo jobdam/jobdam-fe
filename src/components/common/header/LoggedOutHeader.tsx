@@ -37,7 +37,7 @@ const LoggedOutHeader = () => {
               면접 보러가기
             </Link>
             <Link
-              to={paths.auth.login.path}
+              to={paths.auth.entry.path}
               className="text-white
             rounded-[20px] bg-[#488fff]
               flex items-center justify-center mx-2 z-[20] w-[106px] h-[32px]"
