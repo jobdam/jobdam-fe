@@ -1,6 +1,6 @@
 /** @format */
 
-import { InterviewType } from "./interview";
+import { ExperienceType, InterviewType } from "./api";
 
 //채팅 메세지부분
 export interface ChatUserMessage {
@@ -20,13 +20,6 @@ export interface ChatSystemMessage {
 }
 
 export type ChatMessageType = ChatUserMessage | ChatSystemMessage;
-
-//유저 정보부분
-export type ExperienceType = "NEW" | "EXPERIENCED";
-export const ExperienceTypeLabel: Record<ExperienceType, string> = {
-  NEW: "신입",
-  EXPERIENCED: "경력",
-};
 
 export interface ChatUserInfo {
   userId: number;
