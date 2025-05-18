@@ -5,13 +5,15 @@ import {
   UtilityState,
   VideoChatUserMessage,
 } from "@/types/videoChat";
-import { useCallback, useEffect, useRef, useState } from "react";
-import Utility from "./utility";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getUserIdFromJwt } from "@/utils/tokenUtils";
 import { IMessage } from "@stomp/stompjs";
 import { useChatSubscribe } from "@/services/webSockect/chat/useChatSubscribe";
 import { useChatPublisher } from "@/services/webSockect/chat/useChatPublisher";
 import ChatOverlay from "./ChatOverLay";
+import Utility from "./Utility";
+import { useDispatch } from "react-redux";
+import { setSelectedUserId } from "@/store/slices/videoChatInterview";
 
 interface VideoPanelProps {
   //비디오 스트림
@@ -28,8 +30,8 @@ const VideoPanel = ({
   roomId,
 }: VideoPanelProps) => {
   //공통
-  const myUserId = getUserIdFromJwt();
-
+  const myUserId = useMemo(() => getUserIdFromJwt(), []);
+  const dispatch = useDispatch();
   //내화면 보기위해서 필요한것
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
   //메인화면 전환용
@@ -128,7 +130,10 @@ const VideoPanel = ({
               playsInline
               muted
               className="w-[200px] h-[150px] bg-black rounded-md object-cover cursor-pointer"
-              onClick={() => setFocusedUserId("me")}
+              onClick={() => {
+                setFocusedUserId("me");
+                dispatch(setSelectedUserId(null));
+              }}
             />
           </div>
           {/* 상대방 비디오 */}
@@ -144,7 +149,10 @@ const VideoPanel = ({
                   backgroundColor: "black",
                   borderRadius: "12px",
                 }}
-                onClick={() => setFocusedUserId(Number(userId))}
+                onClick={() => {
+                  setFocusedUserId(Number(userId));
+                  dispatch(setSelectedUserId(Number(userId)));
+                }}
                 ref={(el: HTMLVideoElement | null) => {
                   if (el && stream) {
                     el.srcObject = stream;

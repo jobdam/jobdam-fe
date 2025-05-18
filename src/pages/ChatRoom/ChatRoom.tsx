@@ -1,5 +1,5 @@
 /** @format */
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { IMessage } from "@stomp/stompjs";
 import { useChatSubscribe } from "@/services/webSockect/chat/useChatSubscribe";
@@ -18,7 +18,7 @@ import { useInitInterviewMutation } from "./api/post-initInterview";
 const ChatRoom = () => {
   //공통 설정//
   const { roomId } = useParams();
-  const myUserId = getUserIdFromJwt();
+  const myUserId = useMemo(() => getUserIdFromJwt(), []);
   const navigate = useNavigate();
   const location = useLocation();
   const isFirstJoinRef = useRef(location.state?.firstJoin ?? false);

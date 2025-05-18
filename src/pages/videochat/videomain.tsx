@@ -12,8 +12,11 @@ import {
 import { useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import InterviewPanel from "./components/interview/InterviewPanel";
-import VideoPanel from "./components/video/videoPanel";
 import { fetchUserInterviewData } from "./api/get-interviewFullData";
+import VideoPanel from "./components/video/VideoPanel";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { setInterviewData } from "@/store/slices/videoChatInterview";
 
 const Videomain = () => {
   ////공통////
@@ -56,7 +59,10 @@ const Videomain = () => {
   );
 
   ///인터뷰 관련/////
-
+  const dispatch = useDispatch();
+  const interviewDataMap = useSelector(
+    (state: RootState) => state.videoChatInterview.interviewDataMap
+  );
   useEffect(() => {
     if (!roomId) {
       navigate(-1);
@@ -151,13 +157,23 @@ const Videomain = () => {
             roomId!,
             stream!
           );
-          const offerUserInfo = await fetchUserInterviewData(data.senderId);
-          console.log("상대방 OFFER 정보:", offerUserInfo);
+          if (!interviewDataMap[data.senderId]) {
+            //인터뷰초기데이터를 가져와 리덕스에저장
+            const offerUserInfo = await fetchUserInterviewData(data.senderId);
+            dispatch(
+              setInterviewData({ userId: data.senderId, data: offerUserInfo })
+            );
+          }
           break;
         case "ANSWER": //answer를받는다면
           await handleAnswer({ sdp: data.sdp, type: "answer" }, data.senderId);
-          const answerUserInfo = await fetchUserInterviewData(data.senderId);
-          console.log("상대방 OFFER 정보:", answerUserInfo);
+          if (!interviewDataMap[data.senderId]) {
+            //인터뷰초기데이터를 가져와 리덕스에저장
+            const answerUserInfo = await fetchUserInterviewData(data.senderId);
+            dispatch(
+              setInterviewData({ userId: data.senderId, data: answerUserInfo })
+            );
+          }
           break;
         case "CANDIDATE": //candidate를받는다면
           await handleCandidate(
