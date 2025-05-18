@@ -4,6 +4,10 @@ import * as React from "react";
 // import { useSearchParams } from "react-router";
 
 import { cn } from "@/utils/cn";
+import { useUser } from "@/lib/auth";
+import { useNavigate, useSearchParams } from "react-router";
+import { paths } from "@/config/paths";
+import { useLocation } from "react-router";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -25,15 +29,19 @@ export const AuthLayout = ({
   login = false,
 }: LayoutProps) => {
   //auth 에서 useUser를 하면 내정보를 불러오고,
-  // const user = useUser();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { data } = useUser();
 
-  // useEffect(() => {
-  //   if (user.data) {
-  //     navigate(redirectTo ? redirectTo : paths.home.getHref(), {
-  //       replace: true,
-  //     });
-  //   }
-  // }, [user.data, navigate, redirectTo]);
+  React.useEffect(() => {
+    if (data && location.pathname !== "/mypage/post-profile") {
+      navigate(redirectTo ? redirectTo : paths.home.getHref(), {
+        replace: true,
+      });
+    }
+  }, [data, navigate, redirectTo]);
 
   // console.log(user);
   //   useEffect(() => {

@@ -3,29 +3,29 @@
 //프로파일, 모의 면접등에 들어갈 데이터
 export const educationOptions = [
   {
-    label: 1,
-    value: "대학교(4년제)",
+    label: "대학교(4년제)",
+    value: "university",
   },
-  { label: 2, value: "대학교(2,3년제)" },
+  { label: "대학교(2,3년제)", value: "college" },
   {
-    label: 3,
-    value: "대학원",
+    label: "대학원",
+    value: "graduate-school",
   },
-  { label: 4, value: "고등학교" },
+  { label: "고등학교", value: " high-school" },
 ];
 
 export const targetCompany = [
-  { label: 1, value: "대기업" },
-  { label: 2, value: "중소기업" },
-  { label: 3, value: "스타트업" },
+  { label: "대기업", value: "large" },
+  { label: "중소기업", value: "small" },
+  { label: "스타트업", value: "start-up" },
 ];
 
 export const stateOptions = [
-  { label: 1, value: "졸업" },
-  { label: 2, value: "입학" },
-  { label: 3, value: "휴학" },
+  { label: "졸업", value: "graduate" },
+  { label: "입학", value: "entrance" },
+  { label: "휴학", value: "absence" },
 ];
 export const experienceOptions = [
-  { label: "신입", value: "newbie" },
-  { label: "경력", value: "experienced" },
+  { id: 1, label: "신입", value: "newbie" },
+  { id: 2, label: "경력", value: "experienced" },
 ];

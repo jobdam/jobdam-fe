@@ -4,14 +4,21 @@ import AlertDialog from "@/components/ui/alertdialog/alertdialog";
 import React, { useState } from "react";
 
 import { useForm } from "react-hook-form";
+import { cn } from "@/utils/cn";
+import { useLocation } from "react-router";
 
 type FormValues = {
   profileImage: any;
 };
 type Props = {
-  onSelectFile: (file: File | null) => void;
+  onSelectFile?: (file: File | null) => void | undefined;
+  mypage?: boolean;
 };
-const ProfilePreview = ({ onSelectFile }: Props) => {
+const ProfilePreview = ({ onSelectFile, mypage }: Props) => {
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  const isEditing = pathname === "/mypage/edit"; // 예시
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [uploadPreview, setUploadPreview] = useState<string | null>(null);
@@ -49,11 +56,11 @@ const ProfilePreview = ({ onSelectFile }: Props) => {
   };
   const handleChangeClick = () => {
     if (file) {
-      onSelectFile(file); // ✅ 부모에 파일 전달
+      onSelectFile?.(file); // ✅ 부모에 파일 전달
       setUploadPreview(URL.createObjectURL(file));
     } else if (!file) {
       setUploadPreview(null);
-      onSelectFile(null); // ✅ 부모에 파일 전달
+      onSelectFile?.(null); // ✅ 부모에 파일 전달
     }
 
     setOpen(false); // 모달 닫기
@@ -122,8 +129,18 @@ const ProfilePreview = ({ onSelectFile }: Props) => {
       contents={prContents()}
       title="프로필 사진 변경"
     >
-      <button>
-        <div className="w-[170px] h-[170px] rounded-full bg-[#D9D9D9] cursor-pointer overflow-hidden">
+      <button
+        className={cn(
+          "pointer-events-none",
+          isEditing && "pointer-events-auto"
+        )}
+      >
+        <div
+          className={cn(
+            "w-[170px] h-[170px] rounded-full bg-[#D9D9D9] cursor-pointer overflow-hidden",
+            mypage && "w-[150px] h-[150px]"
+          )}
+        >
           {uploadPreview ? (
             <img
               src={uploadPreview}
@@ -134,23 +151,27 @@ const ProfilePreview = ({ onSelectFile }: Props) => {
           )}
         </div>
         {/* //카메라 이미지 커스텀하기 */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="
-          right-0 left-30 bottom-7 relative cursor-pointer
-          lucide lucide-camera-icon lucide-camera fill-black"
-        >
-          <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
-          <circle className="text-white" cx="12" cy="13" r="4" />
-        </svg>
+        <div className="w-[24px] h-[24px]">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={cn(
+              "right-0 left-30 bottom-7 relative cursor-pointer lucide lucide-camera-icon lucide-camera fill-black",
+
+              !isEditing && "hidden"
+            )}
+          >
+            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+            <circle className="text-white" cx="12" cy="13" r="4" />
+          </svg>
+        </div>
       </button>
     </AlertDialog>
   );

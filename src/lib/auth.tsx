@@ -1,6 +1,6 @@
 /** @format */
 import { AuthResponse, User } from "@/types/api";
-import { Navigate, useLocation } from "react-router";
+import { Navigate, useLocation } from "react-router-dom";
 
 import { configureAuth } from "react-query-auth";
 import { paths } from "@/config/paths";
@@ -114,14 +114,14 @@ export const authConfig = {
     console.log(response);
     return response;
   },
+
   loginFn: async (data: LoginInput) => {
     const response = await loginWithEmailAndPassword(data);
     const token = response.headers["authorization"].replace("Bearer ", "");
-    console.log(token);
     //localstorage에 로그인
-
     saveTokens(token);
 
+    console.log(response.user, response.data);
     return response.user;
   },
   registerFn: async (data: RegisterInput) => {
@@ -135,9 +135,7 @@ export const authConfig = {
     //로그아웃에 성공하면 token제거,
 
     clearTokens();
-
-    window.location.assign("/login");
-    // window.location.reload();
+    return null;
   },
 };
 
@@ -184,21 +182,20 @@ export const termsSchema = z.object({
   AllCheck: z.boolean().optional(), // UI용 (검사 대상 아님)
 });
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
-  const { data: user, isLoading } = useUser();
+  const { data: user } = useUser();
 
-  console.log(user, "user uiuiuiuiuiuiuiuiui");
-  if (isLoading) {
-    return <></>;
-  }
-  if (!user) {
+  console.log(user, location.pathname);
+
+  //로그인후 프로텍티드 라우터로 오는
+  //user정보가 받아지지 않은채로온다. 그래서 에러가발생.
+  //
+  if (user === null) {
     return (
       <Navigate to={paths.auth.login.getHref(location.pathname)} replace />
     );
   }
 
-  return children;
+  return <> {children}</>;
 };
-
-export default ProtectedRoute;
