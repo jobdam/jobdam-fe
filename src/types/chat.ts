@@ -1,10 +1,13 @@
 /** @format */
+
+import { ExperienceType, InterviewType } from "./api";
+
 //채팅 메세지부분
 export interface ChatUserMessage {
   id: string;
-  type: "USER";
+  type?: "USER";
   content: string;
-  time: string;
+  time?: string;
   userName?: string;
   profileImageUrl?: string;
   isMe: boolean;
@@ -17,16 +20,6 @@ export interface ChatSystemMessage {
 }
 
 export type ChatMessageType = ChatUserMessage | ChatSystemMessage;
-
-//유저 정보부분
-export type ExperienceType = "NEW" | "EXPERIENCED";
-export type InterviewType = "PERSONALITY" | "JOB" | "TECHNICAL";
-
-export const InterviewTypeLabel: Record<InterviewType, string> = {
-  PERSONALITY: "인성 면접",
-  JOB: "직무 면접",
-  TECHNICAL: "기술 면접",
-};
 
 export interface ChatUserInfo {
   userId: number;

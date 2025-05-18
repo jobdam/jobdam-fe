@@ -38,5 +38,16 @@ export const useChatPublisher = () => {
       body: JSON.stringify({ ready }),
     });
   };
-  return { sendChat, sendReady };
+
+  const sendChatInVideo = ({ roomId, content }: ChatSendPayload) => {
+    if (!client || !client.connected) {
+      console.warn("WebSocket 미연결 상태. 화상채팅 전송 실패");
+      return;
+    }
+    client.publish({
+      destination: `/app/video/chat/send/${roomId}`,
+      body: JSON.stringify({ content }),
+    });
+  };
+  return { sendChat, sendReady, sendChatInVideo };
 };

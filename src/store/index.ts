@@ -9,6 +9,7 @@ import selectReducer from "./slices/select";
 import websocketReducer from "./slices/websockets";
 import uiReducer from "./slices/uistate";
 import signupReducer from "./slices/signup";
+import videoChatInterviewReducer from "./slices/videoChatInterview";
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     websocket: websocketReducer,
     ui: uiReducer,
     signup: signupReducer,
+    videoChatInterview: videoChatInterviewReducer,
   },
 });
 

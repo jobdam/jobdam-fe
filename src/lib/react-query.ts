@@ -1,6 +1,10 @@
 /** @format */
 
-import { UseMutationOptions, DefaultOptions } from "@tanstack/react-query";
+import {
+  UseMutationOptions,
+  DefaultOptions,
+  QueryClient,
+} from "@tanstack/react-query";
 
 // ! gctime에 대하여
 
@@ -36,3 +40,7 @@ export type MutationConfig<
   Error,
   Parameters<MutationFnType>[0]
 >;
+
+export const queryClient = new QueryClient({
+  defaultOptions: queryConfig,
+});
