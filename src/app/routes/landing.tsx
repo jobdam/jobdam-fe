@@ -1,7 +1,6 @@
 /** @format */
 import { Button } from "@radix-ui/themes";
 import { Link } from "react-router-dom";
-import { SendHorizontal } from "lucide-react";
 import { Plus } from "lucide-react";
 import { paths } from "@/config/paths";
 import Avatars from "../../components/ui/avatar/avatars";
@@ -21,9 +20,9 @@ function Apps() {
       </p>
       <Link to={paths.emailverify.verifycheck.path}>이메일 인증 페이지</Link>
       <br></br>
-      <Link to="/post-profile">마이페이지</Link>
+      <Link to={paths.mypage.postdata.path}>마이페이지</Link>
       <br></br>
-      <Link to="/chatRoom">채팅방</Link>
+      <Link to={paths.chatroom.main.path}>채팅방</Link>
       <br></br>
       <Button>
         <Link to="/login">로그인페이지</Link>
@@ -31,7 +30,7 @@ function Apps() {
       </Button>
       <br></br>
       <Button>
-        <Link to="/authEntry">로그인진입페이지</Link>
+        <Link to={paths.auth.entry.path}>로그인진입페이지</Link>
       </Button>
       <br></br>
       <Button>
@@ -71,8 +70,6 @@ function Apps() {
           <button className="inline-flex size-[35px] items-center justify-center rounded-full bg-black text-violet11 outline-none hover:bg-violet3">
             <Plus strokeWidth={1} className=" text-white size-[30px]" />
           </button>
-
-          <SendHorizontal className="text-[#D9D9D9] w-[28.5px] h-[36px] absolute right-4 bottom-4 cursor-pointer z-10"></SendHorizontal>
         </div>
         <div className="flex gap-2">
           <Avatars

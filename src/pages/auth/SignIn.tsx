@@ -21,6 +21,7 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
   const login = useLogin({
     onSuccess,
   });
+
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
 
@@ -38,7 +39,7 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
       <Form
         form={form}
         onSubmit={(values) => {
-          login.mutate(values);
+          login.mutateAsync(values);
         }}
       >
         {({ register, formState }) => (
@@ -48,7 +49,7 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
             </h2> */}
 
             {/* <Text text={"이메일 "}></Text> */}
-            <div className=" mb-[10px] space-y-[30px]  text-left">
+            <div className=" mb-[10px] space-y-[30px]   text-left">
               <Input
                 type="email"
                 label="이메일"

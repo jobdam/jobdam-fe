@@ -21,6 +21,7 @@ interface SelectFieldProps extends FieldWrapperPassThroughProps {
   defaultValue?: string | number;
   className?: string;
   onChange?: (value: string | number) => void;
+  edit?: boolean;
 
   registration?: Partial<UseFormRegisterReturn>;
 }
@@ -30,6 +31,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
   (
     {
       value,
+      edit,
       options = [],
       labelkey = "label",
       valuekey = "value",
@@ -44,13 +46,14 @@ export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
     // );
 
     const handleSelect = (value: string | number) => {
+      console.log(value, "value");
       onChange?.(value); // 상태는 바깥에서 관리
       setIsOpen(false);
     };
     const selectedLabel =
       options.find((option) => option[valuekey] === value)?.[labelkey] ?? value;
 
-    console.log(labelkey, options);
+    console.log(selectedLabel);
     return (
       // <FieldWrapper label={label} error={error}>
       <div
@@ -58,7 +61,10 @@ export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
         ref={ref}
       >
         <div
-          className="flex items-center justify-between w-full h-[50px] px-4 rounded-md bg-white border border-gray-300 cursor-pointer"
+          className={cn(
+            "flex items-center justify-between w-full h-[50px] px-4 rounded-md bg-white border border-gray-300 cursor-pointer",
+            edit && "border-[#488fff]"
+          )}
           onClick={() => setIsOpen((prev) => !prev)}
         >
           <span className="text-sm text-gray-700">{selectedLabel}</span>
@@ -67,10 +73,10 @@ export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
 
         {isOpen && (
           <div className="absolute left-0 top-full mt-1 overflow-y-auto w-full max-h-[200px] rounded-md bg-white border border-gray-300 shadow-md z-10">
-            {options.map((option) => (
+            {options.map((option, index) => (
               <div
                 defaultValue={value}
-                key={Number(option[valuekey])}
+                key={option[valuekey] ?? index}
                 className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
                 onClick={() => handleSelect(option[valuekey])}
               >

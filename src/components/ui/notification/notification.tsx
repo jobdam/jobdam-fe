@@ -1,6 +1,7 @@
 /** @format */
 
 import { Info, CircleAlert, CircleX, CircleCheck } from "lucide-react";
+import { useEffect } from "react";
 
 const icons = {
   info: <Info className="size-6 text-blue-500" aria-hidden="true" />,
@@ -18,13 +19,24 @@ export type NotificationProps = {
     title: string;
     message?: string;
   };
+  duration?: number; // 밀리초 (예: 5000ms)
+
   onDismiss: (id: string) => void;
 };
 
 export const Notification = ({
   notification: { id, type, title, message },
   onDismiss,
+  duration = 5000,
 }: NotificationProps) => {
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      onDismiss(id);
+    }, duration);
+
+    return () => clearTimeout(timeout);
+  }, [id, onDismiss, duration]);
+
   return (
     <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
       <div className="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black/5">

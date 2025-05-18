@@ -4,19 +4,18 @@ import { useUser } from "@/lib/auth";
 import { useJobCategory } from "./api/get-jobcategory";
 import { paths } from "@/config/paths";
 import { Link } from "@/components/ui/link";
+import { companySizeMap, educationMap } from "@/types/api";
 export const labelMap: Record<string, string> = {
   name: "이름",
-  phone: "휴대폰 번호",
   email: "이메일",
   birthday: "생년월일",
   job: "직무",
   education: "학교(전공)",
-
   targetCompanySize: "희망 기업",
 };
 const MyProfile = () => {
-  //데이터 가공필요 , useUser에서 code를 주면 code를 jobcategory매칭해서
-  //새로운 data [{ }] 쌍을 만들어 반환하기 useMemo? 쓰면 좋을듯.
+  //데이터가공필요 userData에 들어가는 데이터는 영어
+  //target company size가
 
   const { data: userData } = useUser();
   const { data: jobData } = useJobCategory({});
@@ -24,26 +23,26 @@ const MyProfile = () => {
   console.log(userData, jobData);
 
   const job = jobData?.data.find((el) => {
-    return el.jobCode === userData?.jobCode || "10026";
+    return el.jobCode === userData?.jobCode;
   });
   //job을찾고
   console.log(job);
 
   const jobDetail = job?.details?.find((el) => {
-    return el.jobDetailCode === userData?.jobDetailCode || "100185";
+    return el.jobDetailCode === userData?.jobDetailCode;
   });
 
   console.log(jobDetail?.jobDetail);
+  //userData에서
 
   const profile = {
     name: userData?.name,
-    phone: "010-0000-000",
 
     email: userData?.email,
     birthday: userData?.birthday,
     job: `${job?.jobGroup} / ${jobDetail?.jobDetail} `,
-    targetCompanySize: userData?.targetCompanySize,
-    education: userData?.educationLevel,
+    targetCompanySize: companySizeMap[userData?.targetCompanySize ?? ""],
+    education: educationMap[userData?.educationLevel ?? ""],
   };
   return (
     <div className="border-[1px] rounded-[20px] border-[#488FFF] pt-[38px] pb-[84px] px-[60px] max-h-[626px] w-[915px]">
@@ -69,7 +68,7 @@ const MyProfile = () => {
                 {" "}
                 {value}
               </div>
-              <div> {profile[key] ?? "없음"}</div>
+              <div> {profile[key] || "없음"}</div>
             </li>
           );
         })}

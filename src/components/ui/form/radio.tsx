@@ -10,12 +10,14 @@ import { Label } from "./label";
 type Option = {
   label: string;
   value: string;
+  id: number;
 };
 
 interface RadioGroupProps
   extends React.ComponentPropsWithoutRef<typeof RadioPrimitive.Root> {
   options: Option[];
   className?: string;
+  edit?: boolean;
 }
 
 // 글자 진하게, 테두리 있는 버튼 스타일
@@ -26,7 +28,7 @@ const variance = cva(
 const Radio = React.forwardRef<
   React.ComponentRef<typeof RadioPrimitive.Root>,
   RadioGroupProps
->(({ options, className, ...props }, ref) => {
+>(({ options, edit, className, ...props }, ref) => {
   const [value, setValue] = React.useState(() => options[0]?.value || "");
 
   return (
@@ -44,9 +46,11 @@ const Radio = React.forwardRef<
 
           return (
             <RadioPrimitive.Item
-              key={option.value}
+              key={option.id}
               className={cn(
                 variance(),
+                edit &&
+                  "data-[state=checked]:border-[#488fff] data-[state=checked]:font-semibold  data-[state=checked]:text-[black]",
                 isFirst && "rounded-l-[10px]",
                 isLast && "rounded-r-[10px]"
               )}

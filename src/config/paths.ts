@@ -13,31 +13,33 @@ export const paths = {
   },
 
   auth: {
+    root: {
+      path: "/auth",
+    },
     oauth: {
-      path: "/oauth-redirect",
+      path: "/auth/oauth-redirect",
+      getHref: (redirectTo?: string | null | undefined) =>
+        `/auth/oauth-redirect${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
     },
     register: {
-      path: "/register",
+      path: "/auth/register",
       getHref: (redirectTo?: string | null | undefined) =>
-        `/register${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
+        `/auth/register${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
     },
     login: {
-      path: "/login",
+      path: "/auth/login",
       getHref: (redirectTo?: string | null | undefined) =>
-        `/login${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
+        `/auth/login${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
     },
 
     entry: {
-      path: "/authEntry",
+      path: "/auth/authEntry",
       getHref: (redirectTo?: string | null | undefined) =>
-        `/authEntry${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
-    },
-    TermsAgreement: {
-      path: "/termsAgreement",
+        `/auth/authEntry${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
     },
   },
   interview: {
-    main: { path: "/main", getHref: "/main" },
+    main: { path: "/interview", getHref: "/interview" },
     register: {
       path: "/interview/register",
       getHref: "/interview/register",
@@ -46,7 +48,6 @@ export const paths = {
     waiting: {
       path: "/interview/waiting",
     },
-    finish: { path: "/interview" },
   },
   chatroom: {
     main: {
@@ -79,11 +80,11 @@ export const paths = {
   },
 
   mypage: {
-    me: {
+    root: {
       path: "/mypage",
     },
     postdata: {
-      path: "/post-profile",
+      path: "/mypage/post-profile",
     },
     editdata: {
       path: "/mypage/edit",
@@ -99,6 +100,10 @@ export const paths = {
     },
   },
   videochat: {
+    root: {
+      path: "/videoChat",
+    },
+
     main: {
       path: "/videoChat/:roomId",
       getHref: (roomId?: string | number) =>

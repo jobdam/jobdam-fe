@@ -5,16 +5,19 @@ import { paths } from "@/config/paths";
 import { Link } from "../ui/link";
 import { cn } from "@/utils/cn";
 import { useLocation } from "react-router";
+import ProfilePreview from "@/pages/Mypage/components/profilepreview";
 
 interface MypageLayoutProps {
   children: ReactNode;
   title: string;
   button?: boolean;
   subtitle?: string;
+  className?: any;
+  onSelectFile?: (file: File | null) => void | undefined;
 }
 
 const data = [
-  { id: 1, name: "내 프로필", link: paths.mypage.me.path },
+  { id: 1, name: "내 프로필", link: paths.mypage.root.path },
   { id: 2, name: "면접 피드백", link: paths.mypage.feedback.path },
   { id: 3, name: "이력서 관리", link: paths.mypage.resume.path },
 ];
@@ -24,6 +27,8 @@ const MypageLayout = ({
   title,
   button = false,
   subtitle,
+  className,
+  onSelectFile,
 }: MypageLayoutProps) => {
   const location = useLocation(); // 현재 URL 위치
   const [activeTab, setActiveTab] = React.useState(1);
@@ -36,16 +41,23 @@ const MypageLayout = ({
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen w-[1920px] flex-row justify-center ">
+    <div
+      className={cn(
+        "flex min-h-screen w-full flex-row justify-center ",
+        className
+      )}
+    >
       {/* <div className="flex gap-x-[117px] items-start "> */}
       {/* 사이드바 */}
       <div className="flex flex-col w-[200px] shrink-0 mt-[137px] mr-[102px] relative">
         <div>
-          {/* 프로필 사진 */}
-          <div className="w-[150px] h-[150px] mb-[43px] bg-[] rounded-full bg-[#D9D9D9]"></div>
-
+          {/* 프로필 사진  mypage에선 카메라가 안보이다가 edit일때 보이고 preview가 활성화 되어야 한다.*/}
+          <ProfilePreview
+            onSelectFile={onSelectFile}
+            mypage={true}
+          ></ProfilePreview>
           {/* 메뉴 리스트 */}
-          <ul className="flex flex-col gap-y-[20px]">
+          <ul className="flex flex-col mt-[43px] gap-y-[20px]">
             {data.map((opt) => (
               <li
                 key={opt.id}
@@ -68,8 +80,8 @@ const MypageLayout = ({
       </div>
 
       {/* 본문 영역 */}
-      <div className="flex flex-col mt-[105px] gap-y-[47px]">
-        <div className="flex flex-row">
+      <div className="flex flex-col mt-[105px]  gap-y-[47px]">
+        <div className="flex flex-row ">
           <div className="flex flex-col">
             <h2 className="text-[32px] font-semibold leading-[150%]">
               {title}
