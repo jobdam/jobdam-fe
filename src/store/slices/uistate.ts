@@ -45,7 +45,7 @@ const uiSlice = createSlice({
       state.selectList = action.payload;
     },
     setErrorDuplicate: (state, action: PayloadAction<string>) => {
-      state.selectList = action.payload;
+      state.ErrorDuplicate = action.payload;
     },
   },
 });

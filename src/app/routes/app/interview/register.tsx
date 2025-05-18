@@ -1,7 +1,7 @@
 /** @format */
 
 import InterviewLayout from "@/components/layout/interview-layout";
-import InterviewRegister from "@/pages/interview/mathcingregister";
+import InterviewRegister from "@/pages/interview/mathchingregister";
 
 const InterviewRegisterRoute = () => {
   // const navigate = useNavigate();

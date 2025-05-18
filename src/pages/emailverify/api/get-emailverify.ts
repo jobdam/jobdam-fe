@@ -6,7 +6,6 @@ import { QueryConfig } from "@/lib/react-query";
 //이메일 인증하기 get을통해 불러오고 인증을통해 넘어가게끔.
 export const getVerifyEmail = (token: string) => {
   const response = api.get("/verify", { params: { token } });
-  console.log(response);
   return response;
 };
 

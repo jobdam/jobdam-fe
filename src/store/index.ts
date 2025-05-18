@@ -9,6 +9,7 @@ import selectReducer from "./slices/select";
 import websocketReducer from "./slices/websockets";
 import uiReducer from "./slices/uistate";
 import signupReducer from "./slices/signup";
+import imageReducer from "./slices/image";
 import videoChatInterviewReducer from "./slices/videoChatInterview";
 
 export const store = configureStore({
@@ -19,6 +20,7 @@ export const store = configureStore({
     websocket: websocketReducer,
     ui: uiReducer,
     signup: signupReducer,
+    image: imageReducer,
     videoChatInterview: videoChatInterviewReducer,
   },
 });

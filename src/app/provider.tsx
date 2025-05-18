@@ -32,7 +32,6 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         <QueryClientProvider client={queryClient}>
           {import.meta.env.VITE_ENV && <ReactQueryDevtools />}
           <Notifications />
-
           {children}
         </QueryClientProvider>
       </ErrorBoundary>

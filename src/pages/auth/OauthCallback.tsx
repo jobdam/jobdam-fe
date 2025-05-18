@@ -12,8 +12,6 @@ const OauthCallback = () => {
 
   const token = URLsearchParams.get("token") ?? "";
 
-  console.log(token);
-
   const { data, isSuccess } = useGetOauth({ params: token });
 
   useEffect(() => {

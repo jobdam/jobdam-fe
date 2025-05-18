@@ -9,6 +9,10 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   base: "/",
   plugins: [react(), tailwindcss()],
+  optimizeDeps: {
+    include: ["pdfjs-dist/build/pdf.worker.mjs"],
+  },
+
   resolve: {
     alias: {
       "@": "/src", // src 디렉토리를 @로 alias 설정

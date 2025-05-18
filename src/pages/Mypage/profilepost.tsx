@@ -18,14 +18,6 @@ import { usePostProfile } from "./api/post-profile";
 
 import ProfilePreview from "./components/profilepreview";
 
-// type FormData = {
-//   jobCode: string;
-//   jobDetailCode: string;
-//   edu: string;
-//   state: string;
-//   company: string;
-// };
-//
 import { useNavigate, useSearchParams } from "react-router";
 import { paths } from "@/config/paths";
 
