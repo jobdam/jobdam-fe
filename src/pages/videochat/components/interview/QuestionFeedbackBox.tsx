@@ -97,21 +97,19 @@ const QuestionFeedbackBox = ({
       {/* 피드백 입력창 */}
       <div className="rounded-xl overflow-hidden border border-[#E0E0E0] shadow-sm">
         {/* 질문 헤더 */}
-        <div className="flex items-center gap-2 bg-[#488FFF] px-4 py-2">
-          <span className="text-white font-semibold text-sm">
-            {" "}
-            {context ? context : "질문을 선택해주세요"}
+        <div className="flex items-center justify-center gap-2 bg-[#488FFF] px-4 py-2">
+          <span className="text-white text-center font-semibold text-sm">
+            {context ? context : "질문을 선택해주세요."}
           </span>
         </div>
 
         {/* 피드백 입력 영역 */}
         <div className="relative bg-white px-4 py-3">
-          <input
-            type="text"
+          <textarea
             value={feedback}
             onChange={(e) => setFeedback(e.target.value)}
             placeholder="피드백을 작성해주세요."
-            className="w-full pr-8 text-sm placeholder-gray-400 text-gray-800 outline-none"
+            className="w-full pr-8 resize-none pr-8 text-sm placeholder-gray-400 text-gray-800 outline-none"
           />
           <button
             onClick={handleFeedBackSubmit}
@@ -129,7 +127,7 @@ const QuestionFeedbackBox = ({
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="추가 질문을 작성해주세요"
-            className="w-full h-[90px] resize-none pr-8 text-sm placeholder-gray-400 text-gray-800 outline-none"
+            className="w-full resize-none pr-8 text-sm placeholder-gray-400 text-gray-800 outline-none"
           />
           <button
             onClick={handleQuestionSubmit}

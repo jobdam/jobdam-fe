@@ -72,7 +72,7 @@ const InterviewPanel = () => {
         className="w-[530px] h-[90%]
       border-[1px] border-[#d9d9d9] shadow-custom
       bg-white rounded-[20px] pt-[28px] pb-[28px] px-[18px]
-      flex flex-col justify-between"
+      flex flex-col justify-start"
       >
         {" "}
         {/* //ai추천질문 버튼 이력서 보기 버튼 */}
@@ -97,54 +97,60 @@ const InterviewPanel = () => {
             이력서 보기
           </button>
         </div>
-        {/* 질문 영역 */}
-        <div
-          ref={scrollRef}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          className="bg-[#488FFF] rounded-[20px] w-full max-h-[350px] overflow-y-auto scrollbar-none px-[24px] py-[23px]"
-        >
-          <ul className="list-disc px-[15px] flex gap-y-[20px] flex-col">
-            {interviewQuestions?.map((el) => (
-              <li
-                key={el.interviewQuestionId}
-                onClick={() => setSelectedQuestionId(el.interviewQuestionId)}
-                className={cn(
-                  "group relative cursor-pointer text-white transition-opacity duration-200 pr-[70px]",
-                  selectedQuestionId === el.interviewQuestionId
-                    ? "font-bold opacity-100"
-                    : "opacity-50 hover:opacity-100"
-                )}
-              >
-                {el.context}
-                {/* 오른쪽에 나타나는 질문하기 텍스트 */}
-                <span className="absolute right-[-20px] top-1/2 -translate-y-1/2 bg-white/20 text-white text-xs rounded-full px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1">
-                  <span className="text-sm">💬</span>
-                  질문하기
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        {/* 피드백/질문 입력 */}
-        <div className="mt-4 w-full">
-          <QuestionFeedbackBox
-            questionId={selectedQuestionId}
-            interviewId={interviewData.interviewId}
-            context={
-              interviewQuestions?.find(
-                (q) => q.interviewQuestionId === selectedQuestionId
-              )?.context || ""
-            }
-            onNewQuestionCreated={(newId) => setSelectedQuestionId(newId)}
-          />
-        </div>
+        {/* 질문+인터뷰 영역 */}
+        {ai && (
+          <div>
+            {/* 질문 영역 */}
+            <div
+              ref={scrollRef}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              className="bg-[#488FFF] rounded-[20px] w-full max-h-[350px] overflow-y-auto scrollbar-none px-[24px] py-[23px]"
+            >
+              <ul className="list-disc px-[15px] flex gap-y-[20px] flex-col">
+                {interviewQuestions?.map((el) => (
+                  <li
+                    key={el.interviewQuestionId}
+                    onClick={() =>
+                      setSelectedQuestionId(el.interviewQuestionId)
+                    }
+                    className={cn(
+                      "group relative cursor-pointer text-white transition-opacity duration-200 pr-[70px]",
+                      selectedQuestionId === el.interviewQuestionId
+                        ? "font-bold opacity-100"
+                        : "opacity-50 hover:opacity-100"
+                    )}
+                  >
+                    {el.context}
+                    {/* 오른쪽에 나타나는 질문하기 텍스트 */}
+                    <span className="absolute right-[-20px] top-1/2 -translate-y-1/2 bg-white/20 text-white text-xs rounded-full px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1">
+                      <span className="text-sm">💬</span>
+                      질문하기
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {/* 피드백/질문 입력 */}
+            <div className="mt-4 w-full space-y-4">
+              <QuestionFeedbackBox
+                questionId={selectedQuestionId}
+                interviewId={interviewData.interviewId}
+                context={
+                  interviewQuestions?.find(
+                    (q) => q.interviewQuestionId === selectedQuestionId
+                  )?.context || ""
+                }
+                onNewQuestionCreated={(newId) => setSelectedQuestionId(newId)}
+              />
+            </div>
+          </div>
+        )}
         {/* 이력서 영역 */}
         {resume && (
-          <div className="mt-4 px-2">
-            <div className="text-sm text-gray-500 mb-2">이력서</div>
+          <div className="mt-1 px-2">
             {resumeUrl ? (
-              <ResumeViewer resumeUrl={resumeUrl} />
+              <ResumeViewer resumeUrl="{resumeUrl}" />
             ) : (
               <p className="text-gray-400 text-sm">
                 이력서를 등록하지 않은 유저입니다.
