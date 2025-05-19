@@ -17,9 +17,7 @@ export const usePeerMap = (
       //연결 객체생성!(환경설정값 많은데 default로하고 stun/turn서버만 설정)
       const pc = new RTCPeerConnection({
         iceServers: [
-          {
-            urls: "stun:turn.jobdam.site:3478",
-          },
+          { urls: "stun:stun.l.google.com:19302" },
           {
             urls: "turns:turn.jobdam.site:5349?transport=tcp",
             username: "user",
@@ -46,6 +44,7 @@ export const usePeerMap = (
       //그럼 서버는 이미 웹소켓을 끊엇다 연결해서 새로운 pc stream을 생성한다.
       //그래서 새로고침시 pc생성단계에서 기존정보를지우고 새정보를입력한다.
       pc.onconnectionstatechange = () => {
+        console.log("p2p상태변경 : ", targetUserId, pc.connectionState);
         if (onConnectionStateChange)
           onConnectionStateChange(pc.connectionState);
 
@@ -61,11 +60,12 @@ export const usePeerMap = (
       //화면송출을 위한 트랙설정.(훅에저장) a가offer받을떄, answer를b가받을때실행
       pc.ontrack = (event) => {
         const [remoteStream] = event.streams;
+        console.log("[Peer] ontrack event:", targetUserId, remoteStream, event);
         if (remoteStream) {
           addRemoteStream(targetUserId, remoteStream);
         }
       };
-
+      console.log("[PeerMap] Set peer for", targetUserId, pc);
       peerMapRef.current.set(targetUserId, pc);
       return pc;
     },

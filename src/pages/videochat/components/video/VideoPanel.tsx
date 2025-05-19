@@ -12,8 +12,9 @@ import { useChatSubscribe } from "@/services/webSockect/chat/useChatSubscribe";
 import { useChatPublisher } from "@/services/webSockect/chat/useChatPublisher";
 import ChatOverlay from "./ChatOverLay";
 import Utility from "./Utility";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSelectedUserId } from "@/store/slices/videoChatInterview";
+import { RootState } from "@/store";
 
 interface VideoPanelProps {
   //비디오 스트림
@@ -36,7 +37,10 @@ const VideoPanel = ({
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
   //메인화면 전환용
   const mainVideoRef = useRef<HTMLVideoElement | null>(null);
-  const [focusedUserId, setFocusedUserId] = useState<"me" | number>("me");
+
+  const selectedUserId = useSelector(
+    (state: RootState) => state.videoChatInterview.selectedUserId
+  );
 
   //채팅
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -76,7 +80,6 @@ const VideoPanel = ({
     destination: `/topic/videoChat/${roomId}`,
     onMessage: handleChatMessage,
   });
-
   //내화면 초기셋팅
   useEffect(() => {
     if (localVideoRef.current && localStream) {
@@ -84,18 +87,29 @@ const VideoPanel = ({
     }
   }, [localStream]);
 
+  // 메인 비디오 전환
   useEffect(() => {
-    if (!mainVideoRef.current) return;
+    if (!mainVideoRef.current) return; //돔할당 기다리는거임
+    if (!localStream) return; //로컬스트림 할당안됬으면
+    if (!myUserId) return;
 
-    if (focusedUserId === "me" && localStream) {
-      mainVideoRef.current.srcObject = localStream;
+    let mainVideo: MediaStream | null = null;
+    //처음입장이거나 나를클릭하면
+    if (!selectedUserId || selectedUserId === myUserId) {
+      mainVideo = localStream;
     } else {
-      const targetStream = remoteStreams[focusedUserId];
-      if (targetStream) {
-        mainVideoRef.current.srcObject = targetStream;
-      }
+      //다른사람클릭하면
+      mainVideo = remoteStreams[selectedUserId] || null;
     }
-  }, [focusedUserId, localStream, remoteStreams]);
+
+    //같은화면이 2개이상되면 버그나서 복사본으로해결
+    if (mainVideo) {
+      const clone = new MediaStream(mainVideo.getTracks());
+      mainVideoRef.current.srcObject = clone;
+    } else {
+      mainVideoRef.current.srcObject = null;
+    }
+  }, [selectedUserId, localStream, remoteStreams, myUserId]);
 
   return (
     <div className="flex flex-col justify-between h-[90%] w-[75%] p-4 bg-white border border-[#d9d9d9] rounded-[20px] shadow-custom">
@@ -131,8 +145,7 @@ const VideoPanel = ({
               muted
               className="w-[200px] h-[150px] bg-black rounded-md object-cover cursor-pointer"
               onClick={() => {
-                setFocusedUserId("me");
-                dispatch(setSelectedUserId(null));
+                dispatch(setSelectedUserId(myUserId));
               }}
             />
           </div>
@@ -143,14 +156,8 @@ const VideoPanel = ({
                 data-userid={userId}
                 autoPlay
                 playsInline
-                style={{
-                  width: "320px",
-                  height: "240px",
-                  backgroundColor: "black",
-                  borderRadius: "12px",
-                }}
+                className="w-[200px] h-[150px] bg-black rounded-md object-cover cursor-pointer"
                 onClick={() => {
-                  setFocusedUserId(Number(userId));
                   dispatch(setSelectedUserId(Number(userId)));
                 }}
                 ref={(el: HTMLVideoElement | null) => {

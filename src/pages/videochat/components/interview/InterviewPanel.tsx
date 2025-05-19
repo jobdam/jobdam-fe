@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { cn } from "@/utils/cn";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { setSelectedUserId } from "@/store/slices/videoChatInterview";
 import QuestionFeedbackBox from "./QuestionFeedbackBox";
 import { useState } from "react";
 import ResumeViewer from "./ResumeViewer";
@@ -46,15 +45,14 @@ const InterviewPanel = () => {
   );
 
   if (!selectedUserId) {
-    dispatch(setSelectedUserId(37));
-    // return (
-    //   <div className="w-[530px] h-[90%] flex items-center justify-center text-gray-500 text-center bg-white border border-[#d9d9d9] rounded-[20px] shadow-custom">
-    //     <p>
-    //       썸네일을 클릭해 상대방의 인터뷰 정보를 확인해보세요
-    //       <br /> (자신에 대한 인터뷰 정보는 확인할 수 없습니다.)
-    //     </p>
-    //   </div>
-    // );
+    return (
+      <div className="w-[530px] h-[90%] flex items-center justify-center text-gray-500 text-center bg-white border border-[#d9d9d9] rounded-[20px] shadow-custom">
+        <p>
+          썸네일을 클릭해 상대방의 인터뷰 정보를 확인해보세요
+          <br /> (자신에 대한 인터뷰 정보는 확인할 수 없습니다.)
+        </p>
+      </div>
+    );
   }
 
   if (!interviewData) {
@@ -150,7 +148,7 @@ const InterviewPanel = () => {
         {resume && (
           <div className="mt-1 px-2">
             {resumeUrl ? (
-              <ResumeViewer resumeUrl="{resumeUrl}" />
+              <ResumeViewer resumeUrl={resumeUrl} />
             ) : (
               <p className="text-gray-400 text-sm">
                 이력서를 등록하지 않은 유저입니다.
