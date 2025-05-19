@@ -1,7 +1,7 @@
 /** @format */
 import { Document, Page, pdfjs } from "react-pdf";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(

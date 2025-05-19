@@ -3,15 +3,26 @@ import { Input } from "@/components/ui/form";
 import { RootState } from "@/store";
 import { Send } from "lucide-react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { usePostFeedBackMutation } from "../../api/post-feedBack";
+import { usePostQuestionMutation } from "../../api/post-question";
+import { addInterviewQuestion } from "@/store/slices/videoChatInterview";
 
 interface Props {
-  questionId: number;
-  context: string;
+  questionId?: number | null;
+  interviewId: number;
+  context?: string | null;
+  onNewQuestionCreated: (newId: number) => void;
 }
 
-const QuestionFeedbackBox = ({ questionId, context }: Props) => {
+const QuestionFeedbackBox = ({
+  questionId,
+  interviewId,
+  context,
+  onNewQuestionCreated,
+}: Props) => {
+  const dispatch = useDispatch();
+
   const [feedback, setFeedback] = useState("");
   const [question, setQuestion] = useState("");
 
@@ -23,6 +34,7 @@ const QuestionFeedbackBox = ({ questionId, context }: Props) => {
     mutationConfig: {
       onSuccess: () => {
         alert("피드백 전송에 성공하였습니다.");
+        setFeedback("");
       },
       onError: (err) => {
         alert("피드백 전송에 실패하였습니다. 다시 전송 해주세요.");
@@ -31,19 +43,34 @@ const QuestionFeedbackBox = ({ questionId, context }: Props) => {
     },
   });
 
-  //   const { mutate: submitQuestion } = usePostQuestionMutation({
-  //     mutationConfig: {
-  //       onSuccess: () => {
-  //         alert("질문 추가에 성공하였습니다.");
-  //       },
-  //       onError: (err) => {
-  //         alert("질문 추가에 실패하였습니다. 다시 추가 해주세요.");
-  //         console.error(err);
-  //       },
-  //     },
-  //   });
+  const { mutate: submitQuestion } = usePostQuestionMutation({
+    mutationConfig: {
+      onSuccess: (newQuestionId) => {
+        alert("질문 추가에 성공하였습니다.");
+        dispatch(
+          addInterviewQuestion({
+            userId: selectedUserId!,
+            question: {
+              interviewQuestionId: newQuestionId,
+              context: question,
+            },
+          })
+        );
+        onNewQuestionCreated(newQuestionId);
+        setQuestion("");
+      },
+      onError: (err) => {
+        alert("질문 추가에 실패하였습니다. 다시 추가 해주세요.");
+        console.error(err);
+      },
+    },
+  });
 
   const handleFeedBackSubmit = async () => {
+    if (!questionId) {
+      alert("질문을 먼저 선택해주세요");
+      return;
+    }
     if (!feedback.trim() || !selectedUserId) return;
 
     submitFeedback({
@@ -53,52 +80,66 @@ const QuestionFeedbackBox = ({ questionId, context }: Props) => {
         content: feedback,
       },
     });
-
-    setFeedback("");
   };
-
+  //질문추가 핸들러인데 상단에도 보여줘야함 리턴받아서 설정해야함
   const handleQuestionSubmit = async () => {
     if (!question.trim() || !selectedUserId) return;
-
-    setQuestion("");
+    submitQuestion({
+      interviewId,
+      payload: {
+        context: question,
+      },
+    });
   };
 
   return (
-    <div className="mt-[19px]">
-      <div className="text-[#488FFF] text-sm mb-2 font-semibold">
-        질문: {context}
-      </div>
+    <>
       {/* 피드백 입력창 */}
-      <div className="relative mb-4">
-        <Input
-          className="w-[495px] h-[120px]"
-          placeholder="피드백을 작성해주세요"
-          value={feedback}
-          onChange={(e) => setFeedback(e.target.value)}
-        />
-        <button
-          onClick={handleFeedBackSubmit}
-          className="absolute right-2 top-2"
-        >
-          <Send className="w-5 h-5 text-[#488FFF]" />
-        </button>
+      <div className="rounded-xl overflow-hidden border border-[#E0E0E0] shadow-sm">
+        {/* 질문 헤더 */}
+        <div className="flex items-center gap-2 bg-[#488FFF] px-4 py-2">
+          <span className="text-white font-semibold text-sm">
+            {" "}
+            {context ? context : "질문을 선택해주세요"}
+          </span>
+        </div>
+
+        {/* 피드백 입력 영역 */}
+        <div className="relative bg-white px-4 py-3">
+          <input
+            type="text"
+            value={feedback}
+            onChange={(e) => setFeedback(e.target.value)}
+            placeholder="피드백을 작성해주세요."
+            className="w-full pr-8 text-sm placeholder-gray-400 text-gray-800 outline-none"
+          />
+          <button
+            onClick={handleFeedBackSubmit}
+            className="absolute right-5 top-1/2 transform -translate-y-1/2"
+          >
+            <span className="text-gray-300 text-xl">➤</span>
+          </button>
+        </div>
       </div>
+
       {/* 추가질문 입력창 */}
-      <div className="relative">
-        <Input
-          className="w-[495px] h-[120px] mt-2"
-          placeholder="질문을 작성해주세요"
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-        />
-        <button
-          onClick={handleQuestionSubmit}
-          className="absolute right-2 top-2"
-        >
-          <Send className="w-5 h-5 text-[#488FFF]" />
-        </button>
+      <div className="rounded-xl overflow-hidden border border-[#E0E0E0] shadow-sm">
+        <div className="relative bg-white px-4 py-3">
+          <textarea
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            placeholder="추가 질문을 작성해주세요"
+            className="w-full h-[90px] resize-none pr-8 text-sm placeholder-gray-400 text-gray-800 outline-none"
+          />
+          <button
+            onClick={handleQuestionSubmit}
+            className="absolute right-5 top-1/2 transform -translate-y-1/2"
+          >
+            <span className="text-gray-300 text-xl">➤</span>
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -9,7 +9,6 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 const ResumeViewer = ({ resumeUrl }: { resumeUrl: string }) => {
   const [numPages, setNumPages] = useState<number | null>(null);
-
   const handleLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
   };
@@ -29,6 +28,7 @@ const ResumeViewer = ({ resumeUrl }: { resumeUrl: string }) => {
           <Page
             key={`page_${index + 1}`}
             pageNumber={index + 1}
+            scale={2}
             width={480}
             renderTextLayer={false}
             renderAnnotationLayer={false}

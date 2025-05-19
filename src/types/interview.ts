@@ -9,6 +9,7 @@ export interface InterviewRequest {
 
 export interface VideoChatInterviewResponse {
   resumeUrl: string | null;
+  interviewId: number;
   interviewQuestions: InterviewQuestion[] | null;
 }
 
