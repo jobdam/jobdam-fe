@@ -1,6 +1,6 @@
 /** @format */
 
-import { useState } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import ResumeCard from "./ResumeCard";
 import ProfileCard from "./Profilecard";
 import { ChatUserInfo } from "@/types/chat";
@@ -23,6 +23,8 @@ const UserPanel = ({ userList, myUserId, onReady }: UserPanelProps) => {
 
   const [isMeReady, setIsMeReady] = useState(false);
 
+  const [showResumeCard, setShowResumeCard] = useState(false);
+
   const participants: ParticipantView[] = userList.map((user) => ({
     id: user.userId,
     name: user.name,
@@ -30,15 +32,32 @@ const UserPanel = ({ userList, myUserId, onReady }: UserPanelProps) => {
     isReady: user.ready,
   }));
 
-  //내정보 골라내기
-  const me = participants.find((p) => p.id === myUserId);
-  //다른 유저정보 골라내기
-  const others = participants.filter((p) => p.id !== myUserId);
-  //둘의 정보를 합치기(null때문에)
-  const allParticipants = [...(me ? [me] : []), ...others];
+  // //내정보 골라내기
+  const me = useMemo(
+    () => participants.find((p) => p.id === myUserId),
+    [participants, myUserId]
+  );
+
+  // //다른 유저정보 골라내기
+  const others = useMemo(
+    () => participants.filter((p) => p.id !== myUserId),
+    [participants, myUserId]
+  );
+
+  // //둘의 정보를 합치기(null때문에)
+  const allParticipants = useMemo(() => {
+    return [...(me ? [me] : []), ...others];
+  }, [me, others]);
 
   //선택된 유저찾아서 정보보여주기
-  const selectedUser = userList.find((u) => u.userId === selectedUserId);
+  const selectedUser = useMemo(() => {
+    return userList.find((u) => u.userId === selectedUserId);
+  }, [userList, selectedUserId]);
+
+  // const me = participants.find((p) => p.id === myUserId);
+  // const others = participants.filter((p) => p.id !== myUserId);
+  // const allParticipants = [...(me ? [me] : []), ...others];
+  // const selectedUser = userList.find((u) => u.userId === selectedUserId);
 
   //준비상태 토글
   const handleToggleReady = () => {
@@ -47,13 +66,29 @@ const UserPanel = ({ userList, myUserId, onReady }: UserPanelProps) => {
     onReady(newReady);
   };
 
-  // 패널 크기 조절
-  const panelClassName = selectedUser
-    ? "w-[650px] bg-blue-50 p-4 flex flex-col justify-between h-full"
-    : "w-[400px] bg-blue-50 p-4 flex flex-col justify-between h-full";
+  const handleCardClick = useCallback((id: number) => {
+    setSelectedUserId(id);
+  }, []);
+
+  const handleTransitionEnd = () => {
+    if (selectedUser) {
+      setShowResumeCard(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!selectedUser) {
+      setShowResumeCard(false); // 패널이 줄어들면 바로 숨김
+    }
+  }, [selectedUser]);
 
   return (
-    <div className={panelClassName}>
+    <div
+      className={`transition-[width,max-width] ease-in-out duration-300
+      ${selectedUser ? "w-[550px]" : "w-[300px]"}
+      bg-blue-50 p-4 flex flex-col justify-center h-full`}
+      onTransitionEnd={handleTransitionEnd}
+    >
       {/* 상단 안내 */}
       <div>
         <div className="text-sm font-semibold mb-1 flex items-center gap-1">
@@ -63,9 +98,10 @@ const UserPanel = ({ userList, myUserId, onReady }: UserPanelProps) => {
           모두가 준비되면 바로 면접이 시작돼요.
         </p>
       </div>
-      <div className="flex gap-4">
+
+      <div className="flex p-2 justify-center items-stretch flex-1 min-w-[200px]">
         {/* 프로필카드 리스트 */}
-        <div className="flex flex-col gap-4 w-[200px] bg-blue-50 p-4 overflow-y-auto">
+        <div className="flex flex-col gap-4 min-w-[150px] bg-blue-50 p-2">
           {allParticipants.map((user) => (
             <ProfileCard
               key={user.id}
@@ -73,13 +109,13 @@ const UserPanel = ({ userList, myUserId, onReady }: UserPanelProps) => {
               profileImgUrl={user.profileImgUrl}
               isReady={user.isReady}
               isSelected={selectedUserId === user.id}
-              onClick={() => setSelectedUserId(user.id)}
+              onClick={() => handleCardClick(user.id)}
             />
           ))}
         </div>
 
         {/*이력서 카드 */}
-        {selectedUser && (
+        {selectedUser && showResumeCard && (
           <div className="flex-1">
             <ResumeCard
               user={selectedUser}
@@ -92,7 +128,7 @@ const UserPanel = ({ userList, myUserId, onReady }: UserPanelProps) => {
       {/* 준비 버튼 */}
       <button
         onClick={handleToggleReady}
-        className={`w-full py-2 rounded-md mt-4 text-white 
+        className={`w-64 py-2 rounded-md text-white self-center 
     ${isMeReady ? "bg-green-500 hover:bg-green-600" : "bg-blue-500 hover:bg-blue-600"}`}
       >
         {isMeReady ? "준비 취소" : "준비됐어요"}

@@ -195,24 +195,33 @@ const ChatRoom = () => {
   });
 
   return (
-    <div className="flex h-screen">
-      <div className="w-[800px] min-w-[800px]">
-        <UserPanel
-          userList={userList}
-          myUserId={myUserId!}
-          onReady={handleReadyStatus}
-        />
+    <div className="flex h-screen justify-center items-stretch">
+      <div className="inline-flex items-stretch gap-4">
+        <div className="flex-grow min-w-[300px] max-w-[600px] h-full">
+          <UserPanel
+            userList={userList}
+            myUserId={myUserId!}
+            onReady={handleReadyStatus}
+          />
+        </div>
+
+        <div className="flex-grow min-w-[800px] h-full">
+          <ChatPanel
+            messages={messages}
+            onSend={handleSend}
+            jobGroup={myUserInfo?.jobGroup ?? ""}
+            jobDetail={myUserInfo?.jobDetail ?? ""}
+            interviewType={myUserInfo?.interviewType ?? ""}
+          />
+        </div>
       </div>
-      <button onClick={handleLeave}>나가기</button>
-      <div className="flex flex-col flex-1">
-        <ChatPanel
-          messages={messages}
-          onSend={handleSend}
-          jobGroup={myUserInfo?.jobGroup ?? ""}
-          jobDetail={myUserInfo?.jobDetail ?? ""}
-          interviewType={myUserInfo?.interviewType ?? ""}
-        />
-      </div>
+
+      <button
+        onClick={handleLeave}
+        className="mt-4 self-center px-4 py-2 bg-red-500 text-white rounded"
+      >
+        나가기
+      </button>
     </div>
   );
 };
