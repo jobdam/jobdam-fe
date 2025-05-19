@@ -1,6 +1,9 @@
 /** @format */
 
-import { VideoChatInterviewResponse } from "@/types/interview";
+import {
+  InterviewQuestion,
+  VideoChatInterviewResponse,
+} from "@/types/interview";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface VideoChatInterviewState {
@@ -32,6 +35,18 @@ const videoChatInterviewSlice = createSlice({
         state.interviewDataMap[userId] = data;
       }
     },
+    addInterviewQuestion: (
+      state,
+      action: PayloadAction<{
+        userId: number;
+        question: InterviewQuestion;
+      }>
+    ) => {
+      const { userId, question } = action.payload;
+      if (state.interviewDataMap[userId]?.interviewQuestions) {
+        state.interviewDataMap[userId].interviewQuestions!.push(question);
+      }
+    },
     resetInterviewData: (state) => {
       state.selectedUserId = null;
       state.interviewDataMap = {};
@@ -39,7 +54,11 @@ const videoChatInterviewSlice = createSlice({
   },
 });
 
-export const { setSelectedUserId, setInterviewData, resetInterviewData } =
-  videoChatInterviewSlice.actions;
+export const {
+  setSelectedUserId,
+  setInterviewData,
+  addInterviewQuestion,
+  resetInterviewData,
+} = videoChatInterviewSlice.actions;
 
 export default videoChatInterviewSlice.reducer;

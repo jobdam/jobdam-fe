@@ -34,8 +34,12 @@ const Videomain = () => {
     stream,
     cameraTrack,
     screenTrack,
-
+    isMicOn,
+    isCameraOn,
     isScreenSharing,
+    toggleMic,
+    toggleCamera,
+    toggleScreenShare,
   } = useLocalMediaStream();
 
   //시그널 전송 훅
@@ -150,6 +154,7 @@ const Videomain = () => {
           await handleOffer(
             { sdp: data.sdp, type: "offer" },
             data.senderId,
+            roomId!,
             stream!
           );
           if (!interviewDataMap[data.senderId]) {
@@ -200,12 +205,12 @@ const Videomain = () => {
           localStream={stream}
           remoteStreams={remoteStreams}
           mediaControl={{
-            // isMicOn,
-            // isCameraOn,
+            isMicOn,
+            isCameraOn,
             isScreenSharing,
-            // toggleMic,
-            // toggleCamera,
-            // toggleScreenShare,
+            toggleMic,
+            toggleCamera,
+            toggleScreenShare,
           }}
           roomId={roomId!}
         />
