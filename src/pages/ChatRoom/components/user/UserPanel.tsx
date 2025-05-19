@@ -47,8 +47,13 @@ const UserPanel = ({ userList, myUserId, onReady }: UserPanelProps) => {
     onReady(newReady);
   };
 
+  // 패널 크기 조절
+  const panelClassName = selectedUser
+    ? "w-[650px] bg-blue-50 p-4 flex flex-col justify-between h-full"
+    : "w-[400px] bg-blue-50 p-4 flex flex-col justify-between h-full";
+
   return (
-    <div className="w-[800px] bg-blue-50 p-4 flex flex-col justify-between h-full">
+    <div className={panelClassName}>
       {/* 상단 안내 */}
       <div>
         <div className="text-sm font-semibold mb-1 flex items-center gap-1">
@@ -76,7 +81,10 @@ const UserPanel = ({ userList, myUserId, onReady }: UserPanelProps) => {
         {/*이력서 카드 */}
         {selectedUser && (
           <div className="flex-1">
-            <ResumeCard user={selectedUser} />
+            <ResumeCard
+              user={selectedUser}
+              onClose={() => setSelectedUserId(null)}
+            />
           </div>
         )}
       </div>
