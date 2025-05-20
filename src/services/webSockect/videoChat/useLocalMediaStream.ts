@@ -34,9 +34,14 @@ export const useLocalMediaStream = () => {
     if (ctx) {
       ctx.fillStyle = "black";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+      setInterval(() => {
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }, 1000);
     }
     const stream = canvas.captureStream();
     const track = stream.getVideoTracks()[0];
+
     return track;
   };
 

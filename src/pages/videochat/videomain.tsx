@@ -155,6 +155,7 @@ const Videomain = () => {
     async (data: SignalMessage) => {
       switch (data.signalType) {
         case "JOIN_LIST": //여긴offer를보내는곳
+          console.log("joinList", data);
           for (const userId of data.userIdList) {
             console.log("fistJoin", isFirstJoin);
             if (!isFirstJoin) {

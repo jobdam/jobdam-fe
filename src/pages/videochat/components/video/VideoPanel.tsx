@@ -15,6 +15,7 @@ import Utility from "./Utility";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedUserId } from "@/store/slices/videoChatInterview";
 import { RootState } from "@/store";
+import { useNavigate } from "react-router";
 
 interface VideoPanelProps {
   //비디오 스트림
@@ -33,6 +34,7 @@ const VideoPanel = ({
   //공통
   const myUserId = useMemo(() => getUserIdFromJwt(), []);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   //내화면 보기위해서 필요한것
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
   //메인화면 전환용
@@ -101,32 +103,52 @@ const VideoPanel = ({
       //다른사람클릭하면
       mainVideo = remoteStreams[selectedUserId] || null;
     }
+    const stream = remoteStreams[selectedUserId!];
+    console.log("[MAIN VIDEO] 선택된 userId", selectedUserId, stream);
+    if (stream) {
+      console.log(
+        "트랙 상태:",
+        stream.getVideoTracks().map((t) => t.readyState)
+      );
+    }
 
-    //같은화면이 2개이상되면 버그나서 복사본으로해결
     if (mainVideo) {
-      const clone = new MediaStream(mainVideo.getTracks());
-      mainVideoRef.current.srcObject = clone;
+      mainVideoRef.current.srcObject = mainVideo;
+      mainVideoRef.current.play().catch(() => {});
     } else {
       mainVideoRef.current.srcObject = null;
     }
   }, [selectedUserId, localStream, remoteStreams, myUserId]);
 
+  const handleExit = () => {
+    navigate("/", { replace: true });
+  };
+
   return (
     <div className="flex flex-col justify-between h-[90%] w-[75%] p-4 bg-white border border-[#d9d9d9] rounded-[20px] shadow-custom">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col w-full h-full gap-4">
         {/* 메인 비디오 */}
-        <div className="relative w-full h-[637px] bg-gray-300 rounded-lg">
+        <div className="relative w-full h-[70%] bg-gray-300">
+          <div className="absolute left-4 top-4 bottom-4 z-10">
+            <button
+              onClick={handleExit}
+              className="px-6 py-2 bg-neutral-700 text-white rounded-2xl shadow-md text-lg
+                        font-bold transition hover:bg-neutral-900 focus:outline-none cursor-pointers"
+            >
+              종료
+            </button>
+          </div>
           <div className="flex items-center justify-center w-full h-full">
             <video
               ref={mainVideoRef}
               autoPlay
               playsInline
               muted
-              className="w-[90%] h-[90%] object-cover rounded-lg"
+              className="w-[90%] h-[90%] object-cover"
             />
           </div>
           {/* 유틸 */}
-          <div className="absolute left-4 left-4 bottom-4 z-10">
+          <div className="absolute left-4 bottom-4 z-10">
             <Utility utility={utility} />
           </div>
           {/* 채팅창 */}
@@ -135,38 +157,46 @@ const VideoPanel = ({
           )}
         </div>
         {/* 하단 썸네일들 */}
-        <div className="flex flex-wrap justify-center gap-2 max-w-[960px] mx-auto mt-4">
+        <div className="flex flex-wrap w-full h-[30%] justify-center gap-2 max-w-[960px] mx-auto mt-4">
           {/* 내 비디오 (내비디오 상대방비디오는 하나로 합치기X 차후 기능추가시 별도로 해야 편함)*/}
-          <div className="flex gap-2 justify-center">
-            <video
-              ref={localVideoRef}
-              autoPlay
-              playsInline
-              muted
-              className="w-[200px] h-[150px] bg-black rounded-md object-cover cursor-pointer"
-              onClick={() => {
-                dispatch(setSelectedUserId(myUserId));
-              }}
-            />
-          </div>
+          <video
+            ref={localVideoRef}
+            autoPlay
+            playsInline
+            muted
+            className={`w-[25%] h-[80%] bg-black object-cover cursor-pointer
+            ${
+              selectedUserId === myUserId
+                ? "border-4 border-blue-500 shadow-lg"
+                : "border-2 border-transparent"
+            }
+            `}
+            onClick={() => {
+              dispatch(setSelectedUserId(myUserId));
+            }}
+          />
           {/* 상대방 비디오 */}
           {Object.entries(remoteStreams).map(([userId, stream]) => (
-            <div key={userId} className="flex gap-2 justify-center">
-              <video
-                data-userid={userId}
-                autoPlay
-                playsInline
-                className="w-[200px] h-[150px] bg-black rounded-md object-cover cursor-pointer"
-                onClick={() => {
-                  dispatch(setSelectedUserId(Number(userId)));
-                }}
-                ref={(el: HTMLVideoElement | null) => {
-                  if (el && stream) {
-                    el.srcObject = stream;
-                  }
-                }}
-              />
-            </div>
+            <video
+              data-userid={userId}
+              autoPlay
+              playsInline
+              className={`w-[30%] h-[80%] bg-black object-cover cursor-pointer
+               ${
+                 selectedUserId === Number(userId)
+                   ? "border-4 border-blue-500 shadow-lg"
+                   : "border-2 border-transparent"
+               }
+            `}
+              onClick={() => {
+                dispatch(setSelectedUserId(Number(userId)));
+              }}
+              ref={(el: HTMLVideoElement | null) => {
+                if (el && stream) {
+                  el.srcObject = stream;
+                }
+              }}
+            />
           ))}
         </div>
       </div>
