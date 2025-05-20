@@ -34,11 +34,6 @@ export default function ResumeCard({ user, onClose }: ResumeCardProps) {
           </div>
         </div>
       </div>
-
-      <div className="text-sm text-gray-800">
-        <strong>자기소개</strong>
-        <p>{user.introduce}</p>
-      </div>
       <div className="text-sm text-gray-800">
         <strong>자기소개</strong>
         <p className="mb-4">{user.introduce}</p>

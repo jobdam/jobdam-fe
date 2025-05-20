@@ -22,6 +22,7 @@ const ChatRoom = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isFirstJoinRef = useRef(location.state?.firstJoin ?? false);
+  const createdRef = useRef(location.state?.created /*?? Date()*/);
   ///채팅방 설정///
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const { sendChat, sendReady } = useChatPublisher();
@@ -64,6 +65,28 @@ const ChatRoom = () => {
       });
     }
   }, [roomId, myUserId]);
+
+  // 시간 설정
+  useEffect(() => {
+    const createdFromState = location.state?.created;
+
+    if (createdFromState) {
+      localStorage.setItem("created", createdFromState);
+      createdRef.current = createdFromState;
+    } else {
+      // 새로고침 후: localStorage에서 복구
+      const restored = localStorage.getItem("created");
+      if (restored) {
+        createdRef.current = restored;
+      } else {
+        // 해당 경우는 임의로 로컬 스토리지 값을 제거한 경우임.
+        // fallback (아예 없을 경우 방금 시간으로 초기화)
+        const now = "";
+        localStorage.setItem("created", now);
+        createdRef.current = now;
+      }
+    }
+  }, [location.state?.created, roomId]);
 
   //서버에서 오는 메세지 핸들러
   const handleMessage = useCallback(
@@ -201,6 +224,7 @@ const ChatRoom = () => {
           <UserPanel
             userList={userList}
             myUserId={myUserId!}
+            created={new Date(createdRef.current!)}
             onReady={handleReadyStatus}
           />
         </div>

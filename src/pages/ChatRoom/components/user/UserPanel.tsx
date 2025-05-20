@@ -4,10 +4,12 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import ResumeCard from "./ResumeCard";
 import ProfileCard from "./Profilecard";
 import { ChatUserInfo } from "@/types/chat";
+import InterviewNotice from "./InterviewNotice";
 
 interface UserPanelProps {
   userList: ChatUserInfo[];
   myUserId: number;
+  created: Date;
   onReady: (ready: boolean) => void;
 }
 
@@ -18,12 +20,19 @@ interface ParticipantView {
   isReady: boolean;
 }
 
-const UserPanel = ({ userList, myUserId, onReady }: UserPanelProps) => {
+const UserPanel = ({
+  userList,
+  myUserId,
+  created,
+  onReady,
+}: UserPanelProps) => {
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 
   const [isMeReady, setIsMeReady] = useState(false);
 
   const [showResumeCard, setShowResumeCard] = useState(false);
+
+  const [hasInterviewStarted, setHasInterviewStarted] = useState(false);
 
   const participants: ParticipantView[] = userList.map((user) => ({
     id: user.userId,
@@ -66,6 +75,14 @@ const UserPanel = ({ userList, myUserId, onReady }: UserPanelProps) => {
     onReady(newReady);
   };
 
+  //인터뷰 시작을 위한 준비
+  const handleStartInterview = () => {
+    const newReady = true;
+    setIsMeReady(newReady);
+    setHasInterviewStarted(true);
+    onReady(newReady);
+  };
+
   const handleCardClick = useCallback((id: number) => {
     setSelectedUserId(id);
   }, []);
@@ -90,14 +107,10 @@ const UserPanel = ({ userList, myUserId, onReady }: UserPanelProps) => {
       onTransitionEnd={handleTransitionEnd}
     >
       {/* 상단 안내 */}
-      <div>
-        <div className="text-sm font-semibold mb-1 flex items-center gap-1">
-          🕒 <span>면접 시작까지 00:10</span>
-        </div>
-        <p className="text-xs text-gray-600 mb-6">
-          모두가 준비되면 바로 면접이 시작돼요.
-        </p>
-      </div>
+      <InterviewNotice
+        created={created}
+        onStartInterview={() => handleStartInterview()}
+      />
 
       <div className="flex p-2 justify-center items-stretch flex-1 min-w-[200px]">
         {/* 프로필카드 리스트 */}
@@ -128,6 +141,7 @@ const UserPanel = ({ userList, myUserId, onReady }: UserPanelProps) => {
       {/* 준비 버튼 */}
       <button
         onClick={handleToggleReady}
+        disabled={hasInterviewStarted}
         className={`w-64 py-2 rounded-md text-white self-center 
     ${isMeReady ? "bg-green-500 hover:bg-green-600" : "bg-blue-500 hover:bg-blue-600"}`}
       >
