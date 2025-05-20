@@ -40,6 +40,8 @@ export const AuthLayout = ({
     "/auth/sign-up",
     "/auth/authEntry",
     "/auth/oauth-callback",
+    "/verify",
+    "/verify/*",
   ].includes(location.pathname);
 
   const { data } = shouldRunAuth ? useUser() : { data: null };

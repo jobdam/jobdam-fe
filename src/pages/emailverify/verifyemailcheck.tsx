@@ -20,12 +20,13 @@ const VerifyEmailCheck = () => {
   const token = URLsearchParams.get("token") ?? "";
   console.log(token, "token");
 
+  //여기서 보낸다.
   const { isError, error, data } = useVerifyEmail({
     token,
     enabled: !!token,
   });
   console.log(data?.data?.isSetup, error);
-
+  //useVerifyEmail을 보내면 pending을 해야한다.
   //실패할경우 2가지 , 링크가 만료된경우, 인증이 이미 완료된경우
   //링크가 만료된경우라면 다시보낼 필요가있고, 인증이 이미 완료된경우라면 그냥 메인으로 가면된다.
 
@@ -40,7 +41,7 @@ const VerifyEmailCheck = () => {
 
   React.useEffect(() => {
     if (isError) {
-      navigate(`/verify-email-check/error?token=${token}`);
+      navigate(`/verify/error?token=${token}`);
       //error인경우 error페이지로 error페이지에서 다시
       // return <VerifyError />; // 인증 링크 만료 등
     }

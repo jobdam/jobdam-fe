@@ -5,6 +5,7 @@ import { useJobCategory } from "./api/get-jobcategory";
 import { paths } from "@/config/paths";
 import { Link } from "@/components/ui/link";
 import { companySizeMap, educationMap } from "@/types/api";
+import { formatBirthday } from "../../utils/format";
 export const labelMap: Record<string, string> = {
   name: "이름",
   email: "이메일",
@@ -26,24 +27,23 @@ const MyProfile = () => {
     return el.jobCode === userData?.jobCode;
   });
   //job을찾고
-  console.log(job);
+  console.log(job, "job");
 
   const jobDetail = job?.details?.find((el) => {
     return el.jobDetailCode === userData?.jobDetailCode;
   });
 
-  console.log(jobDetail?.jobDetail);
   //userData에서
-
+  //formatbirthday 생년월일
   const profile = {
     name: userData?.name,
-
     email: userData?.email,
-    birthday: userData?.birthday,
+    birthday: formatBirthday(userData?.birthday ?? ""),
     job: `${job?.jobGroup} / ${jobDetail?.jobDetail} `,
     targetCompanySize: companySizeMap[userData?.targetCompanySize ?? ""],
     education: educationMap[userData?.educationLevel ?? ""],
   };
+  console.log(educationMap, "educationmap");
   return (
     <div className="border-[1px] rounded-[20px] border-[#488FFF] pt-[38px] pb-[84px] px-[60px] max-h-[626px] w-[915px]">
       <ul className="flex gap-y-[30px] flex-col">

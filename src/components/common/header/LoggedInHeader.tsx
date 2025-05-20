@@ -20,9 +20,9 @@ const LoggedInHeader = () => {
   return (
     <>
       {/* 헤더의 구조, 색 z로 띄윅등 */}
-      <header className="px-[78px] flex sticky top-0 h-[70px] z-[100] bg-[#202020]">
+      <header className="px-[78px] flex sticky top-0 h-[70px] w-full  z-[100] bg-[#202020]">
         {/* 헤더의 컨텐츠부분 */}
-        <div className="flex justify-between items-center min-w-[700px] max-w-[1980px] w-full mx-auto">
+        <div className="flex justify-between items-center min-w-[700px] w-full max-w-[1980px]">
           {/* 헤더구성요소중 왼쪽 로고 */}
           <Logo></Logo>
           {/* 헤더구성 요소중 오른쪽 메인 기능 */}

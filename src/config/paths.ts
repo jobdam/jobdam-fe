@@ -17,9 +17,9 @@ export const paths = {
       path: "/auth",
     },
     oauth: {
-      path: "/auth/oauth-redirect",
+      path: "/oauth-redirect",
       getHref: (redirectTo?: string | null | undefined) =>
-        `/auth/oauth-redirect${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
+        `/oauth-redirect${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
     },
     register: {
       path: "/auth/register",
@@ -61,21 +61,21 @@ export const paths = {
 
   emailverify: {
     error: {
-      path: "/verify-email-check/error",
+      path: "/verify/error",
     },
     success: {
-      path: "/verify-email-check/success",
+      path: "/verify/success",
     },
     verifycheck: {
-      path: "/verify-email-check",
+      path: "/verify",
       getHref: (redirectTo?: string | null | undefined) =>
-        `/verify-email-check${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
+        `/verify${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
     },
     already: {
-      path: "/verify-email-check/already",
+      path: "/verify/already",
     },
     expired: {
-      path: "/verify-email-check/expired",
+      path: "/verify/expired",
     },
   },
 

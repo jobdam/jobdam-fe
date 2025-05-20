@@ -49,9 +49,9 @@ const ProfileEdit = ({ selectedFile }: any) => {
   const selectedJobDetail = selectedJobGroup?.details.find(
     (detail) => detail.jobDetailCode === userJobDetailCode
   );
-  const jobCode = form.watch("jobCode");
-  const jobDetailCode = form.watch("jobDetailCode");
-  console.log(jobDetailCode, "profielEidt");
+  const jobCode = form.watch("jobCode2");
+  const jobDetailCode = form.watch("jobDetailCode2");
+  console.log(jobCode, jobDetailCode);
 
   //jobCode 코드
   useEffect(() => {
@@ -63,19 +63,22 @@ const ProfileEdit = ({ selectedFile }: any) => {
         educationLevel: userData?.educationLevel,
         educationStatus: userData?.educationStatus,
         targetCompanySize: userData?.targetCompanySize,
-        birthday: userData?.birthday,
-        jobCode: selectedJobGroup?.jobCode,
-        jobDetailCode: selectedJobDetail?.jobDetailCode,
+        birthday: formatBirthday(userData?.birthday ?? ""),
+        jobCode2: selectedJobGroup?.["jobCode"],
+        jobDetailCode2: selectedJobDetail?.["jobDetailCode"],
       });
     }
   }, [userData, form, selectedJobGroup, selectedJobDetail]);
+
+  console.log(jobCode, jobDetailCode, "이겅");
+
   useEffect(() => {
     if (!jobCode) return;
 
     const selectedGroup = jobGroups.find((group) => group.jobCode === jobCode);
     const firstDetailCode = selectedGroup?.details[0]?.jobDetailCode ?? "";
 
-    form.setValue("jobDetailCode", firstDetailCode); // ✅ 항상 설정
+    form.setValue("jobDetailCode2", firstDetailCode); // ✅ 항상 설정
   }, [jobCode, jobGroups, form]);
 
   const jobGroup = jobGroups.find((group) => group.jobCode === jobCode);
@@ -119,9 +122,9 @@ const ProfileEdit = ({ selectedFile }: any) => {
           <div className="flex flex-col">
             <div className="flex justify-end ">
               <Button
-                isLoading={patchProfile.isPending}
+                // isLoading={patchProfile.isIdle}
                 variant="secondary"
-                className=" cursor-pointer border-[1px] flex rounded-[10px] justify-center 
+                className=" cursor-pointer  flex rounded-[10px] justify-center 
           items-center text-[#488fff] w-[74px] h-[30px] text-[16px]  font-semibold"
               >
                 저장
@@ -180,7 +183,7 @@ const ProfileEdit = ({ selectedFile }: any) => {
               </Label>
               <div className="flex flex-1 flex-row gap-x-[8px] mt-[8px]">
                 <Controller
-                  name="jobCode"
+                  name="jobCode2"
                   control={control}
                   render={({ field }) => (
                     <Select
@@ -196,7 +199,7 @@ const ProfileEdit = ({ selectedFile }: any) => {
                 />
                 <Controller
                   control={control}
-                  name="jobDetailCode"
+                  name="jobDetailCode2"
                   render={({ field }) => (
                     <Select
                       edit={true}
