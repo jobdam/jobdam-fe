@@ -14,6 +14,7 @@ import { getChatUserInfo } from "./api/get-chatUserInfo";
 import { paths } from "@/config/paths";
 import { useLeaveRoomMutation } from "./api/delete-leaveRoom";
 import { useInitInterviewMutation } from "./api/post-initInterview";
+import ConfirmModal from "./components/modal/ConfirmModal";
 
 const ChatRoom = () => {
   //공통 설정//
@@ -29,6 +30,8 @@ const ChatRoom = () => {
   ///유저 설정//
   const [userList, setUserList] = useState<ChatUserInfo[]>([]);
   const myUserInfo = userList.find((u) => u.userId === myUserId); //채팅방에 보여질 제목
+  /// 나가기 모달 설정///
+  const [isModalOpen, setIsModalOpen] = useState(false);
   //덮어쓰기 말고 병합으로 userList업데이트(비동기로 여러명이 set하면 가끔이상해짐..)
   const mergeUserList = useCallback((incoming: ChatUserInfo[]) => {
     setUserList((prev) => {
@@ -177,7 +180,10 @@ const ChatRoom = () => {
 
   //나가기 핸들러
   const handleLeave = () => {
-    if (confirm("정말 나가시겠습니까?")) navigate("/"); // 메인 페이지로 이동
+    setIsModalOpen(true); // 모달 열기
+  };
+  const confirmLeave = () => {
+    navigate("/"); // 메인 페이지로 이동
   };
 
   //화상채팅 진입전 인터뷰테이블/ai질문 복사 초기화작업
@@ -226,6 +232,12 @@ const ChatRoom = () => {
             myUserId={myUserId!}
             created={new Date(createdRef.current!)}
             onReady={handleReadyStatus}
+            onLeave={handleLeave}
+          />
+          <ConfirmModal
+            isOpen={isModalOpen}
+            onConfirm={confirmLeave}
+            onCancel={() => setIsModalOpen(false)}
           />
         </div>
 
@@ -239,13 +251,6 @@ const ChatRoom = () => {
           />
         </div>
       </div>
-
-      <button
-        onClick={handleLeave}
-        className="mt-4 self-center px-4 py-2 bg-red-500 text-white rounded"
-      >
-        나가기
-      </button>
     </div>
   );
 };

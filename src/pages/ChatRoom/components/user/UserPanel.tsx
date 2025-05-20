@@ -11,6 +11,7 @@ interface UserPanelProps {
   myUserId: number;
   created: Date;
   onReady: (ready: boolean) => void;
+  onLeave: () => void;
 }
 
 interface ParticipantView {
@@ -25,6 +26,7 @@ const UserPanel = ({
   myUserId,
   created,
   onReady,
+  onLeave,
 }: UserPanelProps) => {
   const [selectedUserId, setSelectedUserId] = useState<number | null>(myUserId);
   const [isMeReady, setIsMeReady] = useState(false);
@@ -122,14 +124,22 @@ const UserPanel = ({
       </div>
 
       {/* 준비 버튼 */}
-      <button
-        onClick={handleToggleReady}
-        disabled={hasInterviewStarted}
-        className={`w-64 py-2 rounded-md text-white self-center 
-    ${isMeReady ? "bg-green-500 hover:bg-green-600" : "bg-blue-500 hover:bg-blue-600"}`}
-      >
-        {isMeReady ? "준비 취소" : "준비됐어요"}
-      </button>
+      <div className="flex justify-center items-stretch gap-4">
+        <button
+          onClick={handleToggleReady}
+          disabled={hasInterviewStarted}
+          className={`w-8/12 py-3 rounded-lg text-white self-center 
+          ${isMeReady ? "bg-green-500 hover:bg-green-600" : "bg-blue-500 hover:bg-blue-600"}`}
+        >
+          {isMeReady ? "준비 취소" : "준비됐어요"}
+        </button>
+        <button
+          onClick={onLeave}
+          className="self-center w-28 py-3 bg-[#CFCFCF] text-white rounded-lg"
+        >
+          나가기
+        </button>
+      </div>
     </div>
   );
 };
