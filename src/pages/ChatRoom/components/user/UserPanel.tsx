@@ -1,14 +1,17 @@
 /** @format */
 
-import { useState } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import ResumeCard from "./ResumeCard";
 import ProfileCard from "./Profilecard";
 import { ChatUserInfo } from "@/types/chat";
+import InterviewNotice from "./InterviewNotice";
 
 interface UserPanelProps {
   userList: ChatUserInfo[];
   myUserId: number;
+  created: Date;
   onReady: (ready: boolean) => void;
+  onLeave: () => void;
 }
 
 interface ParticipantView {
@@ -18,10 +21,17 @@ interface ParticipantView {
   isReady: boolean;
 }
 
-const UserPanel = ({ userList, myUserId, onReady }: UserPanelProps) => {
-  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
-
+const UserPanel = ({
+  userList,
+  myUserId,
+  created,
+  onReady,
+  onLeave,
+}: UserPanelProps) => {
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(myUserId);
   const [isMeReady, setIsMeReady] = useState(false);
+
+  const [hasInterviewStarted, setHasInterviewStarted] = useState(false);
 
   const participants: ParticipantView[] = userList.map((user) => ({
     id: user.userId,
@@ -30,15 +40,38 @@ const UserPanel = ({ userList, myUserId, onReady }: UserPanelProps) => {
     isReady: user.ready,
   }));
 
-  //내정보 골라내기
-  const me = participants.find((p) => p.id === myUserId);
-  //다른 유저정보 골라내기
-  const others = participants.filter((p) => p.id !== myUserId);
-  //둘의 정보를 합치기(null때문에)
-  const allParticipants = [...(me ? [me] : []), ...others];
+  // //내정보 골라내기
+  const me = useMemo(
+    () => participants.find((p) => p.id === myUserId),
+    [participants, myUserId]
+  );
+
+  // //다른 유저정보 골라내기
+  const others = useMemo(
+    () => participants.filter((p) => p.id !== myUserId),
+    [participants, myUserId]
+  );
+
+  // //둘의 정보를 합치기(null때문에)
+  const allParticipants = useMemo(() => {
+    return [...(me ? [me] : []), ...others];
+  }, [me, others]);
 
   //선택된 유저찾아서 정보보여주기
-  const selectedUser = userList.find((u) => u.userId === selectedUserId);
+  const selectedUser = useMemo(() => {
+    return userList.find((u) => u.userId === selectedUserId);
+  }, [userList, selectedUserId]);
+
+  // const me = participants.find((p) => p.id === myUserId);
+  // const others = participants.filter((p) => p.id !== myUserId);
+  // const allParticipants = [...(me ? [me] : []), ...others];
+  // const selectedUser = userList.find((u) => u.userId === selectedUserId);
+
+  useEffect(() => {
+    if (userList.length > 0 && selectedUserId === null) {
+      setSelectedUserId(myUserId); // 최초에만 설정
+    }
+  }, [userList, selectedUserId, myUserId]);
 
   //준비상태 토글
   const handleToggleReady = () => {
@@ -47,20 +80,31 @@ const UserPanel = ({ userList, myUserId, onReady }: UserPanelProps) => {
     onReady(newReady);
   };
 
+  //인터뷰 시작을 위한 준비
+  const handleStartInterview = () => {
+    const newReady = true;
+    setIsMeReady(newReady);
+    setHasInterviewStarted(true);
+    onReady(newReady);
+  };
+
+  const handleCardClick = useCallback((id: number) => {
+    setSelectedUserId(id);
+  }, []);
+
   return (
-    <div className="w-[800px] bg-blue-50 p-4 flex flex-col justify-between h-full">
+    <div
+      className={"w-[550px] bg-blue-50 p-4 flex flex-col justify-center h-full"}
+    >
       {/* 상단 안내 */}
-      <div>
-        <div className="text-sm font-semibold mb-1 flex items-center gap-1">
-          🕒 <span>면접 시작까지 00:10</span>
-        </div>
-        <p className="text-xs text-gray-600 mb-6">
-          모두가 준비되면 바로 면접이 시작돼요.
-        </p>
-      </div>
-      <div className="flex gap-4">
+      <InterviewNotice
+        created={created}
+        onStartInterview={() => handleStartInterview()}
+      />
+
+      <div className="flex p-2 justify-center items-stretch flex-1 min-w-[200px]">
         {/* 프로필카드 리스트 */}
-        <div className="flex flex-col gap-4 w-[200px] bg-blue-50 p-4 overflow-y-auto">
+        <div className="flex flex-col gap-4 min-w-[150px] bg-blue-50 p-2">
           {allParticipants.map((user) => (
             <ProfileCard
               key={user.id}
@@ -68,27 +112,34 @@ const UserPanel = ({ userList, myUserId, onReady }: UserPanelProps) => {
               profileImgUrl={user.profileImgUrl}
               isReady={user.isReady}
               isSelected={selectedUserId === user.id}
-              onClick={() => setSelectedUserId(user.id)}
+              onClick={() => handleCardClick(user.id)}
             />
           ))}
         </div>
 
         {/*이력서 카드 */}
-        {selectedUser && (
-          <div className="flex-1">
-            <ResumeCard user={selectedUser} />
-          </div>
-        )}
+        <div className="flex-1">
+          {selectedUser && <ResumeCard user={selectedUser} />}
+        </div>
       </div>
 
       {/* 준비 버튼 */}
-      <button
-        onClick={handleToggleReady}
-        className={`w-full py-2 rounded-md mt-4 text-white 
-    ${isMeReady ? "bg-green-500 hover:bg-green-600" : "bg-blue-500 hover:bg-blue-600"}`}
-      >
-        {isMeReady ? "준비 취소" : "준비됐어요"}
-      </button>
+      <div className="flex justify-center items-stretch gap-4">
+        <button
+          onClick={handleToggleReady}
+          disabled={hasInterviewStarted}
+          className={`w-8/12 py-3 rounded-lg text-white self-center 
+          ${isMeReady ? "bg-green-500 hover:bg-green-600" : "bg-blue-500 hover:bg-blue-600"}`}
+        >
+          {isMeReady ? "준비 취소" : "준비됐어요"}
+        </button>
+        <button
+          onClick={onLeave}
+          className="self-center w-28 py-3 bg-[#CFCFCF] text-white rounded-lg"
+        >
+          나가기
+        </button>
+      </div>
     </div>
   );
 };

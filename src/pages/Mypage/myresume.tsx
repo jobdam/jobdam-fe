@@ -34,13 +34,12 @@ const Myresume = () => {
           <>
             <div className="  flex flex-col  justify-center items-center w-[915px] h-[617px] pb-[24px] p-[36px] bg-[#f3f3f3]">
               {/*pdf  업로드 버튼 누르면 모달창 나온다*/}
+
               <PDFUploadDialog
                 file={file}
                 setFile={(file) => form.setValue("resumeFile", file)}
               ></PDFUploadDialog>
               <div className="bg-[white] w-full h-full flex justify-center items-center">
-                {/* preview 창 밑, 드래긍내드랍 */}
-                {/* <PDFDragAndDrop></PDFDragAndDrop> */}
                 {!file && (
                   <PDFPreviewDropzoneWithIcon
                     file={file}

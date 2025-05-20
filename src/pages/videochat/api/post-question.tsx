@@ -7,8 +7,12 @@ import { MutationConfig } from "@/lib/react-query";
 export const postQuestion = async (
   interviewId: number,
   payload: { context: string }
-): Promise<void> => {
-  await api.post(`/user/interviews/${interviewId}/question`, payload);
+): Promise<number> => {
+  const res = await api.post(
+    `/user/interviews/${interviewId}/question`,
+    payload
+  );
+  return res.data;
 };
 type PostQuestionParams = {
   interviewId: number;
@@ -17,14 +21,14 @@ type PostQuestionParams = {
 
 type UsePostQuestionOptions = {
   mutationConfig?: MutationConfig<
-    (params: PostQuestionParams) => Promise<void>
+    (params: PostQuestionParams) => Promise<number>
   >;
 };
 
 export const usePostQuestionMutation = ({
   mutationConfig,
 }: UsePostQuestionOptions = {}) => {
-  return useMutation<void, Error, PostQuestionParams>({
+  return useMutation<number, Error, PostQuestionParams>({
     mutationFn: ({ interviewId, payload }) =>
       postQuestion(interviewId, payload),
     ...mutationConfig,

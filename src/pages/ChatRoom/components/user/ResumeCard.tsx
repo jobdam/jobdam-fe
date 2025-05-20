@@ -1,7 +1,7 @@
 /** @format */
 
 import { ChatUserInfo } from "@/types/chat";
-import { Strong } from "@radix-ui/themes";
+import { ExperienceTypeLabel, educationMap, companySizeMap } from "@/types/api";
 
 interface ResumeCardProps {
   user: ChatUserInfo;
@@ -9,24 +9,36 @@ interface ResumeCardProps {
 
 export default function ResumeCard({ user }: ResumeCardProps) {
   return (
-    <div className="mt-6 p-6 bg-white rounded-2xl shadow border border-blue-200 w-[380px]">
+    <div className="mt-6 p-6 bg-white rounded-2xl shadow border border-blue-200 w-[350px] relative">
       <div className="flex items-center gap-4 mb-4">
         <img
           src={user.profileImgUrl}
           alt={user.name}
-          className="w-16 h-16 rounded-full"
+          className="w-16 h-16 rounded-2xl"
         />
         <div>
           <div className="text-sm font-bold text-gray-800">
             {user.jobGroup} {user.jobDetail}
           </div>
-          <div className="text-sm font-semibold text-gray-600">
+          <div className="text-sm font-semibold text-gray-700">
             {user.name}님
           </div>
-          <br />
-          <div className="text-sm font-semibold text-gray-600">
-            <Strong>소개</Strong>
-            <p>{user.introduce}</p>
+        </div>
+      </div>
+      <div className="text-sm text-gray-800">
+        <strong>자기소개</strong>
+        <p className="mb-4">{user.introduce}</p>
+
+        <div className="flex flex-col gap-2">
+          <div className="inline-block w-fit px-3 py-2 bg-blue-100 text-blue-700 text-xs font-medium rounded-lg border border-blue-300">
+            {ExperienceTypeLabel[user.experienceType]}
+          </div>
+          <div className="inline-block w-fit px-3 py-2 bg-blue-100 text-blue-700 text-xs font-medium rounded-lg border border-blue-300">
+            🎓 {educationMap[user.educationLevel]} · {user.educationStatus}
+          </div>
+
+          <div className="inline-block w-fit px-3 py-2 bg-blue-100 text-blue-700 text-xs font-medium rounded-lg border border-blue-300">
+            {companySizeMap[user.targetCompanySize]} 희망
           </div>
         </div>
       </div>
