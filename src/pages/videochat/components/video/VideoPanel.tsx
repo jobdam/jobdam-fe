@@ -16,6 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedUserId } from "@/store/slices/videoChatInterview";
 import { RootState } from "@/store";
 import { useNavigate } from "react-router";
+import { useSpeakingDetection } from "@/services/webSockect/videoChat/useSpeakingDetection";
+import { SpeakingIndicator } from "./SpeakingIndicator";
 
 interface VideoPanelProps {
   //비디오 스트림
@@ -132,7 +134,6 @@ const VideoPanel = ({
   const handleExit = () => {
     navigate("/", { replace: true });
   };
-
   return (
     <div className="flex flex-col justify-between h-[90%] w-[75%] p-4 bg-white border border-[#d9d9d9] rounded-[20px] shadow-custom">
       {/* 메인 비디오 */}
@@ -161,46 +162,51 @@ const VideoPanel = ({
         {isChatOpen && <ChatOverlay messages={messages} onSend={sendMessage} />}
       </div>
       {/* 하단 썸네일들 */}
-      <div className="flex flex-wrap w-full h-[25%] justify-center gap-2 max-w-[960px] mx-auto mt-4">
+      <div className="flex flex-wrap w-full h-[25%] justify-center gap-2 max-w-[960px] mx-auto mt-2">
         {/* 내 비디오 (내비디오 상대방비디오는 하나로 합치기X 차후 기능추가시 별도로 해야 편함)*/}
-        <video
-          ref={localVideoRef}
-          autoPlay
-          playsInline
-          muted
-          className={`w-[25%] h-[85%] bg-black object-cover cursor-pointer
+        <div className="relative w-[25%] h-[85%] ">
+          <video
+            ref={localVideoRef}
+            autoPlay
+            playsInline
+            muted
+            className={`bg-black object-cover cursor-pointer
             ${
               selectedUserId === myUserId
                 ? "border-4 border-blue-500 shadow-lg"
                 : ""
             }
             `}
-          onClick={() => {
-            dispatch(setSelectedUserId(myUserId));
-          }}
-        />
+            onClick={() => {
+              dispatch(setSelectedUserId(myUserId));
+            }}
+          />
+          <SpeakingIndicator stream={localStream} />
+        </div>
         {/* 상대방 비디오 */}
         {Object.entries(remoteStreams).map(([userId, stream]) => (
-          <video
-            data-userid={userId}
-            autoPlay
-            playsInline
-            className={`w-[25%] h-[85%] bg-black object-cover cursor-pointer
+          <div key={userId} className="w-[25%] h-[85%]">
+            <video
+              data-userid={userId}
+              autoPlay
+              playsInline
+              className={`bg-black object-cover cursor-pointer
                ${
                  selectedUserId === Number(userId)
                    ? "border-4 border-blue-500 shadow-lg"
                    : ""
                }
             `}
-            onClick={() => {
-              dispatch(setSelectedUserId(Number(userId)));
-            }}
-            ref={(el: HTMLVideoElement | null) => {
-              if (el && stream) {
-                el.srcObject = stream;
-              }
-            }}
-          />
+              onClick={() => {
+                dispatch(setSelectedUserId(Number(userId)));
+              }}
+              ref={(el: HTMLVideoElement | null) => {
+                if (el && stream) {
+                  el.srcObject = stream;
+                }
+              }}
+            />
+          </div>
         ))}
       </div>
     </div>

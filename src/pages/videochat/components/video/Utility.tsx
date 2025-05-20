@@ -30,7 +30,7 @@ const Utility = ({ utility, unreadCount }: UtilityProps) => {
   const iconSize = 20;
   return (
     <div
-      className="flex flex-col gap-6 items-center w-[55px] py-5
+      className="flex flex-col gap-4 items-center w-[55px] py-5
         rounded-2xl
         bg-black/20
         shadow-lg
