@@ -40,6 +40,14 @@ const createAppRouter = (queryClient: QueryClient) => {
         ),
     },
     {
+      path: paths.auth.oauth.path,
+      lazy: () =>
+        import("@/app/routes/app/auth/oauh-callback").then(
+          convert(queryClient)
+        ),
+    },
+
+    {
       path: paths.emailverify.already.path,
       lazy: () =>
         import("@/app/routes/app/emailverify/already").then(
@@ -127,13 +135,6 @@ const createAppRouter = (queryClient: QueryClient) => {
         </>
       ), // 로그인, 회원가입 등에만 헤더 포함
       children: [
-        {
-          path: paths.auth.oauth.path,
-          lazy: () =>
-            import("@/app/routes/app/auth/oauh-callback").then(
-              convert(queryClient)
-            ),
-        },
         {
           path: paths.auth.register.path,
           lazy: () =>

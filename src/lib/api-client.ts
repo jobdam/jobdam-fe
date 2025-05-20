@@ -6,11 +6,12 @@ import { addNotification } from "@/store/slices/notifications";
 import Axios, { InternalAxiosRequestConfig } from "axios";
 import { paths } from "@/config/paths";
 import { useLogout } from "./auth";
-
+import { useLocation } from "react-router";
 let isRefreshing = false; // 토큰 갱신 상태 추적
 
 const apiUrl = import.meta.env.VITE_API_URL;
-// api 요청을 할때 interceptor 요청을 가로채기하여 이과정을 먼저 수행해서 통과되어야 한다.
+// api 요청을 할때 i
+// nterceptor 요청을 가로채기하여 이과정을 먼저 수행해서 통과되어야 한다.
 function authRequestInterceptor(config: InternalAxiosRequestConfig) {
   //요청 가로채기할때 항상 토큰을 사용, 로그인이 필요 없는 영역도 존재
   const token = getAccessToken();
@@ -106,7 +107,14 @@ api.interceptors.response.use(
       }
     }
     //나머지의 에러 상황인경우 라면(로그인이 되지 않은 경우 로그인이 필요한 곳에 진입했을때 리다이렉트)
-    if (error.response?.status == 401) {
+    //token이 존재하지 않는경우 verify 화면에서 이 에러가 뜨면 자동으로 넘어감
+    //
+    if (error.response?.status === 401) {
+      const pathname = useLocation().pathname;
+
+      if (pathname.startsWith("/verify") || pathname === "/verify/*") {
+        return Promise.reject(error);
+      }
       console.log(error.response);
       const searchParams = new URLSearchParams();
       const redirectTo =

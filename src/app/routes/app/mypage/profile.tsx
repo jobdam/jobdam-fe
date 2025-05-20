@@ -5,7 +5,7 @@ import Myprofile from "@/pages/Mypage/myprofile";
 
 const Profile = () => {
   return (
-    <MypageLayout title="내 프로필">
+    <MypageLayout className="bg-gradient-auth-login" title="내 프로필">
       <Myprofile></Myprofile>
     </MypageLayout>
   );

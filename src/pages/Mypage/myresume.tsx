@@ -1,23 +1,66 @@
 /** @format */
 
 import { Button } from "@/components/ui/button";
-import Pdfupload from "./components/pdfupload";
+
+import PDFPreviewDropzoneWithIcon from "./components/pdfdrag&drop";
+import PDFUploadDialog from "./components/pdfuploadfile";
+import Pdfpreview from "./components/pdfpreview";
+import { Form } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+
+type ResumeFormValues = {
+  resumeFile: File | null;
+};
 
 const Myresume = () => {
+  const form = useForm<ResumeFormValues>({
+    defaultValues: {
+      resumeFile: null,
+    },
+  });
+
+  const file = form.watch("resumeFile");
+  console.log(file);
+
   return (
     <>
-      <div className=" flex flex-col  justify-center items-center w-[915px] h-[617px] pb-[24px] p-[36px] bg-[#f3f3f3]">
-        {/* <Button>파일 불러오기</Button> */}
-        <div className="bg-[white] w-full h-full">
-          {/* 글자수 및 파일 불러오기 */}
-        </div>
+      <Form
+        form={form}
+        onSubmit={(value) => {
+          console.log(value);
+        }}
+      >
+        {({}) => (
+          <>
+            <div className="  flex flex-col  justify-center items-center w-[915px] h-[617px] pb-[24px] p-[36px] bg-[#f3f3f3]">
+              {/*pdf  업로드 버튼 누르면 모달창 나온다*/}
 
-        <div className="flex flex-row justify-between"></div>
-        <Pdfupload file={"/리뷰데이 6주차.pdf"}></Pdfupload>
-      </div>
-      <div className="flex justify-center items-center">
-        <Button>내용 저장하기</Button>
-      </div>
+              <PDFUploadDialog
+                file={file}
+                setFile={(file) => form.setValue("resumeFile", file)}
+              ></PDFUploadDialog>
+              <div className="bg-[white] w-full h-full flex justify-center items-center">
+                {!file && (
+                  <PDFPreviewDropzoneWithIcon
+                    file={file}
+                    setFile={(file) => form.setValue("resumeFile", file)}
+                  ></PDFPreviewDropzoneWithIcon>
+                )}
+                <Pdfpreview
+                  file={file}
+                  setFile={(file) => form.setValue("resumeFile", file)}
+                ></Pdfpreview>
+                {/* <Pdfupload file={"/리뷰데이 6주차.pdf"}></Pdfupload> */}
+              </div>
+
+              <div className="flex flex-row justify-between"></div>
+            </div>
+            <div className="flex justify-center w-1/2 items-center">
+              <Button>작성완료</Button>
+            </div>
+          </>
+        )}
+      </Form>
     </>
   );
 };

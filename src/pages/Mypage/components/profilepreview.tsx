@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { cn } from "@/utils/cn";
 import { useLocation } from "react-router";
+import { useUser } from "@/lib/auth";
 
 type FormValues = {
   profileImage: any;
@@ -15,6 +16,10 @@ type Props = {
   mypage?: boolean;
 };
 const ProfilePreview = ({ onSelectFile, mypage }: Props) => {
+  const { data } = useUser();
+
+  const defaultImageUrl = data?.profileImgUrl ?? null;
+
   const location = useLocation();
   const pathname = location.pathname;
 
@@ -22,7 +27,7 @@ const ProfilePreview = ({ onSelectFile, mypage }: Props) => {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [uploadPreview, setUploadPreview] = useState<string | null>(null);
-
+  const currentImageUrl = uploadPreview || defaultImageUrl;
   const { watch } = useForm<FormValues>({
     defaultValues: { profileImage: null },
   });
@@ -141,14 +146,14 @@ const ProfilePreview = ({ onSelectFile, mypage }: Props) => {
             mypage && "w-[150px] h-[150px]"
           )}
         >
-          {uploadPreview ? (
-            <img
-              src={uploadPreview}
-              className="w-full h-full object-cover rounded-full"
-            />
-          ) : (
+          {/* {uploadPreview ? ( */}
+          <img
+            src={currentImageUrl ?? undefined}
+            className="w-full h-full object-cover rounded-full"
+          />
+          {/* ) : (
             <></>
-          )}
+          )} */}
         </div>
         {/* //카메라 이미지 커스텀하기 */}
         <div className="w-[24px] h-[24px]">
