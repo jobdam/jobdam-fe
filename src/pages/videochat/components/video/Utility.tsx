@@ -25,14 +25,22 @@ const Utility = ({ utility }: UtilityProps) => {
     },
     toggleChat,
   } = utility;
+
+  const iconSize = 20;
   return (
-    <div className="flex flex-col gap-6 items-center pt-4">
+    <div
+      className="flex flex-col gap-6 items-center w-[55px] py-5
+        rounded-2xl
+        bg-black/20
+        shadow-lg
+        backdrop-blur-[4px]"
+    >
       {/* 마이크 */}
       <button
         onClick={toggleMic}
         className="flex flex-col items-center text-white"
       >
-        {isMicOn ? <Mic size={32} /> : <MicOff size={32} />}
+        {isMicOn ? <Mic size={iconSize} /> : <MicOff size={iconSize} />}
         <span className="text-sm mt-1">오디오</span>
       </button>
 
@@ -41,7 +49,7 @@ const Utility = ({ utility }: UtilityProps) => {
         onClick={toggleCamera}
         className="flex flex-col items-center text-white"
       >
-        {isCameraOn ? <Video size={32} /> : <VideoOff size={32} />}
+        {isCameraOn ? <Video size={iconSize} /> : <VideoOff size={iconSize} />}
         <span className="text-sm mt-1">비디오</span>
       </button>
 
@@ -50,7 +58,11 @@ const Utility = ({ utility }: UtilityProps) => {
         onClick={toggleScreenShare}
         className="flex flex-col items-center text-white"
       >
-        {isScreenSharing ? <MonitorOff size={32} /> : <Monitor size={32} />}
+        {isScreenSharing ? (
+          <Monitor size={iconSize} />
+        ) : (
+          <MonitorOff size={iconSize} />
+        )}
         <span className="text-sm mt-1">공유</span>
       </button>
 
@@ -59,7 +71,7 @@ const Utility = ({ utility }: UtilityProps) => {
         onClick={toggleChat}
         className="flex flex-col items-center text-white"
       >
-        <MessageSquare size={32} />
+        <MessageSquare size={iconSize} />
         <span className="text-sm mt-1">채팅</span>
       </button>
     </div>

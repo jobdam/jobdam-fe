@@ -7,9 +7,10 @@ import { useSignalHandler } from "@/services/webSockect/videoChat/useSignalHandl
 import { useSignalPublisher } from "@/services/webSockect/videoChat/useSignalPublisher";
 import {
   SignalMessage,
-  useSignalSubscription,
-} from "@/services/webSockect/videoChat/useSignalSubscrpition";
-import { useCallback, useEffect, useMemo } from "react";
+  useBroadcastSignalSubscribe,
+  usePrivateSignalSubscribe,
+} from "@/services/webSockect/videoChat/useSignalSubscribe";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 import InterviewPanel from "./components/interview/InterviewPanel";
 import { fetchUserInterviewData } from "./api/get-interviewFullData";
@@ -148,27 +149,27 @@ const Videomain = () => {
       },
     });
   };
-
-  //////////////////////////////////
+  ///구독 핸들러
+  //join List를 처리하는곳
+  const handleJoin = useCallback(async (data: SignalMessage) => {
+    if (data.signalType === "JOIN_LIST") {
+      for (const userId of data.userIdList) {
+        if (!isFirstJoin) {
+          // 새로고침 등 재접속이면 무조건 모든 사람에게 offer
+          if (myUserId !== userId) await createPeerAndSendOffer(userId);
+        } else {
+          // 최초 입장일 경우 중복 방지용으로 큰 ID에게만 offer
+          if (myUserId! < userId) {
+            await createPeerAndSendOffer(userId);
+          }
+        }
+      }
+    }
+  }, []);
   //구독시 시그널서버로 peer정보주고 받는곳
   const handleSignal = useCallback(
     async (data: SignalMessage) => {
       switch (data.signalType) {
-        case "JOIN_LIST": //여긴offer를보내는곳
-          console.log("joinList", data);
-          for (const userId of data.userIdList) {
-            console.log("fistJoin", isFirstJoin);
-            if (!isFirstJoin) {
-              // 새로고침 등 재접속이면 무조건 모든 사람에게 offer
-              await createPeerAndSendOffer(userId);
-            } else {
-              // 최초 입장일 경우 중복 방지용으로 큰 ID에게만 offer
-              if (myUserId! < userId) {
-                await createPeerAndSendOffer(userId);
-              }
-            }
-          }
-          break;
         case "OFFER": //offer를받는다면
           console.log("offerHandle:", stream);
           await handleOffer(
@@ -208,11 +209,22 @@ const Videomain = () => {
       navigate(location.pathname, { replace: true });
     }
   };
+
   //구독하기
-  useSignalSubscription({
+  const [isPrivateSubscribed, setIsPrivateSubscribed] = useState(false);
+  //1:1시그널용(offer,answer,candidate,)
+  usePrivateSignalSubscribe({
     roomId: roomId as string,
     onSignal: handleSignal,
     enabled: !!micTrack && !!cameraTrack,
+    onSubscribed: () => setIsPrivateSubscribed(true),
+  });
+
+  //전체용(동기화방지 joinList를 broadcast)
+  useBroadcastSignalSubscribe({
+    roomId: roomId as string,
+    onSignal: handleJoin,
+    enabled: isPrivateSubscribed,
   });
 
   return (

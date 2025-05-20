@@ -103,14 +103,6 @@ const VideoPanel = ({
       //다른사람클릭하면
       mainVideo = remoteStreams[selectedUserId] || null;
     }
-    const stream = remoteStreams[selectedUserId!];
-    console.log("[MAIN VIDEO] 선택된 userId", selectedUserId, stream);
-    if (stream) {
-      console.log(
-        "트랙 상태:",
-        stream.getVideoTracks().map((t) => t.readyState)
-      );
-    }
 
     if (mainVideo) {
       mainVideoRef.current.srcObject = mainVideo;
@@ -126,79 +118,73 @@ const VideoPanel = ({
 
   return (
     <div className="flex flex-col justify-between h-[90%] w-[75%] p-4 bg-white border border-[#d9d9d9] rounded-[20px] shadow-custom">
-      <div className="flex flex-col w-full h-full gap-4">
-        {/* 메인 비디오 */}
-        <div className="relative w-full h-[70%] bg-gray-300">
-          <div className="absolute left-4 top-4 bottom-4 z-10">
-            <button
-              onClick={handleExit}
-              className="px-6 py-2 bg-neutral-700 text-white rounded-2xl shadow-md text-lg
+      {/* 메인 비디오 */}
+      <div className="relative flex items-center justify-center w-full h-[75%]">
+        <div className="absolute left-6 top-6 z-10">
+          <button
+            onClick={handleExit}
+            className="px-4 py-1 bg-[#434343] text-white rounded-md shadow-md text-sm
                         font-bold transition hover:bg-neutral-900 focus:outline-none cursor-pointers"
-            >
-              종료
-            </button>
-          </div>
-          <div className="flex items-center justify-center w-full h-full">
-            <video
-              ref={mainVideoRef}
-              autoPlay
-              playsInline
-              muted
-              className="w-[90%] h-[90%] object-cover"
-            />
-          </div>
-          {/* 유틸 */}
-          <div className="absolute left-4 bottom-4 z-10">
-            <Utility utility={utility} />
-          </div>
-          {/* 채팅창 */}
-          {isChatOpen && (
-            <ChatOverlay messages={messages} onSend={sendMessage} />
-          )}
+          >
+            종료
+          </button>
         </div>
-        {/* 하단 썸네일들 */}
-        <div className="flex flex-wrap w-full h-[30%] justify-center gap-2 max-w-[960px] mx-auto mt-4">
-          {/* 내 비디오 (내비디오 상대방비디오는 하나로 합치기X 차후 기능추가시 별도로 해야 편함)*/}
-          <video
-            ref={localVideoRef}
-            autoPlay
-            playsInline
-            muted
-            className={`w-[25%] h-[80%] bg-black object-cover cursor-pointer
+        <video
+          ref={mainVideoRef}
+          autoPlay
+          playsInline
+          muted
+          className="w-[95%] h-[95%] object-cover"
+        />
+        {/* 유틸 */}
+        <div className="absolute left-6 bottom-6 z-10">
+          <Utility utility={utility} />
+        </div>
+        {/* 채팅창 */}
+        {isChatOpen && <ChatOverlay messages={messages} onSend={sendMessage} />}
+      </div>
+      {/* 하단 썸네일들 */}
+      <div className="flex flex-wrap w-full h-[25%] justify-center gap-2 max-w-[960px] mx-auto mt-4">
+        {/* 내 비디오 (내비디오 상대방비디오는 하나로 합치기X 차후 기능추가시 별도로 해야 편함)*/}
+        <video
+          ref={localVideoRef}
+          autoPlay
+          playsInline
+          muted
+          className={`w-[25%] h-[85%] bg-black object-cover cursor-pointer
             ${
               selectedUserId === myUserId
                 ? "border-4 border-blue-500 shadow-lg"
-                : "border-2 border-transparent"
+                : ""
             }
             `}
-            onClick={() => {
-              dispatch(setSelectedUserId(myUserId));
-            }}
-          />
-          {/* 상대방 비디오 */}
-          {Object.entries(remoteStreams).map(([userId, stream]) => (
-            <video
-              data-userid={userId}
-              autoPlay
-              playsInline
-              className={`w-[30%] h-[80%] bg-black object-cover cursor-pointer
+          onClick={() => {
+            dispatch(setSelectedUserId(myUserId));
+          }}
+        />
+        {/* 상대방 비디오 */}
+        {Object.entries(remoteStreams).map(([userId, stream]) => (
+          <video
+            data-userid={userId}
+            autoPlay
+            playsInline
+            className={`w-[25%] h-[85%] bg-black object-cover cursor-pointer
                ${
                  selectedUserId === Number(userId)
                    ? "border-4 border-blue-500 shadow-lg"
-                   : "border-2 border-transparent"
+                   : ""
                }
             `}
-              onClick={() => {
-                dispatch(setSelectedUserId(Number(userId)));
-              }}
-              ref={(el: HTMLVideoElement | null) => {
-                if (el && stream) {
-                  el.srcObject = stream;
-                }
-              }}
-            />
-          ))}
-        </div>
+            onClick={() => {
+              dispatch(setSelectedUserId(Number(userId)));
+            }}
+            ref={(el: HTMLVideoElement | null) => {
+              if (el && stream) {
+                el.srcObject = stream;
+              }
+            }}
+          />
+        ))}
       </div>
     </div>
   );
