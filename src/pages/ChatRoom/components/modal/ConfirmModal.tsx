@@ -26,7 +26,7 @@ const ConfirmModal = ({ isOpen, onConfirm, onCancel }) => {
           </button>
           <button
             onClick={onConfirm}
-            className="bg-[#CFCFCF] text-white font-semibold px-10 py-3 rounded-md hover:bg-gray-400"
+            className="bg-[#CFCFCF] text-white font-semibold px-14 py-3 rounded-md hover:bg-gray-400"
           >
             퇴장할게요
           </button>
