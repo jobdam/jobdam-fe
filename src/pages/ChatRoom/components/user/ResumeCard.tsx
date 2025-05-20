@@ -2,6 +2,8 @@
 
 import { ChatUserInfo } from "@/types/chat";
 import { X } from "lucide-react"; // 또는 heroicons
+import { ExperienceTypeLabel, educationMap, companySizeMap } from "@/types/api";
+
 interface ResumeCardProps {
   user: ChatUserInfo;
   onClose: () => void;
@@ -36,6 +38,23 @@ export default function ResumeCard({ user, onClose }: ResumeCardProps) {
       <div className="text-sm text-gray-800">
         <strong>자기소개</strong>
         <p>{user.introduce}</p>
+      </div>
+      <div className="text-sm text-gray-800">
+        <strong>자기소개</strong>
+        <p className="mb-4">{user.introduce}</p>
+
+        <div className="flex flex-col gap-2">
+          <div className="inline-block w-fit px-3 py-2 bg-blue-100 text-blue-700 text-xs font-medium rounded-lg border border-blue-300">
+            {ExperienceTypeLabel[user.experienceType]}
+          </div>
+          <div className="inline-block w-fit px-3 py-2 bg-blue-100 text-blue-700 text-xs font-medium rounded-lg border border-blue-300">
+            🎓 {educationMap[user.educationLevel]} · {user.educationStatus}
+          </div>
+
+          <div className="inline-block w-fit px-3 py-2 bg-blue-100 text-blue-700 text-xs font-medium rounded-lg border border-blue-300">
+            {companySizeMap[user.targetCompanySize]} 희망
+          </div>
+        </div>
       </div>
     </div>
   );
