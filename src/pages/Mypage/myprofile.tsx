@@ -15,6 +15,11 @@ export const labelMap: Record<string, string> = {
   experienceType: "경력 여부",
   targetCompanySize: "희망 기업",
 };
+
+const expMap: Record<string, string> = {
+  NEW: "신입",
+  EXPERIENCED: "경력",
+};
 const MyProfile = () => {
   //데이터가공필요 userData에 들어가는 데이터는 영어
   //target company size가
@@ -36,10 +41,11 @@ const MyProfile = () => {
 
   //userData에서
   //formatbirthday 생년월일 , 타입 대문자로 바꾸면 해결
+  //경력 여부
   const profile = {
     name: userData?.name,
     email: userData?.email,
-    experienceType: userData?.experienceType,
+    experienceType: expMap[userData?.experienceType ?? ""],
     birthday: formatBirthday(userData?.birthday ?? ""),
     job: `${job?.jobGroup} / ${jobDetail?.jobDetail} `,
     targetCompanySize: companySizeMap[userData?.targetCompanySize ?? ""],
