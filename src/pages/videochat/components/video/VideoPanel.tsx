@@ -46,7 +46,18 @@ const VideoPanel = ({
 
   //채팅
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const toggleChat = () => setIsChatOpen((prev) => !prev);
+  const isChatOpenRef = useRef(isChatOpen);
+  useEffect(() => {
+    isChatOpenRef.current = isChatOpen;
+  }, [isChatOpen]);
+
+  const toggleChat = () => {
+    setIsChatOpen((prev) => {
+      const next = !prev;
+      if (next) setUnreadCount(0); // 채팅창 열면 카운트 0으로
+      return next;
+    });
+  };
   //채팅 토글까지 추가한 최종유틸
   const utility: UtilityState = {
     mediaControl,
@@ -55,6 +66,8 @@ const VideoPanel = ({
   const { sendChatInVideo } = useChatPublisher();
   //채팅 메세지
   const [messages, setMessages] = useState<VideoChatUserMessage[]>([]);
+  //채팅 안읽은메세지 카운트트
+  const [unreadCount, setUnreadCount] = useState(0);
 
   //서버에서 오는 채팅처리
   const handleChatMessage = useCallback(
@@ -68,6 +81,10 @@ const VideoPanel = ({
         isMe: data.userId === myUserId,
       };
       setMessages((prev) => [...prev, chat]);
+      //채팅방 닫혀있으면 카운트늘려줌
+      if (!isChatOpenRef.current) {
+        if (myUserId !== data.userId) setUnreadCount((count) => count + 1);
+      }
     },
     [myUserId]
   );
@@ -138,7 +155,7 @@ const VideoPanel = ({
         />
         {/* 유틸 */}
         <div className="absolute left-6 bottom-6 z-10">
-          <Utility utility={utility} />
+          <Utility utility={utility} unreadCount={unreadCount} />
         </div>
         {/* 채팅창 */}
         {isChatOpen && <ChatOverlay messages={messages} onSend={sendMessage} />}

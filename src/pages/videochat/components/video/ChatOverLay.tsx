@@ -1,7 +1,7 @@
 /** @format */
 
 import { VideoChatUserMessage } from "@/types/videoChat";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface ChatOverlayProps {
   messages: VideoChatUserMessage[];
@@ -16,10 +16,20 @@ const ChatOverlay = ({ messages, onSend }: ChatOverlayProps) => {
     setInput("");
   };
 
+  const messageListRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (messageListRef.current) {
+      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+    }
+  }, [messages]);
   return (
-    <div className="absolute bottom-4 left-[70px] w-[350px] h-[240px] rounded-[16px] shadow-lg flex flex-col overflow-hidden z-30">
+    <div className="absolute bottom-6 left-[90px] w-[350px] h-[240px] rounded-[16px] shadow-lg flex flex-col overflow-hidden z-30">
       {/* 메시지 리스트 */}
-      <div className="flex-1 h-[65%] overflow-y-auto p-4 bg-[#ffffff]/50 backdrop-blur-[1px] space-y-2">
+      <div
+        ref={messageListRef}
+        className="flex-1 h-[65%] overflow-y-auto p-4 bg-[#ffffff]/50 backdrop-blur-[1px] space-y-2"
+      >
         {messages.map((msg, i) =>
           msg.isMe ? (
             // 내가 보낸 메시지: 오른쪽
