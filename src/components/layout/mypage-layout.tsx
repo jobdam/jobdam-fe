@@ -9,10 +9,11 @@ import ProfilePreview from "@/pages/Mypage/components/profilepreview";
 
 interface MypageLayoutProps {
   children: ReactNode;
-  title: string;
+  title: ReactNode;
   button?: boolean;
   subtitle?: string;
   className?: any;
+  resume?: boolean;
   onSelectFile?: (file: File | null) => void | undefined;
 }
 
@@ -28,6 +29,7 @@ const MypageLayout = ({
   button = false,
   subtitle,
   className,
+  resume = false,
   onSelectFile,
 }: MypageLayoutProps) => {
   const location = useLocation(); // 현재 URL 위치
@@ -80,7 +82,12 @@ const MypageLayout = ({
       </div>
 
       {/* 본문 영역 */}
-      <div className="flex flex-col mt-[105px]  gap-y-[47px]">
+      <div
+        className={cn(
+          "flex flex-col mt-[105px] gap-y-[46px]",
+          resume && "gap-y-[26px]"
+        )}
+      >
         <div className="flex flex-row ">
           <div className="flex flex-col">
             <h2 className="text-[32px] font-semibold leading-[150%]">

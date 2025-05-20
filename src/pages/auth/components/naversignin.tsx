@@ -4,8 +4,6 @@ import { CustomImage } from "@/components/common/image/image";
 const naverRedirect = import.meta.env.VITE_NAVER_REDIRECT;
 const NaverSignin = () => {
   const naverLogin = async () => {
-    console.log("시작");
-
     window.location.href = naverRedirect;
   };
 

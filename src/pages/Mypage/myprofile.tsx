@@ -5,12 +5,14 @@ import { useJobCategory } from "./api/get-jobcategory";
 import { paths } from "@/config/paths";
 import { Link } from "@/components/ui/link";
 import { companySizeMap, educationMap } from "@/types/api";
+import { formatBirthday } from "../../utils/format";
 export const labelMap: Record<string, string> = {
   name: "이름",
   email: "이메일",
   birthday: "생년월일",
   job: "직무",
   education: "학교(전공)",
+  experienceType: "경력 여부",
   targetCompanySize: "희망 기업",
 };
 const MyProfile = () => {
@@ -26,27 +28,26 @@ const MyProfile = () => {
     return el.jobCode === userData?.jobCode;
   });
   //job을찾고
-  console.log(job);
+  console.log(job, "job");
 
   const jobDetail = job?.details?.find((el) => {
     return el.jobDetailCode === userData?.jobDetailCode;
   });
 
-  console.log(jobDetail?.jobDetail);
   //userData에서
-
+  //formatbirthday 생년월일 , 타입 대문자로 바꾸면 해결
   const profile = {
     name: userData?.name,
-
     email: userData?.email,
-    birthday: userData?.birthday,
+    experienceType: userData?.experienceType,
+    birthday: formatBirthday(userData?.birthday ?? ""),
     job: `${job?.jobGroup} / ${jobDetail?.jobDetail} `,
     targetCompanySize: companySizeMap[userData?.targetCompanySize ?? ""],
     education: educationMap[userData?.educationLevel ?? ""],
   };
   return (
-    <div className="border-[1px] rounded-[20px] border-[#488FFF] pt-[38px] pb-[84px] px-[60px] max-h-[626px] w-[915px]">
-      <ul className="flex gap-y-[30px] flex-col">
+    <div className="border-[1px] bg-[white] rounded-[20px] border-[#488FFF] pt-[38px] px-[60px] h-[670px] w-[915px]">
+      <ul className="flex gap-y-[30px]  flex-col">
         <div className="flex justify-end">
           <Link
             to={paths.mypage.editdata.path}
@@ -64,7 +65,7 @@ const MyProfile = () => {
               key={key}
               className="flex flex-row border-b-1 pb-[16px] border-blue-500 "
             >
-              <div className="w-[250px] leading-[150%] font-semibold text-[#488FFF] ">
+              <div className="w-[250px] pl-[15px] leading-[150%] font-semibold text-[#488FFF] ">
                 {" "}
                 {value}
               </div>
