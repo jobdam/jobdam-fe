@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedUserId } from "@/store/slices/videoChatInterview";
 import { RootState } from "@/store";
 import { useNavigate } from "react-router";
-import { useSpeakingDetection } from "@/services/webSockect/videoChat/useSpeakingDetection";
 import { SpeakingIndicator } from "./SpeakingIndicator";
 
 interface VideoPanelProps {
