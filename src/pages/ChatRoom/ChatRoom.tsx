@@ -14,6 +14,7 @@ import { getChatUserInfo } from "./api/get-chatUserInfo";
 import { paths } from "@/config/paths";
 import { useLeaveRoomMutation } from "./api/delete-leaveRoom";
 import { useInitInterviewMutation } from "./api/post-initInterview";
+import ConfirmModal from "./components/modal/ConfirmModal";
 
 const ChatRoom = () => {
   //공통 설정//
@@ -22,12 +23,15 @@ const ChatRoom = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isFirstJoinRef = useRef(location.state?.firstJoin ?? false);
+  const createdRef = useRef(location.state?.created /*?? Date()*/);
   ///채팅방 설정///
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const { sendChat, sendReady } = useChatPublisher();
   ///유저 설정//
   const [userList, setUserList] = useState<ChatUserInfo[]>([]);
   const myUserInfo = userList.find((u) => u.userId === myUserId); //채팅방에 보여질 제목
+  /// 나가기 모달 설정///
+  const [isModalOpen, setIsModalOpen] = useState(false);
   //덮어쓰기 말고 병합으로 userList업데이트(비동기로 여러명이 set하면 가끔이상해짐..)
   const mergeUserList = useCallback((incoming: ChatUserInfo[]) => {
     setUserList((prev) => {
@@ -64,6 +68,28 @@ const ChatRoom = () => {
       });
     }
   }, [roomId, myUserId]);
+
+  // 시간 설정
+  useEffect(() => {
+    const createdFromState = location.state?.created;
+
+    if (createdFromState) {
+      localStorage.setItem("created", createdFromState);
+      createdRef.current = createdFromState;
+    } else {
+      // 새로고침 후: localStorage에서 복구
+      const restored = localStorage.getItem("created");
+      if (restored) {
+        createdRef.current = restored;
+      } else {
+        // 해당 경우는 임의로 로컬 스토리지 값을 제거한 경우임.
+        // fallback (아예 없을 경우 방금 시간으로 초기화)
+        const now = "";
+        localStorage.setItem("created", now);
+        createdRef.current = now;
+      }
+    }
+  }, [location.state?.created, roomId]);
 
   //서버에서 오는 메세지 핸들러
   const handleMessage = useCallback(
@@ -154,7 +180,10 @@ const ChatRoom = () => {
 
   //나가기 핸들러
   const handleLeave = () => {
-    if (confirm("정말 나가시겠습니까?")) navigate("/"); // 메인 페이지로 이동
+    setIsModalOpen(true); // 모달 열기
+  };
+  const confirmLeave = () => {
+    navigate("/"); // 메인 페이지로 이동
   };
 
   //화상채팅 진입전 인터뷰테이블/ai질문 복사 초기화작업
@@ -195,23 +224,32 @@ const ChatRoom = () => {
   });
 
   return (
-    <div className="flex h-screen">
-      <div className="w-[800px] min-w-[800px]">
-        <UserPanel
-          userList={userList}
-          myUserId={myUserId!}
-          onReady={handleReadyStatus}
-        />
-      </div>
-      <button onClick={handleLeave}>나가기</button>
-      <div className="flex flex-col flex-1">
-        <ChatPanel
-          messages={messages}
-          onSend={handleSend}
-          jobGroup={myUserInfo?.jobGroup ?? ""}
-          jobDetail={myUserInfo?.jobDetail ?? ""}
-          interviewType={myUserInfo?.interviewType ?? ""}
-        />
+    <div className="flex h-screen justify-center items-stretch">
+      <div className="inline-flex items-stretch gap-4">
+        <div className="flex-grow min-w-[300px] max-w-[600px] h-full">
+          <UserPanel
+            userList={userList}
+            myUserId={myUserId!}
+            created={new Date(createdRef.current!)}
+            onReady={handleReadyStatus}
+            onLeave={handleLeave}
+          />
+          <ConfirmModal
+            isOpen={isModalOpen}
+            onConfirm={confirmLeave}
+            onCancel={() => setIsModalOpen(false)}
+          />
+        </div>
+
+        <div className="flex-grow min-w-[800px] h-full">
+          <ChatPanel
+            messages={messages}
+            onSend={handleSend}
+            jobGroup={myUserInfo?.jobGroup ?? ""}
+            jobDetail={myUserInfo?.jobDetail ?? ""}
+            interviewType={myUserInfo?.interviewType ?? ""}
+          />
+        </div>
       </div>
     </div>
   );
