@@ -26,11 +26,8 @@ const UserPanel = ({
   created,
   onReady,
 }: UserPanelProps) => {
-  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
-
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(myUserId);
   const [isMeReady, setIsMeReady] = useState(false);
-
-  const [showResumeCard, setShowResumeCard] = useState(false);
 
   const [hasInterviewStarted, setHasInterviewStarted] = useState(false);
 
@@ -68,6 +65,12 @@ const UserPanel = ({
   // const allParticipants = [...(me ? [me] : []), ...others];
   // const selectedUser = userList.find((u) => u.userId === selectedUserId);
 
+  useEffect(() => {
+    if (userList.length > 0 && selectedUserId === null) {
+      setSelectedUserId(myUserId); // 최초에만 설정
+    }
+  }, [userList, selectedUserId, myUserId]);
+
   //준비상태 토글
   const handleToggleReady = () => {
     const newReady = !isMeReady;
@@ -87,24 +90,9 @@ const UserPanel = ({
     setSelectedUserId(id);
   }, []);
 
-  const handleTransitionEnd = () => {
-    if (selectedUser) {
-      setShowResumeCard(true);
-    }
-  };
-
-  useEffect(() => {
-    if (!selectedUser) {
-      setShowResumeCard(false); // 패널이 줄어들면 바로 숨김
-    }
-  }, [selectedUser]);
-
   return (
     <div
-      className={`transition-[width,max-width] ease-in-out duration-300
-      ${selectedUser ? "w-[550px]" : "w-[300px]"}
-      bg-blue-50 p-4 flex flex-col justify-center h-full`}
-      onTransitionEnd={handleTransitionEnd}
+      className={"w-[550px] bg-blue-50 p-4 flex flex-col justify-center h-full"}
     >
       {/* 상단 안내 */}
       <InterviewNotice
@@ -128,14 +116,9 @@ const UserPanel = ({
         </div>
 
         {/*이력서 카드 */}
-        {selectedUser && showResumeCard && (
-          <div className="flex-1">
-            <ResumeCard
-              user={selectedUser}
-              onClose={() => setSelectedUserId(null)}
-            />
-          </div>
-        )}
+        <div className="flex-1">
+          {selectedUser && <ResumeCard user={selectedUser} />}
+        </div>
       </div>
 
       {/* 준비 버튼 */}

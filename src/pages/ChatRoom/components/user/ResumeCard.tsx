@@ -1,24 +1,15 @@
 /** @format */
 
 import { ChatUserInfo } from "@/types/chat";
-import { X } from "lucide-react"; // 또는 heroicons
 import { ExperienceTypeLabel, educationMap, companySizeMap } from "@/types/api";
 
 interface ResumeCardProps {
   user: ChatUserInfo;
-  onClose: () => void;
 }
 
-export default function ResumeCard({ user, onClose }: ResumeCardProps) {
+export default function ResumeCard({ user }: ResumeCardProps) {
   return (
     <div className="mt-6 p-6 bg-white rounded-2xl shadow border border-blue-200 w-[350px] relative">
-      <button
-        onClick={onClose}
-        className="absolute top-3 right-4 text-[#488FFF] hover:text-blue-700 text-xl font-bold"
-      >
-        <X size={20} />
-      </button>
-
       <div className="flex items-center gap-4 mb-4">
         <img
           src={user.profileImgUrl}
