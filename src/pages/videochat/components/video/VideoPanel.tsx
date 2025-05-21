@@ -6,7 +6,6 @@ import {
   VideoChatUserMessage,
 } from "@/types/videoChat";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { getUserIdFromJwt } from "@/utils/tokenUtils";
 import { IMessage } from "@stomp/stompjs";
 import { useChatSubscribe } from "@/services/webSockect/chat/useChatSubscribe";
 import { useChatPublisher } from "@/services/webSockect/chat/useChatPublisher";
