@@ -1,5 +1,5 @@
 /** @format */
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useEffect } from "react";
 
 export const usePeerMap = (
   addRemoteStream: (id: number, stream: MediaStream) => void,
@@ -29,7 +29,6 @@ export const usePeerMap = (
       //ICE 후보수집 접속가능한 경로를 수집할떄마다 호출됨
       pc.onicecandidate = (event) => {
         if (onIceCandidate) {
-          console.log("[ICE Candidate]", event.candidate);
           onIceCandidate(event);
         }
       };
@@ -44,7 +43,6 @@ export const usePeerMap = (
       //그럼 서버는 이미 웹소켓을 끊엇다 연결해서 새로운 pc stream을 생성한다.
       //그래서 새로고침시 pc생성단계에서 기존정보를지우고 새정보를입력한다.
       pc.onconnectionstatechange = () => {
-        console.log("p2p상태변경 : ", targetUserId, pc.connectionState);
         if (onConnectionStateChange)
           onConnectionStateChange(pc.connectionState);
 
@@ -60,12 +58,10 @@ export const usePeerMap = (
       //화면송출을 위한 트랙설정.(훅에저장) a가offer받을떄, answer를b가받을때실행
       pc.ontrack = (event) => {
         const [remoteStream] = event.streams;
-        console.log("[Peer] ontrack event:", targetUserId, remoteStream, event);
         if (remoteStream) {
           addRemoteStream(targetUserId, remoteStream);
         }
       };
-      console.log("[PeerMap] Set peer for", targetUserId, pc);
       peerMapRef.current.set(targetUserId, pc);
       return pc;
     },
@@ -82,15 +78,26 @@ export const usePeerMap = (
 
   const removePeer = useCallback((userId: number) => {
     const pc = peerMapRef.current.get(userId);
+    console.log("removePeer호출됨", userId);
     if (pc) {
       pc.close();
       peerMapRef.current.delete(userId);
+      removeRemoteStream(userId);
     }
   }, []);
 
   const clearAll = useCallback(() => {
-    peerMapRef.current.forEach((pc) => pc.close());
+    peerMapRef.current.forEach((pc, userId) => {
+      pc.close();
+      removeRemoteStream(userId); // 전부 다 제거
+    });
     peerMapRef.current.clear();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      clearAll();
+    };
   }, []);
 
   return {

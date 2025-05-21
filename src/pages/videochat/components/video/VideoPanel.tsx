@@ -6,7 +6,6 @@ import {
   VideoChatUserMessage,
 } from "@/types/videoChat";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { getUserIdFromJwt } from "@/utils/tokenUtils";
 import { IMessage } from "@stomp/stompjs";
 import { useChatSubscribe } from "@/services/webSockect/chat/useChatSubscribe";
 import { useChatPublisher } from "@/services/webSockect/chat/useChatPublisher";
@@ -25,6 +24,8 @@ interface VideoPanelProps {
   remoteStreams: Record<number, MediaStream>;
   mediaControl: MediaControlState;
   roomId: string;
+  myUserId: number;
+  micTrack: MediaStreamTrack | null;
 }
 
 const VideoPanel = ({
@@ -32,9 +33,10 @@ const VideoPanel = ({
   remoteStreams,
   mediaControl,
   roomId,
+  myUserId,
+  micTrack,
 }: VideoPanelProps) => {
   //공통
-  const myUserId = useMemo(() => getUserIdFromJwt(), []);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   //내화면 보기위해서 필요한것
@@ -112,7 +114,6 @@ const VideoPanel = ({
   useEffect(() => {
     if (!mainVideoRef.current) return; //돔할당 기다리는거임
     if (!localStream) return; //로컬스트림 할당안됬으면
-    if (!myUserId) return;
 
     let mainVideo: MediaStream | null = null;
     //처음입장이거나 나를클릭하면
@@ -129,8 +130,20 @@ const VideoPanel = ({
     } else {
       mainVideoRef.current.srcObject = null;
     }
-  }, [selectedUserId, localStream, remoteStreams, myUserId]);
+  }, [selectedUserId, localStream, remoteStreams]);
 
+  //이건 mute로인해 내 로컬스트림에서 마이크가 인식이 안되서(상대방한텐 잘됨)
+  //나한테 초록색마크가 안보여주는걸 해결하기 위한작업
+  const myMicStream = useMemo(() => {
+    if (micTrack) {
+      const stream = new MediaStream();
+      stream.addTrack(micTrack);
+      return stream;
+    }
+    return null;
+  }, [micTrack]);
+
+  //나가기!
   const handleExit = () => {
     navigate("/", { replace: true });
   };
@@ -170,7 +183,6 @@ const VideoPanel = ({
             ref={localVideoRef}
             autoPlay
             playsInline
-            muted
             className={`bg-black w-full h-full object-cover cursor-pointer
             ${
               selectedUserId === myUserId
@@ -182,7 +194,7 @@ const VideoPanel = ({
               dispatch(setSelectedUserId(myUserId));
             }}
           />
-          <SpeakingIndicator stream={localStream} />
+          <SpeakingIndicator stream={myMicStream} />
         </div>
         {/* 상대방 비디오 */}
         {Object.entries(remoteStreams).map(([userId, stream]) => (

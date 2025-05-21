@@ -28,7 +28,7 @@ const ResumeViewer = ({ resumeUrl }: { resumeUrl: string }) => {
           <Page
             key={`page_${index + 1}`}
             pageNumber={index + 1}
-            scale={1.7}
+            scale={1.5}
             renderTextLayer={false}
             renderAnnotationLayer={false}
           />

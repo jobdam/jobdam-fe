@@ -26,16 +26,13 @@ export type SignalPayload = SdpSignalPayload | CandidateSignalPayload;
 
 export const useSignalPublisher = () => {
   //참가 신호
-  const sendJoin = (roomId: string | number) => {
+  const sendJoin = (roomId: string | number, destination: string) => {
     const client = getWebSocketClient();
 
     if (!client || !client.connected) {
       console.warn(" WebSocket 미연결 상태. JOIN 전송 실패");
       return;
     }
-
-    const destination = `/app/signal/join/${roomId}`;
-
     client.publish({
       destination,
       body: "",

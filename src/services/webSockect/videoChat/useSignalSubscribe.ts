@@ -5,11 +5,10 @@ import { IMessage } from "@stomp/stompjs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { getWebSocketClient } from "../useWebSocketConnect";
-import { useSignalPublisher } from "./useSignalPublisher";
 
 // 시그널 메시지 타입
 export type SignalMessage =
-  | { signalType: "JOIN_LIST"; userIdList: number[] }
+  | { signalType: "JOIN_LIST" | "JOIN_ONE"; userIdList: number[] }
   | { signalType: "OFFER" | "ANSWER"; senderId: number; sdp: string }
   | {
       signalType: "CANDIDATE";
@@ -69,11 +68,11 @@ export const useBroadcastSignalSubscribe = ({
   roomId,
   onSignal,
   enabled = true,
+  onSubscribed,
 }: Props) => {
   const isConnected = useSelector(
     (state: RootState) => state.websocket.isConnected
   );
-  const { sendJoin } = useSignalPublisher();
   useEffect(() => {
     if (!enabled || !isConnected) return;
     if (!isConnected) return;
@@ -93,8 +92,7 @@ export const useBroadcastSignalSubscribe = ({
         console.error("브로드캐스트 시그널 파싱 실패:", msg.body);
       }
     });
-
-    sendJoin(roomId);
+    if (onSubscribed) onSubscribed();
     return () => subscription.unsubscribe();
   }, [isConnected, roomId, onSignal, enabled]);
 };
