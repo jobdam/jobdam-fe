@@ -262,6 +262,8 @@ const Videomain = () => {
             toggleScreenShare,
           }}
           roomId={roomId!}
+          myUserId={myUserId!}
+          micTrack={micTrack}
         />
         {/* 오른쪽: 인터뷰 패널 */}
         <InterviewPanel />
