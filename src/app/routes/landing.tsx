@@ -8,7 +8,7 @@ import Footer from "./footer";
 
 function Apps() {
   return (
-    <div className=" min-h-[100vh] min-w-[1440px]">
+    <>
       <h1>Vite + React</h1>
       <div className="card">
         <p>
@@ -143,7 +143,7 @@ function Apps() {
       </div>
 
       <Footer></Footer>
-    </div>
+    </>
   );
 }
 export default Apps;

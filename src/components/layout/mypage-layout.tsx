@@ -43,12 +43,7 @@ const MypageLayout = ({
   }, [location.pathname]);
 
   return (
-    <div
-      className={cn(
-        "flex min-h-screen w-full flex-row justify-center ",
-        className
-      )}
-    >
+    <div className={cn("flex flex-row justify-center ", className)}>
       {/* <div className="flex gap-x-[117px] items-start "> */}
       {/* 사이드바 */}
       <div className="flex flex-col w-[200px] shrink-0 mt-[137px] mr-[102px] relative">

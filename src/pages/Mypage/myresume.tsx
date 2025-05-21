@@ -29,10 +29,11 @@ const Myresume = () => {
         onSubmit={(value) => {
           console.log(value);
         }}
+        className="relative "
       >
         {({}) => (
           <>
-            <div className="  flex flex-col  justify-center items-center w-[915px] h-[617px] pb-[24px] p-[36px] bg-[#f3f3f3]">
+            <div className="  flex flex-col  justify-center items-center min-w-[915px] h-[617px]  p-[36px] bg-[#f3f3f3]">
               {/*pdf  업로드 버튼 누르면 모달창 나온다*/}
 
               <PDFUploadDialog
@@ -53,6 +54,7 @@ const Myresume = () => {
                 {/* <Pdfupload file={"/리뷰데이 6주차.pdf"}></Pdfupload> */}
               </div>
 
+              <div></div>
               <div className="flex flex-row justify-between"></div>
             </div>
             <div className="flex justify-center w-1/2 items-center">
