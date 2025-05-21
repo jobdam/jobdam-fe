@@ -26,7 +26,7 @@ const ProfileEdit = ({ selectedFile }: any) => {
   // 직무 학교 희망기업
 
   const { data: userData, isSuccess } = useUser();
-
+  console.log("profileEdit 빌드떄매씀", isSuccess);
   const form = useForm<any>({
     defaultValues: {
       name: "",
@@ -57,7 +57,7 @@ const ProfileEdit = ({ selectedFile }: any) => {
   const jobCode = form.watch("jobCode2");
   const jobDetailCode = form.watch("jobDetailCode2");
   console.log(selectedJobGroup, userJobCode);
-
+  console.log("profileEdit 빌드떄매씀", jobDetailCode);
   //jobCode 코드const
   const didMountRef = useRef(false);
 

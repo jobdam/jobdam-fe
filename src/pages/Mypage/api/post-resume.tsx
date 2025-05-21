@@ -24,6 +24,7 @@ export const usePostResume = ({
   const { onSuccess, ...restConfig } = mutationConfig || {};
   return useMutation({
     onSuccess: (...args) => {
+      console.log("post-resume 빌드떄매", args);
       //무효화해서 실행
       //   queryClient.invalidateQueries({ queryKey: [""] });
     },
