@@ -1,7 +1,5 @@
 /** @format */
 
-import { ExperienceType, InterviewType } from "./api";
-
 //채팅 메세지부분
 export interface ChatUserMessage {
   id: string;

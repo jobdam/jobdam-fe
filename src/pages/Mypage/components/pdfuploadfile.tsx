@@ -7,10 +7,10 @@ import DocumentImage from "../../../components/ui/images/documents";
 
 type Props = {
   setFile: (file: File | null) => void;
-  file: File | null;
+  file?: File | null;
 };
 
-const PDFUploadDialog = ({ setFile, file }: Props) => {
+const PDFUploadDialog = ({ setFile }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const [preview, setPreview] = useState<File | null>(null);
 

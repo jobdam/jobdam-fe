@@ -1,17 +1,18 @@
 /** @format */
 import * as React from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 import { Form, Textarea } from "@/components/ui/form";
 import { Controller, useForm, useWatch } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { setStep } from "@/store/slices/progress";
+import { useDispatch, useSelector } from "react-redux";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FieldsSelect from "./components/fieldsSelect";
 import { useMatchingProfile } from "./api/get-matchingProfile";
 import { interviewSchema } from "./schemas/interviewSchema";
 import ContentsBox from "@/components/layout/contentsBox";
 import { Button } from "@/components/ui/button";
+import { RootState } from "@/store";
+import { setProgressStep } from "@/store/slices/uistate";
 
 const InterviewRegister = () => {
   const dispatch = useDispatch();
@@ -27,10 +28,15 @@ const InterviewRegister = () => {
     },
   });
   const { data: matchingProfile } = useMatchingProfile();
+  const location = useLocation();
+
+  const params = new URLSearchParams(location.search);
+  const stepParam = params.get("step");
+  console.log(stepParam);
 
   React.useEffect(() => {
-    dispatch(setStep(1));
-  }, []);
+    dispatch(setProgressStep(1));
+  }, [location.search, stepParam, dispatch]);
 
   const matchType = useWatch({
     control: form.control,
@@ -51,7 +57,9 @@ const InterviewRegister = () => {
     <Form
       form={form}
       onSubmit={(values: any) => {
-        navigate("/interview/matching", { state: values });
+        navigate("/interview/matching", {
+          state: values,
+        });
       }}
     >
       {({ control }) => {

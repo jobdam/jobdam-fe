@@ -11,10 +11,10 @@ type Props = {
   setFile: (file: File | null) => void;
   file: File | null;
 };
-const Pdfpreview = ({ file, setFile }: Props) => {
-  const [numPages, setNumPages] = useState<number | null>(null);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [scale, setScale] = useState(1.0); // 기본 배율
+const Pdfpreview = ({ file }: Props) => {
+  // const [numPages, setNumPages] = useState<number | null>(null);
+  // const [pageNumber, setPageNumber] = useState(1);
+  // const [scale, setScale] = useState(1.0); // 기본 배율
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState<number | null>(null);
