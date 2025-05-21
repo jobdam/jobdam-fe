@@ -69,14 +69,14 @@ export const AuthLayout = ({
     <>
       <div
         className={cn(
-          "flex min-h-[100vh] justify-center items-center",
+          "flex w-full h-[1370px]  justify-center items-center",
           entry && "bg-gradient-auth-entry ",
           login && "bg-gradient-auth-login"
         )}
       >
         <div
           className={cn(
-            "w-[588px] max-h-[800px] rounded-[20px] absolute px-16 py-[52px] bg-white",
+            "w-[588px]  rounded-[20px] absolute px-16 py-[52px] bg-white",
             className
           )}
         >

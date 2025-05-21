@@ -4,7 +4,7 @@ import { useUser } from "@/lib/auth";
 import { useJobCategory } from "./api/get-jobcategory";
 import { paths } from "@/config/paths";
 import { Link } from "@/components/ui/link";
-import { companySizeMap, educationMap } from "@/types/api";
+import { companySizeMap, educationMap, expMap } from "@/types/api";
 import { formatBirthday } from "../../utils/format";
 export const labelMap: Record<string, string> = {
   name: "이름",
@@ -16,10 +16,6 @@ export const labelMap: Record<string, string> = {
   targetCompanySize: "희망 기업",
 };
 
-const expMap: Record<string, string> = {
-  NEW: "신입",
-  EXPERIENCED: "경력",
-};
 const MyProfile = () => {
   //데이터가공필요 userData에 들어가는 데이터는 영어
   //target company size가
@@ -27,18 +23,16 @@ const MyProfile = () => {
   const { data: userData } = useUser();
   const { data: jobData } = useJobCategory({});
 
-  console.log(userData, jobData);
-
   const job = jobData?.data.find((el) => {
     return el.jobCode === userData?.jobCode;
   });
   //job을찾고
-  console.log(job, "job");
 
   const jobDetail = job?.details?.find((el) => {
     return el.jobDetailCode === userData?.jobDetailCode;
   });
 
+  console.log(job, jobDetail, userData);
   //userData에서
   //formatbirthday 생년월일 , 타입 대문자로 바꾸면 해결
   //경력 여부
@@ -47,7 +41,11 @@ const MyProfile = () => {
     email: userData?.email,
     experienceType: expMap[userData?.experienceType ?? ""],
     birthday: formatBirthday(userData?.birthday ?? ""),
-    job: `${job?.jobGroup} / ${jobDetail?.jobDetail} `,
+    job:
+      job?.jobGroup && jobDetail?.jobDetail
+        ? `${job.jobGroup} / ${jobDetail.jobDetail}`
+        : "없음",
+
     targetCompanySize: companySizeMap[userData?.targetCompanySize ?? ""],
     education: educationMap[userData?.educationLevel ?? ""],
   };

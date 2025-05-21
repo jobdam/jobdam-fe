@@ -46,14 +46,12 @@ export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
     // );
 
     const handleSelect = (value: string | number) => {
-      console.log(value, "value");
       onChange?.(value); // 상태는 바깥에서 관리
       setIsOpen(false);
     };
     const selectedLabel =
       options.find((option) => option[valuekey] === value)?.[labelkey] ?? value;
 
-    console.log(selectedLabel);
     return (
       // <FieldWrapper label={label} error={error}>
       <div

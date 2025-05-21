@@ -1,17 +1,22 @@
 /** @format */
 
-import { AuthLayout } from "@/components/layout/auth-layout";
 import ProfilePost from "@/pages/Mypage/profilepost";
 
 const PostProfile = () => {
   return (
-    <AuthLayout
-      profile={true}
-      className=" text-left w-[700px] h-[1573px] "
-      title="프로필을 입력해주세요"
-    >
-      <ProfilePost></ProfilePost>
-    </AuthLayout>
+    // 전체 레이아웃
+    <div className="flex justify-center">
+      {/* 정보 입력칸이 들어가는곳 */}
+      <div className="w-[650px] h-[1572px]">
+        {/* 제목 칸*/}
+        <div className="mb-[52px] mt-[80px] ">
+          <h2 className="  text-[32px] font-semibold text-gray-900">
+            프로필을 입력해주세요.
+          </h2>
+        </div>
+        <ProfilePost></ProfilePost>
+      </div>
+    </div>
   );
 };
 
