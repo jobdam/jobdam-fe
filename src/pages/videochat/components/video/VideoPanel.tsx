@@ -17,6 +17,7 @@ import { setSelectedUserId } from "@/store/slices/videoChatInterview";
 import { RootState } from "@/store";
 import { useNavigate } from "react-router";
 import { SpeakingIndicator } from "./SpeakingIndicator";
+import InterviewTimer from "./InterviewTimer";
 
 interface VideoPanelProps {
   //비디오 스트림
@@ -134,7 +135,8 @@ const VideoPanel = ({
     navigate("/", { replace: true });
   };
   return (
-    <div className="flex flex-col justify-between h-[90%] w-[75%] p-4 bg-white border border-[#d9d9d9] rounded-[20px] shadow-custom">
+    <div className="flex flex-col justify-between h-[90%] w-[75%] p-2 bg-white border border-[#d9d9d9] rounded-[20px] shadow-custom">
+      <InterviewTimer />
       {/* 메인 비디오 */}
       <div className="relative flex items-center justify-center w-full h-[75%]">
         <div className="absolute left-6 top-6 z-10">
@@ -151,7 +153,7 @@ const VideoPanel = ({
           autoPlay
           playsInline
           muted
-          className="w-[95%] h-[95%] object-cover"
+          className="w-[98%] h-[98%] object-cover"
         />
         {/* 유틸 */}
         <div className="absolute left-6 bottom-6 z-10">
