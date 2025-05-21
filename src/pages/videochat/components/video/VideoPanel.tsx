@@ -169,7 +169,7 @@ const VideoPanel = ({
             autoPlay
             playsInline
             muted
-            className={`bg-black object-cover cursor-pointer
+            className={`bg-black w-full h-full object-cover cursor-pointer
             ${
               selectedUserId === myUserId
                 ? "border-4 border-blue-500 shadow-lg"
@@ -192,7 +192,7 @@ const VideoPanel = ({
               data-userid={userId}
               autoPlay
               playsInline
-              className={`bg-black object-cover cursor-pointer
+              className={`bg-black w-full h-full object-cover cursor-pointer
                ${
                  selectedUserId === Number(userId)
                    ? "border-4 border-blue-500 shadow-lg"
