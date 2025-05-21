@@ -1,5 +1,11 @@
 /** @format */
 
+
+
+import { expCode } from "./api";
+import { InterviewType } from "./interview";
+
+
 //채팅 메세지부분
 export interface ChatUserMessage {
   id: string;
@@ -31,7 +37,7 @@ export interface ChatUserInfo {
   jobGroup: string;
   jobDetailCode: string;
   jobDetail: string;
-  experienceType: ExperienceType;
+  experienceType: expCode;
   introduce: string;
   interviewType: InterviewType;
 

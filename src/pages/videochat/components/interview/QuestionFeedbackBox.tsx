@@ -93,11 +93,14 @@ const QuestionFeedbackBox = ({
   return (
     <>
       {/* 피드백 입력창 */}
-      <div className="rounded-xl overflow-hidden border border-[#E0E0E0] shadow-sm">
+      <div className="rounded-xl h-[55%] overflow-hidden border border-[#E0E0E0] shadow-sm">
         {/* 질문 헤더 */}
-        <div className="flex items-center justify-center gap-2 bg-[#488FFF] px-4 py-2">
-          <span className="text-white text-center font-semibold text-sm">
-            {context ? context : "질문을 선택해주세요."}
+        <div className="bg-[#488FFF] px-4 py-2 flex justify-center items-center">
+          <span className="inline-flex items-center">
+            <span className="text-xl mr-3">💬</span>
+            <span className="text-white font-semibold text-sm">
+              {context ? context : "질문을 선택해주세요."}
+            </span>
           </span>
         </div>
 
@@ -106,32 +109,44 @@ const QuestionFeedbackBox = ({
           <textarea
             value={feedback}
             onChange={(e) => setFeedback(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleFeedBackSubmit();
+              }
+            }}
             placeholder="피드백을 작성해주세요."
-            className="w-full pr-8 resize-none pr-8 text-sm placeholder-gray-400 text-gray-800 outline-none"
+            className="w-full pr-8 resize-none min-h-[100px] max-h-[220px] pr-8 text-base placeholder-gray-400 text-gray-800 outline-none scrollbar-none"
           />
           <button
             onClick={handleFeedBackSubmit}
-            className="absolute right-5 top-1/2 transform -translate-y-1/2"
+            className="absolute right-5 ml-2"
           >
-            <span className="text-gray-300 text-xl">➤</span>
+            <img src="/send.svg" alt="send" className="w-4 h-4 opacity-40" />
           </button>
         </div>
       </div>
 
       {/* 추가질문 입력창 */}
-      <div className="rounded-xl overflow-hidden border border-[#E0E0E0] shadow-sm">
+      <div className="rounded-xl h-[45%] overflow-hidden border border-[#E0E0E0] shadow-sm">
         <div className="relative bg-white px-4 py-3">
           <textarea
             value={question}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleQuestionSubmit();
+              }
+            }}
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="추가 질문을 작성해주세요"
-            className="w-full resize-none pr-8 text-sm placeholder-gray-400 text-gray-800 outline-none"
+            className="w-full min-h-[100px] max-h-[220px] resize-none pr-8 text-base placeholder-gray-400 text-gray-800 outline-none scrollbar-none"
           />
           <button
             onClick={handleQuestionSubmit}
-            className="absolute right-5 top-1/2 transform -translate-y-1/2"
+            className="absolute right-5 ml-2"
           >
-            <span className="text-gray-300 text-xl">➤</span>
+            <img src="/send.svg" alt="send" className="w-4 h-4 opacity-40" />
           </button>
         </div>
       </div>

@@ -5,7 +5,7 @@ import ChatMessage from "./ChatMessage";
 import { Send } from "lucide-react";
 import { ChatMessageType } from "@/types/chat";
 import SystemMessage from "./ChatSystemMessage";
-import { InterviewTypeLabel } from "@/types/api";
+import { expMap } from "@/types/api";
 
 interface ChatPanelProps {
   messages: ChatMessageType[];
@@ -55,7 +55,7 @@ const ChatPanel = ({
     setAutoScroll(isAtBottom);
   };
 
-  const interviewTypeLabel = InterviewTypeLabel[interviewType];
+  const interviewTypeLabel = expMap[interviewType];
 
   return (
     <div className="flex flex-col h-full">

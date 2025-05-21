@@ -7,22 +7,26 @@ import { useSignalHandler } from "@/services/webSockect/videoChat/useSignalHandl
 import { useSignalPublisher } from "@/services/webSockect/videoChat/useSignalPublisher";
 import {
   SignalMessage,
-  useSignalSubscription,
-} from "@/services/webSockect/videoChat/useSignalSubscrpition";
-import { useCallback, useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
+  useBroadcastSignalSubscribe,
+  usePrivateSignalSubscribe,
+} from "@/services/webSockect/videoChat/useSignalSubscribe";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router";
 import InterviewPanel from "./components/interview/InterviewPanel";
 import { fetchUserInterviewData } from "./api/get-interviewFullData";
 import VideoPanel from "./components/video/VideoPanel";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { setInterviewData } from "@/store/slices/videoChatInterview";
+import { getUserIdFromJwt } from "@/utils/tokenUtils";
 
 const Videomain = () => {
   ////공통////
   const { roomId } = useParams();
   const navigate = useNavigate();
-
+  const myUserId = useMemo(() => getUserIdFromJwt(), []);
+  const location = useLocation();
+  const isFirstJoin = location.state?.firstJoin;
   ////video////
   //다른사람 스트림정보
   const { remoteStreams, addRemoteStream, removeRemoteStream } =
@@ -32,6 +36,7 @@ const Videomain = () => {
   //미디어 관련 훅
   const {
     stream,
+    micTrack,
     cameraTrack,
     screenTrack,
     isMicOn,
@@ -63,16 +68,20 @@ const Videomain = () => {
   const interviewDataMap = useSelector(
     (state: RootState) => state.videoChatInterview.interviewDataMap
   );
+  //초기설정
   useEffect(() => {
     if (!roomId) {
-      navigate(-1);
+      navigate("/");
       return;
     }
-
+    if (!myUserId) {
+      navigate("/");
+      return;
+    }
     return () => {
       peerMap.clearAll(); //언마운트시 전부제거
     };
-  }, [roomId, navigate]);
+  }, [roomId]);
   /////////////////////////////
 
   // 화면 공유 또는 카메라 트랙 변경 시 replaceTrack
@@ -120,6 +129,7 @@ const Videomain = () => {
         console.log(`[ConnectionState][${targetUserId}]:`, state);
       }
     );
+    console.log("sendOffer:", stream);
     // 무조건 offer전에 스트림을 넣어줘야 sdp에 적용된다.
     stream?.getTracks().forEach((track) => {
       pc.addTrack(track, stream);
@@ -139,41 +149,40 @@ const Videomain = () => {
       },
     });
   };
-
-  //////////////////////////////////
+  ///구독 핸들러
+  //join List를 처리하는곳
+  const handleJoin = useCallback(async (data: SignalMessage) => {
+    if (data.signalType === "JOIN_LIST") {
+      for (const userId of data.userIdList) {
+        if (!isFirstJoin) {
+          // 새로고침 등 재접속이면 무조건 모든 사람에게 offer
+          if (myUserId !== userId) await createPeerAndSendOffer(userId);
+        } else {
+          // 최초 입장일 경우 중복 방지용으로 큰 ID에게만 offer
+          if (myUserId! < userId) {
+            await createPeerAndSendOffer(userId);
+          }
+        }
+      }
+    }
+  }, []);
   //구독시 시그널서버로 peer정보주고 받는곳
   const handleSignal = useCallback(
     async (data: SignalMessage) => {
       switch (data.signalType) {
-        case "JOIN_LIST": //여긴offer를보내는곳
-          for (const userId of data.userIdList) {
-            await createPeerAndSendOffer(userId);
-          }
-          break;
         case "OFFER": //offer를받는다면
+          console.log("offerHandle:", stream);
           await handleOffer(
             { sdp: data.sdp, type: "offer" },
             data.senderId,
             roomId!,
             stream!
           );
-          if (!interviewDataMap[data.senderId]) {
-            //인터뷰초기데이터를 가져와 리덕스에저장
-            const offerUserInfo = await fetchUserInterviewData(data.senderId);
-            dispatch(
-              setInterviewData({ userId: data.senderId, data: offerUserInfo })
-            );
-          }
+          await ensureInterviewData(data.senderId);
           break;
         case "ANSWER": //answer를받는다면
           await handleAnswer({ sdp: data.sdp, type: "answer" }, data.senderId);
-          if (!interviewDataMap[data.senderId]) {
-            //인터뷰초기데이터를 가져와 리덕스에저장
-            const answerUserInfo = await fetchUserInterviewData(data.senderId);
-            dispatch(
-              setInterviewData({ userId: data.senderId, data: answerUserInfo })
-            );
-          }
+          await ensureInterviewData(data.senderId);
           break;
         case "CANDIDATE": //candidate를받는다면
           await handleCandidate(
@@ -189,13 +198,33 @@ const Videomain = () => {
     },
     [stream]
   );
+  //인터뷰초기데이터를 가져와 리덕스에저장
+  const ensureInterviewData = async (userId: number) => {
+    if (!interviewDataMap[userId]) {
+      const userData = await fetchUserInterviewData(userId);
+      dispatch(setInterviewData({ userId, data: userData }));
+    }
+    //초기화 완료시점이니 처음접근한기록없앤다(새로고침,팅김방지)
+    if (location.state?.firstJoin) {
+      navigate(location.pathname, { replace: true });
+    }
+  };
 
   //구독하기
-
-  useSignalSubscription({
+  const [isPrivateSubscribed, setIsPrivateSubscribed] = useState(false);
+  //1:1시그널용(offer,answer,candidate,)
+  usePrivateSignalSubscribe({
     roomId: roomId as string,
     onSignal: handleSignal,
-    enabled: !!stream,
+    enabled: !!micTrack && !!cameraTrack,
+    onSubscribed: () => setIsPrivateSubscribed(true),
+  });
+
+  //전체용(동기화방지 joinList를 broadcast)
+  useBroadcastSignalSubscribe({
+    roomId: roomId as string,
+    onSignal: handleJoin,
+    enabled: isPrivateSubscribed,
   });
 
   return (
