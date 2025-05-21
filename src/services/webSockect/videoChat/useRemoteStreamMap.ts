@@ -9,11 +9,17 @@ export const useRemoteStreamMap = () => {
 
   // 스트림 추가
   const addRemoteStream = useCallback((userId: number, stream: MediaStream) => {
-    console.log("remote stream 추가됨", userId);
-    setRemoteStreams((prev) => ({
-      ...prev,
-      [userId]: stream,
-    }));
+    setRemoteStreams((prev) => {
+      // 이미 같은 id의 stream이 등록되어 있다면 무시
+      if (prev[userId] && prev[userId].id === stream.id) {
+        return prev;
+      }
+      console.log("remote stream 추가됨", userId, stream.id);
+      return {
+        ...prev,
+        [userId]: stream,
+      };
+    });
   }, []);
 
   // 스트림 제거

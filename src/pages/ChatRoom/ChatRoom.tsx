@@ -204,10 +204,7 @@ const ChatRoom = () => {
       onSuccess: () => {
         console.log("방 나가기 성공");
         navigate(paths.videochat.main.getHref(roomId), {
-          state: {
-            jobCode: myUserInfo?.jobCode,
-            interviewType: myUserInfo?.interviewType,
-          },
+          state: { firstJoin: true },
           replace: true,
         });
       },

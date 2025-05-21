@@ -11,6 +11,7 @@ type Props = {
 };
 
 const PDFUploadDialog = ({ setFile, file }: Props) => {
+  console.log("pdfuploadfile에서 빌드때매 잠시씀", file);
   const [open, setOpen] = useState<boolean>(false);
   const [preview, setPreview] = useState<File | null>(null);
 
