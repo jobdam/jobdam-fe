@@ -48,7 +48,7 @@ const Videomain = () => {
   } = useLocalMediaStream();
 
   //시그널 전송 훅
-  const { sendSignal } = useSignalPublisher();
+  const { sendJoin, sendSignal } = useSignalPublisher();
   //시그널 받을때 핸들
   const { handleOffer, handleAnswer, handleCandidate } = useSignalHandler(
     peerMap,
@@ -154,14 +154,10 @@ const Videomain = () => {
   const handleJoin = useCallback(async (data: SignalMessage) => {
     if (data.signalType === "JOIN_LIST") {
       for (const userId of data.userIdList) {
-        if (!isFirstJoin) {
-          // 새로고침 등 재접속이면 무조건 모든 사람에게 offer
-          if (myUserId !== userId) await createPeerAndSendOffer(userId);
-        } else {
-          // 최초 입장일 경우 중복 방지용으로 큰 ID에게만 offer
-          if (myUserId! < userId) {
-            await createPeerAndSendOffer(userId);
-          }
+        // 최초 입장일 경우 중복 방지용으로 큰 ID에게만 offer
+        if (peerMap.getPeer(userId)) return;
+        if (myUserId! < userId) {
+          await createPeerAndSendOffer(userId);
         }
       }
     }
@@ -170,8 +166,17 @@ const Videomain = () => {
   const handleSignal = useCallback(
     async (data: SignalMessage) => {
       switch (data.signalType) {
+        case "JOIN_ONE": //새로고침,인터넷끊김등으로 재입장
+          for (const userId of data.userIdList) {
+            console.log(data.userIdList);
+            await createPeerAndSendOffer(userId);
+          }
+          break;
         case "OFFER": //offer를받는다면
-          console.log("offerHandle:", stream);
+          //기존에 존재하는 peer삭제(있다면)
+          if (peerMap.getPeer(data.senderId)) {
+            peerMap.removePeer(data.senderId);
+          }
           await handleOffer(
             { sdp: data.sdp, type: "offer" },
             data.senderId,
@@ -212,7 +217,8 @@ const Videomain = () => {
 
   //구독하기
   const [isPrivateSubscribed, setIsPrivateSubscribed] = useState(false);
-  //1:1시그널용(offer,answer,candidate,)
+  const [isBroadcastSubscribed, setIsBroadcastSubscribed] = useState(false);
+  //1:1시그널용(joinOne,offer,answer,candidate)
   usePrivateSignalSubscribe({
     roomId: roomId as string,
     onSignal: handleSignal,
@@ -225,7 +231,21 @@ const Videomain = () => {
     roomId: roomId as string,
     onSignal: handleJoin,
     enabled: isPrivateSubscribed,
+    onSubscribed: () => setIsBroadcastSubscribed(true),
   });
+  //구독이 전부 완료되면 시그널 전송시작!
+  useEffect(() => {
+    if (isBroadcastSubscribed) {
+      //처음입장이면 아이디 비교해서 순차적으로offer 아니면 전부다한테 offer
+      if (isFirstJoin) {
+        console.log("여긴 처음입장했을때만!!");
+        sendJoin(roomId!, `/app/signal/join/${roomId!}`);
+      } else {
+        console.log("여긴새로고침했을떄만나와야해!!");
+        sendJoin(roomId!, `/app/signal/joinOne/${roomId!}`);
+      }
+    }
+  }, [isBroadcastSubscribed]);
 
   return (
     <div className="flex justify-center items-center h-screen w-screen bg-gradient-videochat">

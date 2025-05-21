@@ -4,14 +4,13 @@ import { useLocation, useNavigate } from "react-router";
 
 import { Form, Textarea } from "@/components/ui/form";
 import { Controller, useForm, useWatch } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FieldsSelect from "./components/fieldsSelect";
 import { useMatchingProfile } from "./api/get-matchingProfile";
 import { interviewSchema } from "./schemas/interviewSchema";
 import ContentsBox from "@/components/layout/contentsBox";
 import { Button } from "@/components/ui/button";
-import { RootState } from "@/store";
 import { setProgressStep } from "@/store/slices/uistate";
 
 const InterviewRegister = () => {
