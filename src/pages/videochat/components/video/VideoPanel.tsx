@@ -151,7 +151,7 @@ const VideoPanel = ({
     <div className="flex flex-col justify-between h-[90%] w-[75%] p-2 bg-white border border-[#d9d9d9] rounded-[20px] shadow-custom">
       <InterviewTimer />
       {/* 메인 비디오 */}
-      <div className="relative flex items-center justify-center w-full h-[75%]">
+      <div className="relative flex items-center justify-center w-full h-[80%]">
         <div className="absolute left-6 top-6 z-10">
           <button
             onClick={handleExit}
@@ -176,17 +176,17 @@ const VideoPanel = ({
         {isChatOpen && <ChatOverlay messages={messages} onSend={sendMessage} />}
       </div>
       {/* 하단 썸네일들 */}
-      <div className="flex flex-wrap w-full h-[25%] justify-center gap-2 max-w-[960px] mx-auto mt-2">
+      <div className="flex flex-wrap w-full h-[20%] justify-center items-center gap-2 max-w-[960px] mx-auto mt-1">
         {/* 내 비디오 (내비디오 상대방비디오는 하나로 합치기X 차후 기능추가시 별도로 해야 편함)*/}
-        <div className="relative w-[25%] h-[85%] overflow-visible ">
+        <div className="relative w-[16%] h-[85%] overflow-visible ">
           <video
             ref={localVideoRef}
             autoPlay
             playsInline
-            className={`bg-black w-full h-full object-cover cursor-pointer
+            className={`bg-black w-full h-full object-cover cursor-pointer min-h-0 max-h-full"
             ${
               selectedUserId === myUserId
-                ? "border-4 border-blue-500 shadow-lg"
+                ? "border-3 border-blue-500 shadow-lg"
                 : ""
             }
             `}
@@ -200,16 +200,16 @@ const VideoPanel = ({
         {Object.entries(remoteStreams).map(([userId, stream]) => (
           <div
             key={userId}
-            className="relative w-[25%] h-[85%] overflow-visible"
+            className="relative w-[16%] h-[85%] overflow-visible"
           >
             <video
               data-userid={userId}
               autoPlay
               playsInline
-              className={`bg-black w-full h-full object-cover cursor-pointer
+              className={`bg-black w-full h-full object-cover cursor-pointer min-h-0 max-h-full"
                ${
                  selectedUserId === Number(userId)
-                   ? "border-4 border-blue-500 shadow-lg"
+                   ? "border-3 border-blue-500 shadow-lg"
                    : ""
                }
             `}

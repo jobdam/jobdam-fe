@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { usePostFeedBackMutation } from "../../api/post-feedBack";
 import { usePostQuestionMutation } from "../../api/post-question";
 import { addInterviewQuestion } from "@/store/slices/videoChatInterview";
+import AlertDialog from "@/components/ui/alertdialog/alertdialog";
 
 interface Props {
   questionId?: number | null;
@@ -28,14 +29,25 @@ const QuestionFeedbackBox = ({
     (state: RootState) => state.videoChatInterview.selectedUserId
   );
 
+  const [alertModal, setAlertModal] = useState<{
+    open: boolean;
+    title: string;
+  }>({ open: false, title: "" });
+
   const { mutate: submitFeedback } = usePostFeedBackMutation({
     mutationConfig: {
       onSuccess: () => {
-        alert("피드백 전송에 성공하였습니다.");
+        setAlertModal({
+          open: true,
+          title: "피드백 전송에 성공하였습니다.",
+        });
         setFeedback("");
       },
       onError: (err) => {
-        alert("피드백 전송에 실패하였습니다. 다시 전송 해주세요.");
+        setAlertModal({
+          open: true,
+          title: "피드백 전송에 실패하였습니다. 다시 전송 해주세요.",
+        });
         console.error(err);
       },
     },
@@ -44,7 +56,10 @@ const QuestionFeedbackBox = ({
   const { mutate: submitQuestion } = usePostQuestionMutation({
     mutationConfig: {
       onSuccess: (newQuestionId) => {
-        alert("질문 추가에 성공하였습니다.");
+        setAlertModal({
+          open: true,
+          title: "질문 추가에 성공하였습니다.",
+        });
         dispatch(
           addInterviewQuestion({
             userId: selectedUserId!,
@@ -58,7 +73,10 @@ const QuestionFeedbackBox = ({
         setQuestion("");
       },
       onError: (err) => {
-        alert("질문 추가에 실패하였습니다. 다시 추가 해주세요.");
+        setAlertModal({
+          open: true,
+          title: "질문 추가에 실패하였습니다. 다시 전송 해주세요.",
+        });
         console.error(err);
       },
     },
@@ -79,7 +97,7 @@ const QuestionFeedbackBox = ({
       },
     });
   };
-  //질문추가 핸들러인데 상단에도 보여줘야함 리턴받아서 설정해야함
+
   const handleQuestionSubmit = async () => {
     if (!question.trim() || !selectedUserId) return;
     submitQuestion({
@@ -150,6 +168,15 @@ const QuestionFeedbackBox = ({
           </button>
         </div>
       </div>
+      <AlertDialog
+        open={alertModal.open}
+        onOpenChange={(open) => setAlertModal((a) => ({ ...a, open }))}
+        title={alertModal.title}
+        className={""}
+        contents={<span style={{ display: "none" }} />}
+      >
+        <span style={{ display: "none" }} />
+      </AlertDialog>
     </>
   );
 };

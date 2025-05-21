@@ -28,7 +28,7 @@ export const useLocalMediaStream = () => {
   const createBlackVideoTrack = () => {
     const canvas = Object.assign(document.createElement("canvas"), {
       width: 320,
-      height: 180,
+      height: 240,
     });
     const ctx = canvas.getContext("2d");
     if (ctx) {

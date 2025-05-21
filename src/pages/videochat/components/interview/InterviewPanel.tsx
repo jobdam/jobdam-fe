@@ -81,7 +81,7 @@ const InterviewPanel = () => {
       >
         {" "}
         {/* //ai추천질문 버튼 이력서 보기 버튼 */}
-        <div className="pb-[25px] pl-[10px] h-[10%] flex flex-row gap-[12px] justify-start ">
+        <div className="pb-[10px] pl-[10px] h-[9%] flex flex-row gap-[12px] justify-start ">
           <button
             onClick={onAiChange}
             className={cn(
@@ -110,7 +110,7 @@ const InterviewPanel = () => {
               ref={scrollRef}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              className="bg-[#488FFF] rounded-[20px] h-[45%] w-full min-h-[100px] max-h-[270px] overflow-y-auto scrollbar-none px-[24px] py-[23px]"
+              className="bg-[#488FFF] rounded-[20px] h-[45%] w-full min-h-[100px] max-h-[350px] overflow-y-auto scrollbar-none px-[24px] py-[23px]"
             >
               {!interviewQuestions || interviewQuestions.length === 0 ? (
                 <div className="w-full h-full flex items-center justify-center">
