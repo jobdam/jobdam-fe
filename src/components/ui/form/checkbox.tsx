@@ -10,6 +10,8 @@ import { FieldWrapper, FieldWrapperPassThroughProps } from "./field-wrapper";
 import { Checkbox as CheckBoxPrimitive } from "radix-ui";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { Label } from "./label";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 export type Variant = "default" | "interview" | "progress";
 
@@ -23,6 +25,7 @@ interface CombinedCheckboxProps
   registration?: Partial<UseFormRegisterReturn>;
   onCheckedChange?: (checked: CheckedState) => void;
   variant?: Variant;
+  step?: any;
 }
 
 export const Checkbox = React.forwardRef<
@@ -32,6 +35,7 @@ export const Checkbox = React.forwardRef<
   (
     {
       className,
+      step,
       label,
       variant = "default",
       isAbsoluteErrorPosition,
@@ -43,6 +47,10 @@ export const Checkbox = React.forwardRef<
     },
     ref
   ) => {
+    const progressStep = useSelector(
+      (state: RootState) => state?.ui.progressStep
+    );
+
     //checkbox는 다양하게 쓰인다 1. interview sidebar에 쓰인다. -> interview
     // 2. 그냥 checkbox 그자체로의 역할
     //checkbox의 크기나 모양을 변하기 쉽게 만들자.
@@ -59,6 +67,12 @@ export const Checkbox = React.forwardRef<
       variant === "progress" && "w-[150px] justify-start"
     );
 
+    console.log(progressStep, step);
+    // ✅ step에 따른 label 처리
+    const labelClassName = cn(
+      "text-base", // 기본 폰트 스타일
+      variant === "progress" && [progressStep >= step && "text-[#488FFF]"]
+    );
     return (
       <FieldWrapper
         isAbsoluteErrorPosition={isAbsoluteErrorPosition}
@@ -80,7 +94,8 @@ export const Checkbox = React.forwardRef<
               <Check className={cn(variant !== "default" && "text-white")} />
             </CheckBoxPrimitive.Indicator>
           </CheckBoxPrimitive.Root>
-          <Label>{label}</Label>
+
+          <Label className={labelClassName}>{label}</Label>
         </div>
       </FieldWrapper>
     );

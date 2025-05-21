@@ -49,13 +49,13 @@ api.interceptors.response.use(
     };
     const token = getAccessToken();
 
-    store.dispatch(
-      addNotification({
-        type: "success",
-        title: "Success",
-        message,
-      })
-    );
+    // store.dispatch(
+    //   addNotification({
+    //     type: "success",
+    //     title: "Success",
+    //     message,
+    //   })
+    // );
 
     //인증 되지 않은 사용자는 로그인으로 되돌려 보내기.
 
