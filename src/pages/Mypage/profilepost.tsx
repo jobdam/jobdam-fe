@@ -132,12 +132,12 @@ const ProfilePost = () => {
       {({ register, control }) => (
         <>
           <ProfilePreview onSelectFile={handleFileSelect}></ProfilePreview>
-          <div className="flex flex-row justify-between  items-center pr-[310px]">
-            <Label>이름</Label>
+          <div className="flex flex-row   items-center">
+            <Label className="w-[110px]">이름</Label>
             <Input className="w-[150px]" {...register("name")} />
           </div>
-          <div className="flex flex-row justify-between items-center pr-[195px]">
-            <Label>생년월일</Label>
+          <div className="flex flex-row items-center ">
+            <Label className="w-[110px]">생년월일</Label>
             <Input
               className="w-[266px]"
               {...register("birthday")}
@@ -149,8 +149,8 @@ const ProfilePost = () => {
             ></Input>
           </div>
 
-          <div className="flex flex-row justify-between  items-center ">
-            <Label>직무</Label>
+          <div className="flex flex-row  items-center ">
+            <Label className="w-[110px]">직무</Label>
             <div className="flex flex-row gap-x-[8px]">
               <Controller
                 name="jobCode"
@@ -183,21 +183,21 @@ const ProfilePost = () => {
             </div>
           </div>
 
-          <div className="flex flex-row items-center justify-between pr-[160px]">
-            <Label>경력</Label>
+          <div className="flex flex-row items-center ">
+            <Label className="w-[110px]">경력</Label>
             <Radio name="exp" options={experienceOptions}></Radio>
           </div>
 
-          <div className="flex items-center justify-between flex-row ">
-            <Label className="w-[143px]">학력</Label>
+          <div className="flex items-center  flex-row ">
+            <Label className="w-[110px]">학력</Label>
             <div className="flex flex-row pr-[187px]">
               <Controller
                 name="educationLevel"
                 control={control}
                 render={({ field }) => (
                   <Select
-                    labelkey="value"
-                    valuekey="label"
+                    labelkey="label"
+                    valuekey="value"
                     className="w-[137px]"
                     value={field.value}
                     onChange={field.onChange}
@@ -212,8 +212,8 @@ const ProfilePost = () => {
                 render={({ field }) => (
                   <Select
                     className="w-[137px]"
-                    labelkey="value"
-                    valuekey="label"
+                    labelkey="label"
+                    valuekey="value"
                     value={field.value}
                     onChange={field.onChange}
                     options={stateOptions}
@@ -225,16 +225,16 @@ const ProfilePost = () => {
             </div>
           </div>
 
-          <div className=" items-center justify-between  mt-[140px] flex flex-row pr-[300px]">
-            <Label className="w-[143px]">희망기업</Label>
+          <div className=" items-center  flex flex-row ">
+            <Label className="w-[110px]">희망기업</Label>
             <Controller
               name="targetCompanySize"
               control={control}
               render={({ field }) => (
                 <Select
                   className="w-[194px]"
-                  labelkey="value"
-                  valuekey="label"
+                  labelkey="label"
+                  valuekey="value"
                   options={targetCompany}
                   value={field.value}
                   onChange={field.onChange}
@@ -243,11 +243,13 @@ const ProfilePost = () => {
             />
           </div>
 
-          <div className=" flex translate-y-[-100px] justify-center mt-[350px] items-center">
+          <div className=" flex justify-center mt-[139px] items-center">
             <Button
               type="submit"
               isLoading={registerProfile.isPending}
-              className="  cursor-pointer rounded-[10px]   font-semibold flex items-center justify-center h-[75px] w-[530px]  leading-[150%] text-[24px]"
+              className=" 
+              w-[70%]
+              cursor-pointer rounded-[10px]   font-semibold flex items-center justify-center h-[65px]   leading-[150%] text-[24px]"
             >
               입력 완료
             </Button>

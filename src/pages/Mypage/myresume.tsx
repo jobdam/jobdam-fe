@@ -7,6 +7,7 @@ import PDFUploadDialog from "./components/pdfuploadfile";
 import Pdfpreview from "./components/pdfpreview";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import { usePostResume } from "./api/post-resume";
 
 type ResumeFormValues = {
   resumeFile: File | null;
@@ -22,12 +23,15 @@ const Myresume = () => {
   const file = form.watch("resumeFile");
   console.log(file);
 
+  const registerResume = usePostResume({});
+
   return (
     <>
       <Form
         form={form}
         onSubmit={(value) => {
           console.log(value);
+          registerResume.mutate(value);
         }}
         className="relative "
       >
