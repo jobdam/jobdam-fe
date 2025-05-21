@@ -52,7 +52,7 @@ export const educationMap: Record<educationCode, string> = {
   "HIGH-SCHOOL": "고등학교",
 };
 
-type expCode = "NEW" | "EXPERIENCED";
+export type expCode = "NEW" | "EXPERIENCED";
 
 export const expMap: Record<expCode, string> = {
   NEW: "신입",

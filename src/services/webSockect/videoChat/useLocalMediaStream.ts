@@ -28,15 +28,20 @@ export const useLocalMediaStream = () => {
   const createBlackVideoTrack = () => {
     const canvas = Object.assign(document.createElement("canvas"), {
       width: 320,
-      height: 240,
+      height: 180,
     });
     const ctx = canvas.getContext("2d");
     if (ctx) {
       ctx.fillStyle = "black";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+      setInterval(() => {
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }, 500);
     }
     const stream = canvas.captureStream();
     const track = stream.getVideoTracks()[0];
+
     return track;
   };
 

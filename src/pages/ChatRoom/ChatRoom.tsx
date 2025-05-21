@@ -183,7 +183,7 @@ const ChatRoom = () => {
     setIsModalOpen(true); // 모달 열기
   };
   const confirmLeave = () => {
-    navigate("/"); // 메인 페이지로 이동
+    navigate("/", { replace: true }); // 메인 페이지로 이동
   };
 
   //화상채팅 진입전 인터뷰테이블/ai질문 복사 초기화작업
@@ -204,10 +204,7 @@ const ChatRoom = () => {
       onSuccess: () => {
         console.log("방 나가기 성공");
         navigate(paths.videochat.main.getHref(roomId), {
-          state: {
-            jobCode: myUserInfo?.jobCode,
-            interviewType: myUserInfo?.interviewType,
-          },
+          state: { firstJoin: true },
           replace: true,
         });
       },

@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { usePeerMap } from "./usePeerMap";
 import { useSignalPublisher } from "./useSignalPublisher";
 
@@ -7,6 +8,11 @@ export const useSignalHandler = (
 ) => {
   const { createPeerConnection, getPeer } = peerMap;
   const { sendSignal } = useSignalPublisher();
+
+  //ice가 간혹 먼저와서 큐에 저장
+  const pendingCandidatesRef = useRef<Map<number, RTCIceCandidateInit[]>>(
+    new Map()
+  );
 
   //offer를 받을때 + 화면상태도 받아야함. 그러고 offer를보내야 화면이나옴
   const handleOffer = async (
@@ -45,6 +51,14 @@ export const useSignalHandler = (
     //내sdp도 저장 ice도 생성되기시작함 상대방에게 응답준비완료
     await pc.setLocalDescription(answer);
     sendAnswer(senderId, answer);
+
+    const pending = pendingCandidatesRef.current.get(senderId);
+    if (pending) {
+      for (const candidate of pending) {
+        await pc.addIceCandidate(new RTCIceCandidate(candidate));
+      }
+      pendingCandidatesRef.current.delete(senderId);
+    }
   };
 
   const handleAnswer = async (
@@ -61,7 +75,11 @@ export const useSignalHandler = (
     senderId: number
   ) => {
     const pc = getPeer(senderId);
-    if (!pc) return;
+    if (!pc || !pc.remoteDescription) {
+      const existing = pendingCandidatesRef.current.get(senderId) || [];
+      pendingCandidatesRef.current.set(senderId, [...existing, candidate]);
+      return;
+    }
     await pc.addIceCandidate(new RTCIceCandidate(candidate));
   };
 

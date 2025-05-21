@@ -1,5 +1,5 @@
 /** @format */
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useEffect } from "react";
 
 export const usePeerMap = (
   addRemoteStream: (id: number, stream: MediaStream) => void,
@@ -17,9 +17,7 @@ export const usePeerMap = (
       //연결 객체생성!(환경설정값 많은데 default로하고 stun/turn서버만 설정)
       const pc = new RTCPeerConnection({
         iceServers: [
-          {
-            urls: "stun:turn.jobdam.site:3478",
-          },
+          { urls: "stun:stun.l.google.com:19302" },
           {
             urls: "turns:turn.jobdam.site:5349?transport=tcp",
             username: "user",
@@ -31,7 +29,6 @@ export const usePeerMap = (
       //ICE 후보수집 접속가능한 경로를 수집할떄마다 호출됨
       pc.onicecandidate = (event) => {
         if (onIceCandidate) {
-          console.log("[ICE Candidate]", event.candidate);
           onIceCandidate(event);
         }
       };
@@ -65,7 +62,6 @@ export const usePeerMap = (
           addRemoteStream(targetUserId, remoteStream);
         }
       };
-
       peerMapRef.current.set(targetUserId, pc);
       return pc;
     },
@@ -82,15 +78,26 @@ export const usePeerMap = (
 
   const removePeer = useCallback((userId: number) => {
     const pc = peerMapRef.current.get(userId);
+    console.log("removePeer호출됨", userId);
     if (pc) {
       pc.close();
       peerMapRef.current.delete(userId);
+      removeRemoteStream(userId);
     }
   }, []);
 
   const clearAll = useCallback(() => {
-    peerMapRef.current.forEach((pc) => pc.close());
+    peerMapRef.current.forEach((pc, userId) => {
+      pc.close();
+      removeRemoteStream(userId); // 전부 다 제거
+    });
     peerMapRef.current.clear();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      clearAll();
+    };
   }, []);
 
   return {

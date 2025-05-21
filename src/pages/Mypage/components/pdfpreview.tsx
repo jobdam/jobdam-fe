@@ -12,6 +12,7 @@ type Props = {
   file: File | null;
 };
 const Pdfpreview = ({ file }: Props) => {
+
   // const [numPages, setNumPages] = useState<number | null>(null);
   // const [pageNumber, setPageNumber] = useState(1);
   // const [scale, setScale] = useState(1.0); // 기본 배율

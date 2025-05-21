@@ -1,8 +1,7 @@
 /** @format */
 
 import { VideoChatUserMessage } from "@/types/videoChat";
-import { Send } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface ChatOverlayProps {
   messages: VideoChatUserMessage[];
@@ -17,46 +16,60 @@ const ChatOverlay = ({ messages, onSend }: ChatOverlayProps) => {
     setInput("");
   };
 
+  const messageListRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (messageListRef.current) {
+      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+    }
+  }, [messages]);
   return (
-    <div className="absolute bottom-4 left-[70px] w-[360px] h-[300px] bg-white rounded-[16px] shadow-lg flex flex-col overflow-hidden z-30">
+    <div className="absolute bottom-6 left-[90px] w-[350px] h-[240px] rounded-[16px] shadow-lg flex flex-col overflow-hidden z-30">
       {/* 메시지 리스트 */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-2 bg-[#f5f5f5]">
-        {messages.map((msg, i) => (
-          <div
-            key={i}
-            className={`flex ${msg.isMe ? "justify-end" : "justify-start"}`}
-          >
-            <div
-              className={`rounded-xl px-3 py-2 text-sm max-w-[75%] break-words ${
-                msg.isMe
-                  ? "bg-blue-500 text-white"
-                  : "bg-[#e5e5e5] text-gray-900"
-              }`}
-            >
-              {!msg.isMe && (
-                <div className="text-xs font-semibold text-gray-500 mb-1">
-                  {msg.userName}님
-                </div>
-              )}
-              <div>{msg.content}</div>
+      <div
+        ref={messageListRef}
+        className="flex-1 h-[65%] overflow-y-auto p-4 bg-[#ffffff]/50 backdrop-blur-[1px] space-y-2"
+      >
+        {messages.map((msg, i) =>
+          msg.isMe ? (
+            // 내가 보낸 메시지: 오른쪽
+            <div key={i} className="flex justify-end">
+              <div className="rounded-md px-3 py-2 text-xs font-semibold max-w-[75%] bg-[#D9D9D9] text-gray-900 break-words">
+                {msg.content}
+              </div>
             </div>
-          </div>
-        ))}
+          ) : (
+            // 상대방 메시지: 왼쪽 + 이름
+            <div key={i} className="">
+              <div className="text-xs font-semibold text-gray-300 mb-1">
+                {msg.userName}님
+              </div>
+              <div className="rounded-md px-3 py-2 text-xs font-semibold max-w-[75%] bg-[#D9D9D9] text-gray-900 break-words">
+                <div>{msg.content}</div>
+              </div>
+            </div>
+          )
+        )}
       </div>
 
       {/* 입력창 */}
-      <div className="flex items-center border-t px-3 py-2 bg-white">
-        <input
+      <div className="relative flex h-[35%] items-center px-4 py-2 bg-[#ffffff] border-t border-gray-300">
+        <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="메시지 입력..."
-          className="flex-1 text-sm px-3 py-2 rounded-lg bg-gray-100 border focus:outline-none"
+          rows={3}
+          className="w-full absolute left-3 top-1 resize-none bg-transparent text-[13px] placeholder:text-xs placeholder:text-gray-400 pt-2 pl-0 pr-8 border-none outline-none focus:ring-0"
+          style={{ minHeight: "30px", maxHeight: "60px" }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSend();
+            }
+          }}
         />
-        <button
-          onClick={handleSend}
-          className="ml-2 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg"
-        >
-          <Send className="w-4 h-4" />
+        <button onClick={handleSend} className="absolute right-3 bottom-3">
+          <img src="/send.svg" alt="send" className="w-5 h-5 opacity-90" />
         </button>
       </div>
     </div>

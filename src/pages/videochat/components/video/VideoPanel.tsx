@@ -6,14 +6,17 @@ import {
   VideoChatUserMessage,
 } from "@/types/videoChat";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { getUserIdFromJwt } from "@/utils/tokenUtils";
 import { IMessage } from "@stomp/stompjs";
 import { useChatSubscribe } from "@/services/webSockect/chat/useChatSubscribe";
 import { useChatPublisher } from "@/services/webSockect/chat/useChatPublisher";
 import ChatOverlay from "./ChatOverLay";
 import Utility from "./Utility";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSelectedUserId } from "@/store/slices/videoChatInterview";
+import { RootState } from "@/store";
+import { useNavigate } from "react-router";
+import { SpeakingIndicator } from "./SpeakingIndicator";
+import InterviewTimer from "./InterviewTimer";
 
 interface VideoPanelProps {
   //비디오 스트림
@@ -21,6 +24,8 @@ interface VideoPanelProps {
   remoteStreams: Record<number, MediaStream>;
   mediaControl: MediaControlState;
   roomId: string;
+  myUserId: number;
+  micTrack: MediaStreamTrack | null;
 }
 
 const VideoPanel = ({
@@ -28,19 +33,35 @@ const VideoPanel = ({
   remoteStreams,
   mediaControl,
   roomId,
+  myUserId,
+  micTrack,
 }: VideoPanelProps) => {
   //공통
-  const myUserId = useMemo(() => getUserIdFromJwt(), []);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   //내화면 보기위해서 필요한것
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
   //메인화면 전환용
   const mainVideoRef = useRef<HTMLVideoElement | null>(null);
-  const [focusedUserId, setFocusedUserId] = useState<"me" | number>("me");
+
+  const selectedUserId = useSelector(
+    (state: RootState) => state.videoChatInterview.selectedUserId
+  );
 
   //채팅
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const toggleChat = () => setIsChatOpen((prev) => !prev);
+  const isChatOpenRef = useRef(isChatOpen);
+  useEffect(() => {
+    isChatOpenRef.current = isChatOpen;
+  }, [isChatOpen]);
+
+  const toggleChat = () => {
+    setIsChatOpen((prev) => {
+      const next = !prev;
+      if (next) setUnreadCount(0); // 채팅창 열면 카운트 0으로
+      return next;
+    });
+  };
   //채팅 토글까지 추가한 최종유틸
   const utility: UtilityState = {
     mediaControl,
@@ -49,6 +70,8 @@ const VideoPanel = ({
   const { sendChatInVideo } = useChatPublisher();
   //채팅 메세지
   const [messages, setMessages] = useState<VideoChatUserMessage[]>([]);
+  //채팅 안읽은메세지 카운트트
+  const [unreadCount, setUnreadCount] = useState(0);
 
   //서버에서 오는 채팅처리
   const handleChatMessage = useCallback(
@@ -62,6 +85,10 @@ const VideoPanel = ({
         isMe: data.userId === myUserId,
       };
       setMessages((prev) => [...prev, chat]);
+      //채팅방 닫혀있으면 카운트늘려줌
+      if (!isChatOpenRef.current) {
+        if (myUserId !== data.userId) setUnreadCount((count) => count + 1);
+      }
     },
     [myUserId]
   );
@@ -76,7 +103,6 @@ const VideoPanel = ({
     destination: `/topic/videoChat/${roomId}`,
     onMessage: handleChatMessage,
   });
-
   //내화면 초기셋팅
   useEffect(() => {
     if (localVideoRef.current && localStream) {
@@ -84,84 +110,121 @@ const VideoPanel = ({
     }
   }, [localStream]);
 
+  // 메인 비디오 전환
   useEffect(() => {
-    if (!mainVideoRef.current) return;
+    if (!mainVideoRef.current) return; //돔할당 기다리는거임
+    if (!localStream) return; //로컬스트림 할당안됬으면
 
-    if (focusedUserId === "me" && localStream) {
-      mainVideoRef.current.srcObject = localStream;
+    let mainVideo: MediaStream | null = null;
+    //처음입장이거나 나를클릭하면
+    if (!selectedUserId || selectedUserId === myUserId) {
+      mainVideo = localStream;
     } else {
-      const targetStream = remoteStreams[focusedUserId];
-      if (targetStream) {
-        mainVideoRef.current.srcObject = targetStream;
-      }
+      //다른사람클릭하면
+      mainVideo = remoteStreams[selectedUserId] || null;
     }
-  }, [focusedUserId, localStream, remoteStreams]);
 
+    if (mainVideo) {
+      mainVideoRef.current.srcObject = mainVideo;
+      mainVideoRef.current.play().catch(() => {});
+    } else {
+      mainVideoRef.current.srcObject = null;
+    }
+  }, [selectedUserId, localStream, remoteStreams]);
+
+  //이건 mute로인해 내 로컬스트림에서 마이크가 인식이 안되서(상대방한텐 잘됨)
+  //나한테 초록색마크가 안보여주는걸 해결하기 위한작업
+  const myMicStream = useMemo(() => {
+    if (micTrack) {
+      const stream = new MediaStream();
+      stream.addTrack(micTrack);
+      return stream;
+    }
+    return null;
+  }, [micTrack]);
+
+  //나가기!
+  const handleExit = () => {
+    navigate("/", { replace: true });
+  };
   return (
-    <div className="flex flex-col justify-between h-[90%] w-[75%] p-4 bg-white border border-[#d9d9d9] rounded-[20px] shadow-custom">
-      <div className="flex flex-col gap-4">
-        {/* 메인 비디오 */}
-        <div className="relative w-full h-[637px] bg-gray-300 rounded-lg">
-          <div className="flex items-center justify-center w-full h-full">
-            <video
-              ref={mainVideoRef}
-              autoPlay
-              playsInline
-              muted
-              className="w-[90%] h-[90%] object-cover rounded-lg"
-            />
-          </div>
-          {/* 유틸 */}
-          <div className="absolute left-4 left-4 bottom-4 z-10">
-            <Utility utility={utility} />
-          </div>
-          {/* 채팅창 */}
-          {isChatOpen && (
-            <ChatOverlay messages={messages} onSend={sendMessage} />
-          )}
+    <div className="flex flex-col justify-between h-[90%] w-[75%] p-2 bg-white border border-[#d9d9d9] rounded-[20px] shadow-custom">
+      <InterviewTimer />
+      {/* 메인 비디오 */}
+      <div className="relative flex items-center justify-center w-full h-[75%]">
+        <div className="absolute left-6 top-6 z-10">
+          <button
+            onClick={handleExit}
+            className="px-4 py-1 bg-[#434343] text-white rounded-md shadow-md text-sm
+                        font-bold transition hover:bg-neutral-900 focus:outline-none cursor-pointers"
+          >
+            종료
+          </button>
         </div>
-        {/* 하단 썸네일들 */}
-        <div className="flex flex-wrap justify-center gap-2 max-w-[960px] mx-auto mt-4">
-          {/* 내 비디오 (내비디오 상대방비디오는 하나로 합치기X 차후 기능추가시 별도로 해야 편함)*/}
-          <div className="flex gap-2 justify-center">
+        <video
+          ref={mainVideoRef}
+          autoPlay
+          playsInline
+          muted
+          className="w-[98%] h-[98%] object-cover"
+        />
+        {/* 유틸 */}
+        <div className="absolute left-6 bottom-6 z-10">
+          <Utility utility={utility} unreadCount={unreadCount} />
+        </div>
+        {/* 채팅창 */}
+        {isChatOpen && <ChatOverlay messages={messages} onSend={sendMessage} />}
+      </div>
+      {/* 하단 썸네일들 */}
+      <div className="flex flex-wrap w-full h-[25%] justify-center gap-2 max-w-[960px] mx-auto mt-2">
+        {/* 내 비디오 (내비디오 상대방비디오는 하나로 합치기X 차후 기능추가시 별도로 해야 편함)*/}
+        <div className="relative w-[25%] h-[85%] overflow-visible ">
+          <video
+            ref={localVideoRef}
+            autoPlay
+            playsInline
+            className={`bg-black w-full h-full object-cover cursor-pointer
+            ${
+              selectedUserId === myUserId
+                ? "border-4 border-blue-500 shadow-lg"
+                : ""
+            }
+            `}
+            onClick={() => {
+              dispatch(setSelectedUserId(myUserId));
+            }}
+          />
+          <SpeakingIndicator stream={myMicStream} />
+        </div>
+        {/* 상대방 비디오 */}
+        {Object.entries(remoteStreams).map(([userId, stream]) => (
+          <div
+            key={userId}
+            className="relative w-[25%] h-[85%] overflow-visible"
+          >
             <video
-              ref={localVideoRef}
+              data-userid={userId}
               autoPlay
               playsInline
-              muted
-              className="w-[200px] h-[150px] bg-black rounded-md object-cover cursor-pointer"
+              className={`bg-black w-full h-full object-cover cursor-pointer
+               ${
+                 selectedUserId === Number(userId)
+                   ? "border-4 border-blue-500 shadow-lg"
+                   : ""
+               }
+            `}
               onClick={() => {
-                setFocusedUserId("me");
-                dispatch(setSelectedUserId(null));
+                dispatch(setSelectedUserId(Number(userId)));
+              }}
+              ref={(el: HTMLVideoElement | null) => {
+                if (el && stream) {
+                  el.srcObject = stream;
+                }
               }}
             />
+            <SpeakingIndicator stream={stream} />
           </div>
-          {/* 상대방 비디오 */}
-          {Object.entries(remoteStreams).map(([userId, stream]) => (
-            <div key={userId} className="flex gap-2 justify-center">
-              <video
-                data-userid={userId}
-                autoPlay
-                playsInline
-                style={{
-                  width: "320px",
-                  height: "240px",
-                  backgroundColor: "black",
-                  borderRadius: "12px",
-                }}
-                onClick={() => {
-                  setFocusedUserId(Number(userId));
-                  dispatch(setSelectedUserId(Number(userId)));
-                }}
-                ref={(el: HTMLVideoElement | null) => {
-                  if (el && stream) {
-                    el.srcObject = stream;
-                  }
-                }}
-              />
-            </div>
-          ))}
-        </div>
+        ))}
       </div>
     </div>
   );
