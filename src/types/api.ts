@@ -31,11 +31,11 @@ export type AuthResponse = {
   user: User;
 };
 
-type CompanySizeCode = "LARGE" | "SMALL" | "START-UP";
+type CompanySizeCode = "LARGE" | "MEDIUM" | "START-UP";
 
 export const companySizeMap: Record<CompanySizeCode, string> = {
   LARGE: "대기업",
-  SMALL: "중소기업",
+  MEDIUM: "중소기업",
   "START-UP": "스타트업",
 };
 

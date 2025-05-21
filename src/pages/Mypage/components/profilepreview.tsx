@@ -24,6 +24,7 @@ const ProfilePreview = ({ onSelectFile, mypage }: Props) => {
   const pathname = location.pathname;
 
   const isEditing = pathname === "/mypage/edit"; // 예시
+  const isPosting = pathname === "/mypage/post-profile";
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [uploadPreview, setUploadPreview] = useState<string | null>(null);
@@ -137,7 +138,8 @@ const ProfilePreview = ({ onSelectFile, mypage }: Props) => {
       <button
         className={cn(
           "pointer-events-none",
-          isEditing && "pointer-events-auto"
+          isEditing && "pointer-events-auto",
+          isPosting && "pointer-events-auto"
         )}
       >
         <div

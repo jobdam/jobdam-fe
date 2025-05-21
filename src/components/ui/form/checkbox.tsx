@@ -70,7 +70,7 @@ export const Checkbox = React.forwardRef<
     console.log(progressStep, step);
     // ✅ step에 따른 label 처리
     const labelClassName = cn(
-      "text-base", // 기본 폰트 스타일
+      "text-base ", // 기본 폰트 스타일
       variant === "progress" && [progressStep >= step && "text-[#488FFF]"]
     );
     return (

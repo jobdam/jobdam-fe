@@ -7,12 +7,15 @@ import { useForm } from "react-hook-form";
 import { Form, Radio } from "@/components/ui/form";
 import { Input } from "@/components/ui/form";
 import { Label } from "@/components/ui/form";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Controller } from "react-hook-form";
 import { Select } from "@/components/ui/form";
-import { experienceOptions, targetCompany } from "@/constants/mainContents";
+import {
+  experienceOptions,
+  stateOptions,
+  targetCompany,
+} from "@/constants/mainContents";
 import { educationOptions } from "../../constants/mainContents";
-import { stateOptions } from "../../constants/mainContents";
 import { fetchAndLogImage } from "@/utils/format";
 import { useEditProfile } from "./api/patch-editprofile";
 import { formatBirthday } from "../../utils/format";
@@ -22,6 +25,8 @@ const ProfileEdit = ({ selectedFile }: any) => {
   // 이메일은 바꿀수없음,
   // 직무 학교 희망기업
 
+  const { data: userData, isSuccess } = useUser();
+
   const form = useForm<any>({
     defaultValues: {
       name: "",
@@ -29,12 +34,12 @@ const ProfileEdit = ({ selectedFile }: any) => {
       jobDetailCode: "",
       birthday: "",
       experienceType: "",
-      educationLevel: "대학교(4년제)",
-      educationStatus: "졸업",
-      targetCompanySize: "대기업",
+      educationLevel: "",
+      educationStatus: "",
+      targetCompanySize: "",
     },
   });
-  const { data: userData } = useUser();
+
   const { data: jobData } = useJobCategory({});
 
   const jobGroups = jobData?.data ?? [];
@@ -51,11 +56,13 @@ const ProfileEdit = ({ selectedFile }: any) => {
   );
   const jobCode = form.watch("jobCode2");
   const jobDetailCode = form.watch("jobDetailCode2");
-  console.log(jobCode, jobDetailCode);
+  console.log(selectedJobGroup, userJobCode);
 
-  //jobCode 코드
+  //jobCode 코드const
+  const didMountRef = useRef(false);
+
   useEffect(() => {
-    if (userData) {
+    if (userData && jobData && !didMountRef.current) {
       form.reset({
         name: userData.name,
         email: userData.email,
@@ -67,10 +74,9 @@ const ProfileEdit = ({ selectedFile }: any) => {
         jobCode2: selectedJobGroup?.["jobCode"],
         jobDetailCode2: selectedJobDetail?.["jobDetailCode"],
       });
+      didMountRef.current = true;
     }
-  }, [userData, form, selectedJobGroup, selectedJobDetail]);
-
-  console.log(jobCode, jobDetailCode, "이겅");
+  }, [userData, jobData]);
 
   useEffect(() => {
     if (!jobCode) return;
@@ -83,6 +89,7 @@ const ProfileEdit = ({ selectedFile }: any) => {
 
   const jobGroup = jobGroups.find((group) => group.jobCode === jobCode);
   const jobDetails = jobGroup?.details ?? [];
+  console.log(jobDetails, jobGroup, "sdfsafasdfsdf");
 
   const patchProfile = useEditProfile({});
 
@@ -92,7 +99,14 @@ const ProfileEdit = ({ selectedFile }: any) => {
         className="spacey-y-0"
         form={form}
         onSubmit={async (value) => {
-          console.log(userData);
+          const payload = {
+            ...value,
+            jobCode: value.jobCode2,
+            jobDetailCode: value.jobDetailCode2,
+          };
+          delete payload.jobCode2;
+          delete payload.jobDetailCode2;
+          console.log(payload, value, "siooidiowjaofowjfaoiwjfeioejfioej");
 
           const formData = new FormData();
           let imageFile: File | null | undefined = selectedFile;
@@ -112,7 +126,7 @@ const ProfileEdit = ({ selectedFile }: any) => {
           // 데이터 추가
           formData.append(
             "data",
-            new Blob([JSON.stringify(value)], { type: "application/json" })
+            new Blob([JSON.stringify(payload)], { type: "application/json" })
           );
 
           patchProfile.mutate({ updateData: formData });

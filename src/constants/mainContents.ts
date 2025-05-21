@@ -22,7 +22,7 @@ export const targetCompany = [
 ];
 
 export const stateOptions = [
-  { label: "졸업", value: "GRADUATE" },
+  { label: "졸업", value: "GRADUATED" },
   { label: "입학", value: "ENTRANCE" },
   { label: "휴학", value: "ABSENCE" },
 ];
