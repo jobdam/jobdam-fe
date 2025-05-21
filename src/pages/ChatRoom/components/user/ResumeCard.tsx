@@ -1,7 +1,7 @@
 /** @format */
 
 import { ChatUserInfo } from "@/types/chat";
-import { ExperienceTypeLabel, educationMap, companySizeMap } from "@/types/api";
+import { expMap, educationMap, companySizeMap } from "@/types/api";
 
 interface ResumeCardProps {
   user: ChatUserInfo;
@@ -31,7 +31,7 @@ export default function ResumeCard({ user }: ResumeCardProps) {
 
         <div className="flex flex-col gap-2">
           <div className="inline-block w-fit px-3 py-2 bg-blue-100 text-blue-700 text-xs font-medium rounded-lg border border-blue-300">
-            {ExperienceTypeLabel[user.experienceType]}
+            {expMap[user.experienceType]}
           </div>
           <div className="inline-block w-fit px-3 py-2 bg-blue-100 text-blue-700 text-xs font-medium rounded-lg border border-blue-300">
             🎓 {educationMap[user.educationLevel]} · {user.educationStatus}

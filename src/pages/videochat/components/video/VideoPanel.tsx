@@ -163,7 +163,7 @@ const VideoPanel = ({
       {/* 하단 썸네일들 */}
       <div className="flex flex-wrap w-full h-[25%] justify-center gap-2 max-w-[960px] mx-auto mt-2">
         {/* 내 비디오 (내비디오 상대방비디오는 하나로 합치기X 차후 기능추가시 별도로 해야 편함)*/}
-        <div className="relative w-[25%] h-[85%] ">
+        <div className="relative w-[25%] h-[85%] overflow-visible ">
           <video
             ref={localVideoRef}
             autoPlay
@@ -184,7 +184,10 @@ const VideoPanel = ({
         </div>
         {/* 상대방 비디오 */}
         {Object.entries(remoteStreams).map(([userId, stream]) => (
-          <div key={userId} className="w-[25%] h-[85%]">
+          <div
+            key={userId}
+            className="relative w-[25%] h-[85%] overflow-visible"
+          >
             <video
               data-userid={userId}
               autoPlay
@@ -205,6 +208,7 @@ const VideoPanel = ({
                 }
               }}
             />
+            <SpeakingIndicator stream={stream} />
           </div>
         ))}
       </div>
