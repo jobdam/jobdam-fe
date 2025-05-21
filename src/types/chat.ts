@@ -1,7 +1,10 @@
 /** @format */
 
+
+
 import { expCode } from "./api";
 import { InterviewType } from "./interview";
+
 
 //채팅 메세지부분
 export interface ChatUserMessage {

@@ -6,7 +6,7 @@ import Myresume from "@/pages/Mypage/myresume";
 const Resume = () => {
   return (
     <MypageLayout
-      className="bg-gradient-auth-login  absolute z-0"
+      className="bg-gradient-auth-login relative z-0"
       resume
       title={<>내 이력서 관리</>}
     >

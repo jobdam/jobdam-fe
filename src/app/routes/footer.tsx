@@ -5,9 +5,15 @@ import { CustomImage } from "@/components/common/image/image";
 const Footer = () => {
   return (
     //    레이아웃 배경색과 컨텐츠 위치
-    <div className="bg-[#D9D9D9] w-full h-[300px] py-[45px] px-[361px]">
+    <div
+      className="bg-[#D9D9D9] 
+    
+     w-full min-w-[1280px] max-w-[1980px] mx-auto
+    
+    h-[300px] py-[45px] px-[361px]"
+    >
       {/* 레이아웃 안쪽의 요소들 */}
-      <section className="flex flex-row">
+      <section className="flex flex-row w-[900px]">
         {/* 왼쪽 로고 부분 */}
 
         <div className="flex flex-1 flex-col">
