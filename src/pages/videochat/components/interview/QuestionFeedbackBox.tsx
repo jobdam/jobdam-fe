@@ -109,8 +109,14 @@ const QuestionFeedbackBox = ({
           <textarea
             value={feedback}
             onChange={(e) => setFeedback(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleFeedBackSubmit();
+              }
+            }}
             placeholder="피드백을 작성해주세요."
-            className="w-full pr-8 resize-none pr-8 text-sm placeholder-gray-400 text-gray-800 outline-none"
+            className="w-full pr-8 resize-none min-h-[100px] max-h-[220px] pr-8 text-base placeholder-gray-400 text-gray-800 outline-none scrollbar-none"
           />
           <button
             onClick={handleFeedBackSubmit}
@@ -126,9 +132,15 @@ const QuestionFeedbackBox = ({
         <div className="relative bg-white px-4 py-3">
           <textarea
             value={question}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleQuestionSubmit();
+              }
+            }}
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="추가 질문을 작성해주세요"
-            className="w-full resize-none pr-8 text-sm placeholder-gray-400 text-gray-800 outline-none"
+            className="w-full min-h-[100px] max-h-[220px] resize-none pr-8 text-base placeholder-gray-400 text-gray-800 outline-none scrollbar-none"
           />
           <button
             onClick={handleQuestionSubmit}
