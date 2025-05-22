@@ -48,6 +48,16 @@ const FeedbackDetailContents = () => {
             2025.04.22 UX디자이너 모의면접
           </h2>
         </div>
+        <div className="flex m-y-[20px]">
+          <div>AI요약 리포트</div>
+        </div>
+        {/* 잘한점 */}
+        <div className=" flex flex-row gap-x-[10px]">
+          <div>잘한 점</div>
+        </div>
+        <div className=" flex flex-row gap-x-[10px]">
+          <div>개선할 점</div>
+        </div>
         {!openPage && (
           <div className="flex justify-end mt-[40px]">
             <ChevronDown onClick={open}></ChevronDown>

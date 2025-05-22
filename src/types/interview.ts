@@ -28,3 +28,17 @@ export interface FeedBackRequest {
   targetUserId: number;
   content: string;
 }
+
+export interface InterviewDateGroup {
+  displayDate: string; // 예: "5월 21일 수요일"
+  interviews: InterviewResponse[];
+}
+
+export interface InterviewResponse {
+  id: number;
+  interviewType: InterviewType;
+  interviewDay: string; // "2025-05-21"
+  jobName: string;
+  wellDone: string | null;
+  toImprove: string | null;
+}
