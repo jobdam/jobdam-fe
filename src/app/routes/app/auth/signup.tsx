@@ -22,6 +22,7 @@ const SignUpRoute = () => {
     >
       <SignUp
         onSuccess={() => {
+          //회원가입하면 verify로 넘어가도록
           navigate(
             `${redirectTo ? `${redirectTo}` : paths.emailverify.verifycheck.path}`,
             {

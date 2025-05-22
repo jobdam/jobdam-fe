@@ -223,9 +223,9 @@ const ChatRoom = () => {
   });
 
   return (
-    <div className="flex h-screen justify-center items-stretch">
-      <div className="inline-flex items-stretch gap-4">
-        <div className="flex-grow min-w-[300px] max-w-[600px] h-full">
+    <div className="flex justify-center  max-h-screen h-auto py-[33px] items-stretch">
+      <div className="inline-flex items-stretch max-h-[900px] gap-[13px]">
+        <div className="flex-grow min-w-[300px]  ">
           <UserPanel
             userList={userList}
             myUserId={myUserId!}
@@ -240,7 +240,7 @@ const ChatRoom = () => {
           />
         </div>
 
-        <div className="flex-grow min-w-[800px] h-full">
+        <div className="flex-grow min-w-[800px]">
           <ChatPanel
             messages={messages}
             onSend={handleSend}
