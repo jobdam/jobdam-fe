@@ -15,6 +15,7 @@ import { paths } from "@/config/paths";
 import { useLeaveRoomMutation } from "./api/delete-leaveRoom";
 import { useInitInterviewMutation } from "./api/post-initInterview";
 import ConfirmModal from "./components/modal/ConfirmModal";
+import { queryClient } from "@/lib/react-query";
 
 const ChatRoom = () => {
   //공통 설정//
@@ -191,6 +192,7 @@ const ChatRoom = () => {
     mutationConfig: {
       onSuccess: () => {
         console.log("인터뷰 초기화 성공");
+        queryClient.invalidateQueries({ queryKey: ["interview-groups"] });
         leaveRoom(roomId!);
       },
       onError: (err) => {

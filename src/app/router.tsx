@@ -117,13 +117,6 @@ const createAppRouter = (queryClient: QueryClient) => {
               convert(queryClient)
             ),
         },
-        {
-          path: paths.mypage.feedbackdetail.path,
-          lazy: () =>
-            import("@/app/routes/app/mypage/feedbackdetail").then(
-              convert(queryClient)
-            ),
-        },
       ],
     },
 

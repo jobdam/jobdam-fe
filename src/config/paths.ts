@@ -92,9 +92,6 @@ export const paths = {
     feedback: {
       path: "/mypage/feedback",
     },
-    feedbackdetail: {
-      path: "/mypage/feedback/detail",
-    },
     resume: {
       path: "/mypage/resume",
     },
