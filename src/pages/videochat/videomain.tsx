@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { setInterviewData } from "@/store/slices/videoChatInterview";
 import { getUserIdFromJwt } from "@/utils/tokenUtils";
+import LoadingModal from "@/components/ui/loading/loadingModal";
 
 const Videomain = () => {
   ////공통////
@@ -248,25 +249,30 @@ const Videomain = () => {
   }, [isBroadcastSubscribed]);
 
   return (
-    <div className="flex justify-center items-center h-screen w-screen bg-gradient-videochat">
+    <div className="flex justify-center items-center">
       <div className="flex w-[80vw] h-[90vh] gap-x-6">
-        <VideoPanel
-          localStream={stream}
-          remoteStreams={remoteStreams}
-          mediaControl={{
-            isMicOn,
-            isCameraOn,
-            isScreenSharing,
-            toggleMic,
-            toggleCamera,
-            toggleScreenShare,
-          }}
-          roomId={roomId!}
-          myUserId={myUserId!}
-          micTrack={micTrack}
-        />
-        {/* 오른쪽: 인터뷰 패널 */}
-        <InterviewPanel />
+        {roomId && <LoadingModal title="asdf" />}
+        {!roomId && (
+          <>
+            <VideoPanel
+              localStream={stream}
+              remoteStreams={remoteStreams}
+              mediaControl={{
+                isMicOn,
+                isCameraOn,
+                isScreenSharing,
+                toggleMic,
+                toggleCamera,
+                toggleScreenShare,
+              }}
+              roomId={roomId!}
+              myUserId={myUserId!}
+              micTrack={micTrack}
+            />
+            {/* 오른쪽: 인터뷰 패널 */}
+            <InterviewPanel />
+          </>
+        )}
       </div>
     </div>
   );

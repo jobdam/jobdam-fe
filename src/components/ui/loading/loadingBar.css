@@ -1,0 +1,9 @@
+/* CSS */
+@keyframes loading-bar-shimmer {
+  0% {
+    left: -66%;
+  }
+  100% {
+    left: 100%;
+  }
+}
