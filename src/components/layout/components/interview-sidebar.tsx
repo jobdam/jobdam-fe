@@ -28,7 +28,7 @@ const InterviewSidebar = () => {
         variant="progress"
         checked={progressStep >= 1}
         className={cn(
-          "flex size-[25px] mb-[6px] transition-color appearance-none items-center justify-center rounded-[4px] bg-[white] border-[#BEBEBE] border-[3px] outline-none ",
+          "flex  size-[25px] mb-[6px] transition-color appearance-none items-center justify-center rounded-[4px] bg-[white] border-[#BEBEBE] border-[3px] outline-none ",
           progressStep >= 1 && "bg-[#488FFF] border-none"
         )}
       ></Checkbox>
