@@ -21,11 +21,10 @@ const VerifyEmailCheck = () => {
   console.log(token, "token");
 
   //여기서 보낸다.
-  const { isError, error, data } = useVerifyEmail({
+  const { isError, data } = useVerifyEmail({
     token,
     enabled: !!token,
   });
-  console.log(data?.data?.isSetup, error);
   //useVerifyEmail을 보내면 pending을 해야한다.
   //실패할경우 2가지 , 링크가 만료된경우, 인증이 이미 완료된경우
   //링크가 만료된경우라면 다시보낼 필요가있고, 인증이 이미 완료된경우라면 그냥 메인으로 가면된다.

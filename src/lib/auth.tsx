@@ -184,14 +184,21 @@ export const termsSchema = z.object({
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
-  const { data: user } = useUser();
+  const { data: user, isLoading, isFetching } = useUser();
 
-  console.log(user, location.pathname);
+  console.log(user, isLoading, location.pathname, "protecterouter");
 
   //로그인후 프로텍티드 라우터로 오는
   //user정보가 받아지지 않은채로온다. 그래서 에러가발생.
+  //로딩창 만들어지면 이것도 고려
+
+  //user 정보가 채 완료되기도전에 이쪽으로 가버린다. 완전히 완료가 되고 난후 되도록
+  if (isFetching) {
+    return <div>로딩 중...</div>; // or skeleton UI
+  }
+
   //
-  if (user === null) {
+  if (!user) {
     return (
       <Navigate to={paths.auth.login.getHref(location.pathname)} replace />
     );

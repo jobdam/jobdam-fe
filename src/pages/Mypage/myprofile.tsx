@@ -50,7 +50,7 @@ const MyProfile = () => {
     education: educationMap[userData?.educationLevel ?? ""],
   };
   return (
-    <div className="border-[1px] bg-[white] rounded-[20px] border-[#488FFF] pt-[38px] px-[60px] h-[670px] w-[915px]">
+    <div className="border-[1px] bg-[white] rounded-[20px] - border-[#488FFF] pt-[38px] px-[60px] h-[670px] w-[915px]">
       <ul className="flex gap-y-[30px]  flex-col">
         <div className="flex justify-end">
           <Link
@@ -73,7 +73,7 @@ const MyProfile = () => {
                 {" "}
                 {value}
               </div>
-              <div> {profile[key] || "없음"}</div>
+              <div className="text-[18px]"> {profile[key] || "없음"}</div>
             </li>
           );
         })}

@@ -14,7 +14,8 @@ export const getJobCategoryQuery = () => {
   return queryOptions({
     queryKey: ["jobCategory"],
     queryFn: () => getJobCategory(),
-    gcTime: 1000 * 60 * 30,
+    gcTime: 1000 * 60 * 32,
+    staleTime: 1000 * 60 * 30,
   });
 };
 

@@ -19,6 +19,8 @@ import { educationOptions } from "../../constants/mainContents";
 import { fetchAndLogImage } from "@/utils/format";
 import { useEditProfile } from "./api/patch-editprofile";
 import { formatBirthday } from "../../utils/format";
+import { Link } from "react-router";
+import { paths } from "@/config/paths";
 
 const ProfileEdit = ({ selectedFile }: any) => {
   //profileEidt에서 이름 ,  패스워드, 이메일 인풋 ->placeholder로 내가 가지고있는 정보들
@@ -26,7 +28,7 @@ const ProfileEdit = ({ selectedFile }: any) => {
   // 직무 학교 희망기업
 
   const { data: userData, isSuccess } = useUser();
-  console.log("profileEdit 빌드떄매씀", isSuccess);
+
   const form = useForm<any>({
     defaultValues: {
       name: "",
@@ -55,22 +57,20 @@ const ProfileEdit = ({ selectedFile }: any) => {
     (detail) => detail.jobDetailCode === userJobDetailCode
   );
   const jobCode = form.watch("jobCode2");
-  const jobDetailCode = form.watch("jobDetailCode2");
-  console.log(selectedJobGroup, userJobCode);
-  console.log("profileEdit 빌드떄매씀", jobDetailCode);
+
   //jobCode 코드const
   const didMountRef = useRef(false);
 
   useEffect(() => {
     if (userData && jobData && !didMountRef.current) {
       form.reset({
-        name: userData.name,
-        email: userData.email,
+        // name: userData.name,
+        // email: userData.email,
         experienceType: userData?.experienceType,
         educationLevel: userData?.educationLevel,
         educationStatus: userData?.educationStatus,
         targetCompanySize: userData?.targetCompanySize,
-        birthday: formatBirthday(userData?.birthday ?? ""),
+        // birthday: formatBirthday(userData?.birthday ?? ""),
         jobCode2: selectedJobGroup?.["jobCode"],
         jobDetailCode2: selectedJobDetail?.["jobDetailCode"],
       });
@@ -89,7 +89,6 @@ const ProfileEdit = ({ selectedFile }: any) => {
 
   const jobGroup = jobGroups.find((group) => group.jobCode === jobCode);
   const jobDetails = jobGroup?.details ?? [];
-  console.log(jobDetails, jobGroup, "sdfsafasdfsdf");
 
   const patchProfile = useEditProfile({});
 
@@ -101,12 +100,14 @@ const ProfileEdit = ({ selectedFile }: any) => {
         onSubmit={async (value) => {
           const payload = {
             ...value,
+            name: value.name || userData?.name,
+            birthday: value.birthday || userData?.birthday,
+            email: value.email || userData?.email,
             jobCode: value.jobCode2,
             jobDetailCode: value.jobDetailCode2,
           };
           delete payload.jobCode2;
           delete payload.jobDetailCode2;
-          console.log(payload, value, "siooidiowjaofowjfaoiwjfeioejfioej");
 
           const formData = new FormData();
           let imageFile: File | null | undefined = selectedFile;
@@ -133,8 +134,16 @@ const ProfileEdit = ({ selectedFile }: any) => {
         }}
       >
         {({ register, control }) => (
-          <div className="flex flex-col">
-            <div className="flex justify-end ">
+          <div className="flex flex-col text-[18px]">
+            <div className="flex justify-end gap-[10px] ">
+              <Link
+                className=" cursor-pointer  flex rounded-[10px] justify-center 
+          items-center border w-[74px] h-[30px] text-[16px]  font-semibold"
+                to={paths.mypage.root.path}
+                type="button"
+              >
+                취소
+              </Link>
               <Button
                 // isLoading={patchProfile.isIdle}
                 variant="secondary"
@@ -152,9 +161,14 @@ const ProfileEdit = ({ selectedFile }: any) => {
               <div className="flex-1">
                 <Input
                   type="text"
+                  placeholder={userData?.name}
                   registration={register("name")}
                   //   value={form.getValues("name")}
-                  className="h-[66px]  border-[#488fff]"
+                  className="h-[66px] border-b-[#488fff] rounded-none placeholder:text-[18px]
+                  text-[18px]
+               focus:border-b-0 focus:rounded-[10px] focus:  border-l-0 border-r-0 border-t-0
+              focus:outline-none focus:ring-1 focus:ring-[#488fff] 
+                  "
                 ></Input>
               </div>
             </div>
@@ -167,31 +181,40 @@ const ProfileEdit = ({ selectedFile }: any) => {
                 <Input
                   type="email"
                   disabled
+                  placeholder={userData?.email}
                   registration={register("email")}
-                  //   value={form.getValues("name")}
-                  className="h-[66px]  border-[#488fff]"
+                  className="h-[66px] text-[18px]
+                 rounded-none border-b-[#4089ff]  border-l-0 border-r-0 border-t-0
+              focus:outline-none focus:ring-1 focus:ring-[#488fff] 
+            focus:border-[#488fff]
+                  "
                 ></Input>
               </div>
             </div>
             {/* 생년월일 */}
-            <div className="flex flex-row w-full items-center">
+            <div className="flex flex-row w-full  items-center">
               <Label className="w-[250px] leading-[150%] font-semibold text-[#488FFF] ">
                 생년월일
               </Label>
               <div className="flex-1">
                 <Input
                   type="text"
+                  placeholder={formatBirthday(userData?.birthday ?? "")}
                   registration={register("birthday")}
                   onChange={(e) => {
                     const formatted = formatBirthday(e.target.value);
                     form.setValue("birthday", formatted);
                   }}
-                  className="h-[66px]  border-[#488fff]"
+                  className="h-[66px] text-[18px]
+ border-b-[#488fff] rounded-none placeholder:text-[18px]
+               focus:border-b-0 focus:rounded-[10px] focus:  border-l-0 border-r-0 border-t-0
+              focus:outline-none focus:ring-1 focus:ring-[#488fff] 
+            "
                 ></Input>
               </div>
             </div>
             {/* 직무 */}
-            <div className="flex flex-row w-full items-center">
+            <div className="flex flex-row w-full t items-center">
               <Label className="w-[250px] leading-[150%] font-semibold text-[#488FFF] ">
                 직무
               </Label>
@@ -201,7 +224,7 @@ const ProfileEdit = ({ selectedFile }: any) => {
                   control={control}
                   render={({ field }) => (
                     <Select
-                      className="w-full"
+                      className="w-full "
                       edit={true}
                       value={field.value}
                       labelkey="jobGroup"

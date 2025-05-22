@@ -4,6 +4,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 import { X } from "lucide-react"; // 아이콘은 선택사항
 import DocumentImage from "../../../components/ui/images/documents";
+import Loading from "@/components/common/isLoading";
 
 type Props = {
   setFile: (file: File | null) => void;
@@ -11,6 +12,7 @@ type Props = {
 };
 
 const PDFUploadDialog = ({ setFile }: Props) => {
+  const [loading, setLoading] = useState(false);
 
   const [open, setOpen] = useState<boolean>(false);
   const [preview, setPreview] = useState<File | null>(null);
@@ -41,9 +43,9 @@ const PDFUploadDialog = ({ setFile }: Props) => {
     <Dialog.Root modal={false} onOpenChange={handleOpenChange}>
       <Dialog.Trigger asChild>
         <button
-          className=" inline-flex relative
-        cursor-pointer bottom-[95px] left-[400px] 
-        px-4 py-2 bg-[#488FFF] rounded-[20px] text-white"
+          className=" inline-flex absolute px-[29px]
+        cursor-pointer top-[-9%] right-[1%] z-[1] py-[12px]
+     bg-[#488FFF] rounded-[20px] text-white"
         >
           PDF 업로드
         </button>
@@ -51,9 +53,9 @@ const PDFUploadDialog = ({ setFile }: Props) => {
 
       <Dialog.Portal>
         {open && (
-          <div className="fixed inset-0 bg-black/40  pointer-events-none" />
+          <div className="fixed inset-0 bg-black/40 z-[10]  pointer-events-none" />
         )}
-        <Dialog.Overlay className="fixed inset-0 bg-black/40" />
+        <Dialog.Overlay className="fixed inset-0 z-[10] bg-black/40" />
         <Dialog.Content
           onPointerDownOutside={(e) => e.preventDefault()}
           className="fixed top-1/2 left-1/2 w-[90vw] h-[400px] max-w-md -translate-x-1/2 

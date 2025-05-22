@@ -99,7 +99,7 @@ const InterviewRegister = () => {
                       <Button
                         type="button"
                         size="register"
-                        className="text-black"
+                        className="text-black text-[18px]"
                         variant={
                           field.value === "PERSONALITY" ? "outline" : "register"
                         }
@@ -110,7 +110,7 @@ const InterviewRegister = () => {
                       <Button
                         type="button"
                         size="register"
-                        className="text-black"
+                        className="text-black text-[18px]"
                         variant={field.value === "JOB" ? "outline" : "register"}
                         onClick={() => field.onChange("JOB")}
                       >
@@ -119,7 +119,7 @@ const InterviewRegister = () => {
                       <Button
                         type="button"
                         size="register"
-                        className="text-black"
+                        className="text-black text-[18px]"
                         variant={
                           field.value === "TECHNICAL" ? "outline" : "register"
                         }
