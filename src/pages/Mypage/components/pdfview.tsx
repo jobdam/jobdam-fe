@@ -1,4 +1,5 @@
 /** @format */
+
 import { Document, Page, pdfjs } from "react-pdf";
 
 import { useEffect, useRef, useState } from "react";
@@ -8,22 +9,17 @@ import "react-pdf/dist/Page/TextLayer.css";
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 type Props = {
-  setFile?: (file: File | null) => void;
-  file: File | null;
+  resumeURL: string; // S3에서 받은 PDF URL
+  // width?: number;
 };
-const Pdfpreview = ({ file }: Props) => {
-  // const [numPages, setNumPages] = useState<number | null>(null);
-  // const [pageNumber, setPageNumber] = useState(1);
-  // const [scale, setScale] = useState(1.0); // 기본 배율
-
+const PdfView = ({ resumeURL }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState<number | null>(null);
-  const [height, setHeight] = useState<number | null>(null);
+
   useEffect(() => {
     const resize = () => {
       if (containerRef.current) {
         setWidth(containerRef.current.offsetWidth);
-        setHeight(containerRef.current.offsetHeight);
       }
     };
 
@@ -31,31 +27,22 @@ const Pdfpreview = ({ file }: Props) => {
     window.addEventListener("resize", resize);
     return () => window.removeEventListener("resize", resize);
   }, []);
+  //이건 직접보는거라 page
 
-  if (!file) {
-    return null; // 또는 return <p className="text-gray-500 text-center">파일을 업로드해주세요.</p>;
-  }
+  console.log(resumeURL, "pdfViewer");
 
-  // const getScale = () => {
-  //   if (!pdfPageSize.width || !pdfPageSize.height) return 1;
-  //   const widthScale = containerSize.width / pdfPageSize.width;
-  //   const heightScale = containerSize.height / pdfPageSize.height;
-  //   return Math.min(widthScale, heightScale);
-  // };
   return (
-    <div
-      ref={containerRef}
-      className=" 
-    w-[850px] h-[510px]
-    rounded-[20px] overflow-hidden"
-    >
-      <Document file={file}>
+    <div ref={containerRef} className="  w-full h-full overflow-hidden">
+      <Document
+        // file="https://jobdam-bucket.s3.ap-northeast-2.amazonaws.com/resume/37/940c1d22-bb5f-4483-9123-1bdfac8578df_37_resume.pdf"
+
+        file={resumeURL}
+      >
         <Page
           renderAnnotationLayer={false}
           width={width ?? undefined}
-          height={height ?? undefined}
           pageNumber={1}
-          // scale={0.5}
+          scale={0.5}
           loading={
             <div
               style={{
@@ -76,4 +63,4 @@ const Pdfpreview = ({ file }: Props) => {
   );
 };
 
-export default Pdfpreview;
+export default PdfView;

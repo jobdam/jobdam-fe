@@ -57,7 +57,9 @@ const Radio = React.forwardRef<
               value={option.value}
               id={option.value}
             >
-              <Label>{option.label}</Label>
+              <Label className={cn("", edit && "text-[18px]")}>
+                {option.label}
+              </Label>
             </RadioPrimitive.Item>
           );
         })}

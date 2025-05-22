@@ -65,12 +65,17 @@ export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
           )}
           onClick={() => setIsOpen((prev) => !prev)}
         >
-          <span className="text-sm text-gray-700">{selectedLabel}</span>
+          <span className={cn("text-sm text-gray-700", edit && "text-[18px]")}>
+            {selectedLabel}
+          </span>
           <ChevronDown className="w-4 h-4 text-black" />
         </div>
 
         {isOpen && (
-          <div className="absolute left-0 top-full mt-1 overflow-y-auto w-full max-h-[200px] rounded-md bg-white border border-gray-300 shadow-md z-10">
+          <div
+            className="absolute left-0 top-full mt-1 overflow-y-auto w-full
+           max-h-[200px] rounded-md bg-white border border-gray-300 shadow-md z-10"
+          >
             {options.map((option, index) => (
               <div
                 defaultValue={value}

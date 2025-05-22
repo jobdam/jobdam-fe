@@ -48,7 +48,7 @@ const PDFPreviewDropzoneWithIcon = ({ setFile, file }: Props) => {
     >
       {/* 드래그 중일 때 오버레이 */}
       {dragActive && !file && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none select-none z-10">
+        <div className="absolute rounded-[20px] p-[-10px] inset-0 flex flex-col items-center justify-center pointer-events-none select-none z-10">
           <img
             src={dragIconUrl}
             alt="Drag icon"
