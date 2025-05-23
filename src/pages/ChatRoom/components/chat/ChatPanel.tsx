@@ -5,7 +5,7 @@ import ChatMessage from "./ChatMessage";
 import { Send } from "lucide-react";
 import { ChatMessageType } from "@/types/chat";
 import SystemMessage from "./ChatSystemMessage";
-import { expMap } from "@/types/api";
+import { InterviewTypeLabel } from "@/types/interview";
 
 interface ChatPanelProps {
   messages: ChatMessageType[];
@@ -55,17 +55,16 @@ const ChatPanel = ({
     setAutoScroll(isAtBottom);
   };
 
-  const interviewTypeLabel = expMap[interviewType];
+  const interviewTypeLabel = InterviewTypeLabel[interviewType];
 
   return (
-    <div className="flex flex-col h-full">
-      {/* 헤더 */}
-      <header className="h-16 bg-gray-800 text-white flex items-center px-4 shadow-md">
-        <h1 className="text-lg font-semibold">
+    <div className="h-[95%] w-[40%] bg-[#E5F3FF] flex flex-col rounded-[15px] shadow-custom">
+      <header className="h-16 bg-[#488FFF] flex items-center px-6 shadow-md rounded-t-[15px]">
+        <h1 className="text-[16px] text-white font-semibold">
           {jobGroup}
           {"  "}
           {jobDetail}
-          {"  "}&middot;{"  "}
+          <span className="mx-4 text-[24px] align-middle">&middot;</span>
           {interviewTypeLabel}
         </h1>
       </header>
@@ -74,7 +73,7 @@ const ChatPanel = ({
       <main
         ref={scrollContainerRef}
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto bg-gray-100 p-4 space-y-4"
+        className="flex-1 overflow-y-auto chat-scroll p-4 space-y-4"
       >
         {messages.map((msg) =>
           msg.type === "SYSTEM" ? (
@@ -94,7 +93,7 @@ const ChatPanel = ({
       </main>
 
       {/* 입력창 */}
-      <footer className="h-28 bg-white border-t px-4 py-3 flex items-center gap-2">
+      <footer className="relative h-[80px] m-[20px] rounded-[20px] bg-white">
         <textarea
           ref={textareaRef}
           value={input}
@@ -105,16 +104,28 @@ const ChatPanel = ({
               handleSend();
             }
           }}
-          placeholder="메시지를 입력하세요"
-          className="flex-1 resize-none bg-gray-200 rounded-lg p-3 h-full outline-none placeholder:text-gray-500"
+          placeholder="메시지 입력..."
+          className="resize-none p-5 h-full w-[90%] outline-none overflow-hidden placeholder:text-[#20202033]"
         />
-        <button
-          onClick={handleSend}
-          className="bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-full"
-        >
-          <Send className="w-5 h-5" />
+        <button onClick={handleSend} className="absolute top-4 right-5">
+          <img src="/send.svg" alt="send" className="w-5 h-5 opacity-40" />
         </button>
       </footer>
+      <style>
+        {`
+        .chat-scroll::-webkit-scrollbar {
+          width: 10px;
+          background: #fff;
+        }
+        .chat-scroll::-webkit-scrollbar-thumb {
+          background: #E5F3FF;
+          border-radius: 8px;
+        }
+        .chat-scroll {
+          scrollbar-color: #E5F3FF #fff;
+        }
+        `}
+      </style>
     </div>
   );
 };

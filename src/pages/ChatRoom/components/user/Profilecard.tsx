@@ -16,7 +16,7 @@ export default function ProfileCard({
   onClick,
 }: ProfileCardProps) {
   return (
-    <div className={`relative flex flex-col items-center p-4 `}>
+    <div className={`relative flex flex-col pt-1 `}>
       <div onClick={onClick}>
         {/* 준비 완료 표시 (왼쪽 상단 파란 동그라미) */}
         {isReady && (

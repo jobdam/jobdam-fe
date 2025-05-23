@@ -9,7 +9,10 @@ interface ResumeCardProps {
 
 export default function ResumeCard({ user }: ResumeCardProps) {
   return (
-    <div className="mt-6 p-6 bg-white rounded-2xl shadow border border-blue-200 w-[350px] relative">
+    <div
+      className="mt-2 ml-2 p-6 bg-white rounded-2xl shadow border border-[#488FFF] 
+      min-w-[280px] w-[80%] relative"
+    >
       <div className="flex items-center gap-4 mb-4">
         <img
           src={user.profileImgUrl}

@@ -52,7 +52,7 @@ const InterviewNotice = ({
       <div className="text-sm font-semibold mb-1 flex items-center gap-1">
         🕒 <span>면접 시작까지 {formattedTime}</span>
       </div>
-      <p className="text-xs text-gray-600 mb-6">
+      <p className="text-xs text-gray-600 mb-2">
         모두가 준비되면 바로 면접이 시작돼요.
       </p>
     </div>
