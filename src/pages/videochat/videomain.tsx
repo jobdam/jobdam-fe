@@ -28,6 +28,7 @@ const Videomain = () => {
   const myUserId = useMemo(() => getUserIdFromJwt(), []);
   const location = useLocation();
   const isFirstJoin = location.state?.firstJoin;
+  const [isLoadingModalOpen, setIsLoadingModalOpen] = useState(true);
   ////video////
   //다른사람 스트림정보
   const { remoteStreams, addRemoteStream, removeRemoteStream } =
@@ -251,29 +252,40 @@ const Videomain = () => {
   return (
     <div className="flex justify-center items-center">
       <div className="flex w-[80vw] h-[90vh] gap-x-6">
-        {roomId && <LoadingModal title="asdf" />}
-        {!roomId && (
-          <>
-            <VideoPanel
-              localStream={stream}
-              remoteStreams={remoteStreams}
-              mediaControl={{
-                isMicOn,
-                isCameraOn,
-                isScreenSharing,
-                toggleMic,
-                toggleCamera,
-                toggleScreenShare,
-              }}
-              roomId={roomId!}
-              myUserId={myUserId!}
-              micTrack={micTrack}
-            />
-            {/* 오른쪽: 인터뷰 패널 */}
-            <InterviewPanel />
-          </>
-        )}
+        <VideoPanel
+          localStream={stream}
+          remoteStreams={remoteStreams}
+          mediaControl={{
+            isMicOn,
+            isCameraOn,
+            isScreenSharing,
+            toggleMic,
+            toggleCamera,
+            toggleScreenShare,
+          }}
+          roomId={roomId!}
+          myUserId={myUserId!}
+          micTrack={micTrack}
+        />
+        {/* 오른쪽: 인터뷰 패널 */}
+        <InterviewPanel />
       </div>
+      {isFirstJoin &&
+        isLoadingModalOpen &&
+        location.state?.enterUserCount !== peerMap.getAll().size && (
+          <LoadingModal
+            children={
+              <>
+                <div>
+                  연결 대기 현황 ({peerMap.getAll().size} /{" "}
+                  {location.state?.enterUserCount}명)
+                </div>
+                <div className="mt-2">잠시만 기다려주세요.</div>
+              </>
+            }
+            onClose={() => setIsLoadingModalOpen(false)}
+          />
+        )}
     </div>
   );
 };

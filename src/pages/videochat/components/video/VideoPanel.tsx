@@ -183,6 +183,7 @@ const VideoPanel = ({
             ref={localVideoRef}
             autoPlay
             playsInline
+            muted
             className={`bg-black w-full h-full object-cover cursor-pointer min-h-0 max-h-full"
             ${
               selectedUserId === myUserId
