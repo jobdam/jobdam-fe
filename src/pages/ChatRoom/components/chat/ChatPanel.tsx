@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from "react";
 import ChatMessage from "./ChatMessage";
-import { Send } from "lucide-react";
 import { ChatMessageType } from "@/types/chat";
 import SystemMessage from "./ChatSystemMessage";
 import { InterviewTypeLabel } from "@/types/interview";

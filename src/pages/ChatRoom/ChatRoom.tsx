@@ -14,7 +14,7 @@ import { getChatUserInfo } from "./api/get-chatUserInfo";
 import { paths } from "@/config/paths";
 import { useLeaveRoomMutation } from "./api/delete-leaveRoom";
 import { useInitInterviewMutation } from "./api/post-initInterview";
-import ConfirmModal from "./components/modal/ConfirmModal";
+import ConfirmModal from "../../components/ui/confirm/ConfirmModal";
 import { queryClient } from "@/lib/react-query";
 
 const ChatRoom = () => {
