@@ -81,6 +81,7 @@ const InterviewRegister = () => {
                       <Textarea
                         placeholder="ex) 문제를 구조적으로 정리하고 해결하는 걸 좋아하는 UX 디자이너 지망생입니다."
                         {...field}
+                        maxLength={300}
                       />
                     )}
                   />

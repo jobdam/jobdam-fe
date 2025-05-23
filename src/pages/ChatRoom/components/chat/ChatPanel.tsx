@@ -105,6 +105,7 @@ const ChatPanel = ({
             }
           }}
           placeholder="메시지 입력..."
+          maxLength={300}
           className="resize-none p-5 h-full w-[90%] outline-none overflow-hidden placeholder:text-[#20202033]"
         />
         <button onClick={handleSend} className="absolute top-4 right-5">
