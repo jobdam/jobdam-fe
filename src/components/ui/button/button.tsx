@@ -14,14 +14,14 @@ import { Spinner } from "../spinner";
 //storybook에 서 controls 요소
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium",
+  "inline-flex items-center  justify-center whitespace-nowrap rounded-md text-sm font-medium",
   {
     variants: {
       variant: {
         default: "bg-[#488fff] ",
         register:
           "bg-white text-black items-end border-[1px] border-[#d9d9d9] text-[18px] ",
-        outline: "border-[#488FFF] border-[1px] bg-[#F1F9FF] items-end   ",
+        outline: "border-[#488FFF] border-[1px] bg-[#F1F9FF]  items-end   ",
         secondary: "bg-transparent border-[1px] ",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
@@ -74,7 +74,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <>
           {isLoading && <Spinner size="sm" className="text-current" />}
           {!isLoading && icon && <span className="mr-2">{icon}</span>}
-          <span className={cn("text-[white] text-[24px] ", className)}>
+          <span
+            className={cn(
+              "text-[white] text-[24px] ",
+              className,
+              variant === "outline" && "text-[#488fff]"
+            )}
+          >
             {children}
           </span>
         </>
