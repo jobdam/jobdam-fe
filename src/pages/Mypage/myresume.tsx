@@ -90,7 +90,7 @@ const Myresume = () => {
 
               <div className="flex flex-row justify-between"></div>
             </div>
-            <div className="flex justify-center w-6/10 mt-[70px] mb-[70px] items-center">
+            <div className="flex justify-center w-/10 mt-[70px] mb-[70px] items-center">
               <Button type="submit">내용 저장하기</Button>
             </div>
           </>
