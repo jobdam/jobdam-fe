@@ -15,6 +15,7 @@ export type FieldWrapperProps = {
   className?: string;
   children: React.ReactNode;
   error?: FieldError | undefined;
+  profile?: boolean;
   showLink?: boolean; // ✅ 이거 추가
   isAbsoluteErrorPosition?: boolean; // ➕ 조건적 포지셔닝을 위한 prop
 };
@@ -29,6 +30,7 @@ export const FieldWrapper = (props: FieldWrapperProps) => {
     label,
     error,
     children,
+    profile = false,
     showLink,
     isAbsoluteErrorPosition = false, // 기본값 true (기존 방식 유지)
   } = props;
@@ -37,7 +39,15 @@ export const FieldWrapper = (props: FieldWrapperProps) => {
     <div>
       <Label>
         {label}
-        <div className="mt-2 relative ">{children}</div>
+        <div
+          className={cn(
+            "mt-2 relative ",
+
+            profile && "mt-0"
+          )}
+        >
+          {children}
+        </div>
       </Label>
 
       {(error?.message || showLink) && (

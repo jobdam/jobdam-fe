@@ -69,11 +69,14 @@ const MyProfile = () => {
               key={key}
               className="flex flex-row border-b-1 pb-[16px] border-blue-500 "
             >
-              <div className="w-[250px] pl-[15px] leading-[150%] font-semibold text-[#488FFF] ">
+              <div className="w-[250px] pl-[15px] text-[20px] leading-[150%] font-medium text-[#488FFF] ">
                 {" "}
                 {value}
               </div>
-              <div className="text-[18px]"> {profile[key] || "없음"}</div>
+              <div className="text-[18px] font-semibold ">
+                {" "}
+                {profile[key] || "없음"}
+              </div>
             </li>
           );
         })}

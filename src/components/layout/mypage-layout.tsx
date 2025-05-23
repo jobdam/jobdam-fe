@@ -51,10 +51,7 @@ const MypageLayout = ({
       <div className="flex flex-col w-[200px] shrink-0 mt-[137px] mr-[102px] relative">
         <div>
           {/* 프로필 사진  mypage에선 카메라가 안보이다가 edit일때 보이고 preview가 활성화 되어야 한다.*/}
-          <ProfilePreview
-            onSelectFile={onSelectFile}
-            mypage={true}
-          ></ProfilePreview>
+          <ProfilePreview onSelectFile={onSelectFile}></ProfilePreview>
           {/* 메뉴 리스트 */}
           <ul className="flex flex-col mt-[43px] gap-y-[20px]">
             {data.map((opt) => (
