@@ -22,7 +22,7 @@ const InterviewLayout = ({
   return (
     <div
       className={cn(
-        "flex min-h-screen w-full justify-center p-[50px]",
+        "flex h-[1600px] w-full justify-center p-[50px]",
 
         register && "bg-[#E5F3FF]"
       )}
@@ -53,7 +53,7 @@ const InterviewLayout = ({
           {/* Content Area */}
           <section
             className={cn(
-              "p-6 w-full flex flex-col gap-[5px] bg-[#F5F5F5]",
+              "p-6 w-full flex flex-col gap-[5px] rounded-[20px] bg-white",
               matching && "bg-white"
             )}
           >

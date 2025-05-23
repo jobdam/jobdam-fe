@@ -147,10 +147,10 @@ const InterviewRegister = () => {
             )}
             {/* 인터뷰타입 + 자기소개 입력되면 면접유형 */}
             {interviewType && introduce && introduce.trim().length > 0 && (
-              <div className="relative bottom-[-150px] left-[100px] flex justify-center items-center">
+              <div className="relative top-[15%] left-0 flex justify-center items-center">
                 <button
                   type="submit"
-                  className="bg-[#E4E4E4] h-[70px] w-[480px] cursor-pointer rounded-[10px]"
+                  className="bg-[#488fff] h-[65px] w-[40%] text-[white] text-[24px] cursor-pointer rounded-[10px]"
                 >
                   입력 완료
                 </button>

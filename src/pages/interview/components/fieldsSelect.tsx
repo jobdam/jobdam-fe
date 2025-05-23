@@ -66,6 +66,7 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
           name="experienceType"
           render={({ field }) => (
             <Radio
+              edit={true}
               className="mr-[30px] flex justify-center pb-[9px] items-end"
               options={experienceOptions}
               value={field.value}
@@ -80,6 +81,7 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
               name="jobCode"
               render={({ field }) => (
                 <Select
+                  className="w-[227px] "
                   labelkey="jobGroup"
                   valuekey="jobCode"
                   options={jobGroups}
@@ -95,6 +97,7 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
               name="jobDetailCode"
               render={({ field }) => (
                 <Select
+                  className="w-[227px]"
                   labelkey="jobDetail"
                   valuekey="jobDetailCode"
                   options={jobDetails}

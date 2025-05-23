@@ -60,7 +60,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
       >
         <div
           className={cn(
-            "flex items-center justify-between w-full h-[50px] px-4 rounded-[10px] bg-white border border-gray-300 cursor-pointer",
+            "flex items-center justify-between w-full h-[60px] px-4 rounded-[10px] bg-white border border-gray-300 cursor-pointer",
             edit && "border-[#488fff]"
           )}
           onClick={() => setIsOpen((prev) => !prev)}
