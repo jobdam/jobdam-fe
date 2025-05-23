@@ -3,6 +3,7 @@ import { Button } from "@radix-ui/themes";
 import { Link } from "react-router-dom";
 import { paths } from "@/config/paths";
 import Footer from "./footer";
+import NavigationMenuDemo from "@/components/ui/navigation/menu";
 
 function Apps() {
   return (
@@ -13,6 +14,8 @@ function Apps() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
+
+      <NavigationMenuDemo title="세영님"></NavigationMenuDemo>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>

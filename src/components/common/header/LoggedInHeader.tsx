@@ -2,8 +2,9 @@
 
 import { paths } from "@/config/paths";
 import { Link } from "@/components/ui/link";
-import { useLogout } from "@/lib/auth";
-import { useNavigate } from "react-router";
+import Menu from "@/components/ui/navigation/menu";
+import { useUser } from "@/lib/auth";
+import { getAccessToken } from "@/lib/authSerivices";
 const Logo = () => {
   return (
     <Link className="flex items-center text-white" to={paths.home.getHref()}>
@@ -13,10 +14,11 @@ const Logo = () => {
 };
 //width 조절로 좌우 여백 조절
 const LoggedInHeader = () => {
-  const navigate = useNavigate();
-  const logout = useLogout({
-    onSuccess: () => navigate(paths.auth.login.getHref(location.pathname)),
+  const token = getAccessToken();
+  const { data: userData } = useUser({
+    enabled: !!token,
   });
+
   return (
     <>
       {/* 헤더의 구조, 색 z로 띄윅등 */}
@@ -46,7 +48,9 @@ const LoggedInHeader = () => {
             >
               면접 보러가기
             </Link>
-            <button
+            <Menu title={userData?.name + "님" || "세영님"}></Menu>
+
+            {/* <button
               type="button"
               onClick={() => logout.mutate({})}
               className="text-white cursor-pointer
@@ -60,7 +64,7 @@ const LoggedInHeader = () => {
               className="cursor-pointer text-white text-[16px] font-semibold leading-normal "
             >
               마이페이지
-            </Link>
+            </Link> */}
           </nav>
         </div>
       </header>
