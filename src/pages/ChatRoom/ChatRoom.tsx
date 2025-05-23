@@ -31,6 +31,7 @@ const ChatRoom = () => {
   ///유저 설정//
   const [userList, setUserList] = useState<ChatUserInfo[]>([]);
   const myUserInfo = userList.find((u) => u.userId === myUserId); //채팅방에 보여질 제목
+  const [userCount, setUserCount] = useState<number>(0); //화상채팅진입전 유저수
   /// 나가기 모달 설정///
   const [isModalOpen, setIsModalOpen] = useState(false);
   //덮어쓰기 말고 병합으로 userList업데이트(비동기로 여러명이 set하면 가끔이상해짐..)
@@ -147,6 +148,7 @@ const ChatRoom = () => {
         case "READY":
           handleReadyUpdate(data.userId, data.ready);
           if (data.allReady) {
+            setUserCount(userList.length);
             initInterview({
               jobCode: myUserInfo?.jobCode!,
               interviewType: myUserInfo?.interviewType!,
@@ -206,7 +208,7 @@ const ChatRoom = () => {
       onSuccess: () => {
         console.log("방 나가기 성공");
         navigate(paths.videochat.main.getHref(roomId), {
-          state: { firstJoin: true },
+          state: { firstJoin: true, enterUserCount: userCount },
           replace: true,
         });
       },

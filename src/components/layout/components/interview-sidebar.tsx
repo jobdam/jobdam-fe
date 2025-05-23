@@ -23,7 +23,7 @@ const InterviewSidebar = () => {
   return (
     <>
       <Checkbox
-        label="신청완료"
+        label="매칭 신청"
         step={1}
         variant="progress"
         checked={progressStep >= 1}

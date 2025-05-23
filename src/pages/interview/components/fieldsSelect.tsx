@@ -73,7 +73,7 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
             />
           )}
         />
-        <div className=" flex justify flex-row gap-[8px]">
+        <div className=" flex justify flex-row gap-[8px] items-center">
           <div className="relative">
             <Controller
               control={control}
@@ -104,45 +104,55 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
               )}
             />
           </div>
+          <p className="pl-[15px] font-bold text-[16px]">
+            다른 분야여도 상관없어요
+          </p>
         </div>
       </ContentsBox>
-      <ContentsBox title="함께 하고 싶은 인원수를 선택해주세요.">
-        <Controller
-          control={control}
-          name="matchType"
-          render={({ field }) => (
-            <div className="gap-[20px] flex w-full flex-row">
-              <Button
-                type="button"
-                className="text-black text-[18px]"
-                size="register"
-                variant={field.value === "ONE_TO_ONE" ? "outline" : "register"}
-                onClick={() => field.onChange("ONE_TO_ONE")}
-              >
-                1:1
-              </Button>
-              <Button
-                type="button"
-                size="register"
-                className="text-black text-[18px]"
-                variant={field.value === "GROUP" ? "outline" : "register"}
-                onClick={() => field.onChange("GROUP")}
-              >
-                3~6명
-              </Button>
-              <Button
-                type="button"
-                size="register"
-                className="text-black text-[18px]"
-                variant={field.value === "NONE" ? "outline" : "register"}
-                onClick={() => field.onChange("NONE")}
-              >
-                상관없어요
-              </Button>
-            </div>
-          )}
-        />
-      </ContentsBox>
+      <div className="mt-[50px]">
+        <ContentsBox title="함께 하고 싶은 인원수를 선택해주세요.">
+          <Controller
+            control={control}
+            name="matchType"
+            render={({ field }) => (
+              <div className="gap-[20px] flex w-full flex-row">
+                <Button
+                  type="button"
+                  className="text-black text-[18px]"
+                  size="register"
+                  variant={
+                    field.value === "ONE_TO_ONE" ? "outline" : "register"
+                  }
+                  onClick={() => field.onChange("ONE_TO_ONE")}
+                >
+                  <img src="/matchingIcon/1;1.svg" alt="1:1" />
+                  1:1
+                </Button>
+                <Button
+                  type="button"
+                  size="register"
+                  className="text-black text-[18px]"
+                  variant={field.value === "GROUP" ? "outline" : "register"}
+                  onClick={() => field.onChange("GROUP")}
+                >
+                  <img src="/matchingIcon/3-6.svg" alt="1:1" />
+                  3~6명
+                </Button>
+                <Button
+                  type="button"
+                  size="register"
+                  className="text-black text-[18px]"
+                  variant={field.value === "NONE" ? "outline" : "register"}
+                  onClick={() => field.onChange("NONE")}
+                >
+                  <img src="/matchingIcon/상관없어요.svg" alt="1:1" />
+                  상관없어요
+                </Button>
+              </div>
+            )}
+          />
+        </ContentsBox>
+      </div>
     </>
   );
 };

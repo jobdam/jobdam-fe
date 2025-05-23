@@ -1,12 +1,12 @@
 /** @format */
 
 export interface MediaControlState {
-  isMicOn?: boolean;
-  isCameraOn?: boolean;
-  isScreenSharing?: boolean;
-  toggleMic?: () => void;
-  toggleCamera?: () => void;
-  toggleScreenShare?: () => void;
+  isMicOn: boolean;
+  isCameraOn: boolean;
+  isScreenSharing: boolean;
+  toggleMic: () => void;
+  toggleCamera: () => void;
+  toggleScreenShare: () => void;
 }
 
 export interface UtilityState {
