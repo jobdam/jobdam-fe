@@ -134,6 +134,7 @@ const QuestionFeedbackBox = ({
               }
             }}
             placeholder="피드백을 작성해주세요."
+            maxLength={500}
             className="w-full pr-8 resize-none min-h-[100px] max-h-[220px] pr-8 text-base placeholder-gray-400 text-gray-800 outline-none scrollbar-none"
           />
           <button
@@ -158,6 +159,7 @@ const QuestionFeedbackBox = ({
             }}
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="추가 질문을 작성해주세요"
+            maxLength={200}
             className="w-full min-h-[100px] max-h-[220px] resize-none pr-8 text-base placeholder-gray-400 text-gray-800 outline-none scrollbar-none"
           />
           <button

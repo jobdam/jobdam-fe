@@ -28,6 +28,9 @@ const Videomain = () => {
   const myUserId = useMemo(() => getUserIdFromJwt(), []);
   const location = useLocation();
   const isFirstJoin = location.state?.firstJoin;
+  const [firstJoinUserCount, setFirstJoinUserCount] = useState<
+    number | undefined
+  >(undefined); //로딩보여주기위해 처음진입유저 체크!
   const [isLoadingModalOpen, setIsLoadingModalOpen] = useState(true);
   ////video////
   //다른사람 스트림정보
@@ -80,6 +83,7 @@ const Videomain = () => {
       navigate("/");
       return;
     }
+    setFirstJoinUserCount(location.state?.enterUserCount);
     return () => {
       peerMap.clearAll(); //언마운트시 전부제거
     };
@@ -237,18 +241,18 @@ const Videomain = () => {
   });
   //구독이 전부 완료되면 시그널 전송시작!
   useEffect(() => {
+    console.log("isfirest", isFirstJoin);
     if (isBroadcastSubscribed) {
       //처음입장이면 아이디 비교해서 순차적으로offer 아니면 전부다한테 offer
       if (isFirstJoin) {
-        console.log("여긴 처음입장했을때만!!");
         sendJoin(roomId!, `/app/signal/join/${roomId!}`);
       } else {
-        console.log("여긴새로고침했을떄만나와야해!!");
         sendJoin(roomId!, `/app/signal/joinOne/${roomId!}`);
       }
     }
   }, [isBroadcastSubscribed]);
-
+  console.log("first", firstJoinUserCount);
+  console.log("peer", peerMap.getAll().size + 1);
   return (
     <div className="flex justify-center items-center">
       <div className="flex mt-[45px] w-[80vw] h-[90vh] gap-x-6">
@@ -270,15 +274,16 @@ const Videomain = () => {
         {/* 오른쪽: 인터뷰 패널 */}
         <InterviewPanel />
       </div>
-      {isFirstJoin &&
-        isLoadingModalOpen &&
-        location.state?.enterUserCount !== peerMap.getAll().size && (
+      {isLoadingModalOpen &&
+        firstJoinUserCount &&
+        firstJoinUserCount !== peerMap.getAll().size + 1 && (
           <LoadingModal
             children={
               <>
                 <div>
-                  연결 대기 현황 ({peerMap.getAll().size} /{" "}
-                  {location.state?.enterUserCount}명)
+                  연결 대기 현황 ({peerMap.getAll().size + 1} /{" "}
+                  {firstJoinUserCount}
+                  명)
                 </div>
                 <div className="mt-2">잠시만 기다려주세요.</div>
               </>

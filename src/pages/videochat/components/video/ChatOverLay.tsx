@@ -59,6 +59,7 @@ const ChatOverlay = ({ messages, onSend }: ChatOverlayProps) => {
           onChange={(e) => setInput(e.target.value)}
           placeholder="메시지 입력..."
           rows={3}
+          maxLength={100}
           className="w-full absolute left-3 top-1 resize-none bg-transparent text-[13px] placeholder:text-xs placeholder:text-gray-400 pt-2 pl-0 pr-8 border-none outline-none focus:ring-0"
           style={{ minHeight: "30px", maxHeight: "60px" }}
           onKeyDown={(e) => {

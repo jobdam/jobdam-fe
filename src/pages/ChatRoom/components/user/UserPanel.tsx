@@ -94,7 +94,9 @@ const UserPanel = ({
 
   return (
     <div
-      className={"w-[550px] bg-blue-50 p-4 flex flex-col justify-center h-full"}
+      className={
+        "w-[25%] min-w-[480px] h-[95%] bg-[#E5F3FF] p-4 flex flex-col justify-center rounded-[20px] shadow-custom"
+      }
     >
       {/* 상단 안내 */}
       <InterviewNotice
@@ -102,9 +104,9 @@ const UserPanel = ({
         onStartInterview={() => handleStartInterview()}
       />
 
-      <div className="flex p-2 justify-center items-stretch flex-1 min-w-[200px]">
+      <div className="flex items-stretch gap-2 flex-1 min-w-[500px]">
         {/* 프로필카드 리스트 */}
-        <div className="flex flex-col gap-4 min-w-[150px] bg-blue-50 p-2">
+        <div className="flex flex-col gap-10 min-w-[70px] pt-5">
           {allParticipants.map((user) => (
             <ProfileCard
               key={user.id}

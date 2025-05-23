@@ -14,7 +14,7 @@ import { getChatUserInfo } from "./api/get-chatUserInfo";
 import { paths } from "@/config/paths";
 import { useLeaveRoomMutation } from "./api/delete-leaveRoom";
 import { useInitInterviewMutation } from "./api/post-initInterview";
-import ConfirmModal from "./components/modal/ConfirmModal";
+import ConfirmModal from "../../components/ui/confirm/ConfirmModal";
 import { queryClient } from "@/lib/react-query";
 
 const ChatRoom = () => {
@@ -225,32 +225,27 @@ const ChatRoom = () => {
   });
 
   return (
-    <div className="flex justify-center  max-h-screen h-auto py-[33px] items-stretch">
-      <div className="inline-flex items-stretch max-h-[900px] gap-[13px]">
-        <div className="flex-grow min-w-[300px]  ">
-          <UserPanel
-            userList={userList}
-            myUserId={myUserId!}
-            created={new Date(createdRef.current!)}
-            onReady={handleReadyStatus}
-            onLeave={handleLeave}
-          />
-          <ConfirmModal
-            isOpen={isModalOpen}
-            onConfirm={confirmLeave}
-            onCancel={() => setIsModalOpen(false)}
-          />
-        </div>
-
-        <div className="flex-grow min-w-[800px]">
-          <ChatPanel
-            messages={messages}
-            onSend={handleSend}
-            jobGroup={myUserInfo?.jobGroup ?? ""}
-            jobDetail={myUserInfo?.jobDetail ?? ""}
-            interviewType={myUserInfo?.interviewType ?? ""}
-          />
-        </div>
+    <div className="w-full h-[90vh] max-h-[1000px] flex justify-center">
+      <div className="flex justify-center gap-5 mt-[20px] w-full">
+        <UserPanel
+          userList={userList}
+          myUserId={myUserId!}
+          created={new Date(createdRef.current!)}
+          onReady={handleReadyStatus}
+          onLeave={handleLeave}
+        />
+        <ConfirmModal
+          isOpen={isModalOpen}
+          onConfirm={confirmLeave}
+          onCancel={() => setIsModalOpen(false)}
+        />
+        <ChatPanel
+          messages={messages}
+          onSend={handleSend}
+          jobGroup={myUserInfo?.jobGroup ?? ""}
+          jobDetail={myUserInfo?.jobDetail ?? ""}
+          interviewType={myUserInfo?.interviewType ?? ""}
+        />
       </div>
     </div>
   );

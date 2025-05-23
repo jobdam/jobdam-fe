@@ -17,6 +17,7 @@ import { RootState } from "@/store";
 import { useNavigate } from "react-router";
 import { SpeakingIndicator } from "./SpeakingIndicator";
 import InterviewTimer from "./InterviewTimer";
+import ConfirmModal from "@/components/ui/confirm/ConfirmModal";
 
 interface VideoPanelProps {
   //비디오 스트림
@@ -39,6 +40,9 @@ const VideoPanel = ({
   //공통
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  /// 나가기 모달 설정///
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   //내화면 보기위해서 필요한것
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
   //메인화면 전환용
@@ -154,7 +158,9 @@ const VideoPanel = ({
       <div className="relative flex items-center justify-center w-full h-[80%]">
         <div className="absolute left-6 top-6 z-10">
           <button
-            onClick={handleExit}
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
             className="px-4 py-1 bg-[#434343] text-white rounded-md shadow-md text-sm
                         font-bold transition hover:bg-neutral-900 focus:outline-none cursor-pointers"
           >
@@ -227,6 +233,11 @@ const VideoPanel = ({
           </div>
         ))}
       </div>
+      <ConfirmModal
+        isOpen={isModalOpen}
+        onConfirm={handleExit}
+        onCancel={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };
