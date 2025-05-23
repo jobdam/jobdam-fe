@@ -28,7 +28,7 @@ const ProfileEdit = ({ selectedFile }: any) => {
   // 직무 학교 희망기업
 
   const { data: userData, isSuccess } = useUser();
-
+  console.log("profileEdit 안쓰는변수사용:", isSuccess);
   const form = useForm<any>({
     defaultValues: {
       name: "",

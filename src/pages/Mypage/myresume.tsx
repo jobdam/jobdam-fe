@@ -8,9 +8,7 @@ import Pdfpreview from "./components/pdfpreview";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { usePostResume } from "./api/post-resume";
-import PdfView from "./components/pdfview";
 import { useResume } from "./api/get-resume";
-import Loading from "@/components/common/isLoading";
 
 type ResumeFormValues = {
   resumeFile: File | null;

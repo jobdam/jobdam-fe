@@ -4,7 +4,6 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 import { X } from "lucide-react"; // 아이콘은 선택사항
 import DocumentImage from "../../../components/ui/images/documents";
-import Loading from "@/components/common/isLoading";
 
 type Props = {
   setFile: (file: File | null) => void;
@@ -12,7 +11,7 @@ type Props = {
 };
 
 const PDFUploadDialog = ({ setFile }: Props) => {
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
 
   const [open, setOpen] = useState<boolean>(false);
   const [preview, setPreview] = useState<File | null>(null);
