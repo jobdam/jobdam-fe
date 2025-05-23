@@ -11,14 +11,22 @@ export type LayoutProps = {
   className?: string;
   matching?: boolean;
   variant?: Variant;
+  register?: boolean;
 };
 const InterviewLayout = ({
   title,
   children,
   matching = false,
+  register = false,
 }: LayoutProps) => {
   return (
-    <div className="flex min-h-screen w-full justify-center p-[50px]">
+    <div
+      className={cn(
+        "flex min-h-screen w-full justify-center p-[50px]",
+
+        register && "bg-[#E5F3FF]"
+      )}
+    >
       {/* 전체 컨텐츠 wrapper (sidebar + main) */}
       <div className="flex w-full min-w-[1200px] gap-6 flex-nowrap  ">
         {/* Sidebar */}

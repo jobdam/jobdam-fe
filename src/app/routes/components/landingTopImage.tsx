@@ -7,7 +7,7 @@ import mainIcon from "@/assets/landingImage/mainIcon.svg";
 const LandingTopImage = () => {
   return (
     <>
-      <div className=" relative w-[800px] h-[1000px]">
+      <div className="  w-[800px] h-[1000px]">
         <img className="size-[647px]" src={mainImage}></img>
         <div
           className="

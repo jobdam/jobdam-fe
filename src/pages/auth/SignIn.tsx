@@ -20,6 +20,14 @@ export type LoginFormProps = {
 export const SignIn = ({ onSuccess }: LoginFormProps) => {
   const login = useLogin({
     onSuccess,
+    onError: (error) => {
+      console.log(error);
+      //비밀번호가 틀렸을경우
+
+      //이메일이 틀렷을겨웅
+
+      //비밀 번호를 우선시
+    },
   });
 
   const [searchParams] = useSearchParams();

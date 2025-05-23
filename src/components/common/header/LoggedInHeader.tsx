@@ -30,7 +30,7 @@ const LoggedInHeader = () => {
         {/* 헤더의 컨텐츠부분 */}
         <div
           className="
-        flex  justify-between items-center w-full w-auto mx-auto "
+        flex  justify-between items-center  w-auto mx-auto "
         >
           {/* 헤더구성요소중 왼쪽 로고 */}
           <Logo></Logo>
