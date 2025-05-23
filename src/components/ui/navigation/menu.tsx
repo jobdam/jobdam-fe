@@ -17,7 +17,7 @@ const Menu = ({ title }: Props) => {
     <NavigationMenu.Root className="relative  z-10 ">
       <NavigationMenu.List className="  m-0 flex  text-[#488fff]  text-[16px] font-semibold w-full h-full ">
         <NavigationMenu.Item>
-          <NavigationMenu.Trigger className=" flex bg-white  rounded-[20px] items-center justify-center w-[106px] h-[36px] leading-none ">
+          <NavigationMenu.Trigger className=" flex bg-white rounded-[20px] items-center justify-center w-[106px] h-[36px] leading-none ">
             {title}
           </NavigationMenu.Trigger>
           <NavigationMenu.Content
