@@ -251,7 +251,7 @@ const Videomain = () => {
 
   return (
     <div className="flex justify-center items-center">
-      <div className="flex w-[80vw] h-[90vh] gap-x-6">
+      <div className="flex mt-[45px] w-[80vw] h-[90vh] gap-x-6">
         <VideoPanel
           localStream={stream}
           remoteStreams={remoteStreams}
