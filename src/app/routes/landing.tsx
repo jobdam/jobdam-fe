@@ -3,11 +3,14 @@ import { Button } from "@radix-ui/themes";
 import { Link } from "react-router-dom";
 import { paths } from "@/config/paths";
 import Footer from "./footer";
-import NavigationMenuDemo from "@/components/ui/navigation/menu";
+import LandingTopImage from "./components/landingTopImage";
+import LandingCard from "./components/landingCard";
+import LandingExplain from "./components/landingExplain";
+import End from "./components/end";
 
 function Apps() {
   return (
-    <>
+    <div className=" h-[100vh]">
       <h1>Vite + React</h1>
       <div className="card">
         <p>
@@ -15,7 +18,6 @@ function Apps() {
         </p>
       </div>
 
-      <NavigationMenuDemo title="세영님"></NavigationMenuDemo>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
@@ -41,26 +43,36 @@ function Apps() {
       <div></div>
 
       {/* 랜딩 페이지 전체 */}
-      <div>
-        {/* 이미지 및 면접하러가기 */}
-        <div className="mt-[196px] items-center flex flex-col">
-          <div className="text-[64px] font-semibold leading-[150%]">
-            지금 나에게 딱 맞는<br></br> 모의 면접자들과 함께 연습해요
+      <div className=" bg-gradient-landing-top">
+        {/* 랜딩 페이지 배경 넣기  */}
+        <div>
+          {/* 이미지 및 면접하러가기 */}
+          <div className="relative flex flex-col justify-center items-center">
+            <LandingTopImage></LandingTopImage>
           </div>
-          <Link
-            className="h-[82px] px-[40px] mt-[10px] text-[32px] font-semibold bg-[#e1e1e1] flex justify-center items-center"
-            to={paths.interview.register.path}
+          {/* 카드형 ui 그래픽 함께 */}
+          <div
+            className="    
+"
           >
-            면접 매칭하러 가기
-          </Link>
+            <div
+              className="
+          flex items-center justify-center"
+            >
+              <LandingCard></LandingCard>
+            </div>
+            {/* 프로젝트를 설명하는 부분 레이아웃 */}
+            <LandingExplain></LandingExplain>
+          </div>
         </div>
-        {/* 카드형 ui 그래픽 함께 */}
-        <div></div>
+
         {/* 서비스 이용 안내 및 마지막부분에 시작하기 넣기(로그인, 면접하러가기) */}
-        <div></div>
+      </div>
+      <div>
+        <End></End>
       </div>
       <Footer></Footer>
-    </>
+    </div>
   );
 }
 export default Apps;

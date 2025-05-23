@@ -27,6 +27,8 @@ module.exports = {
           "linear-gradient(180deg, #488EFF 30%, #72BCFF 100%)",
         "gradient-auth-login":
           "linear-gradient(180deg, #C1E1FF 0%, #F2F9FF 100%)",
+        "gradient-landing-top":
+          "linear-gradient(0deg, #99CFFF 01%, #FCFFF4 100%)",
       },
 
       colors: {
