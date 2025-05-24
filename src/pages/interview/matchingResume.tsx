@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { useResume } from "../Mypage/api/get-resume";
-import { usePostResume } from "../Mypage/api/post-resume";
+// import { usePostResume } from "../Mypage/api/post-resume";
 import { Form } from "@/components/ui/form";
 import PDFUploadDialog from "../Mypage/components/pdfuploadfile";
 import PDFPreviewDropzoneWithIcon from "../Mypage/components/pdfdrag&drop";
@@ -28,7 +28,7 @@ const MatchingResume = () => {
 
   const file = form.watch("resumeFile");
 
-  const registerResume = usePostResume({});
+  //   const registerResume = usePostResume({});
   //작성 완료시 url로 띄우기. preview는 실제 url이있다면 없어지도록
   const navigate = useNavigate();
   return (
@@ -56,7 +56,7 @@ const MatchingResume = () => {
                 {!file && (
                   <PDFPreviewDropzoneWithIcon
                     content={
-                      <div className="flex justify-center items-center">
+                      <div className="flex justify-center flex-col items-center">
                         <Filetext></Filetext>
                         이력서를 PDF로 첨부해 주세요.<br></br>
                         면접 참여 시 이 문서가 공유됩니다.
