@@ -56,7 +56,7 @@ const MatchingResume = () => {
                 {!file && (
                   <PDFPreviewDropzoneWithIcon
                     content={
-                      <div className="flex justify-center items-center">
+                      <div className="flex justify-center flex-col items-center">
                         <Filetext></Filetext>
                         이력서를 PDF로 첨부해 주세요.<br></br>
                         면접 참여 시 이 문서가 공유됩니다.
