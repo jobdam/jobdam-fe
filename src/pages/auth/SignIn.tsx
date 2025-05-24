@@ -13,18 +13,12 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getFieldError } from "./SignUp";
+import { type } from "../../lib/react-query";
 export type LoginFormProps = {
   onSuccess: () => void;
 };
 
 export const SignIn = ({ onSuccess }: LoginFormProps) => {
-  const login = useLogin({
-    onSuccess,
-  });
-
-  const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo");
-
   const form = useForm({
     resolver: zodResolver(loginInputSchema),
 
@@ -33,6 +27,24 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
       password: "",
     },
   });
+  const login = useLogin({
+    onSuccess,
+
+    onError: (error: any) => {
+      //비밀번호가 틀렸을경우
+      //이메일이 틀렷을경우
+      //비밀 번호를 우선시
+
+      form.setError("password", {
+        type: "server",
+
+        message: error?.response?.data?.message,
+      });
+    },
+  });
+
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo");
 
   return (
     <>
@@ -62,7 +74,6 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
               <Input
                 type="password"
                 label="비밀번호"
-                showLink={true}
                 placeholder="비밀번호를 입력하세요."
                 className=" font-medium text-left  border-[1px] border-[#488FFF] text-black"
                 error={getFieldError(formState.errors["password"])}

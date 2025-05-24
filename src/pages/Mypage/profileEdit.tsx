@@ -111,15 +111,17 @@ const ProfileEdit = ({ selectedFile }: any) => {
 
           const formData = new FormData();
           let imageFile: File | null | undefined = selectedFile;
-          if (!imageFile) {
-            try {
-              imageFile = await fetchAndLogImage(); // ✅ Promise 처리
-            } catch (error) {
-              console.error("이미지 파일 변환 실패:", error);
-              return; // 요청 중단
-            }
-          }
-
+          // if (!imageFile) {
+          //   try {
+          //     imageFile = await fetchAndLogImage(); // ✅ Promise 처리
+          //   } catch (error) {
+          //     console.error("이미지 파일 변환 실패:", error);
+          //     return; // 요청 중단
+          //   }
+          // }
+          //이미지파일이 없으면 랜덤으로 생성해서 보낸다.
+          //만약에 이미지 파일이 이미 존재하는경우라면 삽입한다.
+          //수정에서는 이미지파일을 임의로 생성하지 않는다.
           if (imageFile) {
             formData.append("image", imageFile); // ✅ 실제 File 추가
           }

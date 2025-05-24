@@ -75,7 +75,7 @@ const ProfilePreview = ({ onSelectFile, mypage }: Props) => {
     setFile(null);
     setPreview(null); // 미리보기 URL 설정
   };
-
+  const shouldShow = isEditing || isPosting;
   const prContents = () => {
     return (
       <section>
@@ -171,8 +171,7 @@ const ProfilePreview = ({ onSelectFile, mypage }: Props) => {
             strokeLinejoin="round"
             className={cn(
               "right-0 left-30 bottom-7 relative cursor-pointer lucide lucide-camera-icon lucide-camera fill-black",
-
-              !isEditing && "hidden"
+              shouldShow ? "visible" : "hidden"
             )}
           >
             <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />

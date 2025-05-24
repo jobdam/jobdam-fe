@@ -12,6 +12,7 @@ import { interviewSchema } from "./schemas/interviewSchema";
 import ContentsBox from "@/components/layout/contentsBox";
 import { Button } from "@/components/ui/button";
 import { setProgressStep } from "@/store/slices/uistate";
+import { paths } from "@/config/paths";
 
 const InterviewRegister = () => {
   const dispatch = useDispatch();
@@ -56,7 +57,7 @@ const InterviewRegister = () => {
     <Form
       form={form}
       onSubmit={(values: any) => {
-        navigate("/interview/matching", {
+        navigate(`${paths.interview.resume.path}`, {
           state: values,
         });
       }}
@@ -72,7 +73,7 @@ const InterviewRegister = () => {
             />
             {/* 인원수 입력되면 자기소개 */}
             {matchType && (
-              <div className="mt-[40px]">
+              <div className="mt-[50px]">
                 <ContentsBox title="면접에서 말할 자기소개를 간단히 작성해주세요.">
                   <Controller
                     control={control}
@@ -91,7 +92,7 @@ const InterviewRegister = () => {
 
             {/* 자기소개 입력되면 면접유형 */}
             {introduce && introduce.trim().length > 0 && (
-              <div className="relative mt-[40px]">
+              <div className="relative mt-[50px]">
                 <ContentsBox title="어떤 종류의 면접을 준비하시나요?">
                   <p className="absolute top-1 left-65 text-gray-400">
                     *선택한 유형은 매칭 참고용으로만 사용돼요.
@@ -147,10 +148,10 @@ const InterviewRegister = () => {
             )}
             {/* 인터뷰타입 + 자기소개 입력되면 면접유형 */}
             {interviewType && introduce && introduce.trim().length > 0 && (
-              <div className="flex justify-center items-center">
+              <div className="relative top-[15%] left-0 flex justify-center items-center">
                 <button
                   type="submit"
-                  className="bg-[#E4E4E4] h-[70px] w-[480px] cursor-pointer rounded-[10px]"
+                  className="bg-[#488fff] h-[65px] w-[40%] text-[white] text-[24px] cursor-pointer rounded-[10px]"
                 >
                   입력 완료
                 </button>

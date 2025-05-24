@@ -58,6 +58,12 @@ const Myresume = () => {
               <div className="bg-[white] border-[1px] w-full border-[#cfcfcf] rounded-[20px]  h-full flex justify-center items-center">
                 {!file && (
                   <PDFPreviewDropzoneWithIcon
+                    content={
+                      <>
+                        자기소개서 또는 이력서 내용을 입력해주세요. <br />{" "}
+                        준비해둔 글이 있다면 그대로 붙여넣어 주세요.
+                      </>
+                    }
                     file={file}
                     setFile={(file) => form.setValue("resumeFile", file)}
                   ></PDFPreviewDropzoneWithIcon>

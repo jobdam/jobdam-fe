@@ -66,6 +66,7 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
           name="experienceType"
           render={({ field }) => (
             <Radio
+              edit={true}
               className="mr-[30px] flex justify-center pb-[9px] items-end"
               options={experienceOptions}
               value={field.value}
@@ -80,6 +81,7 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
               name="jobCode"
               render={({ field }) => (
                 <Select
+                  className="w-[227px]  "
                   labelkey="jobGroup"
                   valuekey="jobCode"
                   options={jobGroups}
@@ -95,6 +97,7 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
               name="jobDetailCode"
               render={({ field }) => (
                 <Select
+                  className="w-[227px]"
                   labelkey="jobDetail"
                   valuekey="jobDetailCode"
                   options={jobDetails}
@@ -118,7 +121,7 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
               <div className="gap-[20px] flex w-full flex-row">
                 <Button
                   type="button"
-                  className="text-black text-[18px]"
+                  className="text-black focus:text-[#488fff]  text-[18px]"
                   size="register"
                   variant={
                     field.value === "ONE_TO_ONE" ? "outline" : "register"
@@ -131,7 +134,7 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
                 <Button
                   type="button"
                   size="register"
-                  className="text-black text-[18px]"
+                  className="text-black text-[18px] focus:text-[#488fff] "
                   variant={field.value === "GROUP" ? "outline" : "register"}
                   onClick={() => field.onChange("GROUP")}
                 >
@@ -141,7 +144,7 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
                 <Button
                   type="button"
                   size="register"
-                  className="text-black text-[18px]"
+                  className="text-blac k text-[18px]"
                   variant={field.value === "NONE" ? "outline" : "register"}
                   onClick={() => field.onChange("NONE")}
                 >

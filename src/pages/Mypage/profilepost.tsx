@@ -37,9 +37,9 @@ const ProfilePost = () => {
       jobDetailCode: "",
       birthday: "",
       experienceType: "신입",
-      educationLevel: "대학교(4년제)",
-      educationStatus: "졸업",
-      targetCompanySize: "대기업",
+      educationLevel: "",
+      educationStatus: "",
+      targetCompanySize: "",
     },
   });
   const initializedRef = React.useRef(false);
@@ -72,9 +72,10 @@ const ProfilePost = () => {
     if (!jobCode) return;
 
     const selectedGroup = jobGroups.find((group) => group.jobCode === jobCode);
-    const firstDetailCode = selectedGroup?.details[0].jobDetailCode;
+    const firstDetailCode = selectedGroup?.details[0].jobDetail;
+    console.log(firstDetailCode);
 
-    if (!firstDetailCode) {
+    if (firstDetailCode) {
       form.setValue("jobDetailCode", firstDetailCode ?? "");
     }
   }, [jobCode, jobGroups]);
@@ -101,7 +102,7 @@ const ProfilePost = () => {
 
   return (
     <Form
-      className=""
+      className="space-y-[20px]"
       form={form}
       onSubmit={async (value) => {
         const formData = new FormData();
@@ -132,14 +133,21 @@ const ProfilePost = () => {
       {({ register, control }) => (
         <>
           <ProfilePreview onSelectFile={handleFileSelect}></ProfilePreview>
-          <div className="flex flex-row   items-center">
-            <Label className="w-[110px]">이름</Label>
-            <Input className="w-[150px]" {...register("name")} />
-          </div>
-          <div className="flex flex-row items-center ">
-            <Label className="w-[110px]">생년월일</Label>
+          <div className="flex flex-row h-[60px] items-center">
+            <Label className="w-[143px] text-[20px] font-semibold">이름</Label>
             <Input
-              className="w-[266px]"
+              profile={true}
+              className="w-[150px] h-[60px]  pl-[23px]  text-[18px] font-medium"
+              {...register("name")}
+            />
+          </div>
+          <div className="flex flex-row justify-start h-[60px] items-center ">
+            <Label className="w-[143px] text-[20px] font-semibold">
+              생년월일
+            </Label>
+            <Input
+              profile={true}
+              className="w-[266px] h-[60px] text-[18px] font-medium"
               {...register("birthday")}
               onChange={(e) => {
                 const formatted = formatBirthday(e.target.value);
@@ -150,7 +158,7 @@ const ProfilePost = () => {
           </div>
 
           <div className="flex flex-row  items-center ">
-            <Label className="w-[110px]">직무</Label>
+            <Label className="w-[143px] text-[20px] font-semibold">직무</Label>
             <div className="flex flex-row gap-x-[8px]">
               <Controller
                 name="jobCode"
@@ -184,13 +192,13 @@ const ProfilePost = () => {
           </div>
 
           <div className="flex flex-row items-center ">
-            <Label className="w-[110px]">경력</Label>
-            <Radio name="exp" options={experienceOptions}></Radio>
+            <Label className="w-[143px] text-[20px] font-semibold">경력</Label>
+            <Radio className="" name="exp" options={experienceOptions}></Radio>
           </div>
 
           <div className="flex items-center  flex-row ">
-            <Label className="w-[110px]">학력</Label>
-            <div className="flex flex-row pr-[187px]">
+            <Label className="w-[143px] text-[20px] font-semibold">학력</Label>
+            <div className="flex flex-row gap-[8px]">
               <Controller
                 name="educationLevel"
                 control={control}
@@ -198,7 +206,7 @@ const ProfilePost = () => {
                   <Select
                     labelkey="label"
                     valuekey="value"
-                    className="w-[137px]"
+                    className="w-[266px] "
                     value={field.value}
                     onChange={field.onChange}
                     options={educationOptions}
@@ -211,7 +219,7 @@ const ProfilePost = () => {
                 control={control}
                 render={({ field }) => (
                   <Select
-                    className="w-[137px]"
+                    className="w-[266px]"
                     labelkey="label"
                     valuekey="value"
                     value={field.value}
@@ -226,13 +234,15 @@ const ProfilePost = () => {
           </div>
 
           <div className=" items-center  flex flex-row ">
-            <Label className="w-[110px]">희망기업</Label>
+            <Label className="w-[143px] text-[20px] font-semibold">
+              희망 기업
+            </Label>
             <Controller
               name="targetCompanySize"
               control={control}
               render={({ field }) => (
                 <Select
-                  className="w-[194px]"
+                  className="w-[194px] "
                   labelkey="label"
                   valuekey="value"
                   options={targetCompany}
@@ -243,12 +253,17 @@ const ProfilePost = () => {
             />
           </div>
 
-          <div className=" flex justify-center mt-[139px] items-center">
+          <div
+            className=" flex 
+          
+              translate-x-22
+          mt-[139px] items-center"
+          >
             <Button
               type="submit"
               isLoading={registerProfile.isPending}
               className=" 
-              w-[70%]
+              w-[60%]
               cursor-pointer rounded-[10px]   font-semibold flex items-center justify-center h-[65px]   leading-[150%] text-[24px]"
             >
               입력 완료

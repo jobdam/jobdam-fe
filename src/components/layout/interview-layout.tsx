@@ -11,16 +11,21 @@ export type LayoutProps = {
   className?: string;
   matching?: boolean;
   variant?: Variant;
+  register?: boolean;
 };
 const InterviewLayout = ({
   title,
   children,
   matching = false,
+  register = false,
 }: LayoutProps) => {
   return (
     <div
-      className={`flex min-h-[calc(100vh-70px)] w-full justify-center pl-[50px] pt-[50px] 
-    ${matching ? "" : "bg-[#E5F3FF]"}`}
+      className={cn(
+        "flex h-[1600px] w-full justify-center p-[50px]",
+
+        register && "bg-[#E5F3FF]"
+      )}
     >
       {/* 전체 컨텐츠 wrapper (sidebar + main) */}
       <div className="flex w-full min-w-[1200px] gap-6 flex-nowrap">
@@ -48,8 +53,8 @@ const InterviewLayout = ({
           {/* Content Area */}
           <section
             className={cn(
-              "w-full flex flex-col gap-[5px] bg-[white]",
-              !matching && "p-[30px] rounded-[20px]"
+              "p-6 w-full flex flex-col gap-[5px] rounded-[20px] bg-white",
+              matching && "bg-white"
             )}
           >
             {children}
