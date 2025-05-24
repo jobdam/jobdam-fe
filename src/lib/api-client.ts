@@ -5,7 +5,6 @@ import { store } from "@/store";
 import { addNotification } from "@/store/slices/notifications";
 import Axios, { InternalAxiosRequestConfig } from "axios";
 import { paths } from "@/config/paths";
-import { useLogout } from "./auth";
 let isRefreshing = false; // 토큰 갱신 상태 추적
 
 const apiUrl = import.meta.env.VITE_API_URL;
