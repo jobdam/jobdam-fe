@@ -20,15 +20,12 @@ export const refreshAccessToken = async (): Promise<string | void> => {
   try {
     const response = await api.post("/reissue", {});
 
-    console.log(response);
-    //accessToken 서버에서 받은거 불러오기
-    const { accessToken } = response.data;
-
+    const token = response.headers["authorization"].replace("Bearer ", "");
     // token을 다시 local에 저장
+    console.log("refetaceease", token);
+    saveTokens(token);
 
-    saveTokens(accessToken);
-
-    return accessToken;
+    return token;
   } catch {
     //refreshToken이 만료된경우라면 로그아웃 처리한다.
     clearTokens();

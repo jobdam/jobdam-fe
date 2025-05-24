@@ -112,7 +112,7 @@ const FieldsSelect = ({ control, form, profile }: FieldsSelectProps) => {
           </p>
         </div>
       </ContentsBox>
-      <div className="mt-[50px]">
+      <div className="mt-[40px]">
         <ContentsBox title="함께 하고 싶은 인원수를 선택해주세요.">
           <Controller
             control={control}

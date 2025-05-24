@@ -28,9 +28,9 @@ const InterviewLayout = ({
       )}
     >
       {/* 전체 컨텐츠 wrapper (sidebar + main) */}
-      <div className="flex w-full min-w-[1200px] gap-6 flex-nowrap  ">
+      <div className="flex w-full min-w-[1200px] gap-6 flex-nowrap">
         {/* Sidebar */}
-        <aside className="w-[232px]  shrink-0 mt-[100px]">
+        <aside className="w-[232px]  shrink-0 mt-[130px] ml-[20px] pl-[50px]">
           <InterviewSidebar />
         </aside>
 
@@ -39,12 +39,12 @@ const InterviewLayout = ({
           className={cn(
             "flex flex-col w-full min-w-0",
             matching
-              ? "justify-center items-center"
-              : "items-start max-w-[1200px] min-w-[800px]"
+              ? "justify-center max-h-[650px]"
+              : "items-start max-w-[1200px] min-w-[800px] mt-[10px] ml-[30px]"
           )}
         >
           {/* Title */}
-          <div className="mb-[40px]">
+          <div className="mb-[20px]">
             <h2 className="text-[32px] font-semibold text-gray-900 text-left">
               {title}
             </h2>

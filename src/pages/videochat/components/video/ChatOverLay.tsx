@@ -15,7 +15,7 @@ const ChatOverlay = ({ messages, onSend }: ChatOverlayProps) => {
     onSend(input); // 상위에 전달만
     setInput("");
   };
-
+  const enterPressed = useRef(false); //맥북엔터키중복해결
   const messageListRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -63,7 +63,11 @@ const ChatOverlay = ({ messages, onSend }: ChatOverlayProps) => {
           className="w-full absolute left-3 top-1 resize-none bg-transparent text-[13px] placeholder:text-xs placeholder:text-gray-400 pt-2 pl-0 pr-8 border-none outline-none focus:ring-0"
           style={{ minHeight: "30px", maxHeight: "60px" }}
           onKeyDown={(e) => {
+            if (e.nativeEvent.isComposing) return; // 한글 입력 중이면 무시
             if (e.key === "Enter" && !e.shiftKey) {
+              if (enterPressed.current) return;
+              enterPressed.current = true;
+              setTimeout(() => (enterPressed.current = false), 300); // 0.3초 후 리셋
               e.preventDefault();
               handleSend();
             }

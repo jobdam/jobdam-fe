@@ -12,6 +12,7 @@ import { interviewSchema } from "./schemas/interviewSchema";
 import ContentsBox from "@/components/layout/contentsBox";
 import { Button } from "@/components/ui/button";
 import { setProgressStep } from "@/store/slices/uistate";
+import { paths } from "@/config/paths";
 
 const InterviewRegister = () => {
   const dispatch = useDispatch();
@@ -56,7 +57,7 @@ const InterviewRegister = () => {
     <Form
       form={form}
       onSubmit={(values: any) => {
-        navigate("/interview/matching", {
+        navigate(`${paths.mypage.resume.path}`, {
           state: values,
         });
       }}

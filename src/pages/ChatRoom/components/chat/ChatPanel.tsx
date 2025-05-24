@@ -27,7 +27,7 @@ const ChatPanel = ({
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-
+  const enterPressed = useRef(false); //맥북엔터키중복해결
   useEffect(() => {
     if (autoScroll) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -98,7 +98,11 @@ const ChatPanel = ({
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
+            if (e.nativeEvent.isComposing) return; // 한글 입력 중이면 무시
             if (e.key === "Enter" && !e.shiftKey) {
+              if (enterPressed.current) return;
+              enterPressed.current = true;
+              setTimeout(() => (enterPressed.current = false), 300); // 0.3초 후 리셋
               e.preventDefault();
               handleSend();
             }

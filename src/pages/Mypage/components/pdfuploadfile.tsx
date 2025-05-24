@@ -4,13 +4,15 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 import { X } from "lucide-react"; // 아이콘은 선택사항
 import DocumentImage from "../../../components/ui/images/documents";
+import { cn } from "@/utils/cn";
 
 type Props = {
   setFile: (file: File | null) => void;
   file?: File | null;
+  className?: string;
 };
 
-const PDFUploadDialog = ({ setFile }: Props) => {
+const PDFUploadDialog = ({ setFile, className }: Props) => {
   //const [loading, setLoading] = useState(false);
 
   const [open, setOpen] = useState<boolean>(false);
@@ -42,9 +44,11 @@ const PDFUploadDialog = ({ setFile }: Props) => {
     <Dialog.Root modal={false} onOpenChange={handleOpenChange}>
       <Dialog.Trigger asChild>
         <button
-          className=" inline-flex absolute px-[29px]
-        cursor-pointer top-[-9%] right-[1%] z-[1] py-[12px]
-     bg-[#488FFF] rounded-[20px] text-white"
+          className={cn(
+            "inline-flex absolute px-[29px] cursor-pointer top-[-9%] right-[1%] z-[1] py-[12px] bg-[#488FFF] rounded-[20px] text-white",
+
+            className
+          )}
         >
           PDF 업로드
         </button>
