@@ -7,7 +7,6 @@ import { type FieldError } from "react-hook-form";
 
 import { Error } from "./error";
 import { Label } from "./label";
-import { Link } from "@/components/ui/link";
 import { cn } from "@/utils/cn";
 
 export type FieldWrapperProps = {
@@ -61,14 +60,14 @@ export const FieldWrapper = (props: FieldWrapperProps) => {
           {/* 에러 메세지가 있다면 없어지고 에러 메세지가 없으면 나오도록 */}
           {error?.message && <Error errorMessage={error.message} />}
           <div></div>
-          {showLink && (
+          {/* {showLink && (
             <Link
               className=" relative text-[16px] mt-[6px]  underline"
               to="forgot-password"
             >
               비밀번호 찾기
             </Link>
-          )}
+          )} */}
         </div>
       )}
     </div>

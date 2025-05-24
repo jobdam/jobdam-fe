@@ -4,7 +4,7 @@ import { api } from "@/lib/api-client";
 import { QueryConfig } from "@/lib/react-query";
 import { ChatUserInfo } from "@/types/chat";
 
-//나의 프로필정보를 가져와서 매칭때 사용(필요한정보만 가져옴)
+//유저정보를 전부가져온다 room에 있는
 export const getChatUserInfoList = async (
   roomId: string
 ): Promise<ChatUserInfo[]> => {

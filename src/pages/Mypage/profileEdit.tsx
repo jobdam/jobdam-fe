@@ -16,7 +16,6 @@ import {
   targetCompany,
 } from "@/constants/mainContents";
 import { educationOptions } from "../../constants/mainContents";
-import { fetchAndLogImage } from "@/utils/format";
 import { useEditProfile } from "./api/patch-editprofile";
 import { formatBirthday } from "../../utils/format";
 import { Link } from "react-router";

@@ -1,5 +1,4 @@
 /** @format */
-
 import Footer from "./footer";
 import LandingTopImage from "./components/landingTopImage";
 import LandingCard from "./components/landingCard";
@@ -23,16 +22,8 @@ function Apps() {
               <LandingTopImage></LandingTopImage>
             </div>
             {/* 카드형 ui 그래픽 함께 */}
-            <div
-              className="    
-              
-              w-[calc(100vw)] min-w-[1200px] max-[1980px] bg-gradient-landing-top
-"
-            >
-              <div
-                className="
-          flex items-center justify-center"
-              >
+            <div className="w-[calc(100vw)] min-w-[1200px] max-[1980px] bg-gradient-landing-top">
+              <div className="flex items-center justify-center">
                 <LandingCard></LandingCard>
               </div>
               {/* 프로젝트를 설명하는 부분 레이아웃 */}

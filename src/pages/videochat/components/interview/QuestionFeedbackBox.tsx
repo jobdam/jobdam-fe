@@ -85,7 +85,10 @@ const QuestionFeedbackBox = ({
 
   const handleFeedBackSubmit = async () => {
     if (!questionId) {
-      alert("질문을 먼저 선택해주세요");
+      setAlertModal({
+        open: true,
+        title: "질문을 먼저 선택해주세요",
+      });
       return;
     }
     if (!feedback.trim() || !selectedUserId) return;
@@ -137,6 +140,7 @@ const QuestionFeedbackBox = ({
                 handleFeedBackSubmit();
               }
             }}
+            onChange={(e) => setFeedback(e.target.value)}
             placeholder="피드백을 작성해주세요."
             maxLength={500}
             className="w-full pr-8 resize-none min-h-[100px] max-h-[220px] pr-8 text-base placeholder-gray-400 text-gray-800 outline-none scrollbar-none"

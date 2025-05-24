@@ -57,7 +57,7 @@ const InterviewRegister = () => {
     <Form
       form={form}
       onSubmit={(values: any) => {
-        navigate(`${paths.interview.resume.path}`, {
+        navigate(`${paths.interview.matching.path}`, {
           state: values,
         });
       }}

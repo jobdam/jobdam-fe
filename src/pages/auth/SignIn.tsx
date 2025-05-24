@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getFieldError } from "./SignUp";
-import { type } from "../../lib/react-query";
 export type LoginFormProps = {
   onSuccess: () => void;
 };

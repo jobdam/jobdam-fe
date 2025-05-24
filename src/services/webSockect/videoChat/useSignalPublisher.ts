@@ -61,7 +61,6 @@ export const useSignalPublisher = () => {
     };
 
     client.publish({ destination, body: JSON.stringify(message) });
-    console.log("시그널 전송:", payload);
   };
 
   return { sendJoin, sendSignal };
