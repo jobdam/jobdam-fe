@@ -7,18 +7,29 @@ import feedback from "@/assets/landingImage/feedback.svg";
 const LandingExplain = () => {
   return (
     <>
-      <div className="relative px-[132px] gap-[30px] flex flex-col items-center justify-between">
-        <div className="flex flex-row justify-center items-center">
-          <div>
-            <div className="z-[15] relative flex justify-center items-center w-[716px] h-[416px] rounded-[10px] bg-[#000] shadow-custom">
+      <div
+        className="w-[calc(100vw)] z-3 gap-y-[138px] pb-[220px]  min-w-[1550px] max-w-[1980px] 
+      flex flex-col items-center justify-center  mx-[120px]"
+      >
+        <div className="flex h-[600px] gap-[40px]  justify-between items-center  flex-row">
+          <div className="flex items-center min-w-[700px] flex-col">
+            <div
+              className="z-[15] relative flex justify-center items-center w-[716px] h-[416px] 
+            rounded-[10px] bg-[#000] shadow-custom"
+            >
               <img className="aspect-[346/195]" src={register} />
             </div>
-            <div className="relative bottom-[50px] z-[10] right-3">
-              <img className=" aspect-[694.44/214.00]" src={register2} />
+            <div className=" translate-y-[-50px] w-[750.44px] h-[214px] z-[10]">
+              <img
+                className=" 
+                            aspect-[694.44/214]
+              "
+                src={register2}
+              />
             </div>
           </div>
 
-          <div className="min-w-[787px]">
+          <div className=" ">
             <h2 className="text-[24px] text-[#488fff] font-bold leading-[150%] ">
               1. 관심직무 기반 면접 매칭
             </h2>
@@ -29,8 +40,9 @@ const LandingExplain = () => {
             </div>
           </div>
         </div>
-        <div className=" flex flex-row justify-center gap-[20px]  items-center">
-          <div className="min-w-[787px]">
+
+        <div className="flex gap-[40px] justify-between items-center  flex-row">
+          <div className="min-w-[700px]">
             <h2 className="text-[24px] text-[#488fff] font-bold leading-[150%] ">
               2. 실시간 화상 면접 진행
             </h2>
@@ -47,7 +59,7 @@ const LandingExplain = () => {
           </div>
         </div>
 
-        <div className=" flex flex-row justify-center gap-[20px] items-center">
+        <div className="flex  gap-[40px] justify-between items-center  flex-row">
           <div className="z-[15] relative flex justify-center items-center w-[716px] h-[416px] rounded-[10px] bg-[#000] shadow-custom">
             <img className="aspect-[346/195]" src={feedback} />
           </div>

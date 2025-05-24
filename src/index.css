@@ -21,11 +21,13 @@
 body {
   margin: 0;
   padding: 0;
-  max-width: 1980px;
-  min-width: 1200px;
-
-  overflow: auto;
-  /* overflow:auto; */
+  /* max-width: 1980px; */
+  min-height: screen;
+  /* max-width: 1980px; */
+  /* min-width: 1200px; */
+  /* overflow: auto; */
+  overflow: hidden;
+  overflow-y: auto;
   font-family: "Pretendard", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
