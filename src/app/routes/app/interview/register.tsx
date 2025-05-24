@@ -17,6 +17,7 @@ const InterviewRegisterRoute = () => {
   return (
     <>
       <InterviewLayout
+        register={true}
         title={
           <>
             모의면접을 위한

@@ -50,14 +50,14 @@ const Radio = React.forwardRef<
               className={cn(
                 variance(),
                 edit &&
-                  "data-[state=checked]:border-[#488fff] data-[state=checked]:font-semibold  data-[state=checked]:text-[black]",
+                  "data-[state=checked]:border-[#488fff] data-[state=checked]:font-semibold  data-[state=checked]:text-[#488FFF]",
                 isFirst && "rounded-l-[10px]",
                 isLast && "rounded-r-[10px]"
               )}
               value={option.value}
               id={option.value}
             >
-              <Label className={cn("text-[18px]", edit && "text-[18px]")}>
+              <Label className={cn("", edit && "text-[18px]")}>
                 {option.label}
               </Label>
             </RadioPrimitive.Item>

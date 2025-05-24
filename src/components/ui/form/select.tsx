@@ -60,13 +60,16 @@ export const Select = React.forwardRef<HTMLDivElement, SelectFieldProps>(
       >
         <div
           className={cn(
-            "flex items-center justify-between w-full h-[50px] px-4 rounded-md bg-white border border-gray-300 cursor-pointer",
+            "flex items-center justify-between w-full h-[60px] px-4 rounded-[10px] bg-white border border-[rgba(0,0,0,0.30)] cursor-pointer",
             edit && "border-[#488fff]"
           )}
           onClick={() => setIsOpen((prev) => !prev)}
         >
           <span
-            className={cn("text-[18px] text-gray-700", edit && "text-[18px]")}
+            className={cn(
+              "text-[18px]  text-[rgba(0,0,0,0.30)]",
+              edit && "text-[18px]"
+            )}
           >
             {selectedLabel}
           </span>

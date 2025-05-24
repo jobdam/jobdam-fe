@@ -45,8 +45,8 @@ export const paths = {
       getHref: "/interview/register",
     },
     matching: { path: "/interview/matching" },
-    waiting: {
-      path: "/interview/waiting",
+    resume: {
+      path: "/interview/resume",
     },
   },
   chatroom: {

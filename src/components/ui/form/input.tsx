@@ -11,6 +11,7 @@ import { FieldWrapper, FieldWrapperPassThroughProps } from "./field-wrapper";
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &
   FieldWrapperPassThroughProps & {
     className?: string;
+    profile?: boolean;
     registration?: Partial<UseFormRegisterReturn>;
   };
 //className -> 스타일, showLink -> Link 컴포넌트 보여주기 여부
@@ -36,15 +37,29 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
-    { className, showLink, type, label, error, registration, ...props },
+    {
+      className,
+      showLink,
+      type,
+      label,
+      error,
+      profile,
+      registration,
+      ...props
+    },
     ref
   ) => {
     return (
-      <FieldWrapper showLink={showLink} label={label} error={error}>
+      <FieldWrapper
+        profile={profile}
+        showLink={showLink}
+        label={label}
+        error={error}
+      >
         <input
           type={type}
           className={cn(
-            " placeholder:text-gray placeholder:font-[400] flex  h-[50px] font-[500] bg-white w-full rounded-md border-[1px]  text-[14px]  px-4 transition-colors file:border-0  disabled:cursor-not-allowed disabled:opacity-50",
+            " placeholder:text-gray placeholder:font-[400] flex h-[50px] font-[500] bg-white w-full rounded-md border-[1px]  text-[14px]  px-4 transition-colors file:border-0  disabled:cursor-not-allowed disabled:opacity-50",
 
             className
           )}

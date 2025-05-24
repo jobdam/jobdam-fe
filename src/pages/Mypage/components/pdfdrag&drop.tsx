@@ -1,13 +1,14 @@
 /** @format */
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, ReactNode } from "react";
 
 const dragIconUrl = "https://cdn-icons-png.flaticon.com/512/724/724933.png";
 type Props = {
   setFile: (file: File | null) => void;
   file: File | null;
+  content: ReactNode | string;
 };
-const PDFPreviewDropzoneWithIcon = ({ setFile, file }: Props) => {
+const PDFPreviewDropzoneWithIcon = ({ setFile, file, content }: Props) => {
   const [dragActive, setDragActive] = useState(false);
 
   const onDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
@@ -63,8 +64,7 @@ const PDFPreviewDropzoneWithIcon = ({ setFile, file }: Props) => {
       {/* 기본 안내 문구 */}
       {!file && !dragActive && (
         <span className="text-[#cfcfcf] text-center font-semibold text-[18px] leading-[150%] px-4">
-          자기소개서 또는 이력서 내용을 입력해주세요. <br /> 준비해둔 글이
-          있다면 그대로 붙여넣어 주세요.
+          {content}
         </span>
       )}
     </div>
