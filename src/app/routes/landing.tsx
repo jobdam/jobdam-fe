@@ -1,7 +1,4 @@
 /** @format */
-import { Button } from "@radix-ui/themes";
-import { Link } from "react-router-dom";
-import { paths } from "@/config/paths";
 import Footer from "./footer";
 import LandingTopImage from "./components/landingTopImage";
 import LandingCard from "./components/landingCard";
@@ -11,7 +8,7 @@ import End from "./components/end";
 function Apps() {
   return (
     <div className=" h-[100vh]">
-      <h1>Vite + React</h1>
+      {/* <h1>Vite + React</h1>
       <div className="card">
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
@@ -40,7 +37,7 @@ function Apps() {
         <Link to="/termsAgreement">이용약관</Link>
       </Button>
 
-      <div></div>
+      <div></div> */}
 
       {/* 랜딩 페이지 전체 */}
       <div className=" bg-gradient-landing-top">
