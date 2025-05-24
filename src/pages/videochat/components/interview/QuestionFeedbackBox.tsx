@@ -1,6 +1,6 @@
 /** @format */
 import { RootState } from "@/store";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { usePostFeedBackMutation } from "../../api/post-feedBack";
 import { usePostQuestionMutation } from "../../api/post-question";
@@ -34,6 +34,7 @@ const QuestionFeedbackBox = ({
     title: string;
   }>({ open: false, title: "" });
 
+  const enterPressed = useRef(false); //맥북엔터키중복해결
   const { mutate: submitFeedback } = usePostFeedBackMutation({
     mutationConfig: {
       onSuccess: () => {
@@ -126,9 +127,12 @@ const QuestionFeedbackBox = ({
         <div className="relative bg-white px-4 py-3">
           <textarea
             value={feedback}
-            onChange={(e) => setFeedback(e.target.value)}
             onKeyDown={(e) => {
+              if (e.nativeEvent.isComposing) return; // 한글 입력 중이면 무시
               if (e.key === "Enter" && !e.shiftKey) {
+                if (enterPressed.current) return;
+                enterPressed.current = true;
+                setTimeout(() => (enterPressed.current = false), 300); // 0.3초 후 리셋
                 e.preventDefault();
                 handleFeedBackSubmit();
               }
@@ -152,7 +156,11 @@ const QuestionFeedbackBox = ({
           <textarea
             value={question}
             onKeyDown={(e) => {
+              if (e.nativeEvent.isComposing) return; // 한글 입력 중이면 무시
               if (e.key === "Enter" && !e.shiftKey) {
+                if (enterPressed.current) return;
+                enterPressed.current = true;
+                setTimeout(() => (enterPressed.current = false), 300); // 0.3초 후 리셋
                 e.preventDefault();
                 handleQuestionSubmit();
               }
