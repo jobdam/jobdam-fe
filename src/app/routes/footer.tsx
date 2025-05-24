@@ -6,14 +6,16 @@ const Footer = () => {
   return (
     //    레이아웃 배경색과 컨텐츠 위치
     <div
-      className="bg-[#D9D9D9] 
+      className="bg-[#1e1e1e]  text-[white]
     
-     w-full min-w-[1280px] max-w-[1980px] mx-auto
+     w-full min-w-[1200px] max-w-[1980px] 
     
-    h-[300px] py-[45px] px-[361px]"
+    h-[300px] py-[45px] 
+    flex justify-center items-center
+    "
     >
       {/* 레이아웃 안쪽의 요소들 */}
-      <section className="flex flex-row w-[900px]">
+      <section className="flex flex-row min-w-[1000px] w-[calc(100vw-722px)]">
         {/* 왼쪽 로고 부분 */}
 
         <div className="flex flex-1 flex-col">
@@ -45,8 +47,20 @@ const Footer = () => {
           </span>
         </div>
 
-        <div className="flex flex-col justify-between">
-          <div className="flex flex-row gap-[50px] ">
+        <div className="flex flex-col gpa-y-[6px] ">
+          <div className="flex flex-row justify-center gap-[4px] h-[30px] items-center">
+            툴{" "}
+            <div className="size-[4px] rounded-full text-white bg-white"> </div>{" "}
+            기술스택
+          </div>
+          <div className="h-[25px]">Figma</div>
+          <div className="h-[25px]">JAVA</div>
+          <div className="h-[25px]">SpringBoot</div>
+          <div className="h-[25px]">Mysql</div>
+          <div className="h-[25px]">Typescript</div>
+          <div className="h-[25px]">React</div>
+
+          {/* <div className="flex flex-row gap-[50px] ">
             <div className="flex flex-col">
               <span>이인행 프론트엔드</span>
             </div>
@@ -54,10 +68,10 @@ const Footer = () => {
               <span> 손세영 디자인</span>
             </div>
           </div>
-          <div className="space-x-[80px]">
+          <div className="space-x-[50px]">
             <span>이영수 백엔드</span>
             <span> 이성훈 백엔드</span>
-          </div>
+          </div> */}
         </div>
       </section>
     </div>

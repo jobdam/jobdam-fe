@@ -7,7 +7,7 @@ import mainIcon from "@/assets/landingImage/mainIcon.svg";
 const LandingTopImage = () => {
   return (
     <>
-      <div className="  w-[800px] h-[1000px]">
+      <div className="  z-2 w-[800px] h-[1000px]">
         <img className="size-[647px]" src={mainImage}></img>
         <div
           className="
@@ -22,7 +22,7 @@ const LandingTopImage = () => {
             flex justify-center items-center
              flex-col bottom-[21%] left-[1%]"
         >
-          <div className=" text-[64px]  text-[#202020] font-bold leading-[150%] flex justify-center items-center">
+          <div className=" text-[60px]  text-[#202020] font-bold leading-[150%] flex justify-center items-center">
             <span className="text-center">
               지금 나에게 딱 맞는<br></br> 모의 면접자들과 함께 연습해요
             </span>
@@ -30,7 +30,7 @@ const LandingTopImage = () => {
           <Link
             className="
                 
-                py-[22px] mt-[68px] px-[40px] text-[32px] rounded-[20px]  text-[white]
+                py-[22px] mt-[68px] px-[40px] text-[28px] rounded-[20px]  text-[white]
                 font-semibold bg-[#488EFF] flex justify-center items-center"
             to={paths.interview.register.path}
           >

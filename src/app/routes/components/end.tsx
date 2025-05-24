@@ -4,16 +4,14 @@ import bg from "@/assets/landingImage/bgimage.png";
 
 const End = () => {
   return (
-    <div className="relative h-[460px] w-[1980px] ">
-      <div>
-        <img src={bg} />
-      </div>
+    <div className="relative h-[460px] min-w-[1200px] w-full ">
+      <img className="min-w-[1200px] w-full h-full" src={bg} />
       <div
         className=" 
         relative bottom-[70%] flex flex-col justify-center items-center "
       >
         <div
-          className=" z-[30]
+          className=" z-[30] min-w-[1200px]
       text-[32px] font-bold leading-[150%] text-center text-[#fff]
       
       "
