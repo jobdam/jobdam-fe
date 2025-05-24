@@ -120,7 +120,7 @@ export const authConfig = {
     const token = response.headers["authorization"].replace("Bearer ", "");
     //localstorage에 로그인
     saveTokens(token);
-
+    console.log("로그인토큰 : ", token);
     console.log(response.user, response.data);
     return response.user;
   },
