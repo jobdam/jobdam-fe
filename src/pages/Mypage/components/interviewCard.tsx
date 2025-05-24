@@ -1,6 +1,5 @@
 /** @format */
 
-import { useState } from "react";
 import { useFeedback } from "../api/get-feedback";
 import { ChevronUp } from "lucide-react";
 

@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import { IMessage } from "@stomp/stompjs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { setDestination } from "@/store/slices/websockets"; // 선택사항
 import { getWebSocketClient } from "../useWebSocketConnect";
 
 interface Props {
