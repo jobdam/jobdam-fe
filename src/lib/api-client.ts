@@ -6,7 +6,6 @@ import { addNotification } from "@/store/slices/notifications";
 import Axios, { InternalAxiosRequestConfig } from "axios";
 import { paths } from "@/config/paths";
 import { useLogout } from "./auth";
-import { useLocation } from "react-router";
 let isRefreshing = false; // 토큰 갱신 상태 추적
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -43,7 +42,7 @@ api.interceptors.response.use(
   //에러 반환
   async (error) => {
     const message = error.response?.data?.message || error.message;
-    console.log("예외처리", error);
+
     const originalRequest = error.config as InternalAxiosRequestConfig & {
       _retry?: boolean;
     };
@@ -72,6 +71,7 @@ api.interceptors.response.use(
 
     if (
       error.response?.status === 401 &&
+      error.response?.data?.message === "토큰이 만료되었습니다." &&
       !originalRequest._retry &&
       !isRefreshing &&
       token
@@ -84,8 +84,6 @@ api.interceptors.response.use(
         const newAccessToken = await refreshAccessToken();
         //새 토큰으로 authorization 헤더 갱신하기
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-
-        console.log("갱신 완료 재시도전??");
         //원래 요청 재시도
         return api(originalRequest);
         //   c
@@ -102,7 +100,7 @@ api.interceptors.response.use(
           })
         );
 
-        useLogout();
+        //useLogout();
       } finally {
         isRefreshing = false; // 토큰 갱신 완료
       }

@@ -18,11 +18,14 @@ const InterviewLayout = ({
   matching = false,
 }: LayoutProps) => {
   return (
-    <div className="flex min-h-screen w-full justify-center p-[50px]">
+    <div
+      className={`flex min-h-[calc(100vh-70px)] w-full justify-center pl-[50px] pt-[50px] 
+    ${matching ? "" : "bg-[#E5F3FF]"}`}
+    >
       {/* 전체 컨텐츠 wrapper (sidebar + main) */}
-      <div className="flex w-full min-w-[1200px] gap-6 flex-nowrap  ">
+      <div className="flex w-full min-w-[1200px] gap-6 flex-nowrap">
         {/* Sidebar */}
-        <aside className="w-[232px]  shrink-0 mt-[100px]">
+        <aside className="w-[232px]  shrink-0 mt-[130px] ml-[20px] pl-[50px]">
           <InterviewSidebar />
         </aside>
 
@@ -32,11 +35,11 @@ const InterviewLayout = ({
             "flex flex-col w-full min-w-0",
             matching
               ? "justify-center max-h-[650px]"
-              : "items-start max-w-[1200px] min-w-[800px]"
+              : "items-start max-w-[1200px] min-w-[800px] mt-[10px] ml-[30px]"
           )}
         >
           {/* Title */}
-          <div className="mb-[40px]">
+          <div className="mb-[20px]">
             <h2 className="text-[32px] font-semibold text-gray-900 text-left">
               {title}
             </h2>
@@ -45,8 +48,8 @@ const InterviewLayout = ({
           {/* Content Area */}
           <section
             className={cn(
-              "p-6 w-full flex flex-col gap-[5px] bg-[#F5F5F5]",
-              matching && "bg-white"
+              "w-full flex flex-col gap-[5px] bg-[white]",
+              !matching && "p-[30px] rounded-[20px]"
             )}
           >
             {children}
