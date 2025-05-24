@@ -23,7 +23,7 @@ const ChatRoom = () => {
   const myUserId = useMemo(() => getUserIdFromJwt(), []);
   const navigate = useNavigate();
   const location = useLocation();
-  const isFirstJoinRef = useRef(location.state?.firstJoin ?? false);
+  const isFirstJoinRef = useRef(location.state?.firstJoin ?? false); //매칭때 처음참여 추가입장 구분
   const createdRef = useRef(location.state?.created /*?? Date()*/);
   ///채팅방 설정///
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
@@ -42,35 +42,35 @@ const ChatRoom = () => {
       return [...prev, ...newUsers];
     });
   }, []);
+  //초기값설정
   useEffect(() => {
     if (!roomId || !myUserId) {
       navigate("/");
       return;
     }
+
+    getChatUserInfoList(roomId).then((list) => {
+      mergeUserList(list); //유저리스트 상태추가
+      if (isFirstJoinRef.current) {
+        //처음입장한사람이면
+        const joinMessages = list.map((user) => ({
+          id: uuidv4(),
+          type: "SYSTEM" as const,
+          content: `${user.name}님이 입장했습니다.`,
+        }));
+
+        setMessages((prev) => [...prev, ...joinMessages]);
+      }
+    });
   }, [roomId, myUserId]);
-  //초기값설정
   useEffect(() => {
-    if (roomId && myUserId) {
-      getChatUserInfoList(roomId).then((list) => {
-        mergeUserList(list); //유저리스트 상태추가
-        if (isFirstJoinRef.current) {
-          //처음입장한사람이면
-          const joinMessages = list.map((user) => ({
-            id: uuidv4(),
-            type: "SYSTEM" as const,
-            content: `${user.name}님이 입장했습니다.`,
-          }));
-
-          setMessages((prev) => [...prev, ...joinMessages]);
-        }
-        isFirstJoinRef.current = false;
-        if (location.state?.firstJoin) {
-          navigate(location.pathname, { replace: true }); // 클로저 내부도 최신 상태로 반영
-        }
-      });
-    }
-  }, [roomId, myUserId]);
-
+    setTimeout(() => {
+      isFirstJoinRef.current = false;
+      if (location.state?.firstJoin) {
+        navigate(location.pathname, { replace: true });
+      }
+    }, 2000);
+  }, []);
   // 시간 설정
   useEffect(() => {
     const createdFromState = location.state?.created;
@@ -131,6 +131,7 @@ const ChatRoom = () => {
 
         case "JOIN":
           if (isFirstJoinRef.current) return; //초기화 이후에는 보여줌
+          console.log("join오나??", isFirstJoinRef.current);
           setMessages((prev) => [
             ...prev,
             {
@@ -148,7 +149,7 @@ const ChatRoom = () => {
         case "READY":
           handleReadyUpdate(data.userId, data.ready);
           if (data.allReady) {
-            setUserCount(userList.length);
+            setUserCount(data.userCount);
             initInterview({
               jobCode: myUserInfo?.jobCode!,
               interviewType: myUserInfo?.interviewType!,
