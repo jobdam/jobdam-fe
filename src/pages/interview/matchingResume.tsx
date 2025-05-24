@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { useResume } from "../Mypage/api/get-resume";
-import { usePostResume } from "../Mypage/api/post-resume";
+// import { usePostResume } from "../Mypage/api/post-resume";
 import { Form } from "@/components/ui/form";
 import PDFUploadDialog from "../Mypage/components/pdfuploadfile";
 import PDFPreviewDropzoneWithIcon from "../Mypage/components/pdfdrag&drop";
@@ -28,7 +28,7 @@ const MatchingResume = () => {
 
   const file = form.watch("resumeFile");
 
-  const registerResume = usePostResume({});
+  //   const registerResume = usePostResume({});
   //작성 완료시 url로 띄우기. preview는 실제 url이있다면 없어지도록
   const navigate = useNavigate();
   return (
