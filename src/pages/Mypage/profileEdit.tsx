@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { Form, Radio } from "@/components/ui/form";
 import { Input } from "@/components/ui/form";
 import { Label } from "@/components/ui/form";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 import { Select } from "@/components/ui/form";
 import {
@@ -16,13 +16,11 @@ import {
   targetCompany,
 } from "@/constants/mainContents";
 import { educationOptions } from "../../constants/mainContents";
-import { fetchAndLogImage } from "@/utils/format";
 import { useEditProfile } from "./api/patch-editprofile";
 import { formatBirthday } from "../../utils/format";
 import { Link } from "react-router";
 import { paths } from "@/config/paths";
-import LoadingModal from "@/components/ui/loading/loadingModal";
-import LoadingSpinner from "@/components/ui/spinner/loadingSpinner";
+import LoadingGradient from "@/components/ui/spinner/loadingSpinner";
 
 const ProfileEdit = ({ selectedFile }: any) => {
   //profileEidt에서 이름 ,  패스워드, 이메일 인풋 ->placeholder로 내가 가지고있는 정보들
@@ -43,6 +41,8 @@ const ProfileEdit = ({ selectedFile }: any) => {
       targetCompanySize: "",
     },
   });
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { data: jobData } = useJobCategory({});
 
@@ -92,10 +92,23 @@ const ProfileEdit = ({ selectedFile }: any) => {
   const jobGroup = jobGroups.find((group) => group.jobCode === jobCode);
   const jobDetails = jobGroup?.details ?? [];
 
-  const patchProfile = useEditProfile({});
+  const patchProfile = useEditProfile({
+    mutationConfig: {
+      onMutate: () => {
+        setIsLoading(true);
+      },
+      onSuccess: () => {
+        setIsLoading(false);
+      },
+      onSettled: () => {
+        setIsLoading(false);
+      },
+    },
+  });
 
   return (
     <div className="border-[1px] rounded-[20px] border-[#488FFF] bg-[white] pt-[38px] pb-[84px] px-[60px] max-h-[626px] w-[915px]">
+      {isLoading && <LoadingGradient></LoadingGradient>}
       <Form
         className="spacey-y-0"
         form={form}
@@ -139,8 +152,6 @@ const ProfileEdit = ({ selectedFile }: any) => {
       >
         {({ register, control }) => (
           <div className="flex flex-col text-[18px]">
-            <LoadingSpinner progress={65}></LoadingSpinner>
-
             <div className="flex justify-end gap-[10px] ">
               <Link
                 className=" cursor-pointer  flex rounded-[10px] justify-center 
