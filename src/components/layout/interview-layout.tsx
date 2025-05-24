@@ -31,7 +31,7 @@ const InterviewLayout = ({
           className={cn(
             "flex flex-col w-full min-w-0",
             matching
-              ? "justify-center items-center"
+              ? "justify-center max-h-[650px]"
               : "items-start max-w-[1200px] min-w-[800px]"
           )}
         >

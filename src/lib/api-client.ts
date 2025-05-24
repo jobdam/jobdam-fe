@@ -10,8 +10,7 @@ import { useLocation } from "react-router";
 let isRefreshing = false; // 토큰 갱신 상태 추적
 
 const apiUrl = import.meta.env.VITE_API_URL;
-// api 요청을 할때 i
-// nterceptor 요청을 가로채기하여 이과정을 먼저 수행해서 통과되어야 한다.
+// api 요청을 할때 interceptor 요청을 가로채기하여 이과정을 먼저 수행해서 통과되어야 한다.
 function authRequestInterceptor(config: InternalAxiosRequestConfig) {
   //요청 가로채기할때 항상 토큰을 사용, 로그인이 필요 없는 영역도 존재
   const token = getAccessToken();
@@ -44,6 +43,7 @@ api.interceptors.response.use(
   //에러 반환
   async (error) => {
     const message = error.response?.data?.message || error.message;
+    console.log("예외처리", error);
     const originalRequest = error.config as InternalAxiosRequestConfig & {
       _retry?: boolean;
     };
@@ -85,6 +85,7 @@ api.interceptors.response.use(
         //새 토큰으로 authorization 헤더 갱신하기
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
+        console.log("갱신 완료 재시도전??");
         //원래 요청 재시도
         return api(originalRequest);
         //   c
@@ -110,7 +111,7 @@ api.interceptors.response.use(
     //token이 존재하지 않는경우 verify 화면에서 이 에러가 뜨면 자동으로 넘어감
     //
     if (error.response?.status === 401) {
-      const pathname = useLocation().pathname;
+      const pathname = window.location.pathname;
 
       if (pathname.startsWith("/verify") || pathname === "/verify/*") {
         return Promise.reject(error);

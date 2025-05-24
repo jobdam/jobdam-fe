@@ -11,13 +11,15 @@ export type SpinnerProps = {
 
 export const InterviewSpinner = () => {
   return (
-    <img
-      style={{ animationDuration: "5s" }}
-      src="/Layer_1.svg"
-      alt="loading spinner"
-      width={437}
-      height={437}
-      className="animate-spin"
+    <video
+      src={"/잡담 로딩 1.mp4"}
+      width={"800px"}
+      height={"466px"}
+      autoPlay
+      loop
+      muted
+      playsInline
+      className=" object-contain mt-[45px]"
     />
   );
 };

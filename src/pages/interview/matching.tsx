@@ -57,14 +57,12 @@ const InterviewMatching = () => {
   });
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen">
-      <h2 className="text-[36px] mb-[100px] font-semibold leading-[150%]">
+    <div className="flex flex-col w-[80%] justify-center items-center">
+      <h2 className="text-[36px] mb-[10px] font-semibold leading-[150%]">
         매칭을 준비 중이에요
       </h2>
       <InterviewSpinner></InterviewSpinner>
-      <div className="mt-[100px]">
-        <span>다른 면접자들의 연결을 기다리는 중이에요</span>
-      </div>
+      <p className="text-[24px]">다른 면접자들의 연결을 기다리는 중이에요</p>
     </div>
   );
 };
