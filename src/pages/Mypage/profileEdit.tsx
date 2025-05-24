@@ -21,6 +21,8 @@ import { useEditProfile } from "./api/patch-editprofile";
 import { formatBirthday } from "../../utils/format";
 import { Link } from "react-router";
 import { paths } from "@/config/paths";
+import LoadingModal from "@/components/ui/loading/loadingModal";
+import LoadingSpinner from "@/components/ui/spinner/loadingSpinner";
 
 const ProfileEdit = ({ selectedFile }: any) => {
   //profileEidt에서 이름 ,  패스워드, 이메일 인풋 ->placeholder로 내가 가지고있는 정보들
@@ -137,6 +139,8 @@ const ProfileEdit = ({ selectedFile }: any) => {
       >
         {({ register, control }) => (
           <div className="flex flex-col text-[18px]">
+            <LoadingSpinner progress={65}></LoadingSpinner>
+
             <div className="flex justify-end gap-[10px] ">
               <Link
                 className=" cursor-pointer  flex rounded-[10px] justify-center 
