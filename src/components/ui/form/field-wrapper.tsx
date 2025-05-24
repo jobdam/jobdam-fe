@@ -7,7 +7,6 @@ import { type FieldError } from "react-hook-form";
 
 import { Error } from "./error";
 import { Label } from "./label";
-import { Link } from "@/components/ui/link";
 import { cn } from "@/utils/cn";
 
 export type FieldWrapperProps = {
