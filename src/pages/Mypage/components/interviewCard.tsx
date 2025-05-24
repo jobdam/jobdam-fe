@@ -32,7 +32,7 @@ const InterviewCard = ({
       <div className="rounded-[10px] bg-white p-[25px] w-[807px] h-[240px] items-stretch translate-x-[10px] shadow flex flex-col">
         <div className="flex justify-between items-start mb-4">
           <h2 className="text-[20px] font-semibold leading-[150%]">
-            {interview.interviewDay} {interview.jobName} 모의면접
+            {interview.interviewDay} {interview.jobName} 모의면접 {interview.id}
           </h2>
           <button
             className="flex items-center justify-center bg-[#488fff] rounded-[30px] text-center  w-[127px] h-[40px]  text-[white] text-[14px]"

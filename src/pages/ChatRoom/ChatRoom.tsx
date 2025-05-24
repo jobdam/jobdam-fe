@@ -196,6 +196,8 @@ const ChatRoom = () => {
       onSuccess: () => {
         console.log("인터뷰 초기화 성공");
         queryClient.invalidateQueries({ queryKey: ["interview-groups"] });
+        queryClient.invalidateQueries({ queryKey: ["feedback"] });
+        queryClient.invalidateQueries({ queryKey: ["interview-fullData"] });
         leaveRoom(roomId!);
       },
       onError: (err) => {
