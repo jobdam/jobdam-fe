@@ -95,7 +95,7 @@ const UserPanel = ({
   return (
     <div
       className={
-        "w-[25%] min-w-[480px] h-[95%] bg-[#E5F3FF] p-4 flex flex-col justify-center rounded-[20px] shadow-custom"
+        "w-[25%] min-w-[480px] h-[95%] bg-[#E5F3FF] p-4 flex flex-col justify-center rounded-[20px]"
       }
     >
       {/* 상단 안내 */}

@@ -6,26 +6,21 @@ import { paths } from "@/config/paths";
 import { useLogout } from "@/lib/auth";
 import { useNavigate } from "react-router";
 import { clearTokens } from "@/lib/authSerivices";
+import { queryClient } from "@/lib/react-query";
 type Props = { title: string };
 
 const Menu = ({ title }: Props) => {
   const navigate = useNavigate();
 
   const logout = useLogout({
-    onSuccess: () => {
-      //   navigate(paths.auth.login.getHref(location.pathname), { replace: true });
-      clearTokens();
-      //   navigate(paths.auth.login.getHref(location.pathname));
-    },
+    onSuccess: () => {},
 
-    onError: () => {
-      clearTokens();
-
-      //   queryClient.setQueryData(["authenticated-user"], null);
-    },
+    onError: () => {},
     onSettled: () => {
-      //   queryClient.setQueryData(["authenticated-user"], null);
-      //   queryClient.removeQueries({ queryKey: ["authenticated-user"] });
+      clearTokens();
+
+      queryClient.setQueryData(["authenticated-user"], null);
+      queryClient.removeQueries({ queryKey: ["authenticated-user"] });
       //   queryClient.invalidateQueries({ queryKey: ["authenticated-user"] });
       navigate(paths.auth.login.getHref(location.pathname), { replace: true });
 

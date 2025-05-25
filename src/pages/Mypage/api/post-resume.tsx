@@ -19,9 +19,7 @@ export type UseUploadImageOptions = {
   mutationConfig?: MutationConfig<typeof postResume>;
 };
 //사진을 등록하면 user 정보 최신화 필요.
-export const usePostResume = ({
-  mutationConfig,
-}: UseUploadImageOptions = {}) => {
+export const usePostResume = ({ mutationConfig }: UseUploadImageOptions) => {
   //   const queryClient = useQueryClient();
   const { onSuccess, ...restConfig } = mutationConfig || {};
   return useMutation({

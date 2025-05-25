@@ -78,7 +78,7 @@ const Myresume = () => {
                     setFile={(file) => form.setValue("resumeFile", file)}
                   ></PDFPreviewDropzoneWithIcon>
                 )}
-                {/* resume url과 preview는 동시에 존재 ur */}
+                {/* resume url과 preview는 동시에 존재 하고, 오른쪽엔 view 왼쪽엔 preview배치 */}
                 <Pdfpreview
                   file={file}
                   setFile={(file) => form.setValue("resumeFile", file)}

@@ -134,8 +134,11 @@ export const authConfig = {
     try {
       await logout();
       //로그아웃에 성공하면 token제거,
+      clearTokens();
       return null;
     } catch (err) {
+      clearTokens();
+
       console.log(err);
       return null;
     }

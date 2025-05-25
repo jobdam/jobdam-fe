@@ -5,14 +5,17 @@ import { useNavigate, useSearchParams } from "react-router";
 import { AuthLayout } from "@/components/layout/auth-layout";
 import { paths } from "@/config/paths";
 import { SignIn } from "@/pages/auth/SignIn";
-import { useQueryClient } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { queryClient } from "@/lib/react-query";
 
 const SignInRoute = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
-  const queryClient = useQueryClient();
+  const user = useSelector((state: RootState) => state.ui.isLogin);
 
+  const key: any = ["authenticated-user"];
   return (
     <AuthLayout
       className="w-[640px] max-h-[800px]"
@@ -21,16 +24,19 @@ const SignInRoute = () => {
     >
       <SignIn
         onSuccess={() => {
-          const key: any = ["authenticated-user"];
-
           queryClient.invalidateQueries(key);
-          navigate(`${redirectTo ? `${redirectTo}` : paths.home.getHref()}`, {
-            replace: true,
-          });
+
+          if (!user) {
+            navigate(`${paths.mypage.postdata.path}`, { replace: true });
+            return;
+          } else {
+            navigate(`${redirectTo ? `${redirectTo}` : paths.home.getHref()}`, {
+              replace: true,
+            });
+          }
         }}
       />
     </AuthLayout>
   );
 };
-
 export default SignInRoute;

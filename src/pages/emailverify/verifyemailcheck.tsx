@@ -6,6 +6,9 @@ import { useVerifyEmail } from "./api/get-emailverify";
 import VerifyPending from "./components/verifypending";
 import { useNavigate, useSearchParams } from "react-router";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store";
+import { setIsLogin } from "@/store/slices/uistate";
 
 //여기서 받아서 성공 실패를 가른다.성공한경우는
 
@@ -37,6 +40,7 @@ const VerifyEmailCheck = () => {
   // throw new AuthException(INVALID_USER); 이미 존쟇는경우404에러
 
   //isSetup이 false인경우 인증완료
+  const dispatch = useDispatch<AppDispatch>();
 
   React.useEffect(() => {
     if (isError) {
@@ -46,7 +50,10 @@ const VerifyEmailCheck = () => {
     }
   }, [isError, navigate]);
 
-  if (data?.data?.isSetup === false) return <VerifySuccess />;
+  if (data?.data?.isSetup === false) {
+    dispatch(setIsLogin(data?.data?.isSetup));
+    return <VerifySuccess />;
+  }
 
   return <VerifyPending />;
 };

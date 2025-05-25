@@ -41,7 +41,6 @@ const LoggedInHeader = () => {
             >
               잡담 소개
             </Link>
-            <Link to={paths.chatroom.main.path}>채팅방</Link>
 
             <Link
               to={paths.interview.register.path}
