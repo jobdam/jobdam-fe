@@ -1,10 +1,15 @@
 /** @format */
 
-import { getAccessToken, refreshAccessToken } from "@/lib/authSerivices";
+import {
+  getAccessToken,
+  refreshAccessToken,
+  saveTokens,
+} from "@/lib/authSerivices";
 import { store } from "@/store";
 import { addNotification } from "@/store/slices/notifications";
 import Axios, { InternalAxiosRequestConfig } from "axios";
 import { paths } from "@/config/paths";
+import { useLogout } from "./auth";
 let isRefreshing = false; // 토큰 갱신 상태 추적
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -47,17 +52,6 @@ api.interceptors.response.use(
     };
     const token = getAccessToken();
 
-    // store.dispatch(
-    //   addNotification({
-    //     type: "success",
-    //     title: "Success",
-    //     message,
-    //   })
-    // );
-
-    //인증 되지 않은 사용자는 로그인으로 되돌려 보내기.
-
-    //401에러 일때도 re
     console.log(error.response?.status, error);
     //401 에러가 뜨는경우 => 로그인이 안된경우, 와 accesstoken을 재발급 받아야하는겨웅'
 
@@ -68,8 +62,12 @@ api.interceptors.response.use(
 
     // 로그인을 하지 않은 상황에서는 만약 인증을 해야되는곳을 갔을때 redirect를준다 -> 로그인했을때 그쪽으로 다시 리턴
 
+    //404는 토큰이 만료된 상황 토큰이 만료 되엇을경우 재발급을 해야함.
+    //재발급을 하려고 했는데 refresh가 만료된 상황이면 로그아웃 진행
+    //로그아웃을 진행하려해도 404 에러가뜨면서안됨(토큰이 만료되 로그아웃 못하는 상황)
+    //
     if (
-      error.response?.status === 401 &&
+      error?.response?.status === 404 &&
       error.response?.data?.message === "토큰이 만료되었습니다." &&
       !originalRequest._retry &&
       !isRefreshing &&
@@ -79,17 +77,16 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        //액세스토큰 재발급 전에 401 에러 발생하면
+        //액세스토큰 재발급 전에 404 에러 발생하면
         const newAccessToken = await refreshAccessToken();
         //새 토큰으로 authorization 헤더 갱신하기
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
         //원래 요청 재시도
         return api(originalRequest);
         //   c
       } catch {
-        console.log(error, "catch");
-        // refresh 실패하면 로그인 페이지로 이동 , 401에러인데 아직 로그인을
-        //401에러 가 발생시
+        // refresh가 실패하는 경우는 로그아웃을 진행하낟.
 
         store.dispatch(
           addNotification({
@@ -98,21 +95,27 @@ api.interceptors.response.use(
             message: message + `5초 후에 사라집니다.`,
           })
         );
-
-        //useLogout();
       } finally {
         isRefreshing = false; // 토큰 갱신 완료
       }
     }
-    //나머지의 에러 상황인경우 라면(로그인이 되지 않은 경우 로그인이 필요한 곳에 진입했을때 리다이렉트)
-    //token이 존재하지 않는경우 verify 화면에서 이 에러가 뜨면 자동으로 넘어감
-    //
-    if (error.response?.status === 401) {
+
+    // 단순히 token이 없거나, 인증이 안된경우 확인하여 로그인으로 강제 이동 한다./
+    //현재 authentry가 존재하므로  authentry로 이동하게끔한다. 추후 수정.
+    if (error?.response?.status === 401) {
       const pathname = window.location.pathname;
 
       if (pathname.startsWith("/verify") || pathname === "/verify/*") {
         return Promise.reject(error);
       }
+
+      store.dispatch(
+        addNotification({
+          type: "error",
+          title: "Error",
+          message: message + `5초 후에 사라집니다.`,
+        })
+      );
       console.log(error.response);
       const searchParams = new URLSearchParams();
       const redirectTo =

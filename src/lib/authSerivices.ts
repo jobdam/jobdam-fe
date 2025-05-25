@@ -1,6 +1,7 @@
 /** @format */
 
 import { api } from "./api-client";
+import { useLogout } from "./auth";
 
 export function getAccessToken(): string | null {
   return localStorage.getItem("accessToken"); // 저장된 accessToken을 반환
@@ -22,13 +23,13 @@ export const refreshAccessToken = async (): Promise<string | void> => {
 
     const token = response.headers["authorization"].replace("Bearer ", "");
     // token을 다시 local에 저장
-    console.log("refetaceease", token);
     saveTokens(token);
 
     return token;
   } catch {
     //refreshToken이 만료된경우라면 로그아웃 처리한다.
-    clearTokens();
+
+    useLogout();
 
     throw new Error("Refresh token has expired or is invalid");
   }
