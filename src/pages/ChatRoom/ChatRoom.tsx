@@ -16,6 +16,8 @@ import { useLeaveRoomMutation } from "./api/delete-leaveRoom";
 import { useInitInterviewMutation } from "./api/post-initInterview";
 import ConfirmModal from "../../components/ui/confirm/ConfirmModal";
 import { queryClient } from "@/lib/react-query";
+import { useDispatch } from "react-redux";
+import { resetInterviewData } from "@/store/slices/videoChatInterview";
 
 const ChatRoom = () => {
   //공통 설정//
@@ -25,6 +27,7 @@ const ChatRoom = () => {
   const location = useLocation();
   const isFirstJoinRef = useRef(location.state?.firstJoin ?? false); //매칭때 처음참여 추가입장 구분
   const createdRef = useRef(location.state?.created /*?? Date()*/);
+  const dispatch = useDispatch();
   ///채팅방 설정///
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const { sendChat, sendReady } = useChatPublisher();
@@ -198,6 +201,7 @@ const ChatRoom = () => {
         queryClient.invalidateQueries({ queryKey: ["interview-groups"] });
         queryClient.invalidateQueries({ queryKey: ["feedback"] });
         queryClient.invalidateQueries({ queryKey: ["interview-fullData"] });
+        dispatch(resetInterviewData());
         leaveRoom(roomId!);
       },
       onError: (err) => {

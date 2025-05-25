@@ -121,7 +121,9 @@ const QuestionFeedbackBox = ({
           <span className="inline-flex items-center">
             <span className="text-xl mr-3">💬</span>
             <span className="text-white font-semibold text-sm">
-              {context ? context : "질문을 선택해주세요."}
+              {context
+                ? context + "질문:" + questionId + "인터뷰" + interviewId
+                : "질문을 선택해주세요."}
             </span>
           </span>
         </div>
