@@ -12,7 +12,7 @@ export type SpinnerProps = {
 export const InterviewSpinner = () => {
   return (
     <video
-      src={"/잡담 로딩 1.mp4"}
+      src={"/잡담 로딩 1.mp4"}
       width={"800px"}
       height={"466px"}
       autoPlay
