@@ -45,7 +45,6 @@ api.interceptors.response.use(
     const originalRequest = error.config as InternalAxiosRequestConfig & {
       _retry?: boolean;
     };
-    const token = getAccessToken();
 
     console.log(
       error?.response?.status === 404 &&

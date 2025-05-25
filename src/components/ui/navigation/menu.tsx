@@ -3,7 +3,7 @@
 import { NavigationMenu } from "radix-ui";
 import { Link } from "../link";
 import { paths } from "@/config/paths";
-import { useLogout, useUser } from "@/lib/auth";
+import { useLogout } from "@/lib/auth";
 import { useNavigate } from "react-router";
 import { queryClient } from "@/lib/react-query";
 import { clearTokens } from "@/lib/authSerivices";
