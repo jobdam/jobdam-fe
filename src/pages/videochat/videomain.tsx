@@ -17,7 +17,10 @@ import { fetchUserInterviewData } from "./api/get-interviewFullData";
 import VideoPanel from "./components/video/VideoPanel";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { setInterviewData } from "@/store/slices/videoChatInterview";
+import {
+  resetInterviewData,
+  setInterviewData,
+} from "@/store/slices/videoChatInterview";
 import { getUserIdFromJwt } from "@/utils/tokenUtils";
 import LoadingModal from "@/components/ui/loading/loadingModal";
 
@@ -27,11 +30,13 @@ const Videomain = () => {
   const navigate = useNavigate();
   const myUserId = useMemo(() => getUserIdFromJwt(), []);
   const location = useLocation();
-  const isFirstJoin = location.state?.firstJoin;
+  const [isFirstJoin, setIsFirstJoin] = useState<boolean>(
+    location.state?.firstJoin
+  );
   const [firstJoinUserCount, setFirstJoinUserCount] = useState<
     number | undefined
   >(undefined); //로딩보여주기위해 처음진입유저 체크!
-  const [isLoadingModalOpen, setIsLoadingModalOpen] = useState(true);
+  const [isLoadingModalOpen, setIsLoadingModalOpen] = useState<boolean>(true);
   ////video////
   //다른사람 스트림정보
   const { remoteStreams, addRemoteStream, removeRemoteStream } =
@@ -86,9 +91,34 @@ const Videomain = () => {
     setFirstJoinUserCount(location.state?.enterUserCount);
     return () => {
       peerMap.clearAll(); //언마운트시 전부제거
+      dispatch(resetInterviewData());
     };
   }, [roomId]);
   /////////////////////////////
+
+  // 닫힘 트리거
+  useEffect(() => {
+    if (!isFirstJoin) {
+      setIsLoadingModalOpen(false);
+      return;
+    }
+
+    if (
+      isLoadingModalOpen &&
+      firstJoinUserCount &&
+      peerMap.getAll().size + 1 === firstJoinUserCount
+    ) {
+      setIsLoadingModalOpen(false);
+      setIsFirstJoin(false);
+      //초기화 완료시점이니 처음접근한기록없앤다(새로고침,팅김방지)
+      navigate(location.pathname, { replace: true });
+    }
+  }, [
+    isLoadingModalOpen,
+    firstJoinUserCount,
+    peerMap.getAll().size,
+    isFirstJoin,
+  ]);
 
   // 화면 공유 또는 카메라 트랙 변경 시 replaceTrack
   useEffect(() => {
@@ -135,7 +165,6 @@ const Videomain = () => {
         console.log(`[ConnectionState][${targetUserId}]:`, state);
       }
     );
-    console.log("sendOffer:", stream);
     // 무조건 offer전에 스트림을 넣어줘야 sdp에 적용된다.
     stream?.getTracks().forEach((track) => {
       pc.addTrack(track, stream);
@@ -161,7 +190,7 @@ const Videomain = () => {
     if (data.signalType === "JOIN_LIST") {
       for (const userId of data.userIdList) {
         // 최초 입장일 경우 중복 방지용으로 큰 ID에게만 offer
-        if (peerMap.getPeer(userId)) return;
+        if (peerMap.getPeer(userId)) continue;
         if (myUserId! < userId) {
           await createPeerAndSendOffer(userId);
         }
@@ -174,7 +203,7 @@ const Videomain = () => {
       switch (data.signalType) {
         case "JOIN_ONE": //새로고침,인터넷끊김등으로 재입장
           for (const userId of data.userIdList) {
-            console.log(data.userIdList);
+            if (peerMap.getPeer(userId)) continue;
             await createPeerAndSendOffer(userId);
           }
           break;
@@ -213,11 +242,8 @@ const Videomain = () => {
   const ensureInterviewData = async (userId: number) => {
     if (!interviewDataMap[userId]) {
       const userData = await fetchUserInterviewData(userId);
+      console.log("userdata", userData);
       dispatch(setInterviewData({ userId, data: userData }));
-    }
-    //초기화 완료시점이니 처음접근한기록없앤다(새로고침,팅김방지)
-    if (location.state?.firstJoin) {
-      navigate(location.pathname, { replace: true });
     }
   };
 
@@ -241,18 +267,23 @@ const Videomain = () => {
   });
   //구독이 전부 완료되면 시그널 전송시작!
   useEffect(() => {
-    console.log("isfirest", isFirstJoin);
     if (isBroadcastSubscribed) {
       //처음입장이면 아이디 비교해서 순차적으로offer 아니면 전부다한테 offer
       if (isFirstJoin) {
         sendJoin(roomId!, `/app/signal/join/${roomId!}`);
+        //3초뒤 한번더 보냄
+        const timer = setTimeout(() => {
+          sendJoin(roomId!, `/app/signal/join/${roomId!}`);
+        }, 3000);
+
+        // 클린업: unmount 또는 deps 변경 시 타이머 정리
+        return () => clearTimeout(timer);
       } else {
         sendJoin(roomId!, `/app/signal/joinOne/${roomId!}`);
       }
     }
   }, [isBroadcastSubscribed]);
-  console.log("first", firstJoinUserCount);
-  console.log("peer", peerMap.getAll().size + 1);
+
   return (
     <div className="flex justify-center items-center">
       <div className="flex mt-[45px] w-[80vw] h-[90vh] gap-x-6">
@@ -274,23 +305,21 @@ const Videomain = () => {
         {/* 오른쪽: 인터뷰 패널 */}
         <InterviewPanel />
       </div>
-      {isLoadingModalOpen &&
-        firstJoinUserCount &&
-        firstJoinUserCount !== peerMap.getAll().size + 1 && (
-          <LoadingModal
-            children={
-              <>
-                <div>
-                  연결 대기 현황 ({peerMap.getAll().size + 1} /{" "}
-                  {firstJoinUserCount}
-                  명)
-                </div>
-                <div className="mt-2">잠시만 기다려주세요.</div>
-              </>
-            }
-            onClose={() => setIsLoadingModalOpen(false)}
-          />
-        )}
+      {isLoadingModalOpen && (
+        <LoadingModal
+          children={
+            <>
+              <div>
+                연결 대기 현황 ({peerMap.getAll().size + 1} /{" "}
+                {firstJoinUserCount}
+                명)
+              </div>
+              <div className="mt-2">잠시만 기다려주세요.</div>
+            </>
+          }
+          onClose={() => setIsLoadingModalOpen(false)}
+        />
+      )}
     </div>
   );
 };

@@ -16,6 +16,8 @@ import { useLeaveRoomMutation } from "./api/delete-leaveRoom";
 import { useInitInterviewMutation } from "./api/post-initInterview";
 import ConfirmModal from "../../components/ui/confirm/ConfirmModal";
 import { queryClient } from "@/lib/react-query";
+import { useDispatch } from "react-redux";
+import { resetInterviewData } from "@/store/slices/videoChatInterview";
 
 const ChatRoom = () => {
   //공통 설정//
@@ -23,8 +25,9 @@ const ChatRoom = () => {
   const myUserId = useMemo(() => getUserIdFromJwt(), []);
   const navigate = useNavigate();
   const location = useLocation();
-  const isFirstJoinRef = useRef(location.state?.firstJoin ?? false);
+  const isFirstJoinRef = useRef(location.state?.firstJoin ?? false); //매칭때 처음참여 추가입장 구분
   const createdRef = useRef(location.state?.created /*?? Date()*/);
+  const dispatch = useDispatch();
   ///채팅방 설정///
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const { sendChat, sendReady } = useChatPublisher();
@@ -42,35 +45,35 @@ const ChatRoom = () => {
       return [...prev, ...newUsers];
     });
   }, []);
+  //초기값설정
   useEffect(() => {
     if (!roomId || !myUserId) {
       navigate("/");
       return;
     }
+
+    getChatUserInfoList(roomId).then((list) => {
+      mergeUserList(list); //유저리스트 상태추가
+      if (isFirstJoinRef.current) {
+        //처음입장한사람이면
+        const joinMessages = list.map((user) => ({
+          id: uuidv4(),
+          type: "SYSTEM" as const,
+          content: `${user.name}님이 입장했습니다.`,
+        }));
+
+        setMessages((prev) => [...prev, ...joinMessages]);
+      }
+    });
   }, [roomId, myUserId]);
-  //초기값설정
   useEffect(() => {
-    if (roomId && myUserId) {
-      getChatUserInfoList(roomId).then((list) => {
-        mergeUserList(list); //유저리스트 상태추가
-        if (isFirstJoinRef.current) {
-          //처음입장한사람이면
-          const joinMessages = list.map((user) => ({
-            id: uuidv4(),
-            type: "SYSTEM" as const,
-            content: `${user.name}님이 입장했습니다.`,
-          }));
-
-          setMessages((prev) => [...prev, ...joinMessages]);
-        }
-        isFirstJoinRef.current = false;
-        if (location.state?.firstJoin) {
-          navigate(location.pathname, { replace: true }); // 클로저 내부도 최신 상태로 반영
-        }
-      });
-    }
-  }, [roomId, myUserId]);
-
+    setTimeout(() => {
+      isFirstJoinRef.current = false;
+      if (location.state?.firstJoin) {
+        navigate(location.pathname, { replace: true });
+      }
+    }, 2000);
+  }, []);
   // 시간 설정
   useEffect(() => {
     const createdFromState = location.state?.created;
@@ -131,6 +134,7 @@ const ChatRoom = () => {
 
         case "JOIN":
           if (isFirstJoinRef.current) return; //초기화 이후에는 보여줌
+          console.log("join오나??", isFirstJoinRef.current);
           setMessages((prev) => [
             ...prev,
             {
@@ -148,7 +152,7 @@ const ChatRoom = () => {
         case "READY":
           handleReadyUpdate(data.userId, data.ready);
           if (data.allReady) {
-            setUserCount(userList.length);
+            setUserCount(data.userCount);
             initInterview({
               jobCode: myUserInfo?.jobCode!,
               interviewType: myUserInfo?.interviewType!,
@@ -195,6 +199,9 @@ const ChatRoom = () => {
       onSuccess: () => {
         console.log("인터뷰 초기화 성공");
         queryClient.invalidateQueries({ queryKey: ["interview-groups"] });
+        queryClient.invalidateQueries({ queryKey: ["feedback"] });
+        queryClient.invalidateQueries({ queryKey: ["interview-fullData"] });
+        dispatch(resetInterviewData());
         leaveRoom(roomId!);
       },
       onError: (err) => {

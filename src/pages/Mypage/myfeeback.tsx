@@ -1,8 +1,9 @@
 /** @format */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInterviewGroupsInfinite } from "./api/get-interviews";
 import InterviewCard from "./components/interviewCard";
+import { InterviewDateGroup } from "@/types/interview";
 
 const MyFeedback = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -10,6 +11,8 @@ const MyFeedback = () => {
 
   // 무한스크롤 옵저버 ref
   const observerRef = useRef<HTMLDivElement | null>(null);
+  //타임라인길이때문에 상세보기한것(배열로)만 길이체크
+  const [openedInterviewIds, setOpenedInterviewIds] = useState<number[]>([]);
 
   useEffect(() => {
     if (!hasNextPage || isFetchingNextPage) return;
@@ -20,13 +23,44 @@ const MyFeedback = () => {
     return () => observer.disconnect();
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
+  // 카드 열기 토글 핸들러
+  const handleToggleOpen = (id: number) => {
+    setOpenedInterviewIds((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+    );
+  };
+
   // 무한스크롤 pages 평탄화
   const groups = data?.pages.flat() ?? [];
+  //날짜별로 합치기 위한 머지
+  const mergeGroups = (groups: InterviewDateGroup[]): InterviewDateGroup[] => {
+    if (groups.length === 0) return [];
+
+    const merged: InterviewDateGroup[] = [];
+    for (const group of groups) {
+      const prev = merged[merged.length - 1];
+      if (prev && prev.displayDate === group.displayDate) {
+        // 같은 날짜면 인터뷰 배열을 합침
+        prev.interviews = [...prev.interviews, ...group.interviews];
+      } else {
+        merged.push({ ...group });
+      }
+    }
+    return merged;
+  };
+
+  const mergedGroups = mergeGroups(groups);
+
   return (
     <div className="flex flex-col min-w-[915px] max-h-[600px] overflow-auto scrollbar-none items-stretch ">
-      {groups.map((group, idx) => {
+      {mergedGroups.map((group, idx) => {
+        // 오픈된/닫힌 카드 계산
+        const openCount = group.interviews.filter((i) =>
+          openedInterviewIds.includes(i.id)
+        ).length;
+        const closeCount = group.interviews.length - openCount;
         const [month, date, day] = group.displayDate.split(" ");
-        const lineHeight = group.interviews.length * 600;
+        const lineHeight = openCount * 600 + closeCount * 300;
         return (
           <div
             key={group.displayDate + "_" + idx}
@@ -49,7 +83,12 @@ const MyFeedback = () => {
             {/* 카드 */}
             <div className="flex flex-col gap-y-15 w-full">
               {group.interviews.map((interview) => (
-                <InterviewCard key={interview.id} interview={interview} />
+                <InterviewCard
+                  key={interview.id}
+                  interview={interview}
+                  opened={openedInterviewIds.includes(interview.id)}
+                  onToggleOpen={() => handleToggleOpen(interview.id)}
+                />
               ))}
             </div>
             {/* 옵저버 (무한스크롤용) */}

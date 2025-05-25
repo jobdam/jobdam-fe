@@ -52,12 +52,26 @@ const InterviewRegister = () => {
     control: form.control,
     name: "interviewType",
   });
-
+  const [mediaAllowed, setMediaAllowed] = React.useState<boolean | null>(null);
+  React.useEffect(() => {
+    (async () => {
+      try {
+        await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        setMediaAllowed(true);
+      } catch (err) {
+        alert(
+          "화상면접을 위해 카메라/마이크 권한이 필요합니다.\n브라우저 설정에서 허용해 주세요.\n권한 차단시 더이상 진행이 불가능합니다."
+        );
+        setMediaAllowed(false);
+      }
+    })();
+  }, []);
+  console.log("허락햇냐", mediaAllowed);
   return (
     <Form
       form={form}
       onSubmit={(values: any) => {
-        navigate(`${paths.interview.resume.path}`, {
+        navigate(`${paths.interview.matching.path}`, {
           state: values,
         });
       }}
@@ -151,10 +165,22 @@ const InterviewRegister = () => {
               <div className="relative top-[15%] left-0 flex justify-center items-center">
                 <button
                   type="submit"
+                  disabled={!mediaAllowed}
                   className="bg-[#488fff] h-[65px] w-[40%] text-[white] text-[24px] cursor-pointer rounded-[10px]"
                 >
                   입력 완료
                 </button>
+                {mediaAllowed === false && (
+                  <div className="text-red-500 text-[16px] ml-3 mt-2 text-center">
+                    카메라/마이크 권한을 허용해야
+                    <br />
+                    진행할 수 있습니다.
+                    <br />
+                    또한, 다른 앱이나 웹에서 카메라/마이크를 사용 중일 경우에도
+                    <br />
+                    이용이 불가능합니다.
+                  </div>
+                )}
               </div>
             )}
           </>

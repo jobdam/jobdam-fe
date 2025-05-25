@@ -8,7 +8,7 @@ import PDFUploadDialog from "../Mypage/components/pdfuploadfile";
 import PDFPreviewDropzoneWithIcon from "../Mypage/components/pdfdrag&drop";
 import Pdfpreview from "../Mypage/components/pdfpreview";
 import Filetext from "@/components/ui/images/filetext";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { paths } from "@/config/paths";
 type ResumeFormValues = {
   resumeFile: File | null;
@@ -21,6 +21,9 @@ const MatchingResume = () => {
     },
   });
   PDFUploadDialog;
+
+  const location = useLocation();
+  const formData = location.state;
 
   const { data } = useResume({});
   const resumeURL = data?.data?.resumeUrl;
@@ -35,9 +38,9 @@ const MatchingResume = () => {
     <>
       <Form
         form={form}
-        onSubmit={(values: any) => {
+        onSubmit={() => {
           navigate(`${paths.interview.matching.path}`, {
-            state: values,
+            state: formData,
           });
         }}
         className="relative spacey-y-0"

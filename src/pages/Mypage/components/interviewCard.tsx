@@ -1,6 +1,5 @@
 /** @format */
 
-import { useState } from "react";
 import { useFeedback } from "../api/get-feedback";
 import { ChevronUp } from "lucide-react";
 
@@ -12,24 +11,22 @@ interface InterviewCardProps {
     wellDone: string | null;
     toImprove: string | null;
   };
+  opened: boolean;
+  onToggleOpen: () => void;
 }
 
-const InterviewCard = ({ interview }: InterviewCardProps) => {
-  const [openPage, setOpenPage] = useState(false);
-
+const InterviewCard = ({
+  interview,
+  opened,
+  onToggleOpen,
+}: InterviewCardProps) => {
   const { data } = useFeedback({
     interviewId: interview.id,
-    queryConfig: { enabled: openPage },
+    queryConfig: { enabled: opened },
   });
 
-  const open = () => {
-    setOpenPage(true);
-  };
-  const close = () => {
-    setOpenPage(false);
-  };
   //기본인터뷰 카드
-  if (!openPage) {
+  if (!opened) {
     return (
       <div className="rounded-[10px] bg-white p-[25px] w-[807px] h-[240px] items-stretch translate-x-[10px] shadow flex flex-col">
         <div className="flex justify-between items-start mb-4">
@@ -38,28 +35,28 @@ const InterviewCard = ({ interview }: InterviewCardProps) => {
           </h2>
           <button
             className="flex items-center justify-center bg-[#488fff] rounded-[30px] text-center  w-[127px] h-[40px]  text-[white] text-[14px]"
-            onClick={open}
+            onClick={onToggleOpen}
           >
             피드백 전체보기
           </button>
         </div>
-        <div className="flex flex-row gap-x-30">
+        <div className="flex flex-row gap-x-10">
           {/* 잘한 점 */}
-          <div className="w-[130px] break-words">
+          <div className="w-[230px] break-words">
             <div className="inline-block bg-[#E5F3FF] text-[14px] px-4 rounded-xl mb-2">
               잘한 점
             </div>
-            <div className="text-black text-[14px] font-normal mt-1">
-              {interview.wellDone || ""}
+            <div className="text-black text-[14px] font-normal mt-1 line-clamp-5">
+              {interview.wellDone || "받은 피드백이 없습니다."}
             </div>
           </div>
           {/* 개선할 점 */}
-          <div className="w-[130px] break-words">
+          <div className="w-[230px] break-words">
             <div className="inline-block bg-[#E5F3FF] text-[14px] px-4 rounded-xl mb-2">
               개선할 점
             </div>
-            <div className="text-black text-[14px] font-normal mt-1">
-              {interview.toImprove || ""}
+            <div className="text-black text-[14px] font-normal mt-1 line-clamp-5">
+              {interview.toImprove || "받은 피드백이 없습니다."}
             </div>
           </div>
         </div>
@@ -99,7 +96,7 @@ const InterviewCard = ({ interview }: InterviewCardProps) => {
           </div>
         )}
         <div className="flex justify-end">
-          {openPage && <ChevronUp onClick={close}></ChevronUp>}
+          <ChevronUp onClick={onToggleOpen}></ChevronUp>
         </div>
 
         <style>
