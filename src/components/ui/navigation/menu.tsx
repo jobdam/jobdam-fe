@@ -22,8 +22,6 @@ const Menu = ({ title }: Props) => {
     onError: () => {
       clearTokens();
 
-      navigate(paths.auth.login.getHref(location.pathname), { replace: true });
-
       //   queryClient.setQueryData(["authenticated-user"], null);
     },
     onSettled: () => {
@@ -31,6 +29,7 @@ const Menu = ({ title }: Props) => {
       queryClient.setQueryData(["authenticated-user"], null);
       queryClient.removeQueries({ queryKey: ["authenticated-user"] });
       queryClient.invalidateQueries({ queryKey: ["authenticated-user"] });
+      navigate(paths.auth.login.getHref(location.pathname), { replace: true });
 
       //성공하든 실패하든. 클라이언트단에서는 로그아웃을 진행한다.
     },

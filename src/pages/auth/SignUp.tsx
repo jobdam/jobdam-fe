@@ -177,7 +177,9 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
               <Input
                 type="password"
                 label="비밀번호"
+                autoComplete="current-password"
                 maxLength={30}
+
                 placeholder="비밀번호를 입력하세요."
                 className="font-medium
                 placeholder:text-[18px]
@@ -188,6 +190,7 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
               />
               <Input
                 type="password"
+                autoComplete="new-password"
                 label="비밀번호 확인"
                 maxLength={30}
                 placeholder="비밀번호를 입력하세요."
