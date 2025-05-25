@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useInterviewGroupsInfinite } from "./api/get-interviews";
 import InterviewCard from "./components/interviewCard";
+import { InterviewDateGroup } from "@/types/interview";
 
 const MyFeedback = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -31,9 +32,28 @@ const MyFeedback = () => {
 
   // 무한스크롤 pages 평탄화
   const groups = data?.pages.flat() ?? [];
+  //날짜별로 합치기 위한 머지
+  const mergeGroups = (groups: InterviewDateGroup[]): InterviewDateGroup[] => {
+    if (groups.length === 0) return [];
+
+    const merged: InterviewDateGroup[] = [];
+    for (const group of groups) {
+      const prev = merged[merged.length - 1];
+      if (prev && prev.displayDate === group.displayDate) {
+        // 같은 날짜면 인터뷰 배열을 합침
+        prev.interviews = [...prev.interviews, ...group.interviews];
+      } else {
+        merged.push({ ...group });
+      }
+    }
+    return merged;
+  };
+
+  const mergedGroups = mergeGroups(groups);
+
   return (
     <div className="flex flex-col min-w-[915px] max-h-[600px] overflow-auto scrollbar-none items-stretch ">
-      {groups.map((group, idx) => {
+      {mergedGroups.map((group, idx) => {
         // 오픈된/닫힌 카드 계산
         const openCount = group.interviews.filter((i) =>
           openedInterviewIds.includes(i.id)
