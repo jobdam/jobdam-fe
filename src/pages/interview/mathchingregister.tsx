@@ -13,6 +13,7 @@ import ContentsBox from "@/components/layout/contentsBox";
 import { Button } from "@/components/ui/button";
 import { setProgressStep } from "@/store/slices/uistate";
 import { paths } from "@/config/paths";
+import { getHasResume } from "./api/get-hasResume";
 
 const InterviewRegister = () => {
   const dispatch = useDispatch();
@@ -32,7 +33,6 @@ const InterviewRegister = () => {
 
   const params = new URLSearchParams(location.search);
   const stepParam = params.get("step");
-  console.log(stepParam);
 
   React.useEffect(() => {
     dispatch(setProgressStep(1));
@@ -54,7 +54,18 @@ const InterviewRegister = () => {
   });
   const [mediaAllowed, setMediaAllowed] = React.useState<boolean | null>(null);
   React.useEffect(() => {
-    (async () => {
+    const checkResumeAndRequestMedia = async () => {
+      const hasResume = await getHasResume();
+      if (!hasResume) {
+        if (
+          window.confirm(
+            "이력서가 없습니다. 등록하시겠습니까?\n\n이력서가 있어야 면접 시 상대방이 AI질문을 확인할 수 있습니다."
+          )
+        ) {
+          navigate(paths.mypage.resume.path);
+          return;
+        }
+      }
       try {
         await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         setMediaAllowed(true);
@@ -64,9 +75,9 @@ const InterviewRegister = () => {
         );
         setMediaAllowed(false);
       }
-    })();
+    };
+    checkResumeAndRequestMedia();
   }, []);
-  console.log("허락햇냐", mediaAllowed);
   return (
     <Form
       form={form}
@@ -165,7 +176,7 @@ const InterviewRegister = () => {
               <div className="relative top-[15%] left-0 flex justify-center items-center">
                 <button
                   type="submit"
-                  disabled={!mediaAllowed}
+                  //disabled={!mediaAllowed} 임시로 주석해둔거 원래 열어야함
                   className="bg-[#488fff] h-[65px] w-[40%] text-[white] text-[24px] cursor-pointer rounded-[10px]"
                 >
                   입력 완료
@@ -178,7 +189,8 @@ const InterviewRegister = () => {
                     <br />
                     또한, 다른 앱이나 웹에서 카메라/마이크를 사용 중일 경우에도
                     <br />
-                    이용이 불가능합니다.
+                    이용이 불가능합니다.(1컴에서 여러 브라우저로 테스트 할 때를
+                    대비해 임시로 열어둠)
                   </div>
                 )}
               </div>

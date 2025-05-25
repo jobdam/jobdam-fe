@@ -22,7 +22,7 @@ const LoadingModal = ({ children, onClose }: loadingModalProps) => {
             닫기
           </button>
           <video
-            src={"/잡담 로딩 1.mp4"}
+            src={"/잡담 로딩 1.mp4"}
             width={"234px"}
             height={"131px"}
             autoPlay
