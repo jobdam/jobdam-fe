@@ -4,10 +4,12 @@ import { Link } from "@/components/ui/link";
 import { paths } from "@/config/paths";
 import mainImage from "@/assets/landingImage/main.png";
 import mainIcon from "@/assets/landingImage/mainIcon.svg";
+import shadow from "@/assets/landingImage/shadow.png";
 const LandingTopImage = () => {
   return (
     <>
-      <div className="  z-2 w-[800px] h-[1000px]">
+      <div className="  z-2 w-[800px] h-[1000px] mt-[36px] ">
+
         <img className="size-[647px]" src={mainImage}></img>
         <div
           className="
@@ -15,7 +17,11 @@ const LandingTopImage = () => {
           mx-auto left-[36%] bottom-[17%]
           relative w-[147.98px] h-[103.665px] rotate-[6.679] shrink-0"
         >
-          <img src={mainIcon}></img>
+          <img className="relative z-[4]" src={mainIcon}></img>
+          <img
+            className="absolute top-[65%] z-[1] left-[12%] "
+            src={shadow}
+          ></img>
         </div>
         <div
           className="relative 
@@ -29,7 +35,6 @@ const LandingTopImage = () => {
           </div>
           <Link
             className="
-                
                 py-[22px] mt-[68px] px-[40px] text-[28px] rounded-[20px]  text-[white]
                 font-semibold bg-[#488EFF] flex justify-center items-center"
             to={paths.interview.register.path}
