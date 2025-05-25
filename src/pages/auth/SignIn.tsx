@@ -63,6 +63,7 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
             <div className=" mb-[10px] space-y-[30px]   text-left">
               <Input
                 type="email"
+                autoComplete="username"
                 label="이메일"
                 className=" font-medium text-left border-[1px] border-[#488FFF] text-black"
                 placeholder="jodbdam0415@gmail.com"
@@ -72,6 +73,7 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
 
               <Input
                 type="password"
+                autoComplete="current-password"
                 label="비밀번호"
                 placeholder="비밀번호를 입력하세요."
                 className=" font-medium text-left  border-[1px] border-[#488FFF] text-black"
