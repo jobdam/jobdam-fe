@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" width="308.72702" height="308.72702" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 308.72702 308.72702">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="273.19872" y1="77.2201" x2="14.24952" y2="245.32031" gradientTransform="translate(308.72702 308.72702) rotate(-180)" gradientUnits="userSpaceOnUse">
+      <stop offset=".0271" stop-color="#c1e1ff"/>
+      <stop offset=".06894" stop-color="#b7daff"/>
+      <stop offset=".26915" stop-color="#8fbfff"/>
+      <stop offset=".46617" stop-color="#70aaff"/>
+      <stop offset=".65677" stop-color="#5a9bff"/>
+      <stop offset=".83802" stop-color="#4c92ff"/>
+      <stop offset="1" stop-color="#488fff"/>
+    </linearGradient>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer_1">
+    <g>
+      <path class="cls-1" d="M154.36335,0h154.36366v154.36366c0,85.19546-69.1679,154.36336-154.36336,154.36336h-.00031C69.1679,308.72702,0,239.55912,0,154.36366v-.00031C0,69.1679,69.1679,0,154.36335,0Z" transform="translate(308.72702 308.72702) rotate(180)"/>
+      <circle class="cls-2" cx="136.22022" cy="99.25168" r="15.22647"/>
+      <circle class="cls-2" cx="198.61993" cy="65.9193" r="15.22647"/>
+      <path class="cls-2" d="M170.17217,120.4012l36.70983-18.58973c4.29287-2.63586,9.90336-.17791,10.81782,4.7759,2.19576,11.89487,3.93754,27.27995-1.71547,33.71555-7.43039,8.45904-21.51099,14.46531-46.93539-8.5606-3.5024-3.17199-2.90359-8.86863,1.12322-11.34112Z"/>
+    </g>
+  </g>
+</svg>
