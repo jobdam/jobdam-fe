@@ -16,6 +16,13 @@ module.exports = {
         // 기본 sans 대체도 가능
       },
 
+      backdropBlur: {
+        200: "200px",
+      },
+      backgroundColor: {
+        "white-2": "rgba(255, 255, 255, 0.02)",
+      },
+
       boxShadow: {
         custom: "0px 8px 24px 0px rgba(112, 144, 176, 0.30)",
       },
@@ -28,7 +35,8 @@ module.exports = {
         "gradient-auth-login":
           "linear-gradient(180deg, #C1E1FF 0%, #F2F9FF 100%)",
         "gradient-landing-top":
-          "linear-gradient(0deg, #99CFFF 01%, #FCFFF4 100%)",
+          "linear-gradient(0deg, #99CFFF 0%, #FCFFF4 100%)",
+        "gradient-round": "linear-gradient(0deg, #C1E1FF 0%, #F2F9FF 100%)",
       },
 
       colors: {
