@@ -3,9 +3,8 @@
 import { NavigationMenu } from "radix-ui";
 import { Link } from "../link";
 import { paths } from "@/config/paths";
-import { useLogout, useUser } from "@/lib/auth";
+import { useLogout } from "@/lib/auth";
 import { useNavigate } from "react-router";
-import { queryClient } from "@/lib/react-query";
 import { clearTokens } from "@/lib/authSerivices";
 type Props = { title: string };
 
@@ -25,10 +24,9 @@ const Menu = ({ title }: Props) => {
       //   queryClient.setQueryData(["authenticated-user"], null);
     },
     onSettled: () => {
-      clearTokens();
-      queryClient.setQueryData(["authenticated-user"], null);
-      queryClient.removeQueries({ queryKey: ["authenticated-user"] });
-      queryClient.invalidateQueries({ queryKey: ["authenticated-user"] });
+      //   queryClient.setQueryData(["authenticated-user"], null);
+      //   queryClient.removeQueries({ queryKey: ["authenticated-user"] });
+      //   queryClient.invalidateQueries({ queryKey: ["authenticated-user"] });
       navigate(paths.auth.login.getHref(location.pathname), { replace: true });
 
       //성공하든 실패하든. 클라이언트단에서는 로그아웃을 진행한다.

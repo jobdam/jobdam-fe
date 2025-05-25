@@ -22,13 +22,19 @@ const Myresume = () => {
     },
   });
 
-  const { data } = useResume({});
+  const { data, refetch } = useResume({});
   const resumeURL = data?.data?.resumeUrl;
   console.log(resumeURL);
 
   const file = form.watch("resumeFile");
 
-  const registerResume = usePostResume({});
+  const registerResume = usePostResume({
+    mutationConfig: {
+      onSettled: () => {
+        refetch();
+      },
+    },
+  });
   //작성 완료시 url로 띄우기. preview는 실제 url이있다면 없어지도록
 
   return (
@@ -49,14 +55,14 @@ const Myresume = () => {
       >
         {({}) => (
           <>
-            <div className="  flex flex-col rounded-[20px]  justify-center items-center min-w-[915px] h-[617px]  p-[36px] pb-[40px] bg-[white]">
+            <div className="  flex flex-col rounded-[20px]  justify-center items-center w-[915px] h-[617px]  p-[36px] pb-[40px] bg-[white]">
               {/*pdf  업로드 버튼 누르면 모달창 나온다*/}
 
               <PDFUploadDialog
                 file={file}
                 setFile={(file) => form.setValue("resumeFile", file)}
               ></PDFUploadDialog>
-              <div className="bg-[white] border-[1px] w-full border-[#cfcfcf] rounded-[20px]  h-full flex justify-center items-center">
+              <div className="bg-[white]  border-[1px] w-full border-[#cfcfcf] rounded-[20px]  h-full flex justify-center items-center">
                 {!file && (
                   <PDFPreviewDropzoneWithIcon
                     content={
@@ -72,32 +78,33 @@ const Myresume = () => {
                     setFile={(file) => form.setValue("resumeFile", file)}
                   ></PDFPreviewDropzoneWithIcon>
                 )}
-
-                {resumeURL ? (
-                  <PdfView resumeURL={resumeURL}></PdfView>
-                ) : (
-                  <Pdfpreview
-                    file={file}
-                    setFile={(file) => form.setValue("resumeFile", file)}
-                  ></Pdfpreview>
-                )}
+                {/* resume url과 preview는 동시에 존재 ur */}
+                <Pdfpreview
+                  file={file}
+                  setFile={(file) => form.setValue("resumeFile", file)}
+                ></Pdfpreview>
+                <div className="mx-[5px] w-[1px] bg-[#cfcfcf] h-full"></div>
+                <PdfView resumeURL={resumeURL}></PdfView>
               </div>
 
-              <div className="mr-auto pl-[20px] h-[20px] translate-y-[20px]">
-                {file?.name && (
+              <div className="mr-auto pl-[20px] h-[20px] translate-y-[10px]">
+                <div></div>
+                {file?.name ? (
                   <>
-                    <span>{file?.name}</span>
+                    <span>{file.name}</span>
                     <button
                       onClick={() => form.setValue("resumeFile", null)}
-                      className="pl-[5px] cursor-"
+                      className="pl-[8px] cursor-pointer"
                       type="button"
                     >
                       X
                     </button>
                   </>
+                ) : (
+                  // 빈 공간을 유지하기 위한 placeholder
+                  <div className="h-[30px] w-[100px]"></div>
                 )}
               </div>
-
               <div className="flex flex-row justify-between"></div>
             </div>
             <div className="flex justify-center w-/10 mt-[70px] mb-[70px] items-center">
