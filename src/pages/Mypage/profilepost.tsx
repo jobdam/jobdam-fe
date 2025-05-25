@@ -20,8 +20,10 @@ import ProfilePreview from "./components/profilepreview";
 
 import { useNavigate, useSearchParams } from "react-router";
 import { paths } from "@/config/paths";
+import LoadingGradient from "@/components/ui/spinner/loadingSpinner";
 
 const ProfilePost = () => {
+  const [loading, isLoading] = React.useState<boolean>(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
@@ -87,10 +89,17 @@ const ProfilePost = () => {
   //프로필 등록에 실패하면
   const registerProfile = usePostProfile({
     mutationConfig: {
+      onMutate: () => {
+        isLoading(true);
+      },
       onSuccess: () => {
         navigate(redirectTo ? redirectTo : paths.mypage.root.path, {
           replace: true,
         });
+        localStorage.removeItem("emailcheck");
+      },
+      onSettled: () => {
+        isLoading(false);
       },
     },
   });
@@ -132,6 +141,7 @@ const ProfilePost = () => {
     >
       {({ register, control }) => (
         <>
+          {loading && <LoadingGradient></LoadingGradient>}
           <ProfilePreview onSelectFile={handleFileSelect}></ProfilePreview>
           <div className="flex flex-row h-[60px] items-center">
             <Label className="w-[143px] text-[20px] font-semibold">이름</Label>
@@ -261,7 +271,6 @@ const ProfilePost = () => {
           >
             <Button
               type="submit"
-              isLoading={registerProfile.isPending}
               className=" 
               w-[60%]
               cursor-pointer rounded-[10px]   font-semibold flex items-center justify-center h-[65px]   leading-[150%] text-[24px]"

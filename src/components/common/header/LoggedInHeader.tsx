@@ -48,7 +48,9 @@ const LoggedInHeader = () => {
             >
               면접 보러가기
             </Link>
-            <Menu title={userData?.name + "님" || "세영님"}></Menu>
+            <Menu
+              title={userData?.name ? userData.name + "님" : "세영님"}
+            ></Menu>
 
             {/* <button
               type="button"

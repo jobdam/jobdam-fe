@@ -11,7 +11,6 @@ const SignInRoute = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
-  const queryClient = useQueryClient();
 
   return (
     <AuthLayout
@@ -21,9 +20,15 @@ const SignInRoute = () => {
     >
       <SignIn
         onSuccess={() => {
-          const key: any = ["authenticated-user"];
+          const raw = localStorage.getItem("emailcheck");
+          const emcheck = raw ? JSON.parse(raw) : null;
+          if (emcheck.isSetup === false) {
+            navigate(paths.mypage.postdata.path, { replace: true });
 
-          queryClient.invalidateQueries(key);
+            return;
+          }
+
+          // queryClient.invalidateQueries(key);
           navigate(`${redirectTo ? `${redirectTo}` : paths.home.getHref()}`, {
             replace: true,
           });
