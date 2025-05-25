@@ -1,4 +1,5 @@
 /** @format */
+
 import Footer from "./footer";
 import LandingTopImage from "./components/landingTopImage";
 import LandingCard from "./components/landingCard";
@@ -13,9 +14,10 @@ function Apps() {
           className="absolute z-1  translate-y-[-1400px] min-w-[1980px]  min-h-[1980px] 
        bg-gradient-round rounded-full"
         ></div> */}
-        <div className="absolute min-w-full z-1 min-h-full top- left-0 ">
+        <div className="absolute min-w-full  z-1 min-h-full top-0 left-0 ">
           <img
             className="
+            w-[2400px] h-[2400px]
         "
             src="/배경 색.svg"
           ></img>
@@ -30,8 +32,16 @@ function Apps() {
               <LandingTopImage></LandingTopImage>
             </div>
             {/* 카드형 ui 그래픽 함께 */}
-            <div className="w-[calc(100vw)] min-w-[1200px] max-[1980px] bg-gradient-landing-top">
-              <div className="flex items-center justify-center">
+            <div
+              className="    
+              
+              w-[calc(100vw)] min-w-[1200px] max-[1980px] bg-gradient-landing-top
+"
+            >
+              <div
+                className="
+          flex items-center justify-center"
+              >
                 <LandingCard></LandingCard>
               </div>
               {/* 프로젝트를 설명하는 부분 레이아웃 */}
