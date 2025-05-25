@@ -13,6 +13,8 @@ export function saveTokens(accessToken: string) {
 } // 3. localStorage에서 저장된 토큰을 모두 삭제하는 함수
 export function clearTokens() {
   localStorage.removeItem("accessToken"); // accessToken 삭제
+  // window.dispatchEvent(new Event("tokenChanged")); // 🔥 리렌더 유도
+
   // localStorage.removeItem('refreshToken');  // 위험하므로 주석 처리
 }
 
@@ -28,7 +30,6 @@ export const refreshAccessToken = async (): Promise<string | void> => {
     return token;
   } catch {
     //refreshToken이 만료된경우라면 로그아웃 처리한다.
-
     useLogout();
 
     throw new Error("Refresh token has expired or is invalid");

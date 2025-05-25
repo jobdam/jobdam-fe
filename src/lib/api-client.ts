@@ -1,19 +1,14 @@
 /** @format */
 
-import {
-  getAccessToken,
-  refreshAccessToken,
-  saveTokens,
-} from "@/lib/authSerivices";
+import { getAccessToken, refreshAccessToken } from "@/lib/authSerivices";
 import { store } from "@/store";
 import { addNotification } from "@/store/slices/notifications";
 import Axios, { InternalAxiosRequestConfig } from "axios";
 import { paths } from "@/config/paths";
-import { useLogout } from "./auth";
 let isRefreshing = false; // 토큰 갱신 상태 추적
-
 const apiUrl = import.meta.env.VITE_API_URL;
-// api 요청을 할때 interceptor 요청을 가로채기하여 이과정을 먼저 수행해서 통과되어야 한다.
+// api 요청을 할때 i
+// nterceptor 요청을 가로채기하여 이과정을 먼저 수행해서 통과되어야 한다.
 function authRequestInterceptor(config: InternalAxiosRequestConfig) {
   //요청 가로채기할때 항상 토큰을 사용, 로그인이 필요 없는 영역도 존재
   const token = getAccessToken();
@@ -52,7 +47,12 @@ api.interceptors.response.use(
     };
     const token = getAccessToken();
 
-    console.log(error.response?.status, error);
+    console.log(
+      error?.response?.status === 404 &&
+        error.response?.data?.message === "토큰이 만료되었습니다." &&
+        !originalRequest &&
+        !isRefreshing
+    );
     //401 에러가 뜨는경우 => 로그인이 안된경우, 와 accesstoken을 재발급 받아야하는겨웅'
 
     //로그인이 안된경우 protected router 로 강제로 로그인으로 보내기.
@@ -70,9 +70,9 @@ api.interceptors.response.use(
       error?.response?.status === 404 &&
       error.response?.data?.message === "토큰이 만료되었습니다." &&
       !originalRequest._retry &&
-      !isRefreshing &&
-      token
+      !isRefreshing
     ) {
+      console.log("토큰발급 진입");
       originalRequest._retry = true;
       isRefreshing = true;
 
@@ -109,13 +109,13 @@ api.interceptors.response.use(
         return Promise.reject(error);
       }
 
-      store.dispatch(
-        addNotification({
-          type: "error",
-          title: "Error",
-          message: message + `5초 후에 사라집니다.`,
-        })
-      );
+      // store.dispatch(
+      //   addNotification({
+      //     type: "error",
+      //     title: "Error",
+      //     message: message + `5초 후에 사라집니다.`,
+      //   })
+      // );
       console.log(error.response);
       const searchParams = new URLSearchParams();
       const redirectTo =

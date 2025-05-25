@@ -35,8 +35,9 @@ export const AuthLayout = ({
   const location = useLocation();
   //auth 영역은 useUser에서 제외한다.
   const shouldRunAuth = ![
+    "/auth/*",
     "/auth/login",
-    "/auth/register",
+    "/auth/register/*",
     "/auth/sign-up",
     "/auth/authEntry",
     "/auth/oauth-callback",
@@ -44,6 +45,7 @@ export const AuthLayout = ({
     "/verify/*",
   ].includes(location.pathname);
 
+  console.log(shouldRunAuth);
   const { data } = shouldRunAuth ? useUser() : { data: null };
 
   // const { data } = useUser();

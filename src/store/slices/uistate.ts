@@ -5,6 +5,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface UIState {
   isProfilePreviewOpen: boolean;
   progressStep: number;
+  isLogin: boolean;
 
   resumeState: boolean;
   aiState: boolean;
@@ -14,6 +15,7 @@ interface UIState {
 
 const initialState: UIState = {
   isProfilePreviewOpen: false,
+  isLogin: true,
   progressStep: 1,
   resumeState: false,
   aiState: true,
@@ -47,6 +49,9 @@ const uiSlice = createSlice({
     setErrorDuplicate: (state, action: PayloadAction<string>) => {
       state.ErrorDuplicate = action.payload;
     },
+    setIsLogin: (state, action: PayloadAction<boolean>) => {
+      state.isLogin = action.payload;
+    },
   },
 });
 
@@ -57,5 +62,6 @@ export const {
   setAiState,
   setProgressStep,
   setSelectList,
+  setIsLogin,
 } = uiSlice.actions;
 export default uiSlice.reducer;
