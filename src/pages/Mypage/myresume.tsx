@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { usePostResume } from "./api/post-resume";
 import { useResume } from "./api/get-resume";
 import PdfView from "./components/pdfview";
+import { useUser } from "@/lib/auth";
 
 type ResumeFormValues = {
   resumeFile: File | null;
@@ -21,14 +22,23 @@ const Myresume = () => {
       resumeFile: null,
     },
   });
+  const { data: userData } = useUser();
 
-  const { data } = useResume({});
+  console.log(userData?.id);
+  const { data, refetch } = useResume({ userId: userData?.email ?? "" });
   const resumeURL = data?.data?.resumeUrl;
-  console.log(resumeURL);
+  console.log(resumeURL, "get");
 
   const file = form.watch("resumeFile");
 
-  const registerResume = usePostResume({});
+  const registerResume = usePostResume({
+    userId: userData?.email ?? "",
+    mutationConfig: {
+      onSettled: () => {
+        refetch();
+      },
+    },
+  });
   //작성 완료시 url로 띄우기. preview는 실제 url이있다면 없어지도록
 
   return (
