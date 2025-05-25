@@ -23,10 +23,17 @@ export const WebSocketConnect = () => {
 };
 
 const AppRoot = () => {
+  //이게 먼저 실행이되고 로그아웃이 실행이됨.
+
   const token = getAccessToken();
-  const user = useUser();
+  // const token = useAuthToken();
   console.log(token);
-  console.log("user", user);
+
+  const user = useUser({
+    enabled: !!token,
+  });
+
+  console.log("user", user?.data);
   //token이 존재할때만 반응하도록, useUser가 존재하면
 
   return (

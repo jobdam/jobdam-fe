@@ -121,8 +121,7 @@ export const authConfig = {
     const token = response.headers["authorization"].replace("Bearer ", "");
     //localstorage에 로그인
     saveTokens(token);
-    console.log("로그인토큰 : ", token);
-    console.log(response.user, response.data);
+
     return response.user;
   },
   registerFn: async (data: RegisterInput) => {
@@ -132,11 +131,14 @@ export const authConfig = {
     return response.user;
   },
   logoutFn: async () => {
-    await logout();
-    //로그아웃에 성공하면 token제거,
-
-    clearTokens();
-    return null;
+    try {
+      await logout();
+      //로그아웃에 성공하면 token제거,
+      return null;
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
   },
 };
 
