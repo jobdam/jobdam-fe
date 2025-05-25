@@ -46,7 +46,10 @@ const VerifyEmailCheck = () => {
     }
   }, [isError, navigate]);
 
-  if (data?.data?.isSetup === false) return <VerifySuccess />;
+  if (data?.data?.isSetup === false) {
+    localStorage.setItem("emailcheck", JSON.stringify(data?.data));
+    return <VerifySuccess />;
+  }
 
   return <VerifyPending />;
 };

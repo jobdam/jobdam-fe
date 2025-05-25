@@ -1,6 +1,7 @@
 /** @format */
 
 import { Button } from "@/components/ui/button";
+import { paths } from "@/config/paths";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -12,7 +13,7 @@ const VerifySuccess = () => {
   React.useEffect(() => {
     // 3초 후 리다이렉트 하는데 post-profile로 리다이렉트한다.
     const timer = setTimeout(() => {
-      navigate("/mypage/post-profile", { replace: true }); //이동할 곳
+      navigate(`${paths.auth.login.path}`, { replace: true }); //이동할 곳
     }, 3000); // 5초 지연
 
     // 컴포넌트가 언마운트될 때 타이머 클리어
@@ -20,7 +21,7 @@ const VerifySuccess = () => {
   }, [navigate]);
 
   const handleClick = () => {
-    navigate("/mypage/post-profile", { replace: true });
+    navigate(`${paths.auth.login.path}`, { replace: true });
   };
 
   //success 에 도착하면  버튼을 클릭했을때
