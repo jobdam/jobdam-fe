@@ -17,7 +17,10 @@ import { fetchUserInterviewData } from "./api/get-interviewFullData";
 import VideoPanel from "./components/video/VideoPanel";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { setInterviewData } from "@/store/slices/videoChatInterview";
+import {
+  resetInterviewData,
+  setInterviewData,
+} from "@/store/slices/videoChatInterview";
 import { getUserIdFromJwt } from "@/utils/tokenUtils";
 import LoadingModal from "@/components/ui/loading/loadingModal";
 
@@ -88,6 +91,7 @@ const Videomain = () => {
     setFirstJoinUserCount(location.state?.enterUserCount);
     return () => {
       peerMap.clearAll(); //언마운트시 전부제거
+      dispatch(resetInterviewData());
     };
   }, [roomId]);
   /////////////////////////////
@@ -238,6 +242,7 @@ const Videomain = () => {
   const ensureInterviewData = async (userId: number) => {
     if (!interviewDataMap[userId]) {
       const userData = await fetchUserInterviewData(userId);
+      console.log("userdata", userData);
       dispatch(setInterviewData({ userId, data: userData }));
     }
   };

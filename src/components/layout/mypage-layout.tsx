@@ -44,11 +44,14 @@ const MypageLayout = ({
 
   return (
     <div
-      className={cn("flex min-h-[100vh] flex-row justify-center ", className)}
+      className={cn(
+        "flex min-h-[calc(100vh-70px)] flex-row justify-center ",
+        className
+      )}
     >
       {/* <div className="flex gap-x-[117px] items-start "> */}
       {/* 사이드바 */}
-      <div className="flex flex-col w-[200px] shrink-0 mt-[137px] mr-[102px] relative">
+      <div className="flex flex-col w-[200px] shrink-0 mt-[107px] mr-[102px] relative">
         <div>
           {/* 프로필 사진  mypage에선 카메라가 안보이다가 edit일때 보이고 preview가 활성화 되어야 한다.*/}
           <ProfilePreview
@@ -81,7 +84,7 @@ const MypageLayout = ({
       {/* 본문 영역 */}
       <div
         className={cn(
-          "flex flex-col mt-[105px] gap-y-[46px]",
+          "flex flex-col mt-[75px] gap-y-[46px]",
           resume && "gap-y-[26px]"
         )}
       >

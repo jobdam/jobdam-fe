@@ -22,9 +22,10 @@ const InterviewLayout = ({
   return (
     <div
       className={cn(
-        "flex h-[1600px] w-full justify-center p-[50px]",
+        "flex w-full justify-center p-[50px]",
 
-        register && "bg-[#E5F3FF]"
+        register && "h-[1600px] bg-[#E5F3FF]",
+        matching && "h-full"
       )}
     >
       {/* 전체 컨텐츠 wrapper (sidebar + main) */}
