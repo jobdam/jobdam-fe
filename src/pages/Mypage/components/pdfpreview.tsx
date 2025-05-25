@@ -1,7 +1,7 @@
 /** @format */
 import { Document, Page, pdfjs } from "react-pdf";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 
@@ -17,20 +17,6 @@ const Pdfpreview = ({ file }: Props) => {
   // const [scale, setScale] = useState(1.0); // 기본 배율
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState<number | null>(null);
-  const [height, setHeight] = useState<number | null>(null);
-  useEffect(() => {
-    const resize = () => {
-      if (containerRef.current) {
-        setWidth(containerRef.current.offsetWidth);
-        setHeight(containerRef.current.offsetHeight);
-      }
-    };
-
-    resize(); // 초기 실행
-    window.addEventListener("resize", resize);
-    return () => window.removeEventListener("resize", resize);
-  }, []);
 
   if (!file) {
     return null; // 또는 return <p className="text-gray-500 text-center">파일을 업로드해주세요.</p>;
@@ -52,14 +38,12 @@ const Pdfpreview = ({ file }: Props) => {
       <Document file={file}>
         <Page
           renderAnnotationLayer={false}
-          width={width ?? undefined}
-          height={height ?? undefined}
+          // width={width ?? undefined}
           pageNumber={1}
-          // scale={0.5}
+          scale={1}
           loading={
             <div
               style={{
-                width: width ?? undefined,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",

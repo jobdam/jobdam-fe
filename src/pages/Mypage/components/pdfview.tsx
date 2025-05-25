@@ -5,6 +5,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import { useEffect, useRef, useState } from "react";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
+import { type } from "../../../lib/react-query";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -15,6 +16,8 @@ type Props = {
 const PdfView = ({ resumeURL }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState<number | null>(null);
+  const [numPages, setNumPages] = useState<number | any>(null);
+  const [pageNumber, setPageNumber] = useState<number>(1);
 
   useEffect(() => {
     const resize = () => {
@@ -29,35 +32,41 @@ const PdfView = ({ resumeURL }: Props) => {
   }, []);
   //이건 직접보는거라 page
 
-  console.log(resumeURL, "pdfViewer");
-
   return (
-    <div ref={containerRef} className="  w-full h-full overflow-hidden">
+    <div
+      ref={containerRef}
+      className="w-full h-full flex flex-col overflow-x-hidden overflow-y-auto items-center"
+    >
       <Document
-        // file="https://jobdam-bucket.s3.ap-northeast-2.amazonaws.com/resume/37/940c1d22-bb5f-4483-9123-1bdfac8578df_37_resume.pdf"
-
         file={resumeURL}
+        onLoadSuccess={({ numPages }) => {
+          setNumPages(numPages);
+          setPageNumber(1); // reset when document changes
+        }}
+        loading={<div>PDF 로딩 중...</div>}
       >
-        <Page
-          renderAnnotationLayer={false}
-          width={width ?? undefined}
-          pageNumber={1}
-          scale={0.5}
-          loading={
-            <div
-              style={{
-                width: width ?? undefined,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "#f9f9f9",
-                border: "1px solid #ccc",
-              }}
-            >
-              로딩 중...
-            </div>
-          }
-        />
+        {Array.from(new Array(numPages), (_, index) => (
+          <Page
+            key={`page_${index + 1}`}
+            pageNumber={index + 1}
+            renderAnnotationLayer={false}
+            renderTextLayer={false}
+            loading={
+              <div
+                style={{
+                  width: width ?? undefined,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "#f9f9f9",
+                  border: "1px solid #ccc",
+                }}
+              >
+                로딩 중...
+              </div>
+            }
+          />
+        ))}
       </Document>
     </div>
   );

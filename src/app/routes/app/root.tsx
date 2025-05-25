@@ -7,6 +7,8 @@ import LoggedInHeader from "@/components/common/header/LoggedInHeader";
 
 import { useWebSocketConnect } from "@/services/webSockect/useWebSocketConnect";
 import { useUser } from "@/lib/auth";
+import { useEffect } from "react";
+import { queryClient } from "@/lib/react-query";
 
 const connectPaths = ["/interview/matching", "/chatroom", "/videoChat"];
 
@@ -29,16 +31,22 @@ const AppRoot = () => {
   // const token = useAuthToken();
   console.log(token);
 
-  const user = useUser({
+  const { data: user, refetch } = useUser({
     enabled: !!token,
   });
 
-  console.log("user", user?.data);
+  useEffect(() => {
+    if (token) {
+      refetch();
+    }
+  }, [token, refetch]);
+
+  console.log("user", user);
   //token이 존재할때만 반응하도록, useUser가 존재하면
 
   return (
     <>
-      {user?.data ? (
+      {user ? (
         <LoggedInHeader></LoggedInHeader>
       ) : (
         <LoggedOutHeader></LoggedOutHeader>

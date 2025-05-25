@@ -10,24 +10,22 @@ export const getResume = () => {
   });
 };
 //
-export const getResumeQuery = (userId: string) => {
+export const getResumeQuery = () => {
   return queryOptions({
-    queryKey: ["resumeURL", userId],
+    queryKey: ["resumeURL"],
     queryFn: () => getResume(),
     staleTime: 1000 * 60 * 30,
     gcTime: 1000 * 60 * 32,
-    enabled: !!userId,
   });
 };
 
 type useResumeOptions = {
-  userId: string;
   queryConfig?: QueryConfig<typeof getResumeQuery>;
 };
 
-export const useResume = ({ queryConfig, userId }: useResumeOptions) => {
+export const useResume = ({ queryConfig }: useResumeOptions) => {
   return useQuery({
     ...queryConfig,
-    ...getResumeQuery(userId),
+    ...getResumeQuery(),
   });
 };

@@ -15,7 +15,7 @@ import { z } from "zod";
 // import { AuthResponse, User } from '@/types/api';
 
 import { api } from "./api-client";
-import { saveTokens } from "./authSerivices";
+import { clearTokens, saveTokens } from "./authSerivices";
 import LoadingGradient from "@/components/ui/spinner/loadingSpinner";
 
 const getUser = async (): Promise<User> => {
@@ -134,8 +134,11 @@ export const authConfig = {
     try {
       await logout();
       //로그아웃에 성공하면 token제거,
+      clearTokens();
       return null;
     } catch (err) {
+      clearTokens();
+
       console.log(err);
       return null;
     }

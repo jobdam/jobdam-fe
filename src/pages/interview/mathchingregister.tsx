@@ -82,6 +82,7 @@ const InterviewRegister = () => {
     <Form
       form={form}
       onSubmit={(values: any) => {
+        console.log(values);
         navigate(`${paths.interview.matching.path}`, {
           state: values,
         });
@@ -175,7 +176,7 @@ const InterviewRegister = () => {
             {interviewType && introduce && introduce.trim().length > 0 && (
               <div className="relative top-[15%] left-0 flex justify-center items-center">
                 <button
-                  type="submit"
+                  // type="submit"
                   //disabled={!mediaAllowed} 임시로 주석해둔거 원래 열어야함
                   className="bg-[#488fff] h-[65px] w-[40%] text-[white] text-[24px] cursor-pointer rounded-[10px]"
                 >
