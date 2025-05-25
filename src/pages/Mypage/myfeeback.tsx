@@ -53,6 +53,13 @@ const MyFeedback = () => {
 
   return (
     <div className="flex flex-col min-w-[915px] max-h-[600px] overflow-auto scrollbar-none items-stretch ">
+      {mergedGroups.length === 0 && (
+        <div className="rounded-[10px] bg-white p-[25px] w-[807px] mt-[30px] h-[240px] items-center justify-center translate-x-[10px] shadow flex flex-col">
+          <span className="text-[18px] text-black/50 font-medium tracking-tight">
+            아직 받은 피드백이 없어요.
+          </span>
+        </div>
+      )}
       {mergedGroups.map((group, idx) => {
         // 오픈된/닫힌 카드 계산
         const openCount = group.interviews.filter((i) =>
