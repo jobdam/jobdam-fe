@@ -16,6 +16,7 @@ import { z } from "zod";
 
 import { api } from "./api-client";
 import { clearTokens, saveTokens } from "./authSerivices";
+import LoadingGradient from "@/components/ui/spinner/loadingSpinner";
 
 const getUser = async (): Promise<User> => {
   const response = await api.get(`/user/profile`);
@@ -193,12 +194,9 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   //로딩창 만들어지면 이것도 고려
 
   //user 정보가 채 완료되기도전에 이쪽으로 가버린다. 완전히 완료가 되고 난후 되도록
-  if (isLoading || isFetching || user === undefined) {
-    return <div>로딩 중...</div>; // or skeleton UI
-  }
-
-  //
-  if (!user) {
+  if (isLoading || isFetching) {
+    return <LoadingGradient></LoadingGradient>;
+  } else if (!user) {
     return (
       <Navigate to={paths.auth.login.getHref(location.pathname)} replace />
     );

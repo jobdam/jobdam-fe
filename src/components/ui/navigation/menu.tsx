@@ -5,6 +5,8 @@ import { Link } from "../link";
 import { paths } from "@/config/paths";
 import { useLogout } from "@/lib/auth";
 import { useNavigate } from "react-router";
+import { queryClient } from "@/lib/react-query";
+import { clearTokens } from "@/lib/authSerivices";
 type Props = { title: string };
 
 const Menu = ({ title }: Props) => {
@@ -12,6 +14,12 @@ const Menu = ({ title }: Props) => {
 
   const logout = useLogout({
     onSuccess: () => navigate(paths.auth.login.getHref(location.pathname)),
+    onSettled: () => {
+      //성공하든 실패하든. 클라이언트단에서는 로그아웃을 진행한다.
+      navigate(paths.auth.login.getHref(location.pathname));
+      queryClient.clear();
+      clearTokens();
+    },
   });
   return (
     <NavigationMenu.Root className="relative  z-10 ">
