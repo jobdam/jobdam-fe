@@ -9,6 +9,7 @@ const LandingTopImage = () => {
   return (
     <>
       <div className="  z-2 w-[800px] h-[1000px] mt-[36px] ">
+
         <img className="size-[647px]" src={mainImage}></img>
         <div
           className="
