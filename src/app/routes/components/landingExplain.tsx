@@ -8,10 +8,10 @@ const LandingExplain = () => {
   return (
     <>
       <div
-        className="w-[calc(100vw)] z-3 gap-y-[138px] pb-[220px]  min-w-[1550px] max-w-[1980px] 
-      flex flex-col items-center justify-center  mx-[120px]"
+        className="w-[calc(100vw-240px)] z-3 gap-y-[151px] pb-[220px]  min-w-[1000px] max-w-[1980px] 
+      flex flex-col items-center justify-center mx-auto"
       >
-        <div className="flex h-[600px] gap-[40px]  justify-between items-center  flex-row">
+        <div className="flex h-[600px] z-[10]  gap-[40px]  justify-between items-center  flex-row">
           <div className="flex items-center min-w-[700px] flex-col">
             <div
               className="z-[15] relative flex justify-center items-center w-[716px] h-[416px] 
@@ -41,8 +41,8 @@ const LandingExplain = () => {
           </div>
         </div>
 
-        <div className="flex gap-[40px] justify-between items-center  flex-row">
-          <div className="min-w-[700px]">
+        <div className="flex gap-[40px] mb-[40px] justify-between items-center  flex-row">
+          <div className="">
             <h2 className="text-[24px] text-[#488fff] font-bold leading-[150%] ">
               2. 실시간 화상 면접 진행
             </h2>
@@ -54,17 +54,17 @@ const LandingExplain = () => {
               추천도 함께 제공돼요.<br></br>
             </div>
           </div>
-          <div className="z-[15] relative flex justify-center items-center w-[716px] h-[416px] rounded-[10px] bg-[#000] shadow-custom">
+          <div className="z-[15] relative flex min-w-[715px] justify-center items-center w-[716px] h-[416px] rounded-[10px] bg-[#000] shadow-custom">
             <img className="aspect-[346/195]" src={video} />
           </div>
         </div>
 
         <div className="flex  gap-[40px] justify-between items-center  flex-row">
-          <div className="z-[15] relative flex justify-center items-center w-[716px] h-[416px] rounded-[10px] bg-[#000] shadow-custom">
+          <div className="z-[15] relative flex min-w-[715px] justify-center items-center w-[716px] h-[416px] rounded-[10px] bg-[#000] shadow-custom">
             <img className="aspect-[346/195]" src={feedback} />
           </div>
 
-          <div className="min-w-[787px]">
+          <div className="">
             <h2 className="text-[24px] text-[#488fff] font-bold leading-[150%] ">
               3. 피드백 리포트로 면접 복기
             </h2>
