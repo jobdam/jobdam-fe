@@ -21,6 +21,9 @@ import ProfilePreview from "./components/profilepreview";
 import { useNavigate, useSearchParams } from "react-router";
 import { paths } from "@/config/paths";
 import LoadingGradient from "@/components/ui/spinner/loadingSpinner";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store";
+import { setIsLogin } from "@/store/slices/uistate";
 
 const ProfilePost = () => {
   const [loading, isLoading] = React.useState<boolean>(false);
@@ -53,6 +56,8 @@ const ProfilePost = () => {
   //
   React.useEffect(() => {
     if (!initializedRef.current && jobGroups.length > 0) {
+      console.log(jobGroups[0]?.details[0]?.jobDetailCode);
+
       form.reset({
         jobCode: jobGroups[0].jobCode,
         jobDetailCode: jobGroups[0]?.details[0]?.jobDetailCode ?? "",
@@ -74,7 +79,7 @@ const ProfilePost = () => {
     if (!jobCode) return;
 
     const selectedGroup = jobGroups.find((group) => group.jobCode === jobCode);
-    const firstDetailCode = selectedGroup?.details[0].jobDetail;
+    const firstDetailCode = selectedGroup?.details[0].jobDetailCode;
     console.log(firstDetailCode);
 
     if (firstDetailCode) {
@@ -84,6 +89,7 @@ const ProfilePost = () => {
 
   const jobGroup = jobGroups.find((group) => group.jobCode === jobCode);
   const jobDetails = jobGroup?.details ?? [];
+  const dispatch = useDispatch<AppDispatch>();
 
   //프로필 등록 하고 나면 , mypage 로 이동해서 바로 확인할수있도록,
   //프로필 등록에 실패하면
@@ -96,7 +102,7 @@ const ProfilePost = () => {
         navigate(redirectTo ? redirectTo : paths.mypage.root.path, {
           replace: true,
         });
-        localStorage.removeItem("emailcheck");
+        dispatch(setIsLogin(true));
       },
       onSettled: () => {
         isLoading(false);
@@ -108,7 +114,8 @@ const ProfilePost = () => {
     setSelectedFile(file);
     // 서버 업로드 or FormData 처리 등
   };
-
+  const data2 = form.getValues("jobDetailCode");
+  console.log(data2);
   return (
     <Form
       className="space-y-[20px]"
