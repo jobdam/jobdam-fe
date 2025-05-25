@@ -3,6 +3,7 @@
 import message from "@/assets/landingImage/imagefolder2/flamel-collectiodn-FLAMEL-3D-401699-1x 1.svg";
 import goodImage from "@/assets/landingImage/imagefolder2/flamel-collection-FLAMEL-3D-1021067-1x 1.svg";
 import folder from "@/assets/landingImage/imagefolder2/flamel-csollecdtion-FLAMEL-3D-610468-1x 1.svg";
+import { InterviewSpinner } from "@/components/ui/spinner";
 
 const LandingCard = () => {
   return (
@@ -11,6 +12,7 @@ const LandingCard = () => {
     mt-[150px]
     max-w-[calc(90vw-350px)] grid-cols-3 h-[600px] min-w-[1050px]  w-[calc(100vw-350px)] "
     >
+      <InterviewSpinner></InterviewSpinner>
       <div
         className="relative 
         pt-[40px] px-[40px] max-w-[453px] aspect-[453/319] 
