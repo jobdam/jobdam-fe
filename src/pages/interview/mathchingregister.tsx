@@ -53,6 +53,18 @@ const InterviewRegister = () => {
     name: "interviewType",
   });
 
+  React.useEffect(() => {
+    (async () => {
+      try {
+        await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      } catch (err) {
+        alert(
+          "화상면접을 위해 카메라/마이크 권한이 필요합니다.\n브라우저 설정에서 허용해 주세요."
+        );
+      }
+    })();
+  }, []);
+
   return (
     <Form
       form={form}
