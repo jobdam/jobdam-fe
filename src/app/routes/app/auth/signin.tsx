@@ -23,8 +23,8 @@ const SignInRoute = () => {
       title="회원 로그인"
     >
       <SignIn
-        onSuccess={() => {
-          queryClient.invalidateQueries(key);
+        onSuccess={async () => {
+          await queryClient.invalidateQueries({ queryKey: key });
 
           if (!user) {
             navigate(`${paths.mypage.postdata.path}`, { replace: true });

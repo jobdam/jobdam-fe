@@ -14,14 +14,11 @@ function Apps() {
           className="absolute z-1  translate-y-[-1400px] min-w-[1980px]  min-h-[1980px] 
        bg-gradient-round rounded-full"
         ></div> */}
-        <div className="absolute min-w-full  z-1 min-h-full top-0 left-0 ">
-          <img
-            className="
-            w-[2400px] h-[2400px]
-        "
-            src="/배경 색.svg"
-          ></img>
-        </div>
+        <div
+          className="
+        bg-gradient-round rounded-full
+        absolute   z-1 h-[2400px] w-[1980px] bottom-[57%] "
+        ></div>
 
         {/* 랜딩 페이지 전체 */}
         <div className="    ">
