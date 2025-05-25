@@ -6,7 +6,11 @@ import folder from "@/assets/landingImage/imagefolder2/flamel-csollecdtion-FLAME
 
 const LandingCard = () => {
   return (
-    <div className="z-2 grid gap-x-[40px] max-w-[calc(90vw-350px)] grid-cols-3 h-[600px] min-w-[1050px]  w-[calc(100vw-350px)] ">
+    <div
+      className="z-2 grid gap-x-[40px] 
+    mt-[150px]
+    max-w-[calc(90vw-350px)] grid-cols-3 h-[600px] min-w-[1050px]  w-[calc(100vw-350px)] "
+    >
       <div
         className="relative 
         pt-[40px] px-[40px] max-w-[453px] aspect-[453/319] 

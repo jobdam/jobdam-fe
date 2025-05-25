@@ -8,7 +8,8 @@ import shadow from "@/assets/landingImage/shadow.png";
 const LandingTopImage = () => {
   return (
     <>
-      <div className="  z-2 w-[800px] h-[1150px] mt-[36px] ">
+      <div className="  z-2 w-[800px] h-[1000px] mt-[36px] ">
+
         <img className="size-[647px]" src={mainImage}></img>
         <div
           className="
