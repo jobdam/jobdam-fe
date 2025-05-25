@@ -57,7 +57,7 @@ const ChatPanel = ({
   const interviewTypeLabel = InterviewTypeLabel[interviewType];
 
   return (
-    <div className="h-[95%] w-[40%] bg-[#E5F3FF] flex flex-col rounded-[15px] shadow-custom">
+    <div className="h-[95%] w-[40%] bg-[#E5F3FF] flex flex-col rounded-[15px]">
       <header className="h-16 bg-[#488FFF] flex items-center px-6 shadow-md rounded-t-[15px]">
         <h1 className="text-[16px] text-white font-semibold">
           {jobGroup}

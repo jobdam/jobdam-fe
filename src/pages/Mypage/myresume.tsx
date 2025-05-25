@@ -49,7 +49,7 @@ const Myresume = () => {
       >
         {({}) => (
           <>
-            <div className="  flex flex-col rounded-[20px]  justify-center items-center min-w-[915px] h-[617px]  p-[36px] pb-[40px] bg-[white]">
+            <div className="  flex flex-col rounded-[20px]  justify-center items-center min-w-[915px] h-[580px]  p-[36px] bg-[white]">
               {/*pdf  업로드 버튼 누르면 모달창 나온다*/}
 
               <PDFUploadDialog
@@ -60,13 +60,15 @@ const Myresume = () => {
                 {!file && (
                   <PDFPreviewDropzoneWithIcon
                     content={
-                      <>
-                        자기소개서 또는 이력서 내용을 입력해주세요. <br />
-                        준비해둔 글이 있다면 그대로 붙여넣어 주세요.
-                        <p className="text-[red]">
-                          아래 저장버튼은 꼭 눌러주세요!!
-                        </p>
-                      </>
+                      <div className="flex flex-col items-center justify-center h-full w-full text-center">
+                        <img
+                          className="mb-5"
+                          src="/resume.svg"
+                          alt="이력서모양"
+                        />
+                        이력서를 PDF로 첨부해 주세요. <br />
+                        면접 참여 시 이 문서가 공유됩니다.
+                      </div>
                     }
                     file={file}
                     setFile={(file) => form.setValue("resumeFile", file)}
@@ -100,7 +102,7 @@ const Myresume = () => {
 
               <div className="flex flex-row justify-between"></div>
             </div>
-            <div className="flex justify-center w-/10 mt-[70px] mb-[70px] items-center">
+            <div className="flex justify-center w-1/2 mx-auto mt-[70px] mb-[20px] items-center">
               <Button type="submit">내용 저장하기</Button>
             </div>
           </>
