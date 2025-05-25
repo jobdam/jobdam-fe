@@ -110,7 +110,7 @@ const ProfileEdit = ({ selectedFile }: any) => {
     <div className="border-[1px] rounded-[20px] border-[#488FFF] bg-[white] pt-[38px] pb-[84px] px-[60px] max-h-[626px] w-[915px]">
       {isLoading && <LoadingGradient></LoadingGradient>}
       <Form
-        className="spacey-y-0"
+        className="spacey-y-0 "
         form={form}
         onSubmit={async (value) => {
           const payload = {
@@ -172,7 +172,7 @@ const ProfileEdit = ({ selectedFile }: any) => {
             </div>
 
             <div className="flex flex-row w-full items-center">
-              <Label className="w-[250px] leading-[150%] font-semibold text-[#488FFF] ">
+              <Label className="w-[250px] text-[20px] leading-[150%] font-semibold text-[#488FFF] ">
                 이름
               </Label>
               <div className="flex-1">
@@ -192,7 +192,7 @@ const ProfileEdit = ({ selectedFile }: any) => {
             </div>
             {/* 이메일 */}
             <div className="flex flex-row w-full items-center">
-              <Label className="w-[250px] leading-[150%] font-semibold text-[#488FFF] ">
+              <Label className="w-[250px]   text-[20px] leading-[150%] font-semibold text-[#488FFF] ">
                 이메일
               </Label>
               <div className="flex-1">
@@ -211,7 +211,7 @@ const ProfileEdit = ({ selectedFile }: any) => {
             </div>
             {/* 생년월일 */}
             <div className="flex flex-row w-full  items-center">
-              <Label className="w-[250px] leading-[150%] font-semibold text-[#488FFF] ">
+              <Label className="w-[250px] text-[20px] text-[20px] leading-[150%] font-semibold text-[#488FFF] ">
                 생년월일
               </Label>
               <div className="flex-1">
@@ -233,7 +233,7 @@ const ProfileEdit = ({ selectedFile }: any) => {
             </div>
             {/* 직무 */}
             <div className="flex flex-row w-full t items-center">
-              <Label className="w-[250px] leading-[150%] font-semibold text-[#488FFF] ">
+              <Label className="w-[250px] text-[20px] leading-[150%] font-semibold text-[#488FFF] ">
                 직무
               </Label>
               <div className="flex flex-1 flex-row gap-x-[8px] mt-[8px]">
@@ -271,7 +271,7 @@ const ProfileEdit = ({ selectedFile }: any) => {
             </div>
             {/* 경력 */}
             <div className="flex flex-row flex-1 items-center justify-between mt-[8px] pr-[160px]">
-              <Label className="w-[250px] leading-[150%] font-semibold text-[#488FFF] ">
+              <Label className="w-[250px] text-[20px] leading-[150%] font-semibold text-[#488FFF] ">
                 경력
               </Label>
               <Controller
@@ -289,7 +289,7 @@ const ProfileEdit = ({ selectedFile }: any) => {
             </div>
             {/* 학교 전공 */}
             <div className="flex flex-row w-full items-center">
-              <Label className="w-[250px] leading-[150%] font-semibold text-[#488FFF] ">
+              <Label className="w-[250px] text-[20px] leading-[150%] font-semibold text-[#488FFF] ">
                 학교(전공)
               </Label>
               <div className="flex flex-1 flex-row gap-x-[8px] mt-[8px]">
@@ -326,7 +326,7 @@ const ProfileEdit = ({ selectedFile }: any) => {
 
             {/* 목표기업 */}
             <div className="flex flex-row w-full items-center">
-              <Label className="w-[250px] leading-[150%] font-semibold text-[#488FFF] ">
+              <Label className="w-[250px] text-[20px] leading-[150%] font-semibold text-[#488FFF] ">
                 희망기업
               </Label>
               <div className="flex flex-1 flex-row gap-x-[8px] mt-[8px]">

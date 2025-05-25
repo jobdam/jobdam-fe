@@ -15,7 +15,7 @@ import { z } from "zod";
 // import { AuthResponse, User } from '@/types/api';
 
 import { api } from "./api-client";
-import { clearTokens, saveTokens } from "./authSerivices";
+import { clearTokens, getAccessToken, saveTokens } from "./authSerivices";
 import LoadingGradient from "@/components/ui/spinner/loadingSpinner";
 
 const getUser = async (): Promise<User> => {
@@ -112,7 +112,6 @@ export const authConfig = {
   userFn: async () => {
     //userId를 가져오는 방법
     const response = await getUser();
-    console.log(response);
     return response;
   },
 
@@ -189,19 +188,20 @@ export const termsSchema = z.object({
 });
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const token = getAccessToken();
   const location = useLocation();
-  const { data: user, isLoading, isFetching } = useUser();
+  const { data: user, isLoading, isSuccess, isFetching } = useUser();
 
-  console.log(user, isLoading, location.pathname, "protecterouter");
+  // //로그인후 프로텍티드 라우터로 오는
+  // //user정보가 받아지지 않은채로온다. 그래서 에러가발생.
+  // //로딩창 만들어지면 이것도 고려
 
-  //로그인후 프로텍티드 라우터로 오는
-  //user정보가 받아지지 않은채로온다. 그래서 에러가발생.
-  //로딩창 만들어지면 이것도 고려
+  // //user 정보가 채 완료되기도전에 이쪽으로 가버린다. 완전히 완료가 되고 난후 되도록
+  if (isFetching || isLoading) {
+    return <LoadingGradient />; // 데이터가 완전히 준비되기 전
+  }
 
-  //user 정보가 채 완료되기도전에 이쪽으로 가버린다. 완전히 완료가 되고 난후 되도록
-  if (isLoading || isFetching) {
-    return <LoadingGradient></LoadingGradient>;
-  } else if (!user) {
+  if (!user && isSuccess) {
     return (
       <Navigate to={paths.auth.login.getHref(location.pathname)} replace />
     );
