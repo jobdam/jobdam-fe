@@ -179,6 +179,7 @@ const ProfileEdit = ({ selectedFile }: any) => {
                 <Input
                   type="text"
                   placeholder={userData?.name}
+                  maxLength={20}
                   registration={register("name")}
                   //   value={form.getValues("name")}
                   className="h-[66px] border-b-[#488fff] rounded-none placeholder:text-[18px]

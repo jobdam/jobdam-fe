@@ -64,6 +64,7 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
               <Input
                 type="email"
                 label="이메일"
+                maxLength={30}
                 className=" font-medium text-left border-[1px] border-[#488FFF] text-black"
                 placeholder="jodbdam0415@gmail.com"
                 error={getFieldError(formState.errors["email"])}
@@ -73,6 +74,7 @@ export const SignIn = ({ onSuccess }: LoginFormProps) => {
               <Input
                 type="password"
                 label="비밀번호"
+                maxLength={30}
                 placeholder="비밀번호를 입력하세요."
                 className=" font-medium text-left  border-[1px] border-[#488FFF] text-black"
                 error={getFieldError(formState.errors["password"])}
