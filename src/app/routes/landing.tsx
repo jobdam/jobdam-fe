@@ -4,6 +4,7 @@ import LandingTopImage from "./components/landingTopImage";
 import LandingCard from "./components/landingCard";
 import LandingExplain from "./components/landingExplain";
 import End from "./components/end";
+import LoadingGradient from "@/components/ui/spinner/loadingSpinner";
 
 function Apps() {
   return (
@@ -13,6 +14,7 @@ function Apps() {
           className="absolute z-1  translate-y-[-2400px] min-w-[1200px] w-[1980px]  h-[4000px] 
        bg-[rgba(193,225,255,1)] rounded-full"
         ></div>
+
         {/* 랜딩 페이지 전체 */}
         <div className="   relative ">
           {/* 랜딩 페이지 배경 넣기  */}

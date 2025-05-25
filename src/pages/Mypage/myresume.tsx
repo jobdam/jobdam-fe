@@ -9,6 +9,7 @@ import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { usePostResume } from "./api/post-resume";
 import { useResume } from "./api/get-resume";
+import PdfView from "./components/pdfview";
 
 type ResumeFormValues = {
   resumeFile: File | null;
@@ -60,7 +61,7 @@ const Myresume = () => {
                   <PDFPreviewDropzoneWithIcon
                     content={
                       <>
-                        자기소개서 또는 이력서 내용을 입력해주세요. <br />{" "}
+                        자기소개서 또는 이력서 내용을 입력해주세요. <br />
                         준비해둔 글이 있다면 그대로 붙여넣어 주세요.
                         <p className="text-[red]">
                           아래 저장버튼은 꼭 눌러주세요!!
@@ -72,14 +73,14 @@ const Myresume = () => {
                   ></PDFPreviewDropzoneWithIcon>
                 )}
 
-                {/* {resumeURL ? (
+                {resumeURL ? (
                   <PdfView resumeURL={resumeURL}></PdfView>
-                ) : ( */}
-                <Pdfpreview
-                  file={file}
-                  setFile={(file) => form.setValue("resumeFile", file)}
-                ></Pdfpreview>
-                {/* )} */}
+                ) : (
+                  <Pdfpreview
+                    file={file}
+                    setFile={(file) => form.setValue("resumeFile", file)}
+                  ></Pdfpreview>
+                )}
               </div>
 
               <div className="mr-auto pl-[20px] h-[20px] translate-y-[20px]">
