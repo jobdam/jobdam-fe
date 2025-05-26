@@ -1,7 +1,12 @@
 /** @format */
 
 import { ChatUserInfo } from "@/types/chat";
-import { expMap, educationMap, companySizeMap } from "@/types/api";
+import {
+  expMap,
+  educationMap,
+  educationStatusMap,
+  companySizeMap,
+} from "@/types/api";
 
 interface ResumeCardProps {
   user: ChatUserInfo;
@@ -37,7 +42,8 @@ export default function ResumeCard({ user }: ResumeCardProps) {
             {expMap[user.experienceType]}
           </div>
           <div className="inline-block w-fit px-3 py-2 bg-blue-100 text-blue-700 text-xs font-medium rounded-lg border border-blue-300">
-            🎓 {educationMap[user.educationLevel]} · {user.educationStatus}
+            🎓 {educationMap[user.educationLevel]} ·{" "}
+            {educationStatusMap[user.educationStatus]}
           </div>
 
           <div className="inline-block w-fit px-3 py-2 bg-blue-100 text-blue-700 text-xs font-medium rounded-lg border border-blue-300">
