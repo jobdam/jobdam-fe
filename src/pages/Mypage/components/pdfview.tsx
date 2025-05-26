@@ -5,7 +5,6 @@ import { Document, Page, pdfjs } from "react-pdf";
 import { useEffect, useRef, useState } from "react";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
-import { type } from "../../../lib/react-query";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -17,7 +16,6 @@ const PdfView = ({ resumeURL }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState<number | null>(null);
   const [numPages, setNumPages] = useState<number | any>(null);
-  const [pageNumber, setPageNumber] = useState<number>(1);
 
   useEffect(() => {
     const resize = () => {
@@ -41,7 +39,7 @@ const PdfView = ({ resumeURL }: Props) => {
         file={resumeURL}
         onLoadSuccess={({ numPages }) => {
           setNumPages(numPages);
-          setPageNumber(1); // reset when document changes
+          // reset when document changes
         }}
         loading={<div>PDF 로딩 중...</div>}
       >

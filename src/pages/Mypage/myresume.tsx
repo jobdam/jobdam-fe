@@ -66,13 +66,20 @@ const Myresume = () => {
                 {!file && (
                   <PDFPreviewDropzoneWithIcon
                     content={
-                      <>
-                        자기소개서 또는 이력서 내용을 입력해주세요. <br />
-                        준비해둔 글이 있다면 그대로 붙여넣어 주세요.
-                        <p className="text-[red]">
-                          아래 저장버튼은 꼭 눌러주세요!!
-                        </p>
-                      </>
+                      <div className="flex flex-col items-center justify-center w-full h-full py-10 text-gray-400">
+                        <img
+                          src="/resume.svg"
+                          alt="이력서"
+                          className="w-24 h-24 mb-4"
+                        />
+                        <div className="text-center">
+                          <p className="text-base font-medium">
+                            이력서를 PDF로 첨부해 주세요.
+                            <br />
+                            면접 참여 시 이 문서가 공유됩니다.
+                          </p>
+                        </div>
+                      </div>
                     }
                     file={file}
                     setFile={(file) => form.setValue("resumeFile", file)}
