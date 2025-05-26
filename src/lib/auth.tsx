@@ -188,7 +188,7 @@ export const termsSchema = z.object({
 });
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const token = getAccessToken();
+  // const token = getAccessToken();
   const location = useLocation();
   const { data: user, isLoading, isSuccess, isFetching } = useUser();
 
