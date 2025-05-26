@@ -52,6 +52,14 @@ export const educationMap: Record<educationCode, string> = {
   "HIGH-SCHOOL": "고등학교",
 };
 
+type educationStatus = "GRADUATED" | "ENTRANCE" | "ABSENCE";
+
+export const educationStatusMap: Record<educationStatus, string> = {
+  GRADUATED: "졸업",
+  ENTRANCE: "입학",
+  ABSENCE: "휴학",
+};
+
 export type expCode = "NEW" | "EXPERIENCED";
 
 export const expMap: Record<expCode, string> = {
