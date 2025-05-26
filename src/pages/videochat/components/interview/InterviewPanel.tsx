@@ -162,9 +162,9 @@ const InterviewPanel = () => {
         )}
         {/* 이력서 영역 */}
         {resume && (
-          <div className="mt-1 px-2">
+          <div className="mt-1 px-2 h-[87%]">
             {resumeUrl ? (
-              <ResumeViewer resumeUrl={resumeUrl} />
+              <ResumeViewer resumeURL={resumeUrl} />
             ) : (
               <p className="text-gray-400 text-sm">
                 이력서를 등록하지 않은 유저입니다.
