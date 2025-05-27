@@ -63,7 +63,7 @@ export const useWebSocketConnect = (connect: boolean) => {
           },
           onStompError: async (frame) => {
             // 1) 최초 에러 → Refresh 시도
-            console.log("토큰 재발급 요청!");
+            console.log("토큰 재발급 요청!", frame);
             if (retryCount === 0) {
               retryCount += 1;
               await refreshAccessToken(); // 이 함수는 refreshToken으로 accessToken 재발급, 실패 시 로그아웃 등

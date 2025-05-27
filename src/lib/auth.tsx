@@ -15,7 +15,7 @@ import { z } from "zod";
 // import { AuthResponse, User } from '@/types/api';
 
 import { api } from "./api-client";
-import { clearTokens, getAccessToken, saveTokens } from "./authSerivices";
+import { clearTokens, saveTokens } from "./authSerivices";
 import LoadingGradient from "@/components/ui/spinner/loadingSpinner";
 
 const getUser = async (): Promise<User> => {
