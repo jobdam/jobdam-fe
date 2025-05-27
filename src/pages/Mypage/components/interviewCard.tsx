@@ -47,7 +47,8 @@ const InterviewCard = ({
               잘한 점
             </div>
             <div className="text-black text-[14px] font-normal mt-1 line-clamp-5">
-              {interview.wellDone || "받은 피드백이 없습니다."}
+              {interview.wellDone ||
+                "AI 분석 중입니다. 잠시 후에 다시 접근해주세요."}
             </div>
           </div>
           {/* 개선할 점 */}
@@ -56,7 +57,8 @@ const InterviewCard = ({
               개선할 점
             </div>
             <div className="text-black text-[14px] font-normal mt-1 line-clamp-5">
-              {interview.toImprove || "받은 피드백이 없습니다."}
+              {interview.toImprove ||
+                "AI 분석 중입니다. 잠시 후에 다시 접근해주세요."}
             </div>
           </div>
         </div>
