@@ -26,6 +26,7 @@ export const useWebSocketConnect = (connect: boolean) => {
   };
 
   useEffect(() => {
+    let retryCount = 0;
     if (!connect) {
       console.log("웹소켓 연결 취소요청!");
       globalClientRef?.deactivate();
@@ -41,37 +42,44 @@ export const useWebSocketConnect = (connect: boolean) => {
       }
 
       //연결이 안되어 있으면 연결시도.
-      const accessToken = getAccessToken();
-      const sockjs = new SockJS(`${apiUrl}/ws`);
-      const client = new Client({
-        webSocketFactory: () => sockjs,
-        connectHeaders: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        reconnectDelay: 0,
-        onConnect: () => {
-          console.log("웹소켓 Connect");
-          globalClientRef = client; //클로저로 참조
-          hasActivatedRef.current = true;
-          dispatch(setConnected(true));
-        },
+      const connectWebSocket = async () => {
+        let accessToken = getAccessToken();
+        let client: Client | null = null;
 
-        onDisconnect: () => {
-          console.log("웹소켓 Disconnect");
-          disConnectHandler();
-        },
+        const sockjs = new SockJS(`${apiUrl}/ws`);
+        client = new Client({
+          webSocketFactory: () => sockjs,
+          connectHeaders: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          reconnectDelay: 0,
+          onConnect: () => {
+            globalClientRef = client!;
+            hasActivatedRef.current = true;
+            dispatch(setConnected(true));
+          },
+          onDisconnect: () => {
+            disConnectHandler();
+          },
+          onStompError: async (frame) => {
+            // 1) 최초 에러 → Refresh 시도
+            console.log("토큰 재발급 요청!", frame);
+            if (retryCount === 0) {
+              retryCount += 1;
+              await refreshAccessToken(); // 이 함수는 refreshToken으로 accessToken 재발급, 실패 시 로그아웃 등
+              // accessToken 갱신 후 재연결
+              setTimeout(connectWebSocket, 0); // 다시 connect 시도
+            } else {
+              // 2) 그래도 실패 → 에러 알림 및 로그아웃 등
+              disConnectHandler();
+            }
+          },
+        });
+        client.activate();
+      };
 
-        onStompError: async (frame) => {
-          console.error(
-            "웹소켓연결에러 차후에 refresh토큰발급등에 사용해야함 일단새로고침",
-            frame
-          );
-
-          await refreshAccessToken();
-          disConnectHandler();
-        },
-      });
-      client.activate(); //연결시작!
+      connectWebSocket();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }
   }, [connect, isConnected, dispatch]);
 };

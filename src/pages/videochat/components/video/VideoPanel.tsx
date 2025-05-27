@@ -18,6 +18,7 @@ import { useNavigate } from "react-router";
 import { SpeakingIndicator } from "./SpeakingIndicator";
 import InterviewTimer from "./InterviewTimer";
 import ConfirmModal from "@/components/ui/confirm/ConfirmModal";
+import { paths } from "@/config/paths";
 
 interface VideoPanelProps {
   //비디오 스트림
@@ -149,7 +150,7 @@ const VideoPanel = ({
 
   //나가기!
   const handleExit = () => {
-    navigate("/", { replace: true });
+    navigate(paths.mypage.feedback.path, { replace: true });
   };
   return (
     <div className="flex flex-col justify-between h-[90%] w-[75%] p-2 bg-white border border-[#d9d9d9] rounded-[20px] shadow-custom">
@@ -237,6 +238,7 @@ const VideoPanel = ({
         isOpen={isModalOpen}
         onConfirm={handleExit}
         onCancel={() => setIsModalOpen(false)}
+        confirmText={"피드백 확인하러 가기"}
       />
     </div>
   );
