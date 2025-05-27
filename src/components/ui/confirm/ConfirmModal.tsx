@@ -36,13 +36,21 @@ const ConfirmModal = ({
             onClick={onCancel}
             className="bg-[#488FFF] text-white font-semibold px-18 py-3 rounded-md hover:bg-blue-500"
           >
-            {cancelText}
+            {cancelText
+              .split("\n")
+              .map((line, idx) =>
+                idx === 0 ? line : [<br key={idx} />, line]
+              )}
           </button>
           <button
             onClick={onConfirm}
             className="bg-[#CFCFCF] text-white font-semibold px-14 py-3 rounded-md hover:bg-gray-400"
           >
-            {confirmText}
+            {confirmText
+              .split("\n")
+              .map((line, idx) =>
+                idx === 0 ? line : [<br key={idx} />, line]
+              )}
           </button>
         </div>
       </div>
