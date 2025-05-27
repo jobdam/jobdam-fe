@@ -15,7 +15,7 @@ import { z } from "zod";
 // import { AuthResponse, User } from '@/types/api';
 
 import { api } from "./api-client";
-import { clearTokens, saveTokens } from "./authSerivices";
+import { clearTokens, getAccessToken, saveTokens } from "./authSerivices";
 import LoadingGradient from "@/components/ui/spinner/loadingSpinner";
 
 const getUser = async (): Promise<User> => {
@@ -188,7 +188,6 @@ export const termsSchema = z.object({
 });
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  // const token = getAccessToken();
   const location = useLocation();
   const { data: user, isLoading, isSuccess, isFetching } = useUser();
 

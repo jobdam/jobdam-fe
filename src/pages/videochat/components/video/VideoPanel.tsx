@@ -237,6 +237,7 @@ const VideoPanel = ({
         isOpen={isModalOpen}
         onConfirm={handleExit}
         onCancel={() => setIsModalOpen(false)}
+        confirmText="진짜 나갈래요"
       />
     </div>
   );

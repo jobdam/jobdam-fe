@@ -1,4 +1,18 @@
-const ConfirmModal = ({ isOpen, onConfirm, onCancel }) => {
+type ConfirmModalProps = {
+  isOpen: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
+  confirmText?: string; // 퇴장할게요 (기본값 제공 가능)
+  cancelText?: string; // 계속 참여할게요 (기본값 제공 가능)
+};
+
+const ConfirmModal = ({
+  isOpen,
+  onConfirm,
+  onCancel,
+  confirmText = "퇴장할게요",
+  cancelText = "계속 참여할게요",
+}: ConfirmModalProps) => {
   if (!isOpen) return null;
 
   return (
@@ -22,13 +36,13 @@ const ConfirmModal = ({ isOpen, onConfirm, onCancel }) => {
             onClick={onCancel}
             className="bg-[#488FFF] text-white font-semibold px-18 py-3 rounded-md hover:bg-blue-500"
           >
-            계속 참여할게요
+            {cancelText}
           </button>
           <button
             onClick={onConfirm}
             className="bg-[#CFCFCF] text-white font-semibold px-14 py-3 rounded-md hover:bg-gray-400"
           >
-            퇴장할게요
+            {confirmText}
           </button>
         </div>
       </div>
