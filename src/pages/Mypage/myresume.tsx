@@ -10,6 +10,9 @@ import { useForm } from "react-hook-form";
 import { usePostResume } from "./api/post-resume";
 import { useResume } from "./api/get-resume";
 import PdfView from "./components/pdfview";
+import { store } from "@/store";
+import { addNotification } from "@/store/slices/notifications";
+import { useState } from "react";
 
 type ResumeFormValues = {
   resumeFile: File | null;
@@ -21,20 +24,41 @@ const Myresume = () => {
       resumeFile: null,
     },
   });
+  const [isLoding, setIsLoading] = useState<boolean>(false);
 
   const { data, refetch } = useResume({});
   const resumeURL = data?.data?.resumeUrl;
   console.log(resumeURL);
 
   const file = form.watch("resumeFile");
-
+  //업로드할때 loading 표시하기
   const registerResume = usePostResume({
     mutationConfig: {
       onSettled: () => {
         refetch();
       },
+      onError: (error: any) => {
+        if (error?.code === 415) {
+          store.dispatch(
+            addNotification({
+              type: "error",
+              message: `용량이 초과하였습니다 20mb이하로 설정해주세요 5초 후에 사라집니다.`,
+              title: "업로드 실패",
+            })
+          );
+          return;
+        }
+        store.dispatch(
+          addNotification({
+            type: "error",
+            message: `업로드에 문제가 생겼습니다 5초 후에 사라집니다.`,
+            title: "업로드 실패",
+          })
+        );
+      },
     },
   });
+
   //작성 완료시 url로 띄우기. preview는 실제 url이있다면 없어지도록
 
   return (
@@ -114,8 +138,14 @@ const Myresume = () => {
               </div>
               <div className="flex flex-row justify-between"></div>
             </div>
-            <div className="flex justify-center w-/10 mt-[70px] mb-[70px] items-center">
-              <Button type="submit">내용 저장하기</Button>
+            <div className="flex justify-center cursor-pointer w-/10 mt-[70px] mb-[70px] items-center">
+              <Button
+                isLoading={registerResume.isPending}
+                className="cursor-pointer "
+                type="submit"
+              >
+                내용 저장하기
+              </Button>
             </div>
           </>
         )}
