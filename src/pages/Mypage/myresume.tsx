@@ -32,6 +32,32 @@ const Myresume = () => {
 
   const file = form.watch("resumeFile");
   //업로드할때 loading 표시하기
+  const registerResume = usePostResume({
+    mutationConfig: {
+      onSettled: () => {
+        refetch();
+      },
+      onError: (error: any) => {
+        if (error?.code === 415) {
+          store.dispatch(
+            addNotification({
+              type: "error",
+              message: `용량이 초과하였습니다 20mb이하로 설정해주세요 5초 후에 사라집니다.`,
+              title: "업로드 실패",
+            })
+          );
+          return;
+        }
+        store.dispatch(
+          addNotification({
+            type: "error",
+            message: `업로드에 문제가 생겼습니다 5초 후에 사라집니다.`,
+            title: "업로드 실패",
+          })
+        );
+      },
+    },
+  });
 
   //작성 완료시 url로 띄우기. preview는 실제 url이있다면 없어지도록
 
