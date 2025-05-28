@@ -30,7 +30,7 @@ export const refreshAccessToken = async (): Promise<string | void> => {
     return token;
   } catch {
     //refreshToken이 만료된경우라면 로그아웃 처리한다.
-    useLogout();
+    //useLogout(); 훅이라서 컴포넌트에서사용필요!
 
     throw new Error("Refresh token has expired or is invalid");
   }
