@@ -1,7 +1,6 @@
 /** @format */
 
 import { api } from "./api-client";
-import { useLogout } from "./auth";
 
 export function getAccessToken(): string | null {
   return localStorage.getItem("accessToken"); // 저장된 accessToken을 반환
