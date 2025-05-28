@@ -245,6 +245,21 @@ const ChatRoom = () => {
           isOpen={isModalOpen}
           onConfirm={confirmLeave}
           onCancel={() => setIsModalOpen(false)}
+          children={
+            <div>
+              <img
+                src="/exclamation mark.svg"
+                alt="느낌표 아이콘"
+                className="w-25 h-25 mx-auto mt-8 mb-8"
+              />
+
+              {/* 메시지 */}
+              <p className="text-lg font-semibold mb-1">정말 나가시겠어요?</p>
+              <p className="text-sm text-gray-600 mb-20">
+                지금 나가면 이 모의면접에는 참여할 수 없어요.
+              </p>
+            </div>
+          }
         />
         <ChatPanel
           messages={messages}
