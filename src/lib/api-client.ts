@@ -1,8 +1,10 @@
 /** @format */
 
-import { getAccessToken, refreshAccessToken } from "@/lib/authSerivices";
-import { store } from "@/store";
-import { addNotification } from "@/store/slices/notifications";
+import {
+  clearTokens,
+  getAccessToken,
+  refreshAccessToken,
+} from "@/lib/authSerivices";
 import Axios, { InternalAxiosRequestConfig } from "axios";
 import { paths } from "@/config/paths";
 let isRefreshing = false; // 토큰 갱신 상태 추적
@@ -40,12 +42,11 @@ api.interceptors.response.use(
 
   //에러 반환
   async (error) => {
-    const message = error.response?.data?.message || error.message;
+    //const message = error.response?.data?.message || error.message;
 
     const originalRequest = error.config as InternalAxiosRequestConfig & {
       _retry?: boolean;
     };
-
     console.log(
       error?.response?.status === 404 &&
         error.response?.data?.message === "토큰이 만료되었습니다." &&
@@ -66,7 +67,7 @@ api.interceptors.response.use(
     //로그아웃을 진행하려해도 404 에러가뜨면서안됨(토큰이 만료되 로그아웃 못하는 상황)
     //
     if (
-      error?.response?.status === 404 &&
+      error?.response?.status === 401 &&
       error.response?.data?.message === "토큰이 만료되었습니다." &&
       !originalRequest._retry &&
       !isRefreshing
@@ -85,15 +86,22 @@ api.interceptors.response.use(
         return api(originalRequest);
         //   c
       } catch {
-        // refresh가 실패하는 경우는 로그아웃을 진행하낟.
+        // refresh가 실패하는 경우는 로그아웃을 진행한다.
+        //stroe
+        alert("세션이 만료되었습니다.");
+        //아래 알림은 로그인페이지로 이동하게되면서 안보이게된다.
+        // store.dispatch(
+        //   addNotification({
+        //     type: "error",
+        //     title: "세션 만료!",
+        //     message: message + `5초 후에 사라집니다.`,
+        //   })
+        // );
 
-        store.dispatch(
-          addNotification({
-            type: "error",
-            title: "Error",
-            message: message + `5초 후에 사라집니다.`,
-          })
-        );
+        //토큰지우고 로그인으로(리프레시 만료의경우에는 redirect를 안넣어준다.)
+        clearTokens();
+        window.location.href = paths.auth.login.path;
+        return;
       } finally {
         isRefreshing = false; // 토큰 갱신 완료
       }
@@ -102,6 +110,7 @@ api.interceptors.response.use(
     // 단순히 token이 없거나, 인증이 안된경우 확인하여 로그인으로 강제 이동 한다./
     //현재 authentry가 존재하므로  authentry로 이동하게끔한다. 추후 수정.
     if (error?.response?.status === 401) {
+      clearTokens();
       const pathname = window.location.pathname;
 
       if (pathname.startsWith("/verify") || pathname === "/verify/*") {

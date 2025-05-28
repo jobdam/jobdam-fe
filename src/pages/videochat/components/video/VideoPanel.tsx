@@ -238,7 +238,24 @@ const VideoPanel = ({
         isOpen={isModalOpen}
         onConfirm={handleExit}
         onCancel={() => setIsModalOpen(false)}
-        confirmText={"피드백 확인하러 가기"}
+        confirmText={"면접 종료하기"}
+        cancelText={"이어서 진행하기"}
+        children={
+          <div>
+            <img
+              src="/popupCheck.svg"
+              alt="팝업체크"
+              className="w-25 h-25 mx-auto mt-8 mb-8"
+            />
+
+            {/* 메시지 */}
+            <p className="text-lg font-semibold mb-20">
+              면접시 입력한 내용은 자동 저장되었어요.
+              <br />
+              모의면접을 종료하시겠어요?
+            </p>
+          </div>
+        }
       />
     </div>
   );
