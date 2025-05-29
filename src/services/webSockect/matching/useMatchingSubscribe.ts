@@ -47,5 +47,5 @@ export const useMatchingSubscribe = ({
       console.log("[구독 취소]", destination);
       dispatch(setDestination(null));
     };
-  }, [isConnected, destination, onMessage, headers]);
+  }, [isConnected, destination, onMessage, headers, enabled]);
 };

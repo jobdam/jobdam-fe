@@ -18,6 +18,7 @@ import { useNavigate } from "react-router";
 import { SpeakingIndicator } from "./SpeakingIndicator";
 import InterviewTimer from "./InterviewTimer";
 import ConfirmModal from "@/components/ui/confirm/ConfirmModal";
+import { paths } from "@/config/paths";
 
 interface VideoPanelProps {
   //비디오 스트림
@@ -149,7 +150,7 @@ const VideoPanel = ({
 
   //나가기!
   const handleExit = () => {
-    navigate("/", { replace: true });
+    navigate(paths.mypage.feedback.path, { replace: true });
   };
   return (
     <div className="flex flex-col justify-between h-[90%] w-[75%] p-2 bg-white border border-[#d9d9d9] rounded-[20px] shadow-custom">
@@ -237,6 +238,24 @@ const VideoPanel = ({
         isOpen={isModalOpen}
         onConfirm={handleExit}
         onCancel={() => setIsModalOpen(false)}
+        confirmText={"면접 종료하기"}
+        cancelText={"이어서 진행하기"}
+        children={
+          <div>
+            <img
+              src="/popupCheck.svg"
+              alt="팝업체크"
+              className="w-25 h-25 mx-auto mt-8 mb-8"
+            />
+
+            {/* 메시지 */}
+            <p className="text-lg font-semibold mb-20">
+              면접시 입력한 내용은 자동 저장되었어요.
+              <br />
+              모의면접을 종료하시겠어요?
+            </p>
+          </div>
+        }
       />
     </div>
   );

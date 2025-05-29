@@ -18,10 +18,13 @@ const InterviewMatching = () => {
   const location = useLocation();
   const formData = location.state;
 
-  const [subEnabled, setSubEnabled] = React.useState(true); //중복구독방지
+  const [subEnabled, setSubEnabled] = React.useState(false); //중복구독방지
 
   React.useEffect(() => {
     dispatch(setProgressStep(2));
+
+    const timer = setTimeout(() => setSubEnabled(true), 2000);
+    return () => clearTimeout(timer);
   }, []);
 
   const headers = React.useMemo(

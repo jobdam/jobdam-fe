@@ -18,6 +18,7 @@ import ConfirmModal from "../../components/ui/confirm/ConfirmModal";
 import { queryClient } from "@/lib/react-query";
 import { useDispatch } from "react-redux";
 import { resetInterviewData } from "@/store/slices/videoChatInterview";
+import LoadingModal from "@/components/ui/loading/loadingModal";
 
 const ChatRoom = () => {
   //공통 설정//
@@ -28,6 +29,8 @@ const ChatRoom = () => {
   const isFirstJoinRef = useRef(location.state?.firstJoin ?? false); //매칭때 처음참여 추가입장 구분
   const createdRef = useRef(location.state?.created /*?? Date()*/);
   const dispatch = useDispatch();
+  //로딩모달
+  const [isLoadingModalOpen, setIsLoadingModalOpen] = useState<boolean>(true);
   ///채팅방 설정///
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const { sendChat, sendReady } = useChatPublisher();
@@ -45,6 +48,16 @@ const ChatRoom = () => {
       return [...prev, ...newUsers];
     });
   }, []);
+
+  //로딩 모달설정
+  useEffect(() => {
+    if (isLoadingModalOpen) {
+      const timeoutId = setTimeout(() => {
+        setIsLoadingModalOpen(false);
+      }, 1500);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [isLoadingModalOpen]);
   //초기값설정
   useEffect(() => {
     if (!roomId || !myUserId) {
@@ -245,6 +258,21 @@ const ChatRoom = () => {
           isOpen={isModalOpen}
           onConfirm={confirmLeave}
           onCancel={() => setIsModalOpen(false)}
+          children={
+            <div>
+              <img
+                src="/exclamation mark.svg"
+                alt="느낌표 아이콘"
+                className="w-25 h-25 mx-auto mt-8 mb-8"
+              />
+
+              {/* 메시지 */}
+              <p className="text-lg font-semibold mb-1">정말 나가시겠어요?</p>
+              <p className="text-sm text-gray-600 mb-20">
+                지금 나가면 이 모의면접에는 참여할 수 없어요.
+              </p>
+            </div>
+          }
         />
         <ChatPanel
           messages={messages}
@@ -254,6 +282,17 @@ const ChatRoom = () => {
           interviewType={myUserInfo?.interviewType ?? ""}
         />
       </div>
+      {isLoadingModalOpen && (
+        <LoadingModal
+          children={
+            <>
+              <p>채팅방 진입중..</p>
+              <p className="mt-2">잠시만 기다려주세요.</p>
+            </>
+          }
+          onClose={() => setIsLoadingModalOpen(false)}
+        />
+      )}
     </div>
   );
 };

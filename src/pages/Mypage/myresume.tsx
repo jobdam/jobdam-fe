@@ -12,7 +12,6 @@ import { useResume } from "./api/get-resume";
 import PdfView from "./components/pdfview";
 import { store } from "@/store";
 import { addNotification } from "@/store/slices/notifications";
-import { useState } from "react";
 
 type ResumeFormValues = {
   resumeFile: File | null;
@@ -24,7 +23,7 @@ const Myresume = () => {
       resumeFile: null,
     },
   });
-  const [isLoding, setIsLoading] = useState<boolean>(false);
+  //const [isLoding, setIsLoading] = useState<boolean>(false);
 
   const { data, refetch } = useResume({});
   const resumeURL = data?.data?.resumeUrl;

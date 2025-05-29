@@ -1,6 +1,6 @@
 /** @format */
 import { RootState } from "@/store";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { usePostFeedBackMutation } from "../../api/post-feedBack";
 import { usePostQuestionMutation } from "../../api/post-question";
@@ -25,6 +25,13 @@ const QuestionFeedbackBox = ({
   const [feedback, setFeedback] = useState("");
   const [question, setQuestion] = useState("");
 
+  const feedbackRef = useRef<HTMLTextAreaElement>(null);
+  const questionRef = useRef<HTMLTextAreaElement>(null);
+  //alert 모달창으로 포커스 안가는문제해결
+  const [focusTarget, setFocusTarget] = useState<
+    null | "feedback" | "question"
+  >(null);
+
   const selectedUserId = useSelector(
     (state: RootState) => state.videoChatInterview.selectedUserId
   );
@@ -43,6 +50,7 @@ const QuestionFeedbackBox = ({
           title: "피드백 전송에 성공하였습니다.",
         });
         setFeedback("");
+        setFocusTarget("feedback");
       },
       onError: (err) => {
         setAlertModal({
@@ -72,6 +80,7 @@ const QuestionFeedbackBox = ({
         );
         onNewQuestionCreated(newQuestionId);
         setQuestion("");
+        setFocusTarget("question");
       },
       onError: (err) => {
         setAlertModal({
@@ -82,6 +91,17 @@ const QuestionFeedbackBox = ({
       },
     },
   });
+
+  useEffect(() => {
+    if (!alertModal.open && focusTarget) {
+      if (focusTarget === "feedback") {
+        feedbackRef.current?.focus();
+      } else if (focusTarget === "question") {
+        questionRef.current?.focus();
+      }
+      setFocusTarget(null); // 한 번만 동작하도록
+    }
+  }, [alertModal.open, focusTarget]);
 
   const handleFeedBackSubmit = async () => {
     if (!questionId) {
@@ -130,6 +150,7 @@ const QuestionFeedbackBox = ({
         <div className="relative bg-white px-4 py-3">
           <textarea
             value={feedback}
+            ref={feedbackRef}
             onKeyDown={(e) => {
               if (e.nativeEvent.isComposing) return; // 한글 입력 중이면 무시
               if (e.key === "Enter" && !e.shiftKey) {
@@ -159,6 +180,7 @@ const QuestionFeedbackBox = ({
         <div className="relative bg-white px-4 py-3">
           <textarea
             value={question}
+            ref={questionRef}
             onKeyDown={(e) => {
               if (e.nativeEvent.isComposing) return; // 한글 입력 중이면 무시
               if (e.key === "Enter" && !e.shiftKey) {
