@@ -190,7 +190,6 @@ export const termsSchema = z.object({
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   const { data: user, isLoading, isSuccess, isFetching } = useUser();
-
   // //로그인후 프로텍티드 라우터로 오는
   // //user정보가 받아지지 않은채로온다. 그래서 에러가발생.
   // //로딩창 만들어지면 이것도 고려

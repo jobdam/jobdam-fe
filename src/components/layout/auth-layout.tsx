@@ -34,18 +34,12 @@ export const AuthLayout = ({
   const navigate = useNavigate();
   const location = useLocation();
   //auth 영역은 useUser에서 제외한다.
-  const shouldRunAuth = ![
-    "/auth/*",
-    "/auth/login",
-    "/auth/register/*",
-    "/auth/sign-up",
-    "/auth/authEntry",
-    "/auth/oauth-callback",
-    "/verify",
-    "/verify/*",
-  ].includes(location.pathname);
+  const publicAuthPrefixes = ["/auth", "/verify"];
 
-  console.log(shouldRunAuth);
+  const shouldRunAuth = !publicAuthPrefixes.some(
+    (prefix) =>
+      location.pathname === prefix || location.pathname.startsWith(prefix + "/")
+  );
   const { data } = shouldRunAuth ? useUser() : { data: null };
 
   // const { data } = useUser();
