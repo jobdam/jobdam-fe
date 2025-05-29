@@ -7,9 +7,10 @@ import { paths } from "@/config/paths";
 import { SignIn } from "@/pages/auth/SignIn";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { queryClient } from "@/lib/react-query";
+import { useQueryClient } from "@/lib/react-query";
 
 const SignInRoute = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
@@ -23,8 +24,8 @@ const SignInRoute = () => {
       title="회원 로그인"
     >
       <SignIn
-        onSuccess={async () => {
-          await queryClient.invalidateQueries({ queryKey: key });
+        onSuccess={() => {
+          queryClient.setQueryData(["authenticated-user"], user);
 
           if (!user) {
             navigate(`${paths.mypage.postdata.path}`, { replace: true });

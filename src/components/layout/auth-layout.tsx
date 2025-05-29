@@ -72,7 +72,7 @@ export const AuthLayout = ({
       <div
         className={cn(
           "flex w-full  justify-center items-center",
-          entry || login ? "min-h-[calc(100vh-70px)]" : "h-[1370px]",
+          entry || login ? "h-[1080px]" : "h-[1370px]",
           entry && "bg-gradient-auth-entry ",
           login && "bg-gradient-auth-login"
         )}

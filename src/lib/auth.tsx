@@ -1,6 +1,7 @@
 /** @format */
 import { AuthResponse, User } from "@/types/api";
 import { Navigate, useLocation } from "react-router-dom";
+import { useQueryClient } from "@/lib/react-query";
 
 import { configureAuth } from "react-query-auth";
 import { paths } from "@/config/paths";
@@ -20,7 +21,7 @@ import LoadingGradient from "@/components/ui/spinner/loadingSpinner";
 
 const getUser = async (): Promise<User> => {
   const response = await api.get(`/user/profile`);
-
+  console.log(response.data, "responseData");
   return response.data;
 };
 
@@ -112,6 +113,7 @@ export const authConfig = {
   userFn: async () => {
     //userId를 가져오는 방법
     const response = await getUser();
+
     return response;
   },
 
@@ -201,7 +203,7 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <LoadingGradient />; // 데이터가 완전히 준비되기 전
   }
 
-  if (!user && isSuccess) {
+  if (!user) {
     return (
       <Navigate to={paths.auth.login.getHref(location.pathname)} replace />
     );
