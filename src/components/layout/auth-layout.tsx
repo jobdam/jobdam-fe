@@ -37,7 +37,7 @@ export const AuthLayout = ({
   const shouldRunAuth = ![
     "/auth/*",
     "/auth/login",
-    "/auth/register/*",
+    "/auth/register",
     "/auth/sign-up",
     "/auth/authEntry",
     "/auth/oauth-callback",
