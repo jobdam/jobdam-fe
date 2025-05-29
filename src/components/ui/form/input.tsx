@@ -44,6 +44,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       label,
       error,
       profile,
+
       registration,
       ...props
     },
