@@ -25,7 +25,6 @@ export const WebSocketConnect = () => {
 
 const AppRoot = () => {
   //이게 먼저 실행이되고 로그아웃이 실행이됨.
-  const queryClient = useQueryClient();
 
   const token = getAccessToken();
   // if (!token) return null;
@@ -33,7 +32,6 @@ const AppRoot = () => {
   // const token = useAuthToken();
   const {
     data: user,
-    isSuccess,
     isError,
     error,
     refetch,
@@ -43,7 +41,6 @@ const AppRoot = () => {
   console.log(user);
   React.useEffect(() => {
     if (token && !user) {
-      console.log(token, user, "asdasd");
       refetch();
     }
   }, [token]);
