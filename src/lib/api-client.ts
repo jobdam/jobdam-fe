@@ -101,7 +101,7 @@ api.interceptors.response.use(
         //토큰지우고 로그인으로(리프레시 만료의경우에는 redirect를 안넣어준다.)
         clearTokens();
         window.location.href = paths.auth.login.path;
-        return;
+        return Promise.reject(error);
       } finally {
         isRefreshing = false; // 토큰 갱신 완료
       }
