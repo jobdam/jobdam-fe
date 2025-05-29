@@ -1,8 +1,11 @@
 /** @format */
 
 import bg from "@/assets/landingImage/bgimage.png";
+import { paths } from "@/config/paths";
+import { useNavigate } from "react-router";
 
 const End = () => {
+  const navigate = useNavigate();
   return (
     <div className="relative h-[460px] min-w-[1200px] w-full ">
       <img className="min-w-[1200px] w-full h-full" src={bg} />
@@ -20,6 +23,7 @@ const End = () => {
           AI가 질문하고, 사람들이 직접 피드백해줘요.
         </div>
         <button
+          onClick={() => navigate(`${paths.interview.register.path}`)}
           className=" text-black px-[60px]  h-[98px]
         bg-[white] w-[333px] rounded-[20px] mt-[40px] text-[32px]
        cursor-pointer flex justify-center items-center font-semibold        "
