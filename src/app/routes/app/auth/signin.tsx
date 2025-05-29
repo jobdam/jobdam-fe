@@ -7,16 +7,13 @@ import { paths } from "@/config/paths";
 import { SignIn } from "@/pages/auth/SignIn";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { useQueryClient } from "@/lib/react-query";
 
 const SignInRoute = () => {
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
   const user = useSelector((state: RootState) => state.ui.isLogin);
 
-  const key: any = ["authenticated-user"];
   return (
     <AuthLayout
       className="w-[640px] max-h-[800px]"
@@ -25,8 +22,6 @@ const SignInRoute = () => {
     >
       <SignIn
         onSuccess={() => {
-          queryClient.setQueryData(["authenticated-user"], user);
-
           if (!user) {
             navigate(`${paths.mypage.postdata.path}`, { replace: true });
             return;

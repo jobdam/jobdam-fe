@@ -128,11 +128,11 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
             >
               <div className="flex items-center ">
                 <Input
-                  type="email"
+                  autoComplete="username"
                   label="이메일"
-                  maxLength={30}
                   className="font-medium 
                   placeholder:text-[18px]
+                  
                 placeholder:font-normal 
                   min-w-[400px] h-[70px] text-left border px-[24px] border-[rgba(0,0,0,0.3)] text-black"
                   placeholder="jodbdam0415@gmail.com"
@@ -178,8 +178,6 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
                 type="password"
                 label="비밀번호"
                 autoComplete="current-password"
-                maxLength={30}
-
                 placeholder="비밀번호를 입력하세요."
                 className="font-medium
                 placeholder:text-[18px]
@@ -192,7 +190,6 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
                 type="password"
                 autoComplete="new-password"
                 label="비밀번호 확인"
-                maxLength={30}
                 placeholder="비밀번호를 입력하세요."
                 className="font-medium placeholder:text-[18px]
                 placeholder:font-normal 
@@ -232,12 +229,12 @@ const SignUp = ({ onSuccess }: RegisterFormProps) => {
                     </Label>
                   </div>
 
-                  {/* <div className="flex mt-[30px] pl-[35px]">
+                  <div className="flex mt-[30px] pl-[35px]">
                     <span className="text-[#B2B2B2] text-[14px] font-normal">
                       위치기반 서비스 이용약관(선택), 마케팅 정보 수신
                       동의(이메일,SMS/MMS)(선택) 동의를 포함합니다.
                     </span>
-                  </div> */}
+                  </div>
                 </div>
                 <div className="flex flex-row items-center">
                   <Checkbox

@@ -36,14 +36,17 @@ const AppRoot = () => {
     isSuccess,
     isError,
     error,
+    refetch,
     isLoading,
   } = useUser({ enabled: !!token });
 
+  console.log(user);
   React.useEffect(() => {
-    if (token && user) {
-      queryClient.setQueryData(["authenticated-user"], user);
+    if (token && !user) {
+      console.log(token, user, "asdasd");
+      refetch();
     }
-  }, [token, user, queryClient]);
+  }, [token]);
 
   console.log("token", token);
   console.log("isLoading", isLoading);
