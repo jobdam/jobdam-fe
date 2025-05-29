@@ -4,6 +4,7 @@ import {
   UseMutationOptions,
   DefaultOptions,
   QueryClient,
+  useQueryClient as useBaseQueryClient,
 } from "@tanstack/react-query";
 
 // ! gctime에 대하여
@@ -20,7 +21,7 @@ export const queryConfig = {
   queries: {
     refetchOnWindowFocus: false,
     retry: false,
-    staleTime: 1000 * 1,
+    staleTime: 1000 * 30,
   },
 } satisfies DefaultOptions;
 
@@ -43,3 +44,7 @@ export type MutationConfig<
 export const queryClient = new QueryClient({
   defaultOptions: queryConfig,
 });
+
+export const useQueryClient = (): QueryClient => {
+  return useBaseQueryClient();
+};

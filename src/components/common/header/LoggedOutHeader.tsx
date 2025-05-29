@@ -19,7 +19,7 @@ const LoggedOutHeader = () => {
       {/* 헤더의 구조, 색 z로 띄윅등 */}
       <header
         className="
-      px-[78px] flex sticky top-0 h-[70px] max-w-[1980px]  min-w-[1200px] z-[100] bg-[#202020]"
+      px-[78px] flex fixed top-0 h-[70px] w-[100vw] max-w-[1980px]  min-w-[1200px] z-[100] bg-[#202020]"
       >
         {/* 헤더의 컨텐츠부분 */}
         <div

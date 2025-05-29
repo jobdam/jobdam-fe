@@ -7,7 +7,8 @@ import LoggedInHeader from "@/components/common/header/LoggedInHeader";
 
 import { useWebSocketConnect } from "@/services/webSockect/useWebSocketConnect";
 import { useUser } from "@/lib/auth";
-
+import { useQueryClient } from "@tanstack/react-query";
+import React from "react";
 const connectPaths = ["/interview/matching", "/chatroom", "/videoChat"];
 
 export const ErrorBoundary = () => {
@@ -24,14 +25,34 @@ export const WebSocketConnect = () => {
 
 const AppRoot = () => {
   //이게 먼저 실행이되고 로그아웃이 실행이됨.
+  const queryClient = useQueryClient();
 
   const token = getAccessToken();
-  // const token = useAuthToken();
-  const { data: user } = useUser({ enabled: !!token });
+  // if (!token) return null;
 
+  // const token = useAuthToken();
+  const {
+    data: user,
+    isSuccess,
+    isError,
+    error,
+    isLoading,
+  } = useUser({ enabled: !!token });
+
+  React.useEffect(() => {
+    if (token && user) {
+      queryClient.setQueryData(["authenticated-user"], user);
+    }
+  }, [token, user, queryClient]);
+
+  console.log("token", token);
+  console.log("isLoading", isLoading);
+  console.log("isError", isError);
+  console.log("error", error);
+  console.log("user", user);
   // useEffect(() => {
   //   if (token) {
-  //     refetch(); // token이 있고 아직 안 불러왔을 때만
+  //
   //   }
   // }, [token]);
   // useEffect(() => {
