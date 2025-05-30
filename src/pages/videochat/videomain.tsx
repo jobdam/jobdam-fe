@@ -285,8 +285,8 @@ const Videomain = () => {
   }, [isBroadcastSubscribed]);
 
   return (
-    <div className="flex justify-center items-center">
-      <div className="flex mt-[45px] w-[80vw] h-[90vh] gap-x-6">
+    <div className="flex justify-center mt-[70px] items-center">
+      <div className="flex pt-[25px] mt-[20px] w-[80vw] h-[90vh] gap-x-6">
         <VideoPanel
           localStream={stream}
           remoteStreams={remoteStreams}

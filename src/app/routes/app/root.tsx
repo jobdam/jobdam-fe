@@ -7,7 +7,6 @@ import LoggedInHeader from "@/components/common/header/LoggedInHeader";
 
 import { useWebSocketConnect } from "@/services/webSockect/useWebSocketConnect";
 import { useUser } from "@/lib/auth";
-import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
 const connectPaths = ["/interview/matching", "/chatroom", "/videoChat"];
 

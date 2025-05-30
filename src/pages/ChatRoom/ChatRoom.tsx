@@ -245,7 +245,7 @@ const ChatRoom = () => {
   });
 
   return (
-    <div className="w-full h-[90vh] max-h-[1000px] flex justify-center">
+    <div className="w-full h-[90vh] max-h-[1000px] flex justify-center mt-[90px]">
       <div className="flex justify-center gap-5 mt-[20px] w-full">
         <UserPanel
           userList={userList}

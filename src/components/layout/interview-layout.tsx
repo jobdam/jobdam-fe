@@ -41,7 +41,7 @@ const InterviewLayout = ({
             "flex flex-col w-full min-w-0",
             matching
               ? "justify-center max-h-[650px]"
-              : "items-start max-w-[1200px] min-w-[800px] mt-[10px] ml-[30px]"
+              : "items-start max-w-[1200px] min-w-[800px] mt-[30px] ml-[30px]"
           )}
         >
           {/* Title */}
