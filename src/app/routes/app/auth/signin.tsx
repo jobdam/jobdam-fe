@@ -22,6 +22,7 @@ const SignInRoute = () => {
     >
       <SignIn
         onSuccess={() => {
+          console.log("로그인 실행");
           if (!user) {
             navigate(`${paths.mypage.postdata.path}`, { replace: true });
             return;
