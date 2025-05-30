@@ -45,7 +45,7 @@ const MypageLayout = ({
   return (
     <div
       className={cn(
-        "flex min-h-[calc(100vh-70px)] flex-row justify-center ",
+        "flex min-h-[calc(100vh-30px)] flex-row justify-center mt-[30px] ",
         className
       )}
     >
